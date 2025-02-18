@@ -14,7 +14,7 @@
 #include "array"
 #include "functional"
 #include "atomic"
-#include "string"
+#include "cstring"
 
 using afloat32_t = std::atomic<float_t>;
 using auint32_t = std::atomic<uint32_t>;
@@ -325,6 +325,8 @@ namespace Adc
 		template<typename T>
 		concept IsReg = std::is_base_of<Regs::IReg, T>::value and not std::is_polymorphic<T>::value and sizeof(T) == 2;
 
+		void throw_consteval_failure(char const*);
+
 		/*
 		 * @brief DO NOT USE for insiders only B), changes struct type into register address on compile time
 		 * @ret uint8_t register address corresponding to register struct
@@ -367,7 +369,7 @@ namespace Adc
 
 			if constexpr(std::same_as<T, Regs::RegMapCrc>)		return 0x3e;
 
-			throw; //consteval fail
+			throw_consteval_failure("failed to evaluate sta");
 			return 0xff;
 		}
 	}
@@ -380,6 +382,7 @@ namespace Adc
 		constexpr uint16_t WakeUp =		0b0000'0000'0011'0011;
 		constexpr uint16_t Lock =		0b0000'0101'0101'0101;
 		constexpr uint16_t UnLock =		0b0000'0110'0101'0101;
+
 		/*
 		 * @brief ReadReg cmd constructor
 		 * @ret corresponding read command for the required address register
@@ -432,11 +435,11 @@ namespace Adc
 			return cmd;
 		}
 
-		const SPI_HandleTypeDef *hspi { nullptr };
+		SPI_HandleTypeDef *hspi { nullptr };
 
 	public:
 		std::array<afloat32_t, 4> adc { 0.f };
-		std::atomic<Regs::Status> status;
+		Regs::Status status;
 
 		explicit Ads131m04(SPI_HandleTypeDef *hspi) : hspi(hspi) { }
 
@@ -468,19 +471,23 @@ namespace Adc
 
 			out[0] = constructRead<Regs::Status>();
 
-			auto callback = [&](SPI_HandleTypeDef* hspi) -> void
+			static std::function<void(SPI_HandleTypeDef*)> callback = [&](SPI_HandleTypeDef* hspi)
 			{
 				if(hspi->State != HAL_SPI_STATE_ERROR and hspi->State != HAL_SPI_STATE_ABORT)
 				{
-					std::memcpy
+					std::memcpy((uint8_t*)&status, (uint8_t*)in.begin(), sizeof(uint32_t));
+
 				}
 
 				if(auto err = HAL_SPI_UnRegisterCallback(hspi, HAL_SPI_TX_RX_COMPLETE_CB_ID); err != HAL_OK) Error_Handler();
 			};
 
-			if(auto err = HAL_SPI_RegisterCallback(hspi, HAL_SPI_TX_RX_COMPLETE_CB_ID, callback); err != HAL_OK) return err;
+			//char kek2[] = callback.target_type().name();
+			auto kek = callback.target<callback.>();
 
-			if(auto err = HAL_SPI_TransmitReceive_DMA(hspi, out.data() , in.data(), size); err != HAL_OK) return err;
+			if(auto err = HAL_SPI_RegisterCallback(hspi, HAL_SPI_TX_RX_COMPLETE_CB_ID, *kek); err != HAL_OK) return err;
+
+			if(auto err = HAL_SPI_TransmitReceive_IT(hspi, (uint8_t*)out.begin() , (uint8_t*)in.begin(), out.size()); err != HAL_OK) return err;
 
 			return HAL_OK;
 		}
