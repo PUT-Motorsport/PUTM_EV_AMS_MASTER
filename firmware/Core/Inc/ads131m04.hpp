@@ -461,31 +461,27 @@ namespace Adc
 		HAL_StatusTypeDef update(bool wait = false)
 		{
 			static constexpr size_t size = 6;
-			static std::array<auint32_t, size> out { 0 };
-			static std::array<auint32_t, size> in { 0 };
+			std::array<uint32_t, size> out { 0 };
+			std::array<uint32_t, size> in { 0 };
 
 			if(hspi->State != HAL_SPI_STATE_READY and not wait) return HAL_BUSY;
 
-
-			while(hspi->State != HAL_SPI_STATE_READY and wait) HAL_Delay(1);
+			//while(hspi->State != HAL_SPI_STATE_READY and wait) HAL_Delay(1);
 
 			out[0] = constructRead<Regs::Status>();
 
-			static std::function<void(SPI_HandleTypeDef*)> callback = [&](SPI_HandleTypeDef* hspi)
+			pSPI_CallbackTypeDef callback = [](SPI_HandleTypeDef* hspi)
 			{
 				if(hspi->State != HAL_SPI_STATE_ERROR and hspi->State != HAL_SPI_STATE_ABORT)
 				{
-					std::memcpy((uint8_t*)&status, (uint8_t*)in.begin(), sizeof(uint32_t));
-
+					//std::memcpy((uint8_t*)status, (uint8_t*)in, sizeof(uint32_t));
 				}
 
 				if(auto err = HAL_SPI_UnRegisterCallback(hspi, HAL_SPI_TX_RX_COMPLETE_CB_ID); err != HAL_OK) Error_Handler();
 			};
 
-			//char kek2[] = callback.target_type().name();
-			auto kek = callback.target<callback.>();
-
-			if(auto err = HAL_SPI_RegisterCallback(hspi, HAL_SPI_TX_RX_COMPLETE_CB_ID, *kek); err != HAL_OK) return err;
+			//use inherence to go around this shit
+			if(auto err = HAL_SPI_RegisterCallback(hspi, HAL_SPI_TX_RX_COMPLETE_CB_ID, callback); err != HAL_OK) return err;
 
 			if(auto err = HAL_SPI_TransmitReceive_IT(hspi, (uint8_t*)out.begin() , (uint8_t*)in.begin(), out.size()); err != HAL_OK) return err;
 
