@@ -20,6 +20,7 @@ using afloat32_t = std::atomic<float_t>;
 using auint32_t = std::atomic<uint32_t>;
 
 static_assert(USE_HAL_SPI_REGISTER_CALLBACKS == 1UL, "Use registered callback for SPI");
+static_assert(offsetof(SPI_HandleTypeDef, userData), "Add \"void* userData;\" to SPI_HandleTypeDef implementation");
 
 namespace Adc
 {
@@ -435,7 +436,7 @@ namespace Adc
 			return cmd;
 		}
 
-		SPI_HandleTypeDef *hspi { nullptr };
+		SPI_HandleTypeDef *hspi;
 
 	public:
 		std::array<afloat32_t, 4> adc { 0.f };
@@ -461,10 +462,10 @@ namespace Adc
 		HAL_StatusTypeDef update(bool wait = false)
 		{
 			static constexpr size_t size = 6;
-			std::array<uint32_t, size> out { 0 };
-			std::array<uint32_t, size> in { 0 };
+			static std::array<uint32_t, size> out { 0 };
+			static std::array<uint32_t, size> in { 0 };
 
-			if(hspi->State != HAL_SPI_STATE_READY and not wait) return HAL_BUSY;
+			if(hmspi.State != HAL_SPI_STATE_READY and not wait) return HAL_BUSY;
 
 			//while(hspi->State != HAL_SPI_STATE_READY and wait) HAL_Delay(1);
 

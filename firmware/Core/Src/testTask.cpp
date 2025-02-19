@@ -44,6 +44,8 @@ std::array<bool, 5> gpios_state;
 
 void startTestTask(void *argument)
 {
+	adc.init();
+
 	sig_err.reset();
 
 	float i = 0.f;
