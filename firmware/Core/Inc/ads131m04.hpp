@@ -20,7 +20,7 @@ using afloat32_t = std::atomic<float_t>;
 using auint32_t = std::atomic<uint32_t>;
 
 static_assert(USE_HAL_SPI_REGISTER_CALLBACKS == 1UL, "Use registered callback for SPI");
-static_assert(offsetof(SPI_HandleTypeDef, userData), "Add \"void* userData;\" to SPI_HandleTypeDef implementation");
+static_assert(offsetof(SPI_HandleTypeDef, UserData), "Add \"void* userData;\" to SPI_HandleTypeDef implementation");
 
 namespace Adc
 {
@@ -462,10 +462,10 @@ namespace Adc
 		HAL_StatusTypeDef update(bool wait = false)
 		{
 			static constexpr size_t size = 6;
-			static std::array<uint32_t, size> out { 0 };
-			static std::array<uint32_t, size> in { 0 };
+			std::array<uint32_t, size> out { 0 };
+			std::array<uint32_t, size> in { 0 };
 
-			if(hmspi.State != HAL_SPI_STATE_READY and not wait) return HAL_BUSY;
+			if(hspi->State != HAL_SPI_STATE_READY and not wait) return HAL_BUSY;
 
 			//while(hspi->State != HAL_SPI_STATE_READY and wait) HAL_Delay(1);
 
@@ -473,9 +473,19 @@ namespace Adc
 
 			pSPI_CallbackTypeDef callback = [](SPI_HandleTypeDef* hspi)
 			{
+				if(hspi->UserData == nullptr) Error_Handler();
+				Ads131m04 *adc = (Ads131m04*)hspi->UserData;
+				uint32_t *in = (uint32_t*)hspi->pRxBuffPtr;
+
 				if(hspi->State != HAL_SPI_STATE_ERROR and hspi->State != HAL_SPI_STATE_ABORT)
 				{
-					//std::memcpy((uint8_t*)status, (uint8_t*)in, sizeof(uint32_t));
+					std::memcpy((uint8_t*)&adc->status, (uint8_t*)in, sizeof(uint32_t));
+
+					const float coef = 1.2f / 16777215.f;
+					adc->adc[0] = in[1] * coef;
+					adc->adc[1] = in[2] * coef;
+					adc->adc[2] = in[3] * coef;
+					adc->adc[3] = in[4] * coef;
 				}
 
 				if(auto err = HAL_SPI_UnRegisterCallback(hspi, HAL_SPI_TX_RX_COMPLETE_CB_ID); err != HAL_OK) Error_Handler();
@@ -483,6 +493,8 @@ namespace Adc
 
 			//use inherence to go around this shit
 			if(auto err = HAL_SPI_RegisterCallback(hspi, HAL_SPI_TX_RX_COMPLETE_CB_ID, callback); err != HAL_OK) return err;
+
+			hspi->UserData = (void*)this;
 
 			if(auto err = HAL_SPI_TransmitReceive_IT(hspi, (uint8_t*)out.begin() , (uint8_t*)in.begin(), out.size()); err != HAL_OK) return err;
 
