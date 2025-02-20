@@ -438,8 +438,12 @@ namespace Adc
 
 		SPI_HandleTypeDef *hspi;
 
+		static inline constexpr size_t size = 6;
+		std::array<uint32_t, size> out { 0 };
+		std::array<uint32_t, size> in { 0 };
+
 	public:
-		std::array<afloat32_t, 4> adc { 0.f };
+		std::array<float, 4> adc { 0.f };
 		Regs::Status status;
 
 		explicit Ads131m04(SPI_HandleTypeDef *hspi) : hspi(hspi) { }
@@ -461,9 +465,6 @@ namespace Adc
 		 */
 		HAL_StatusTypeDef update(bool wait = false)
 		{
-			static constexpr size_t size = 6;
-			std::array<uint32_t, size> out { 0 };
-			std::array<uint32_t, size> in { 0 };
 
 			if(hspi->State != HAL_SPI_STATE_READY and not wait) return HAL_BUSY;
 
@@ -475,11 +476,12 @@ namespace Adc
 			{
 				if(hspi->UserData == nullptr) Error_Handler();
 				Ads131m04 *adc = (Ads131m04*)hspi->UserData;
-				uint32_t *in = (uint32_t*)hspi->pRxBuffPtr;
+				uint32_t *in = (uint32_t*)adc->in.begin();
 
 				if(hspi->State != HAL_SPI_STATE_ERROR and hspi->State != HAL_SPI_STATE_ABORT)
 				{
-					std::memcpy((uint8_t*)&adc->status, (uint8_t*)in, sizeof(uint32_t));
+					uint32_t tmp = in[0] >> 8;
+					std::memcpy((uint8_t*)&adc->status, (uint8_t*)&tmp, sizeof(uint16_t));
 
 					const float coef = 1.2f / 16777215.f;
 					adc->adc[0] = in[1] * coef;
