@@ -259,7 +259,7 @@ namespace Adc
 		};
 
 		template<int T>
-		concept IsChannel = T <= 3 && T >= 0;
+		concept IsChannel = T <= 3 and T >= 0;
 
 		// for channels 0-3
 		template<int Ch> requires IsChannel<Ch>
