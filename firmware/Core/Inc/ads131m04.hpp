@@ -333,7 +333,7 @@ namespace Adc
 		 * @ret uint8_t register address corresponding to register struct
 		 */
 		template<typename T> requires IsReg<T>
-		static uint8_t consteval sta()
+		static uint8_t constexpr sta()
 		{
 			if constexpr(std::same_as<T, Regs::Id>) 			return 0x00;
 			if constexpr(std::same_as<T, Regs::Status>)			return 0x01;

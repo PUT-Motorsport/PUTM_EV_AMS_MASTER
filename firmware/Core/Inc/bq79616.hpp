@@ -30,8 +30,6 @@ namespace Bq
 		template<typename T>
 		int constexpr sta() { return T::ADDRESS; }
 
-		template<typename T, uint16_t A>
-
 		struct Dir0AddrOtp : public IReg, IAddress<0x0000>
 		{
 			uint8_t undef { 0x00 };
