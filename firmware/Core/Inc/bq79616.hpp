@@ -18,74 +18,70 @@ namespace Bq
 	{
 		struct IReg { };
 
+		template<size_t START, size_t OFFSET = 0>
+		struct IAddress
+		{
+		    static inline constexpr int ADDRESS = START + OFFSET;
+		};
+
 		template<typename T>
 		concept IsReg = std::is_base_of<IReg, T>::value and not std::is_polymorphic<T>::value and sizeof(T) == 1;
-		void throw_consteval_failure(char const*);
 
-		template<typename T, uint16_t A> requires IsReg<T>
-		uint16_t consteval sta() { throw_consteval_failure("failed to evaluate sta"); return A; }
+		template<typename T>
+		int constexpr sta() { return T::ADDRESS; }
 
+		template<typename T, uint16_t A>
 
-#define ADD_STA(CLASS, ADDRESS) template<> uint16_t consteval Utils::sta<CLASS, ADDRESS>() { return ADDRESS; }
-
-
-		struct Dir0AddrOtp : public IReg
+		struct Dir0AddrOtp : public IReg, IAddress<0x0000>
 		{
 			uint8_t undef { 0x00 };
 		};
-		ADD_STA(Dir0AddrOtp, 0x0000);
 
-		struct Dir1AddrOtp : public IReg
+		struct __packed Dir1AddrOtp : public IReg, IAddress<0x0001>
 		{
 			uint8_t undef { 0x00 };
 		};
-		ADD_STA(Dir1AddrOtp, 0x0001);
 
 		template<size_t T>
 		concept IsMiscReg = T >= 1 and T <= 9;
 
 		template<size_t MiscReg> requires IsMiscReg<MiscReg>
-		struct CustMisc : public IReg
+		struct __packed CustMisc : public IReg
 		{
 			uint8_t data;
 		};
-		//addr undef
 
-		struct Dir0Addr : public IReg
+		struct __packed Dir0Addr : public IReg, IAddress<0x0306>
 		{
 			uint8_t undef;
 		};
-		ADD_STA(Dir0Addr, 0x0306);
 
-		struct Dir1Addr : public IReg
+		struct __packed Dir1Addr : public IReg, IAddress<0x0307>
 		{
 			uint8_t undef;
 		};
-		ADD_STA(Dir1Addr, 0x0307);
 
-		struct PartId : public IReg
+		struct __packed PartId : public IReg, IAddress<0x0500>
 		{
 			uint8_t part_id;
 		};
-		ADD_STA(PartId, 0x0500);
 
-		struct DevRevId : public IReg
+		struct __packed DevRevId : public IReg, IAddress<0x0e00>
 		{
 			uint8_t undef;
 		};
-		ADD_STA(DevRevId, 0x0e00);
 
 		template<size_t T>
 		concept IsDieIdReg = T >= 1 and T <= 9;
 
 		template<size_t DieIdReg> requires IsDieIdReg<DieIdReg>
-		struct DieId : public IReg
+		struct __packed DieId : public IReg
 		{
 			uint8_t id;
 		};
 		//undef
 
-		struct DevConf
+		struct __packed DevConf : public IReg, IAddress<0x0002>
 		{
 		public:
 			uint8_t hb_en : 1 { 0b0 };
@@ -98,9 +94,8 @@ namespace Bq
 		private:
 			uint8_t reserved : 1 { 0b0 };
 		};
-		ADD_STA(DevConf, 0x0002);
 
-		enum struct NumCell : uint8_t
+		enum struct __packed NumCell : uint8_t
 		{
 			_6S,
 			_7S,
@@ -115,16 +110,15 @@ namespace Bq
 			_16S
 		};
 
-		struct ActiveCell : public IReg
+		struct __packed ActiveCell : public IReg, IAddress<0x0003>
 		{
 		public:
 			NumCell num_cell : 4 { NumCell::_16S };
 		private:
 			uint8_t spare : 4 { 0b0000 };
 		};
-		ADD_STA(ActiveCell, 0x0003);
 
-		struct BbvcPosn1 : public IReg
+		struct __packed BbvcPosn1 : public IReg
 		{
 			uint8_t cell9  : 1 { 0b0 };
 			uint8_t cell10 : 1 { 0b0 };
@@ -137,7 +131,7 @@ namespace Bq
 		};
 		//undef
 
-		struct BbvcPosn2 : public IReg
+		struct __packed BbvcPosn2 : public IReg
 		{
 			uint8_t cell1 : 1 { 0b0 };
 			uint8_t cell2 : 1 { 0b0 };
@@ -150,7 +144,7 @@ namespace Bq
 		};
 		//undef
 
-		enum struct SleepTime : uint8_t
+		enum struct __packed SleepTime : uint8_t
 		{
 			No,
 			_5s,
@@ -162,7 +156,7 @@ namespace Bq
 			_2h
 		};
 
-		enum struct TWarnThr : uint8_t
+		enum struct __packed TWarnThr : uint8_t
 		{
 			_85C,
 			_95C,
@@ -170,7 +164,7 @@ namespace Bq
 			_115C
 		};
 
-		struct PwrTransitConf : public IReg
+		struct __packed PwrTransitConf : public IReg, IAddress<0x0018>
 		{
 		public:
 			SleepTime slp_time : 3 { 0b000 };
@@ -178,9 +172,8 @@ namespace Bq
 		private:
 			uint8_t spare : 3 { 0b000 };
 		};
-		ADD_STA(PwrTransitConf, 0x0018);
 
-		enum struct CtsTime : uint8_t
+		enum struct __packed CtsTime : uint8_t
 		{
 			No,
 			_100ms,
@@ -191,7 +184,7 @@ namespace Bq
 			_1h
 		};
 
-		enum struct CtlTime : uint8_t
+		enum struct __packed CtlTime : uint8_t
 		{
 			No,
 			_100ms,
@@ -203,7 +196,7 @@ namespace Bq
 			_1h
 		};
 
-		struct CommTimeoutConf : public IReg
+		struct __packed CommTimeoutConf : public IReg, IAddress<0x0019>
 		{
 		public:
 			CtlTime ctl_time : 3 { 0b000 };
@@ -212,30 +205,27 @@ namespace Bq
 		private:
 			uint8_t spare : 1 { 0b0 };
 		};
-		ADD_STA(CommTimeoutConf, 0x0019);
 
-		struct TxHoldOff : public IReg
+		struct __packed TxHoldOff : public IReg, IAddress<0x001a>
 		{
 			uint8_t dly { 0x00 };
 		};
-		ADD_STA(TxHoldOff, 0x001a);
 
-		struct StackResponse : public IReg
+		struct __packed StackResponse : public IReg, IAddress<0x0029>
 		{
 		public:
 			uint8_t dly : 6 { 0b000000 };
 		private:
 			uint8_t spare : 2 { 0b00 };
 		};
-		ADD_STA(StackResponse, 0x0029);
 
-		enum struct Loc : uint8_t
+		enum struct __packed Loc : uint8_t
 		{
 			No,
 			Undef,
 		};
 
-		struct BBPLock : public IReg
+		struct __packed BBPLock : public IReg
 		{
 		public:
 			Loc lock : 5 { 0b00000 };
@@ -244,7 +234,7 @@ namespace Bq
 		};
 		//undef
 
-		struct CommCtrl : public IReg
+		struct __packed CommCtrl : public IReg, IAddress<0x0308>
 		{
 		public:
 			bool top_stack : 1 { 0b0 };
@@ -252,9 +242,8 @@ namespace Bq
 		private:
 			uint8_t reserved : 6 { 0b000000 };
 		};
-		ADD_STA(CommCtrl, 0x0308);
 
-		struct Control1 : public IReg
+		struct __packed Control1 : public IReg, IAddress<0x0309>
 		{
 			bool addr_wr : 1 { 0b0 };
 			bool soft_reset : 1 { 0b0 };
@@ -265,9 +254,8 @@ namespace Bq
 			bool send_shutdown : 1 { 0b0 };
 			bool dir_sel : 1 { 0b0 };
 		};
-		ADD_STA(Control1, 0x0309);
 
-		struct Control2 : public IReg
+		struct __packed Control2 : public IReg, IAddress<0x030a>
 		{
 		public:
 			bool tsref_en : 1 { 0b0 };
@@ -275,31 +263,30 @@ namespace Bq
 		private:
 			uint8_t reserved : 6 { 0b000000 };
 		};
-		ADD_STA(Control2, 0x030a);
 
-		enum struct Byte : uint8_t
+		enum struct __packed Byte : uint16_t
 		{
 			Hi,
 			Lo
 		};
 
-		template<size_t T>
+		template<Byte T>
 		concept IsByte = T == Byte::Hi or T == Byte::Lo;
 
 		template<Byte B> requires IsByte<B>
-		struct CustCrc: public IReg
+		struct __packed CustCrc: public IReg
 		{
 			uint8_t undef { 0x00 };
 		};
 
 		template<Byte B> requires IsByte<B>
-		struct CustCrcRslt : public IReg
+		struct __packed CustCrcRslt : public IReg
 		{
 			uint8_t undef { 0x00 };
 		};
 		//undef
 
-		struct DiagStat : public IReg
+		struct __packed DiagStat : public IReg, IAddress<0x0526>
 		{
 		public:
 			bool drdy_bist_pwr : 1 { 0b0 };
@@ -310,9 +297,8 @@ namespace Bq
 		private:
 			uint8_t reserved : 3 { 0b000 };
 		};
-		ADD_STA(DiagStat, 0x0526);
 
-		struct AdcStat1 : public IReg
+		struct __packed AdcStat1 : public IReg, IAddress<0x0527>
 		{
 		public:
 			bool drdy_main_adc : 1 { 0b0 };
@@ -322,9 +308,8 @@ namespace Bq
 		private:
 			uint8_t reserved : 4 { 0b0 };
 		};
-		ADD_STA(AdcStat1, 0x0527);
 
-		struct AdcStat2 : public IReg
+		struct __packed AdcStat2 : public IReg, IAddress<0x0528>
 		{
 		public:
 			bool drdy_vccb : 1 { 0b0 };
@@ -336,9 +321,8 @@ namespace Bq
 		private:
 			uint8_t reserved : 2 { 0b00 };
 		};
-		ADD_STA(AdcStat2, 0x0528);
 
-		struct GpioStat : public IReg
+		struct __packed GpioStat : public IReg, IAddress<0x052a>
 		{
 			bool gpio1 : 1 { 0b0 };
 			bool gpio2 : 1 { 0b0 };
@@ -349,9 +333,8 @@ namespace Bq
 			bool gpio7 : 1 { 0b0 };
 			bool gpio8 : 1 { 0b0 };
 		};
-		ADD_STA(GpioStat, 0x052a);
 
-		struct BalStat : public IReg
+		struct __packed BalStat : public IReg, IAddress<0x052b>
 		{
 			bool cb_done : 1 { 0b0 };
 			bool mb_done : 1 { 0b0 };
@@ -362,9 +345,8 @@ namespace Bq
 			bool ot_pause_det : 1 { 0b0 };
 			bool invalid_cbconf : 1 { 0b0 };
 		};
-		ADD_STA(GpioStat, 0x052b);
 
-		struct DevStat : public IReg
+		struct __packed DevStat : public IReg, IAddress<0x052c>
 		{
 		public:
 			bool main_run : 1 { 0b0 };
@@ -379,9 +361,8 @@ namespace Bq
 		private:
 			bool reserved2 : 1 { 0b0 };
 		};
-		ADD_STA(DevStat, 0x052c);
 
-//		enum struct SettleTime
+//		enum struct __packed SettleTime
 //		{
 //			_4_3ms,
 //			_2_3ms,
@@ -389,7 +370,7 @@ namespace Bq
 //			Reserved
 //		};
 //
-//		enum struct CutOff
+//		enum struct __packed CutOff
 //		{
 //			_6_5Hz,
 //			_13Hz,
@@ -398,50 +379,50 @@ namespace Bq
 //			_111
 //		};
 
-		struct AdcConf1 : public IReg
+		struct __packed AdcConf1 : public IReg
 		{
 			uint8_t undef { 0x00 };
 		};
 		//undef
 
-		struct AdcConf2 : public IReg
+		struct __packed AdcConf2 : public IReg
 		{
 			uint8_t undef { 0x00 };
 		};
 		//undef
 
-		struct MainAdcCal1 : public IReg
+		struct __packed MainAdcCal1 : public IReg
 		{
 			uint8_t undef { 0x00 };
 		};
 		//undef
 
-		struct MainAdcCal2 : public IReg
+		struct __packed MainAdcCal2 : public IReg
 		{
 			uint8_t undef { 0x00 };
 		};
 		//undef
 
-		struct AuxAdcCal1 : public IReg
+		struct __packed AuxAdcCal1 : public IReg
 		{
 			uint8_t undef { 0x00 };
 		};
 		//undef
 
-		struct AuxAdcCal2 : public IReg
+		struct __packed AuxAdcCal2 : public IReg
 		{
 			uint8_t undef { 0x00 };
 		};
 		//undef
 
-		enum struct MainMode : uint8_t
+		enum struct __packed MainMode : uint8_t
 		{
 			No,
 			Single,
 			Continous
 		};
 
-		struct AdcCtrl1 : public IReg
+		struct __packed AdcCtrl1 : public IReg, IAddress<0x030d>
 		{
 		public:
 			MainMode main_mode : 2 { 0b00 };
@@ -451,17 +432,16 @@ namespace Bq
 		private:
 			uint8_t reserved : 3 { 0b000 };
 		};
-		ADD_STA(AdcCtrl1, 0x030d);
 
 		// those are kept at zero so whatever
-		struct AdcCtrl2 : public IReg
+		struct __packed AdcCtrl2 : public IReg
 		{
 			uint8_t undef { 0x00 };
 		};
 		//undef
 
 		// those are kept at zero so whatever
-		struct AdcCtrl3 : public IReg
+		struct __packed AdcCtrl3 : public IReg
 		{
 			uint8_t undef { 0x00 };
 		};
@@ -470,228 +450,179 @@ namespace Bq
 		template<size_t T>
 		concept IsCellChannel = T >= 1 and T <= 16;
 
-		template<Byte B, size_t CellChannel> requires IsCellChannel<CellChannel> and IsByte<B>
-		struct VCell : public IReg
+		template<Byte BYTE, size_t CHANNEL> requires IsCellChannel<CHANNEL> and IsByte<BYTE>
+		struct __packed VCell : public IReg, IAddress<0x0568, size_t(BYTE) + CHANNEL>
 		{
 			uint8_t result;
 		};
-		ADD_STA(VCell<Byte::Hi, 16>, 0x0568);
-		ADD_STA(VCell<Byte::Lo, 16>, 0x0569);
-		ADD_STA(VCell<Byte::Hi, 15>, 0x056a);
-		ADD_STA(VCell<Byte::Lo, 15>, 0x056b);
-		ADD_STA(VCell<Byte::Hi, 14>, 0x056c);
-		ADD_STA(VCell<Byte::Lo, 14>, 0x056d);
-		ADD_STA(VCell<Byte::Hi, 13>, 0x056e);
-		ADD_STA(VCell<Byte::Lo, 13>, 0x056f);
-		ADD_STA(VCell<Byte::Hi, 12>, 0x0570);
-		ADD_STA(VCell<Byte::Lo, 12>, 0x0571);
-		ADD_STA(VCell<Byte::Hi, 11>, 0x0572);
-		ADD_STA(VCell<Byte::Lo, 11>, 0x0573);
-		ADD_STA(VCell<Byte::Hi, 10>, 0x0574);
-		ADD_STA(VCell<Byte::Lo, 10>, 0x0575);
-		ADD_STA(VCell<Byte::Hi, 9>, 0x0576);
-		ADD_STA(VCell<Byte::Lo, 9>, 0x0577);
-		ADD_STA(VCell<Byte::Hi, 8>, 0x0578);
-		ADD_STA(VCell<Byte::Lo, 8>, 0x0579);
-		ADD_STA(VCell<Byte::Hi, 7>, 0x057a);
-		ADD_STA(VCell<Byte::Lo, 7>, 0x057b);
-		ADD_STA(VCell<Byte::Hi, 6>, 0x057c);
-		ADD_STA(VCell<Byte::Lo, 6>, 0x057d);
-		ADD_STA(VCell<Byte::Hi, 5>, 0x057e);
-		ADD_STA(VCell<Byte::Lo, 5>, 0x057f);
-		ADD_STA(VCell<Byte::Hi, 4>, 0x0580);
-		ADD_STA(VCell<Byte::Lo, 4>, 0x0581);
-		ADD_STA(VCell<Byte::Hi, 3>, 0x0582);
-		ADD_STA(VCell<Byte::Lo, 3>, 0x0583);
-		ADD_STA(VCell<Byte::Hi, 2>, 0x0584);
-		ADD_STA(VCell<Byte::Lo, 2>, 0x0585);
-		ADD_STA(VCell<Byte::Hi, 1>, 0x0586);
-		ADD_STA(VCell<Byte::Lo, 1>, 0x0587);
 
 
 		template<Byte B> requires IsByte<B>
-		struct BusBar : public IReg
+		struct __packed BusBar : public IReg
 		{
 			uint8_t result;
 		};
 		//undef
 
-		template<Byte B> requires IsByte<B>
-		struct TsRef : public IReg
+		template<Byte BYTE> requires IsByte<BYTE>
+		struct __packed TsRef : public IReg, IAddress<0x058C, size_t(BYTE)>
 		{
 			uint8_t result;
 		};
-		ADD_STA(TsRef<Byte::Hi>, 0x058C);
 
 		template<size_t T>
 		concept IsGpioChannel = T >= 1 and T <= 8;
 
-		template<Byte B, size_t GpioChannel> requires IsGpioChannel<GpioChannel> and IsByte<B>
-		struct Gpio : public IReg
-		{
-			uint8_t result;
-		};
-		ADD_STA(Gpio<Byte::Hi, 1>, 0x0590);
-		ADD_STA(Gpio<Byte::Lo, 1>, 0x0591);
-		ADD_STA(Gpio<Byte::Hi, 2>, 0x0592);
-		ADD_STA(Gpio<Byte::Lo, 2>, 0x0593);
-		ADD_STA(Gpio<Byte::Hi, 3>, 0x0594);
-		ADD_STA(Gpio<Byte::Lo, 3>, 0x0595);
-		ADD_STA(Gpio<Byte::Hi, 4>, 0x0596);
-		ADD_STA(Gpio<Byte::Lo, 4>, 0x0597);
-		ADD_STA(Gpio<Byte::Hi, 5>, 0x0598);
-		ADD_STA(Gpio<Byte::Lo, 5>, 0x0599);
-		ADD_STA(Gpio<Byte::Hi, 6>, 0x059a);
-		ADD_STA(Gpio<Byte::Lo, 6>, 0x059b);
-		ADD_STA(Gpio<Byte::Hi, 7>, 0x059c);
-		ADD_STA(Gpio<Byte::Lo, 7>, 0x059d);
-		ADD_STA(Gpio<Byte::Hi, 8>, 0x059e);
-		ADD_STA(Gpio<Byte::Lo, 8>, 0x059f);
-
-		template<Byte B> requires IsByte<B>
-		struct DieTemp1 : public IReg
+		template<Byte BYTE, size_t CHANNEL> requires IsGpioChannel<CHANNEL> and IsByte<BYTE>
+		struct __packed Gpio : public IReg
 		{
 			uint8_t result;
 		};
 
 		template<Byte B> requires IsByte<B>
-		struct DieTemp2 : public IReg
+		struct __packed DieTemp1 : public IReg
 		{
 			uint8_t result;
 		};
 
 		template<Byte B> requires IsByte<B>
-		struct AuxCell : public IReg
+		struct __packed DieTemp2 : public IReg
 		{
 			uint8_t result;
 		};
 
 		template<Byte B> requires IsByte<B>
-		struct AuxGpio : public IReg
+		struct __packed AuxCell : public IReg
 		{
 			uint8_t result;
 		};
 
 		template<Byte B> requires IsByte<B>
-		struct AuxBat : public IReg
+		struct __packed AuxGpio : public IReg
 		{
 			uint8_t result;
 		};
 
 		template<Byte B> requires IsByte<B>
-		struct AuxRefl : public IReg
+		struct __packed AuxBat : public IReg
 		{
 			uint8_t result;
 		};
 
 		template<Byte B> requires IsByte<B>
-		struct AuxVbg2 : public IReg
+		struct __packed AuxRefl : public IReg
 		{
 			uint8_t result;
 		};
 
 		template<Byte B> requires IsByte<B>
-		struct AuxAvaoRef : public IReg
+		struct __packed AuxVbg2 : public IReg
 		{
 			uint8_t result;
 		};
 
 		template<Byte B> requires IsByte<B>
-		struct AuxAvddRef : public IReg
+		struct __packed AuxAvaoRef : public IReg
 		{
 			uint8_t result;
 		};
 
 		template<Byte B> requires IsByte<B>
-		struct AuxOVDac : public IReg
+		struct __packed AuxAvddRef : public IReg
 		{
 			uint8_t result;
 		};
 
 		template<Byte B> requires IsByte<B>
-		struct AuxUVDac : public IReg
+		struct __packed AuxOVDac : public IReg
 		{
 			uint8_t result;
 		};
 
 		template<Byte B> requires IsByte<B>
-		struct AuxOTCBDac : public IReg
+		struct __packed AuxUVDac : public IReg
 		{
 			uint8_t result;
 		};
 
 		template<Byte B> requires IsByte<B>
-		struct AuxUTDac : public IReg
+		struct __packed AuxOTCBDac : public IReg
 		{
 			uint8_t result;
 		};
 
 		template<Byte B> requires IsByte<B>
-		struct AuxVCBdoneDac : public IReg
+		struct __packed AuxUTDac : public IReg
 		{
 			uint8_t result;
 		};
 
 		template<Byte B> requires IsByte<B>
-		struct RefOVDac : public IReg
+		struct __packed AuxVCBdoneDac : public IReg
 		{
 			uint8_t result;
 		};
 
 		template<Byte B> requires IsByte<B>
-		struct DiagMain : public IReg
+		struct __packed RefOVDac : public IReg
 		{
 			uint8_t result;
 		};
 
 		template<Byte B> requires IsByte<B>
-		struct DiagHi : public IReg
+		struct __packed DiagMain : public IReg
+		{
+			uint8_t result;
+		};
+
+		template<Byte B> requires IsByte<B>
+		struct __packed DiagHi : public IReg
 		{
 			uint8_t result;
 		};
 
 		template<size_t CellChannel> requires IsCellChannel<CellChannel>
-		struct CBCellCtrl : public IReg
+		struct __packed CBCellCtrl : public IReg
 		{
 			uint8_t undef;
 		};
 
-		struct VMBDoneThresh : public IReg
+		struct __packed VMBDoneThresh : public IReg
 		{
 			uint8_t undef;
 		};
 
-		struct MBTimerCtrl : public IReg
+		struct __packed MBTimerCtrl : public IReg
 		{
 			uint8_t undef;
 		};
 
-		struct CBDoneThresh : public IReg
+		struct __packed CBDoneThresh : public IReg
 		{
 			uint8_t undef;
 		};
 
-		struct OTCBThresh : public IReg
+		struct __packed OTCBThresh : public IReg
 		{
 			uint8_t undef;
 		};
 
-		struct BalCtrl1 : public IReg
+		struct __packed BalCtrl1 : public IReg
 		{
 			uint8_t undef;
 		};
 
-		struct BalCtrl2 : public IReg
+		struct __packed BalCtrl2 : public IReg
 		{
 			uint8_t undef;
 		};
 
-		struct BalCtrl3 : public IReg
+		struct __packed BalCtrl3 : public IReg
 		{
 			uint8_t undef;
 		};
 
-		struct CBComplete1 : public IReg
+		struct __packed CBComplete1 : public IReg
 		{
 			bool cell9_done : 1 { 0b0 };
 			bool cell10_done : 1 { 0b0 };
@@ -703,7 +634,7 @@ namespace Bq
 			bool cell16_done : 1 { 0b0 };
 		};
 
-		struct CBComplete2 : public IReg
+		struct __packed CBComplete2 : public IReg
 		{
 			bool cell1_done : 1 { 0b0 };
 			bool cell2_done : 1 { 0b0 };
@@ -715,12 +646,12 @@ namespace Bq
 			bool cell8_done : 1 { 0b0 };
 		};
 
-		struct BalTime : public IReg
+		struct __packed BalTime : public IReg
 		{
 			uint8_t undef;
 		};
 
-		struct OVThresh : public IReg
+		struct __packed OVThresh : public IReg
 		{
 			uint8_t undef;
 		};
@@ -732,21 +663,13 @@ namespace Bq
 		template<typename T> requires Utils::IsReg<T>
 		uint32_t constexpr constructWrite()
 		{
-			constexpr uint32_t addr = Utils::sta<T>();
-			//constexpr uint16_t count = 1; //serial write not supported
-			constexpr uint32_t cmd = Cmd::WriteReg(addr);
-
-			return cmd;
+			return 0;
 		}
 
 		template<typename T> requires Utils::IsReg<T>
 		uint32_t constexpr constructRead()
 		{
-			constexpr uint16_t addr = Utils::sta<T>();
-			//constexpr uint16_t count = 1; //serial write not supported
-			constexpr uint32_t cmd = Cmd::ReadReg(addr);
-
-			return cmd;
+			return 0;
 		}
 
 		SPI_HandleTypeDef *hspi;
@@ -756,10 +679,10 @@ namespace Bq
 		std::array<uint32_t, size> in { 0 };
 
 	public:
-		explicit Ads131m04(SPI_HandleTypeDef *hspi) : hspi(hspi) { }
+		explicit Bq79616(SPI_HandleTypeDef *hspi) : hspi(hspi) { }
 	};
-}
 
-#undef ADD_STA;
+
+}
 
 #endif /* INC_BQ79616_HPP_ */
