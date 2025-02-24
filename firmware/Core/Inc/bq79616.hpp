@@ -678,6 +678,16 @@ namespace Bq
 
 	public:
 		explicit Bq79616(SPI_HandleTypeDef *hspi) : hspi(hspi) { }
+
+		void init()
+		{
+
+		}
+
+		void wakeThatBitchUp()
+		{
+
+		}
 	};
 
 
