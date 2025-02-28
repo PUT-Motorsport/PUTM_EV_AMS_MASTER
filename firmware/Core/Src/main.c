@@ -30,7 +30,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "app_freertos.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -115,7 +115,7 @@ int main(void)
   /* Init scheduler */
   osKernelInitialize();
 
-  /* Call init function for freertos objects (in cmsis_os2.c) */
+  /* Call init function for freertos objects (in app_freertos.c) */
   MX_FREERTOS_Init();
 
   /* Start scheduler */
@@ -205,7 +205,7 @@ void PeriphCommonClock_Config(void)
   PeriphClkInitStruct.PLL2.PLL2Source = RCC_PLL2_SOURCE_HSE;
   PeriphClkInitStruct.PLL2.PLL2M = 5;
   PeriphClkInitStruct.PLL2.PLL2N = 38;
-  PeriphClkInitStruct.PLL2.PLL2P = 2;
+  PeriphClkInitStruct.PLL2.PLL2P = 64;
   PeriphClkInitStruct.PLL2.PLL2Q = 2;
   PeriphClkInitStruct.PLL2.PLL2R = 2;
   PeriphClkInitStruct.PLL2.PLL2RGE = RCC_PLL2_VCIRANGE_3;

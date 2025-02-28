@@ -43,18 +43,18 @@ std::array<Tim*, 7> fans { &fan1, &fan2, &fan3, &fan4, &fan5, &fan6, &fan7 };
 std::array<Gpio*, 5> gpios_ins { &det_air_pre, &det_air_p, &det_air_m, &det_tsms, &det_charger };
 std::array<bool, 5> gpios_state;
 
-void startTestTask(void *argument)
+void startTestTask([[maybe_unused]] void *argument)
 {
 	adc.init();
 
 	sig_err.reset();
 
-	float i = 0.f;
-	float iii = 25.f;
-	float inc = iii;
+	[[maybe_unused]] float i = 0.f;
+	[[maybe_unused]] float iii = 25.f;
+	[[maybe_unused]] float inc = iii;
 
-	size_t k = 1;
-	int kinc = -1;
+	[[maybe_unused]] size_t k = 1;
+	[[maybe_unused]] int kinc = -1;
 
 	//en_12v.set();
 	en_12v.reset();

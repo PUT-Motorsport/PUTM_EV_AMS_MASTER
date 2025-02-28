@@ -1,10 +1,14 @@
 import os
 import re
+import sys
 
 # Path to the HAL SPI header file (modify this path as needed)
 
-current_directory = os.getcwd()
-hal_spi_header_path = current_directory + "\\..\\Drivers\\STM32H5xx_HAL_Driver\\Inc\\stm32h5xx_hal_spi.h"
+if(len(sys.argv) < 2):
+    print(f"Program requires root source folder path")
+    exit(1)
+
+hal_spi_header_path = sys.argv[1] + "/Drivers/STM32H5xx_HAL_Driver/Inc/stm32h5xx_hal_spi.h"
 
 # Check if the file exists
 if not os.path.exists(hal_spi_header_path):

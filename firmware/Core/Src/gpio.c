@@ -60,7 +60,7 @@ void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LED_ERROR_GPIO_Port, LED_ERROR_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : PCPin PCPin PCPin */
+  /*Configure GPIO pins : DET_CHARGER_Pin DET_TSMS_Pin DET_AIR_P_Pin */
   GPIO_InitStruct.Pin = DET_CHARGER_Pin|DET_TSMS_Pin|DET_AIR_P_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
@@ -72,21 +72,21 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PCPin PCPin PCPin */
+  /*Configure GPIO pins : ADC_NDRY_Pin SPI_RDY_Pin NFLT_Pin */
   GPIO_InitStruct.Pin = ADC_NDRY_Pin|SPI_RDY_Pin|NFLT_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PCPin PCPin */
+  /*Configure GPIO pins : SIG_AMS_ERROR_Pin SIG_AIR_PRE_Pin */
   GPIO_InitStruct.Pin = SIG_AMS_ERROR_Pin|SIG_AIR_PRE_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PBPin PBPin PBPin PBPin
-                           PBPin */
+  /*Configure GPIO pins : SIG_AIR_P_Pin SIG_AIR_M_Pin EN_12V_Pin LED_WARNING_Pin
+                           LED_OK_Pin */
   GPIO_InitStruct.Pin = SIG_AIR_P_Pin|SIG_AIR_M_Pin|EN_12V_Pin|LED_WARNING_Pin
                           |LED_OK_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -100,13 +100,13 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : PtPin */
+  /*Configure GPIO pin : PG_12V_Pin */
   GPIO_InitStruct.Pin = PG_12V_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(PG_12V_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PBPin PBPin */
+  /*Configure GPIO pins : DET_AIR_M_Pin DET_AIR_PRE_Pin */
   GPIO_InitStruct.Pin = DET_AIR_M_Pin|DET_AIR_PRE_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
@@ -118,7 +118,7 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : PtPin */
+  /*Configure GPIO pin : LED_ERROR_Pin */
   GPIO_InitStruct.Pin = LED_ERROR_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
