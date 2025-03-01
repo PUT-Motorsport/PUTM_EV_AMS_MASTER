@@ -20,6 +20,7 @@
 #include "main.h"
 #include "cmsis_os2.h"
 #include "fdcan.h"
+#include "gpdma.h"
 #include "icache.h"
 #include "memorymap.h"
 #include "spi.h"
@@ -99,6 +100,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_GPDMA1_Init();
   MX_FDCAN1_Init();
   MX_FDCAN2_Init();
   MX_SPI1_Init();
@@ -106,8 +108,8 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USB_PCD_Init();
   MX_ICACHE_Init();
-  MX_TIM2_Init();
   MX_TIM3_Init();
+  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */

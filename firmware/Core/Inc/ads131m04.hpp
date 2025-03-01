@@ -438,7 +438,10 @@ namespace Adc
 
 		SPI_HandleTypeDef *hspi;
 
+		bool newData { false };
+
 		static inline constexpr size_t size = 6;
+
 		std::array<uint32_t, size> out { 0 };
 		std::array<uint32_t, size> in { 0 };
 
@@ -458,19 +461,23 @@ namespace Adc
 
 		/*
 		 * @brief 	update adc data
-		 * @param	wait default(false) if spi busy -> wait till its not
 		 * @note 	function overrides spi callback while in use then returns them to their default state
 		 * 			wait is realized with HAL_Delay override it if you are using any rtos
-		 * @retval 	HAL status
+		 * @retval 	HAL status returns HAL_OK when new data is avalable otherwise returns busy
 		 */
-		HAL_StatusTypeDef update(bool wait = false)
+		HAL_StatusTypeDef update()
 		{
+			if(hspi->State == HAL_SPI_STATE_RESET) Error_Handler();
+			if(hspi->State == HAL_SPI_STATE_ABORT or hspi->State == HAL_SPI_STATE_ERROR) Error_Handler();
 
-			if(hspi->State != HAL_SPI_STATE_READY and not wait) return HAL_BUSY;
+			if(hspi->State == HAL_SPI_STATE_READY and newData) return HAL_OK;
 
-			//while(hspi->State != HAL_SPI_STATE_READY and wait) HAL_Delay(1);
+			if(hspi->State != HAL_SPI_STATE_READY) return HAL_BUSY;
+
 
 			out[0] = constructRead<Regs::Status>();
+			
+			hspi->UserData = (void*)this;
 
 			pSPI_CallbackTypeDef callback = [](SPI_HandleTypeDef* hspi)
 			{
@@ -490,17 +497,20 @@ namespace Adc
 					adc->adc[3] = in[4] * coef;
 				}
 
-				if(auto err = HAL_SPI_UnRegisterCallback(hspi, HAL_SPI_TX_RX_COMPLETE_CB_ID); err != HAL_OK) Error_Handler();
+				if(HAL_SPI_UnRegisterCallback(hspi, HAL_SPI_TX_RX_COMPLETE_CB_ID) != HAL_OK) Error_Handler();
+
+				adc->newData = true;
 			};
 
 			//use inherence to go around this shit
-			if(auto err = HAL_SPI_RegisterCallback(hspi, HAL_SPI_TX_RX_COMPLETE_CB_ID, callback); err != HAL_OK) return err;
+			if(HAL_SPI_RegisterCallback(hspi, HAL_SPI_TX_RX_COMPLETE_CB_ID, callback) != HAL_OK) Error_Handler();
 
-			hspi->UserData = (void*)this;
+			//TODO: change to dma!
+			if(HAL_SPI_TransmitReceive_DMA(hspi, (uint8_t*)out.begin() , (uint8_t*)in.begin(), out.size()) != HAL_OK) Error_Handler();
 
-			if(auto err = HAL_SPI_TransmitReceive_IT(hspi, (uint8_t*)out.begin() , (uint8_t*)in.begin(), out.size()); err != HAL_OK) return err;
+			newData = false;
 
-			return HAL_OK;
+			return HAL_BUSY;
 		}
 	};
 }

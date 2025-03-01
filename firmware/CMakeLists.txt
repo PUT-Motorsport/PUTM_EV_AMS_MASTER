@@ -16,8 +16,8 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
 
-find_package( PythonInterp 2.7 REQUIRED )
-find_package( PythonLibs 2.7 REQUIRED )
+find_package(PythonInterp 2.7 REQUIRED)
+find_package(PythonLibs 2.7 REQUIRED)
 
 # Define the build type
 if(NOT CMAKE_BUILD_TYPE)
@@ -83,9 +83,9 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
 
 # Modify SPI HAL drivers
 add_custom_target(
- CUSTOM_COMMANDS ALL
- COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/custom_spi.py ${CMAKE_CURRENT_SOURCE_DIR}
- COMMENT "Modifing SPI HAL drivers"
+    CUSTOM_COMMANDS ALL
+    COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/custom_spi.py ${CMAKE_CURRENT_SOURCE_DIR}
+    COMMENT "Modifing SPI HAL drivers"
 )
 
 add_dependencies(${CMAKE_PROJECT_NAME} CUSTOM_COMMANDS)

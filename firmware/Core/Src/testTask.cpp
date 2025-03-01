@@ -12,7 +12,7 @@
 #include "array"
 #include "tim.h"
 #include "ads131m04.hpp"
-#include "bq79616.hpp"
+#include "bq796xx.hpp"
 
 Gpio led_err(LED_ERROR_GPIO_Port, LED_ERROR_Pin, true);
 Gpio led_wrn(LED_WARNING_GPIO_Port, LED_WARNING_Pin, true);
