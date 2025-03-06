@@ -668,15 +668,26 @@ namespace Bq
 			uint8_t undef;
 		};
 
+		// required type
+		enum struct ReqType : uint8_t
+		{
+			SingleDeviceRead,
+			SingleDeviceWrite,
+			StackRead,
+			StackWrite,
+			BroadcastRead,
+			BroadcastWrite
+		}
+
 		struct __packed Init
 		{
 		public:
-			Init(uint8_t frame_type,  uint8_t req_type, uint8_t data_size) : data_size(data_size), req_type(req_type), frame_type(frame_type) { }
+			Init(uint8_t frame_type, ReqType req_type, uint8_t data_size) : data_size(data_size), req_type(req_type), frame_type(frame_type) { }
 			uint8_t data_size : 3 { 0 };
 		private:
 			const uint8_t rsvd : 1 { 0 };
 		public:
-			uint8_t req_type : 3 { 0 };
+			ReqType req_type : 3 { 0 };
 			uint8_t frame_type : 1 { 0 };
 		};
 	}
@@ -813,8 +824,8 @@ namespace Bq
 		*	@param 	`address` address of a device to be written to - assumes 0
 		* 	@retval	HAL_BUSY when writeSingle is in progress, HAL_OK when done or caller provided no data/size
 		*/
-		template<typename REG, uint8_t SIZE> requires (SIZE <= 8 and Utils::IsReg<REG>)
-		HAL_StatusTypeDef writeSingle(std::array<uint8_t, SIZE> data, uint8_t address = 0)
+		template<> requires (SIZE <= 8 and Utils::IsReg<REG>)
+		HAL_StatusTypeDef writeSingle(uint8_t dev_addr = 0,)
 		{
 			using namespace Utils;
 
@@ -834,10 +845,9 @@ namespace Bq
 			
 			out.at(0) = tob(Init(1, 0b001, data.size()));
 
-			if(address > 0x3f; address = 0x3f) out.at(1) = address;
+			if(dev_addr > CHAIN_SIZE; dev_addr = CHAIN_SIZE) out.at(1) = dev_addr;
 			out.at(2);
 
-			uint16_t reg_addr = sta<REG>();
 			out.at(3) = (uint8_t)reg_addr >> 8;
 			out.at(4) = (uint8_t)reg_addr;
 
