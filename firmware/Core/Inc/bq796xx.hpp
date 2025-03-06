@@ -13,12 +13,9 @@
 #include "utility"
 #include "spi.h"
 #include "cmath"
+#include "crc16ibm.hpp"
 
-<<<<<<< Updated upstream
 //============================================================================================//
-=======
-//==========================================Config============================================//
->>>>>>> Stashed changes
 // make sure its the input clock on spi not the spi clock after prescaler
 static constexpr double SPI_CLOCK = 6e6; 
 //============================================================================================//
@@ -40,6 +37,12 @@ namespace Bq
 
 		template<typename T>
 		int constexpr sta() { return T::ADDRESS; }
+
+		template<typename T>
+		uint8_t tob(T s)
+		{
+			return (uint8_t)*(void*)&s;
+		}
 
 		struct Dir0AddrOtp : public IReg, IAddress<0x0000>
 		{
@@ -664,33 +667,29 @@ namespace Bq
 		{
 			uint8_t undef;
 		};
+
+		struct __packed Init
+		{
+		public:
+			Init(uint8_t frame_type,  uint8_t req_type, uint8_t data_size) : data_size(data_size), req_type(req_type), frame_type(frame_type) { }
+			uint8_t data_size : 3 { 0 };
+		private:
+			const uint8_t rsvd : 1 { 0 };
+		public:
+			uint8_t req_type : 3 { 0 };
+			uint8_t frame_type : 1 { 0 };
+		};
 	}
 
 	template<size_t CHAIN_SIZE> requires ( CHAIN_SIZE <= 256 )
-<<<<<<< Updated upstream
-	class Bq79600
-=======
 	class Bq796xx
->>>>>>> Stashed changes
 	{
 	private:
 		SPI_HandleTypeDef *hspi;
 
-<<<<<<< Updated upstream
-		bool wakeUpDone { false };
-
-		uint32_t prevPreScal = 0;
-
-		std::array<uint8_t, 256> out { 0 };
-		std::array<uint8_t, 256> in { 0 };
-
-	public:
-		explicit Bq79600(SPI_HandleTypeDef *hspi) : hspi(hspi) { };
-		
-=======
 		/*
-		* 	@brief 	this funciton evalueates how much space is needed for buffers
-		* 	@retval	returns evaluated min size needed
+		* 	@brief 	This funciton evalueates how much space is needed for buffers
+		* 	@retval	evaluated min size needed
 		*/
 		consteval size_t EVAL_NEEDED_BITS()
 		{
@@ -705,8 +704,8 @@ namespace Bq
 		}
 
 		/*
-		* 	@brief 	this funciton evalueates how much space is needed for buffers
-		* 	@retval	returns evaluated min size needed
+		* 	@brief 	This funciton evalueates how much space is needed for buffers
+		* 	@retval	evaluated min size needed
 		*/
 		consteval size_t EVAL_SIZE()
 		{
@@ -718,41 +717,13 @@ namespace Bq
 			return REQUIRED_BY_CHAIN;
 		}
 
-		uint16_t crc(uint8_t *data, size_t size)
-		{
-			
-		}
-
 		std::array<uint8_t, EVAL_SIZE()> out { 0 };
 		std::array<uint8_t, EVAL_SIZE()> in { 0 };
 
 	public:
-		explicit Bq796xx(SPI_HandleTypeDef *hspi) : hspi(hspi) { };
-		
-		template<typename REG, size_t SIZE> requires Utils::IsReg<REG>
-		HAL_StatusTypeDef writeSingle(std::array<REG, SIZE> data)
-		{
-			
-		}
-
-		template<typename REG, size_t SIZE> requires Utils::IsReg<REG>
-		HAL_StatusTypeDef readSingle(std::array<REG, SIZE> data)
-		{
-
-		}
-
-		template<typename REG, size_t SIZE> requires Utils::IsReg<REG>
-		HAL_StatusTypeDef writeStack(std::array<REG, SIZE> data)
-		{
-			
-		}
-
-	private:
-		
-	public:
 		/*
-		* 	@brief 	this function inits all bq in a stach
-		* 	@retval	returns HAL_BUSY when init is in progress is in progress
+		* 	@brief 	This function inits all bq in a stach
+		* 	@retval	HAL_BUSY when init is in progress is in progress, HAL_OK when done
 		*/
 		HAL_StatusTypeDef init()
 		{
@@ -763,74 +734,59 @@ namespace Bq
 			case 0: /* start - send wake up */
 				HAL_StatusTypeDef s = wakeUp();
 				if(s == HAL_OK) state = 1;
+				return HAL_BUSY;
 				break;
 			case 1:
-				HAL_StatusTypeDef s = wakeUp();
 				if(s )
 			default:
 				break;
 			}
+
+			return HAL_OK;
 		}
 
 	private:
 		bool wakeUpDone { false };
+		uint32_t prevBaudRatePrescaler { 0 };
 	public:
->>>>>>> Stashed changes
 		/*
-		* 	@brief 	wake up function for BQ79600 IC, this functions tries to hold the MOSI line
+		* 	@brief 	Wake up function for BQ79600 IC, this functions tries to hold the MOSI line
 		*			for aprox ~2.5ms
-		* 	@retval	returns HAL_BUSY when wakeing up is in progress
+		* 	@retval	HAL_BUSY when wakeing up is in progress, HAL_OK when done
 		*/
 		HAL_StatusTypeDef wakeUp()
 		{
-<<<<<<< Updated upstream
-			static constexpr double CLK_PERIOD = 1 / SPI_CLOCK * 256;
-			static constexpr size_t NEEDED_BITS = std::round(0.0025 / CLK_PERIOD);
+			// prevent override during checks
+			volatile uint32_t state = hspi->State;
 
-			static_assert(NEEDED_BITS <= 256, "too much needed bits");
-			static_assert(NEEDED_BITS * CLK_PERIOD > 0.003, "SPI is to slow sadge");
-			static_assert(NEEDED_BITS * CLK_PERIOD < 0.0025, "SPI is to fast sadge");
+			if(state == HAL_SPI_STATE_RESET) Error_Handler();
+			if(state == HAL_SPI_STATE_ABORT or state == HAL_SPI_STATE_ERROR) Error_Handler();
 
-=======
->>>>>>> Stashed changes
-			if(hspi->State == HAL_SPI_STATE_RESET) return HAL_ERROR;
-			if(hspi->State == HAL_SPI_STATE_ABORT or hspi->State == HAL_SPI_STATE_ERROR) return HAL_ERROR;
+			if(state == HAL_SPI_STATE_READY and wakeUpDone) { wakeUpDone = false; return HAL_OK; }
 
-			if(hspi->State == HAL_SPI_STATE_READY and wakeUpDone) return HAL_OK;
+			if(state != HAL_SPI_STATE_READY) return HAL_BUSY;
 
-			if(hspi->State != HAL_SPI_STATE_READY) return HAL_BUSY;
+			wakeUpDone = false;
 
 			if(HAL_SPI_DeInit(hspi) != HAL_OK) Error_Handler();
-			prevPreScal = hspi->Init.BaudRatePrescaler;
+			prevBaudRatePrescaler = hspi->Init.BaudRatePrescaler;
 			hspi->Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_256;
 			if(HAL_SPI_Init(hspi) != HAL_OK) Error_Handler();
 
-<<<<<<< Updated upstream
-			std::fill(out.begin(), out.begin() + NEEDED_BITS, 0);
-
-			hspi->UserData = (void*)this;
-
-			pSPI_CallbackTypeDef callback = [](SPI_HandleTypeDef* hspi)
-			{
-				if(hspi->UserData == nullptr) Error_Handler();
-				Bq79600 *bq = (Bq79600*)hspi->UserData;
-=======
 			std::fill(out.begin(), out.begin() + EVAL_NEEDED_BITS(), 0);
 
 			hspi->UserData = (void*)this;
 
-			// TODO: might not work
+			// FIXME: might not work
 			pSPI_CallbackTypeDef callback = [](SPI_HandleTypeDef* hspi)
 			{
 				if(hspi->UserData == nullptr) Error_Handler();
 				Bq796xx *bq = (Bq796xx*)hspi->UserData;
->>>>>>> Stashed changes
-				uint32_t *in = (uint32_t*)bq->in.begin();
 
 				if(hspi->State == HAL_SPI_STATE_ERROR or hspi->State == HAL_SPI_STATE_ABORT) Error_Handler();
 
 				if(HAL_SPI_DeInit(hspi) != HAL_OK) Error_Handler();
-				bq->hspi->Init.BaudRatePrescaler = bq->prevPreScal;
+				bq->hspi->Init.BaudRatePrescaler = bq->prevBaudRatePrescaler;
 				if(HAL_SPI_Init(hspi) != HAL_OK) Error_Handler();
 
 				if(HAL_SPI_UnRegisterCallback(hspi, HAL_SPI_TX_RX_COMPLETE_CB_ID) != HAL_OK) Error_Handler();
@@ -838,64 +794,74 @@ namespace Bq
 				bq->wakeUpDone = true;
 			};
 
-			if(auto err = HAL_SPI_RegisterCallback(hspi, HAL_SPI_TX_RX_COMPLETE_CB_ID, callback); err != HAL_OK) return err;
+			if(HAL_SPI_RegisterCallback(hspi, HAL_SPI_TX_RX_COMPLETE_CB_ID, callback) != HAL_OK) Error_Handler();
 
-<<<<<<< Updated upstream
-			//TODO: change to dma!
-			if(auto err = HAL_SPI_Transmit_DMA(hspi, (uint8_t*)out.begin(), NEEDED_BITS); err != HAL_OK) return err;
-=======
-			if(auto err = HAL_SPI_Transmit_DMA(hspi, (uint8_t*)out.begin(), EVAL_NEEDED_BITS()); err != HAL_OK) return err;
-
-			wakeUpDone = false;
+			if(HAL_SPI_Transmit_DMA(hspi, (uint8_t*)out.begin(), EVAL_NEEDED_BITS())!= HAL_OK) Error_Handler();
 
 			return HAL_BUSY;
 		}
 
 	private:
-		bool wakeUpDone { false };
+		bool writeSingleDone { false };
 	public:
 		/*
-		* 	@brief 	wake up function for BQ79600 IC, this functions tries to hold the MOSI line
-		*			for aprox ~2.5ms
-		* 	@retval	returns HAL_BUSY when wakeing up is in progress
+		* 	@brief 	Send `data` of `size` to a device at `address`. If data was send before this function
+		*			can be called without any parameters to check the `writeSingle` state: `HAL_BUSY` (sending)
+		*			or `HAL_OK` (done)
+		* 	@param 	`data` pointer to data
+		* 	@param 	`size` size of data
+		*	@param 	`address` address of a device to be written to - assumes 0
+		* 	@retval	HAL_BUSY when writeSingle is in progress, HAL_OK when done or caller provided no data/size
 		*/
-		HAL_StatusTypeDef sendWake()
+		template<typename REG, uint8_t SIZE> requires (SIZE <= 8 and Utils::IsReg<REG>)
+		HAL_StatusTypeDef writeSingle(std::array<uint8_t, SIZE> data, uint8_t address = 0)
 		{
-			if(hspi->State == HAL_SPI_STATE_RESET) return HAL_ERROR;
-			if(hspi->State == HAL_SPI_STATE_ABORT or hspi->State == HAL_SPI_STATE_ERROR) return HAL_ERROR;
+			using namespace Utils;
 
-			if(hspi->State == HAL_SPI_STATE_READY and wakeUpDone) return HAL_OK;
+			// prevent override during checks
+			volatile uint32_t state = hspi->State;
 
-			if(hspi->State != HAL_SPI_STATE_READY) return HAL_BUSY;
+			if(state == HAL_SPI_STATE_RESET) Error_Handler();
+			if(state == HAL_SPI_STATE_ABORT or state == HAL_SPI_STATE_ERROR) Error_Handler();
 
+			if(state == HAL_SPI_STATE_READY and writeSingleDone) return HAL_OK; 
 
+			if(state != HAL_SPI_STATE_READY) return HAL_BUSY;
+
+			writeSingleDone = false;
 
 			hspi->UserData = (void*)this;
+			
+			out.at(0) = tob(Init(1, 0b001, data.size()));
 
-			// TODO: might not work
+			if(address > 0x3f; address = 0x3f) out.at(1) = address;
+			out.at(2);
+
+			uint16_t reg_addr = sta<REG>();
+			out.at(3) = (uint8_t)reg_addr >> 8;
+			out.at(4) = (uint8_t)reg_addr;
+
+			std::copy(data.begin(), data.end(), out.begin() + 4);
+			
+			uint16_t crc = fastcrc16ibm(out.begin(), data.size() + 4);
+			out.at(data.size() + 4) = (uint8_t)(crc >> 8);
+			out.at(data.size() + 5) = (uint8_t)(crc);
+
 			pSPI_CallbackTypeDef callback = [](SPI_HandleTypeDef* hspi)
 			{
 				if(hspi->UserData == nullptr) Error_Handler();
 				Bq796xx *bq = (Bq796xx*)hspi->UserData;
-				uint32_t *in = (uint32_t*)bq->in.begin();
 
 				if(hspi->State == HAL_SPI_STATE_ERROR or hspi->State == HAL_SPI_STATE_ABORT) Error_Handler();
 
-				if(HAL_SPI_DeInit(hspi) != HAL_OK) Error_Handler();
-				bq->hspi->Init.BaudRatePrescaler = bq->prevPreScal;
-				if(HAL_SPI_Init(hspi) != HAL_OK) Error_Handler();
-
 				if(HAL_SPI_UnRegisterCallback(hspi, HAL_SPI_TX_RX_COMPLETE_CB_ID) != HAL_OK) Error_Handler();
 
-				bq->wakeUpDone = true;
+				bq->writeSingleDone = true;
 			};
 
-			if(auto err = HAL_SPI_RegisterCallback(hspi, HAL_SPI_TX_RX_COMPLETE_CB_ID, callback); err != HAL_OK) return err;
+			if(HAL_SPI_RegisterCallback(hspi, HAL_SPI_TX_RX_COMPLETE_CB_ID, callback) != HAL_OK) Error_Handler();
 
-			if(auto err = HAL_SPI_Transmit_DMA(hspi, (uint8_t*)out.begin(), EVAL_NEEDED_BITS()); err != HAL_OK) return err;
->>>>>>> Stashed changes
-
-			wakeUpDone = false;
+			if(HAL_SPI_Transmit_DMA(hspi, (uint8_t*)out.begin(), data.size() + 6) != HAL_OK) Error_Handler();
 
 			return HAL_BUSY;
 		}

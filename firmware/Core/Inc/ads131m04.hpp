@@ -505,10 +505,6 @@ namespace Adc
 			//use inherence to go around this shit
 			if(HAL_SPI_RegisterCallback(hspi, HAL_SPI_TX_RX_COMPLETE_CB_ID, callback) != HAL_OK) Error_Handler();
 
-<<<<<<< Updated upstream
-			//TODO: change to dma!
-=======
->>>>>>> Stashed changes
 			if(HAL_SPI_TransmitReceive_DMA(hspi, (uint8_t*)out.begin() , (uint8_t*)in.begin(), out.size()) != HAL_OK) Error_Handler();
 
 			newData = false;
