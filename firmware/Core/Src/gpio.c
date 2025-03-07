@@ -72,11 +72,17 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : ADC_NDRY_Pin SPI_RDY_Pin NFLT_Pin */
-  GPIO_InitStruct.Pin = ADC_NDRY_Pin|SPI_RDY_Pin|NFLT_Pin;
+  /*Configure GPIO pins : ADC_NDRY_Pin NFLT_Pin */
+  GPIO_InitStruct.Pin = ADC_NDRY_Pin|NFLT_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : INT_SPI_RDY_Pin */
+  GPIO_InitStruct.Pin = INT_SPI_RDY_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(INT_SPI_RDY_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : SIG_AMS_ERROR_Pin SIG_AIR_PRE_Pin */
   GPIO_InitStruct.Pin = SIG_AMS_ERROR_Pin|SIG_AIR_PRE_Pin;
@@ -124,6 +130,10 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(LED_ERROR_GPIO_Port, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI1_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(EXTI1_IRQn);
 
 }
 

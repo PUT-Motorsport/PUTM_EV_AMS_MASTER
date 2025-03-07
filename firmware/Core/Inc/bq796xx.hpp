@@ -667,24 +667,35 @@ namespace Bq
 		{
 			uint8_t undef;
 		};
+`
+		enum struct ReqType : uint8_t
+		{
+			Single,
+			Stack,
+			Braodcast
+		};
 
 		struct __packed Init
 		{
 		public:
-			Init(uint8_t frame_type,  uint8_t req_type, uint8_t data_size) : data_size(data_size), req_type(req_type), frame_type(frame_type) { }
+			Init(uint8_t req_type, uint8_t data_size) : data_size(data_size - 1), req_type(req_type) { }
 			uint8_t data_size : 3 { 0 };
 		private:
 			const uint8_t rsvd : 1 { 0 };
 		public:
 			uint8_t req_type : 3 { 0 };
-			uint8_t frame_type : 1 { 0 };
+		private:
+			uint8_t frame_type : 1 { 1 };
 		};
+
 	}
 
-	template<size_t CHAIN_SIZE> requires ( CHAIN_SIZE <= 256 )
+	template<size_t CHAIN_SIZE> requires ( CHAIN_SIZE <= 64 )
 	class Bq796xx
 	{
 	private:
+		using namespace Utils;
+
 		SPI_HandleTypeDef *hspi;
 
 		/*
@@ -789,12 +800,12 @@ namespace Bq
 				bq->hspi->Init.BaudRatePrescaler = bq->prevBaudRatePrescaler;
 				if(HAL_SPI_Init(hspi) != HAL_OK) Error_Handler();
 
-				if(HAL_SPI_UnRegisterCallback(hspi, HAL_SPI_TX_RX_COMPLETE_CB_ID) != HAL_OK) Error_Handler();
+				if(HAL_SPI_UnRegisterCallback(hspi, HAL_SPI_TX_COMPLETE_CB_ID) != HAL_OK) Error_Handler();
 
 				bq->wakeUpDone = true;
 			};
 
-			if(HAL_SPI_RegisterCallback(hspi, HAL_SPI_TX_RX_COMPLETE_CB_ID, callback) != HAL_OK) Error_Handler();
+			if(HAL_SPI_RegisterCallback(hspi, HAL_SPI_TX_COMPLETE_CB_ID, callback) != HAL_OK) Error_Handler();
 
 			if(HAL_SPI_Transmit_DMA(hspi, (uint8_t*)out.begin(), EVAL_NEEDED_BITS())!= HAL_OK) Error_Handler();
 
@@ -802,19 +813,95 @@ namespace Bq
 		}
 
 	private:
-		bool writeSingleDone { false };
+		bool writeDone { false };
 	public:
 		/*
 		* 	@brief 	Send `data` of `size` to a device at `address`. If data was send before this function
 		*			can be called without any parameters to check the `writeSingle` state: `HAL_BUSY` (sending)
 		*			or `HAL_OK` (done)
-		* 	@param 	`data` pointer to data
-		* 	@param 	`size` size of data
+		* 	@tparam	`REG` first register to write, if more registers are writen they need to have an incrementing address
+		* 	@param 	`data` data, cant be largen than 8 bytes
+		*	@param	`req_type` write type
 		*	@param 	`address` address of a device to be written to - assumes 0
 		* 	@retval	HAL_BUSY when writeSingle is in progress, HAL_OK when done or caller provided no data/size
 		*/
 		template<typename REG, uint8_t SIZE> requires (SIZE <= 8 and Utils::IsReg<REG>)
-		HAL_StatusTypeDef writeSingle(std::array<uint8_t, SIZE> data, uint8_t address = 0)
+		HAL_StatusTypeDef write(std::array<uint8_t, SIZE> data, ReqType req_type, uint8_t address = 0)
+		{
+			using namespace Utils;
+
+			// prevent override during checks
+			volatile uint32_t state = hspi->State;
+
+			if(state == HAL_SPI_STATE_RESET) Error_Handler();
+			if(state == HAL_SPI_STATE_ABORT or state == HAL_SPI_STATE_ERROR) Error_Handler();
+
+			if(state == HAL_SPI_STATE_READY and writeDone) return HAL_OK; 
+
+			if(state != HAL_SPI_STATE_READY) return HAL_BUSY;
+
+			writeDone = false;
+
+			hspi->UserData = (void*)this;
+			
+			switch (req_type)
+			{
+			case Utils::ReqType::Braodcast:
+				out.at(0) = tob(Init(1, 0b001, data.size()));
+				break;
+			case Utils::ReqType::Stack:
+				out.at(0) = tob(Init(1, 0b011, data.size()));
+				break;
+			case Utils::ReqType::Single:
+				out.at(0) = tob(Init(1, 0b101, data.size()));
+				break;
+			}
+
+			if(address > 0x3f; address = 0x3f) out.at(1) = address;
+
+			uint16_t reg_addr = sta<REG>();
+			out.at(2) = (uint8_t)reg_addr >> 8;
+			out.at(3) = (uint8_t)reg_addr;
+
+			uint16_t crc = fastcrc16ibm(out.begin(), 4);
+
+			out.at(4) = (uint8_t)(crc >> 8);
+			out.at(5) = (uint8_t)(crc);
+
+			pSPI_CallbackTypeDef callback = [](SPI_HandleTypeDef* hspi)
+			{
+				if(hspi->UserData == nullptr) Error_Handler();
+				Bq796xx *bq = (Bq796xx*)hspi->UserData;
+
+				if(hspi->State == HAL_SPI_STATE_ERROR or hspi->State == HAL_SPI_STATE_ABORT) Error_Handler();
+
+				if(HAL_SPI_UnRegisterCallback(hspi, HAL_SPI_TX_COMPLETE_CB_ID) != HAL_OK) Error_Handler();
+
+				bq->writeDone = true;
+			};
+
+			if(HAL_SPI_RegisterCallback(hspi, HAL_SPI_TX_RX_COMPLETE_CB_ID, callback) != HAL_OK) Error_Handler();
+
+			if(HAL_SPI_Transmit_DMA(hspi, (uint8_t*)out.begin(), data.size() + 6) != HAL_OK) Error_Handler();
+
+			return HAL_BUSY;
+		}
+
+	private:
+		bool readDone { false };
+	public:
+		/*
+		* 	@brief 	Send `data` of `size` to a device at `address`. If data was send before this function
+		*			can be called without any parameters to check the `writeSingle` state: `HAL_BUSY` (sending)
+		*			or `HAL_OK` (done)
+		* 	@tparam	`REG` first register to write, if more registers are writen they need to have an incrementing address
+		* 	@param 	`data` data, cant be largen than 8 bytes
+		*	@param	`req_type` write type
+		*	@param 	`address` address of a device to be written to - assumes 0
+		* 	@retval	HAL_BUSY when writeSingle is in progress, HAL_OK when done or caller provided no data/size
+		*/
+		template<typename REG, uint8_t SIZE> requires (SIZE <= 8 and Utils::IsReg<REG>)
+		HAL_StatusTypeDef read(std::array<uint8_t, SIZE> &data, ReqType req_type, uint8_t address = 0)
 		{
 			using namespace Utils;
 
@@ -828,18 +915,28 @@ namespace Bq
 
 			if(state != HAL_SPI_STATE_READY) return HAL_BUSY;
 
-			writeSingleDone = false;
+			readDone = false;
 
 			hspi->UserData = (void*)this;
 			
-			out.at(0) = tob(Init(1, 0b001, data.size()));
+			switch (req_type)
+			{
+			case Utils::ReqType::Braodcast:
+				out.at(0) = tob(Init(1, 0b000, data.size()));
+				break;
+			case Utils::ReqType::Stack:
+				out.at(0) = tob(Init(1, 0b010, data.size()));
+				break;
+			case Utils::ReqType::Single:
+				out.at(0) = tob(Init(1, 0b100, data.size()));
+				break;
+			}
 
 			if(address > 0x3f; address = 0x3f) out.at(1) = address;
-			out.at(2);
 
 			uint16_t reg_addr = sta<REG>();
-			out.at(3) = (uint8_t)reg_addr >> 8;
-			out.at(4) = (uint8_t)reg_addr;
+			out.at(2) = (uint8_t)reg_addr >> 8;
+			out.at(3) = (uint8_t)reg_addr;
 
 			std::copy(data.begin(), data.end(), out.begin() + 4);
 			
@@ -847,21 +944,32 @@ namespace Bq
 			out.at(data.size() + 4) = (uint8_t)(crc >> 8);
 			out.at(data.size() + 5) = (uint8_t)(crc);
 
-			pSPI_CallbackTypeDef callback = [](SPI_HandleTypeDef* hspi)
+			pSPI_CallbackTypeDef callback_read = [](SPI_HandleTypeDef* hspi)
 			{
 				if(hspi->UserData == nullptr) Error_Handler();
 				Bq796xx *bq = (Bq796xx*)hspi->UserData;
 
 				if(hspi->State == HAL_SPI_STATE_ERROR or hspi->State == HAL_SPI_STATE_ABORT) Error_Handler();
 
-				if(HAL_SPI_UnRegisterCallback(hspi, HAL_SPI_TX_RX_COMPLETE_CB_ID) != HAL_OK) Error_Handler();
+				if(HAL_SPI_UnRegisterCallback(hspi, HAL_SPI_RX_COMPLETE_CB_ID) != HAL_OK) Error_Handler();
+			}
 
-				bq->writeSingleDone = true;
+			pSPI_CallbackTypeDef callback_write = [](SPI_HandleTypeDef* hspi)
+			{
+				if(hspi->UserData == nullptr) Error_Handler();
+				Bq796xx *bq = (Bq796xx*)hspi->UserData;
+
+				if(hspi->State == HAL_SPI_STATE_ERROR or hspi->State == HAL_SPI_STATE_ABORT) Error_Handler();
+
+				if(HAL_SPI_UnRegisterCallback(hspi, HAL_SPI_TX_COMPLETE_CB_ID) != HAL_OK) Error_Handler();
+				if(HAL_SPI_RegisterCallback(hspi, HAL_SPI_RX_COMPLETE_CB_ID, callback_read) != HAL_OK) Error_Handler();
+
+				bq->readDone = true;
 			};
 
-			if(HAL_SPI_RegisterCallback(hspi, HAL_SPI_TX_RX_COMPLETE_CB_ID, callback) != HAL_OK) Error_Handler();
+			if(HAL_SPI_RegisterCallback(hspi, HAL_SPI_TX_COMPLETE_CB_ID, callback_write) != HAL_OK) Error_Handler();
 
-			if(HAL_SPI_Transmit_DMA(hspi, (uint8_t*)out.begin(), data.size() + 6) != HAL_OK) Error_Handler();
+			if(HAL_SPI_Transmit_DMA(hspi, (uint8_t*)out.begin(), 6) != HAL_OK) Error_Handler();
 
 			return HAL_BUSY;
 		}

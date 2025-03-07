@@ -63,8 +63,9 @@ void Error_Handler(void);
 #define DET_TSMS_GPIO_Port GPIOC
 #define ADC_NDRY_Pin GPIO_PIN_0
 #define ADC_NDRY_GPIO_Port GPIOC
-#define SPI_RDY_Pin GPIO_PIN_1
-#define SPI_RDY_GPIO_Port GPIOC
+#define INT_SPI_RDY_Pin GPIO_PIN_1
+#define INT_SPI_RDY_GPIO_Port GPIOC
+#define INT_SPI_RDY_EXTI_IRQn EXTI1_IRQn
 #define NFLT_Pin GPIO_PIN_2
 #define NFLT_GPIO_Port GPIOC
 #define SIG_AMS_ERROR_Pin GPIO_PIN_3
