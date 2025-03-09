@@ -34,12 +34,24 @@ extern "C" {
 
 /* USER CODE BEGIN Private defines */
 
+
+void GPIO_Exit1RisingCallback();
+
+typedef struct __GPIO_HandleTypeDef
+{
+  void (*Exit1RisingCallback)(struct __GPIO_HandleTypeDef*);
+
+  void* UserData;
+} GPIO_HandleTypeDef;
+
+typedef void (*pGPIO_CallbackTypeDef)(GPIO_HandleTypeDef*);
+
+extern GPIO_HandleTypeDef hgpio;
 /* USER CODE END Private defines */
 
 void MX_GPIO_Init(void);
 
 /* USER CODE BEGIN Prototypes */
-
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

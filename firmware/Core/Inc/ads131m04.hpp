@@ -388,7 +388,7 @@ namespace Adc
 		 * @brief ReadReg cmd constructor
 		 * @ret corresponding read command for the required address register
 		 */
-		constexpr uint16_t ReadReg(uint16_t addr, uint16_t count = 0)
+		constexpr uint16_t read_reg(uint16_t addr, uint16_t count = 0)
 		{
 			// cmd = 101a aaaa accc cccc;
 			uint16_t a = addr & 0b11'1111 << 7;
@@ -400,7 +400,7 @@ namespace Adc
 		 * @brief WriteReg cmd constructor
 		 * @ret corresponding write command for the required address register
 		 */
-		constexpr uint16_t WriteReg(uint16_t addr, uint16_t count = 0)
+		constexpr uint16_t write_reg(uint16_t addr, uint16_t count = 0)
 		{
 			// cmd = 101a aaaa accc cccc;
 			uint16_t a = addr & 0b11'1111 << 7;
@@ -417,21 +417,21 @@ namespace Adc
 	{
 	private:
 		template<typename T> requires Utils::IsReg<T>
-		uint32_t constructWrite()
+		uint32_t construct_write()
 		{
 			constexpr uint32_t addr = Utils::sta<T>();
 			//constexpr uint16_t count = 1; //serial write not supported
-			constexpr uint32_t cmd = Cmd::WriteReg(addr);
+			constexpr uint32_t cmd = Cmd::write_reg(addr);
 
 			return cmd;
 		}
 
 		template<typename T> requires Utils::IsReg<T>
-		uint32_t constructRead()
+		uint32_t construct_read()
 		{
 			constexpr uint16_t addr = Utils::sta<T>();
 			//constexpr uint16_t count = 1; //serial write not supported
-			constexpr uint32_t cmd = Cmd::ReadReg(addr);
+			constexpr uint32_t cmd = Cmd::read_reg(addr);
 
 			return cmd;
 		}
@@ -475,7 +475,7 @@ namespace Adc
 			if(hspi->State != HAL_SPI_STATE_READY) return HAL_BUSY;
 
 
-			out[0] = constructRead<Regs::Status>();
+			out[0] = construct_read<Regs::Status>();
 			
 			hspi->UserData = (void*)this;
 
