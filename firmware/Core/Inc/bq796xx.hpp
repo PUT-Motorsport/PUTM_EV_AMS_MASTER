@@ -698,6 +698,22 @@ namespace Bq
 		}
 
 		template<ReqType REQ_TYPE> requires IsReqType<REQ_TYPE>
+		consteval size_t req_data_to_read(size_t chain_size)
+		{
+			switch(REQ_TYPE)
+			{
+			case ReqType::Single:
+				return 1;
+			case ReqType::Stack:
+				return chain_size;
+			case ReqType::Broadcast:
+				return chain_size + 1;
+			}
+
+			throw_consteval_failure("WRONG");
+		}
+
+		template<ReqType REQ_TYPE> requires IsReqType<REQ_TYPE>
 		consteval uint8_t req_type_read()
 		{
 			switch(REQ_TYPE)
@@ -853,7 +869,7 @@ namespace Bq
 		* 	@retval	HAL_BUSY when writeSingle is in progress, HAL_OK when done or caller provided no data/size
 		*/
 		template<typename REG, Utils::ReqType REQ_TYPE, uint8_t SIZE> requires (SIZE <= 8 and Utils::IsReg<REG> and Utils::IsReqType<REQ_TYPE>)
-		HAL_StatusTypeDef write(std::array<uint8_t, SIZE> data, uint8_t address = 0)
+		HAL_StatusTypeDef write(std::array<uint8_t, SIZE> &data, uint8_t address = 0)
 		{
 			using namespace Utils;
 
@@ -863,11 +879,9 @@ namespace Bq
 			if(state == HAL_SPI_STATE_RESET) Error_Handler();
 			if(state == HAL_SPI_STATE_ABORT or state == HAL_SPI_STATE_ERROR) Error_Handler();
 
-			if(state == HAL_SPI_STATE_READY and wite_done) return HAL_OK; 
+			if(state == HAL_SPI_STATE_READY and wite_done) { wite_done = false; return HAL_OK; } 
 
 			if(state != HAL_SPI_STATE_READY) return HAL_BUSY;
-
-			wite_done = false;
 
 			hspi->UserData = (void*)this;
 			
@@ -918,8 +932,8 @@ namespace Bq
 		*	@param 	`address` address of a device to be written to - assumes 0
 		* 	@retval	HAL_BUSY when writeSingle is in progress, HAL_OK when done or caller provided no data/size
 		*/
-		template<typename REG, Utils::ReqType REQ_TYPE, uint8_t SIZE> requires (SIZE <= 8 and Utils::IsReg<REG> and Utils::IsReqType<REQ_TYPE>)
-		HAL_StatusTypeDef read(std::array<uint8_t, SIZE> &data, uint8_t address = 0)
+		template<typename REG, Utils::ReqType REQ_TYPE, uint8_t SIZE> requires (1 <= SIZE and SIZE <= 8 and Utils::IsReg<REG> and Utils::IsReqType<REQ_TYPE>)
+		HAL_StatusTypeDef read(std::array<std::array<uint8_t, SIZE>, CHAIN_SIZE> &data, uint8_t address = 0)
 		{
 			using namespace Utils;
 
@@ -929,17 +943,15 @@ namespace Bq
 			if(state == HAL_SPI_STATE_RESET) Error_Handler();
 			if(state == HAL_SPI_STATE_ABORT or state == HAL_SPI_STATE_ERROR) Error_Handler();
 
-			if(state == HAL_SPI_STATE_READY and read_done) return HAL_OK; 
+			if(state == HAL_SPI_STATE_READY and read_done) { read_done = false; return HAL_OK; } 
 
 			if(state != HAL_SPI_STATE_READY) return HAL_BUSY;
 
-			read_done = false;
-
 			hspi->UserData = (void*)this;
 			hgpio->UserData = (void*)this;
+			data_counter = req_data_to_read<REQ_TYPE>(CHAIN_SIZE);
 			
 			out.at(0) = tob(Init(1, req_type_read<REQ_TYPE>(), data.size()));
-			
 
 			if(address > 0x3f) address = 0x3f; 
 			out.at(1) = address;
@@ -961,7 +973,7 @@ namespace Bq
 
 				if(hspi->State == HAL_SPI_STATE_ERROR or hspi->State == HAL_SPI_STATE_ABORT) Error_Handler();
 
-				if(data_counter == 0) hspi->RxCpltCallback = HAL_SPI_RxCpltCallback;
+				if(bq->data_counter == 0) { hspi->RxCpltCallback = HAL_SPI_RxCpltCallback; bq->read_done = true; }
 			};
 
 			callback_write = [](SPI_HandleTypeDef* hspi)
@@ -975,9 +987,12 @@ namespace Bq
 				//if(HAL_SPI_RegisterCallback(hspi, HAL_SPI_RX_COMPLETE_CB_ID, callback_read) != HAL_OK) Error_Handler();
 			};
 			
-			callback_exit = []()
+			callback_exit = [](GPIO_HandleTypeDef* hgpio)
 			{
-				if(HAL_SPI_Receive_DMA(hspi, (uint8_t*)out.begin(), 6) != HAL_OK) Error_Handler();
+				if(hgpio->UserData == nullptr) Error_Handler();
+				Bq796xx *bq = (Bq796xx*)hgpio->UserData;
+
+				if(HAL_SPI_Receive_DMA(bq->hspi, (uint8_t*)bq->out.begin(), 6) != HAL_OK) Error_Handler();
 			};
 
 			hspi->TxCpltCallback = callback_write;
