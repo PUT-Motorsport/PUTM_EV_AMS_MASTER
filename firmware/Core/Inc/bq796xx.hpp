@@ -747,43 +747,42 @@ namespace Bq
 	class Bq796xx
 	{
 	public:
-		Bq796xx(SPI_HandleTypeDef *hspi, GPIO_HandleTypeDef *hgpio) : hspi(hspi), hgpio(hgpio) { }
+		Bq796xx(UART_HandleTypeDef *huart) : huart(huart) { }
 	private:
-		SPI_HandleTypeDef *hspi;
-		GPIO_HandleTypeDef *hgpio;
+		UART_HandleTypeDef huart;
 
 		/*
 		* 	@brief 	This funciton evalueates how much space is needed for buffers
 		* 	@retval	evaluated min size needed
 		*/
-		consteval size_t EVAL_NEEDED_BITS()
-		{
-			constexpr double CLK_PERIOD = 1 / SPI_CLOCK * 256;
-			constexpr size_t NEEDED_BITS = std::round(0.0025 / CLK_PERIOD);
+		// consteval size_t EVAL_NEEDED_BITS()
+		// {
+		// 	constexpr double CLK_PERIOD = 1 / SPI_CLOCK * 256;
+		// 	constexpr size_t NEEDED_BITS = std::round(0.0025 / CLK_PERIOD);
 
-			static_assert(NEEDED_BITS <= 256, "too much needed bits");
-			static_assert(NEEDED_BITS * CLK_PERIOD > 0.003, "SPI is to slow sadge");
-			static_assert(NEEDED_BITS * CLK_PERIOD < 0.0025, "SPI is to fast sadge");
+		// 	static_assert(NEEDED_BITS <= 256, "too much needed bits");
+		// 	static_assert(NEEDED_BITS * CLK_PERIOD > 0.003, "SPI is to slow sadge");
+		// 	static_assert(NEEDED_BITS * CLK_PERIOD < 0.0025, "SPI is to fast sadge");
 
-			return NEEDED_BITS;
-		}
+		// 	return NEEDED_BITS;
+		// }
 
 		/*
 		* 	@brief 	This funciton evalueates how much space is needed for buffers
 		* 	@retval	evaluated min size needed
 		*/
-		consteval size_t EVAL_SIZE()
-		{
-			// up to 16 bytes + 2 init + 2 addr + 2 crc
-			constexpr size_t REQUIRED_BY_CHAIN = CHAIN_SIZE * (22);
+		// consteval size_t EVAL_SIZE()
+		// {
+		// 	// up to 16 bytes + 2 init + 2 addr + 2 crc
+		// 	constexpr size_t REQUIRED_BY_CHAIN = CHAIN_SIZE * (22);
 			
-			if constexpr(EVAL_NEEDED_BITS() > REQUIRED_BY_CHAIN) return EVAL_NEEDED_BITS();
+		// 	if constexpr(EVAL_NEEDED_BITS() > REQUIRED_BY_CHAIN) return EVAL_NEEDED_BITS();
 
-			return REQUIRED_BY_CHAIN;
-		}
+		// 	return REQUIRED_BY_CHAIN;
+		// }
 
-		std::array<uint8_t, EVAL_SIZE()> out { 0 };
-		std::array<uint8_t, EVAL_SIZE()> in { 0 };
+		std::array<uint8_t, 256> out { 0 };
+		std::array<uint8_t, 256> in { 0 };
 
 	public:
 		/*
@@ -799,9 +798,8 @@ namespace Bq
 		bool wake_up_done { false };
 		uint32_t prev_baud_rate_prescale { 0 };
 
-		pSPI_CallbackTypeDef callback_read { nullptr };
-		pSPI_CallbackTypeDef callback_write { nullptr };
-		pGPIO_CallbackTypeDef callback_exit { nullptr };
+		pUART_CallbackTypeDef callback_read { nullptr };
+		pUART_CallbackTypeDef callback_write { nullptr };
 	public:
 		/*
 		* 	@brief 	Wake up function for BQ79600 IC, this functions tries to hold the MOSI line
@@ -811,9 +809,9 @@ namespace Bq
 		HAL_StatusTypeDef wake_up()
 		{
 			// prevent override during checks
-			volatile uint32_t state = hspi->State;
+			volatile uint32_t state = huart->State;
 
-			if(state == HAL_SPI_STATE_RESET) Error_Handler();
+			if(state == HAL_UART_STATE_RESET) Error_Handler();
 			if(state == HAL_SPI_STATE_ABORT or state == HAL_SPI_STATE_ERROR) Error_Handler();
 
 			if(state == HAL_SPI_STATE_READY and wake_up_done) { wake_up_done = false; return HAL_OK; }

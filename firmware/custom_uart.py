@@ -8,7 +8,7 @@ if(len(sys.argv) < 2):
     print(f"Program requires root source folder path")
     exit(1)
 
-hal_spi_header_path = sys.argv[1] + "/Drivers/STM32H5xx_HAL_Driver/Inc/stm32h5xx_hal_spi.h"
+hal_spi_header_path = sys.argv[1] + "/Drivers/STM32H5xx_HAL_Driver/Inc/stm32h5xx_hal_uart.h"
 
 # Check if the file exists
 if not os.path.exists(hal_spi_header_path):
@@ -27,7 +27,7 @@ inside_spi_handle = False
 spi_handle_start = -1
 
 # Regular expression to match the SPI_HandleTypeDef structure
-spi_handle_regex = re.compile(r"^typedef\s+struct\s+__SPI_HandleTypeDef\s*$\n")
+spi_handle_regex = re.compile(r"^typedef\s+struct\s+__UART_HandleTypeDef\s*$\n")
 
 # Iterate through the file content
 for i, line in enumerate(content):
