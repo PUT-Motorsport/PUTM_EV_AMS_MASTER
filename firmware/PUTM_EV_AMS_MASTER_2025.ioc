@@ -542,4 +542,4 @@ VP_SYS_VS_tim1.Mode=TIM1
 VP_SYS_VS_tim1.Signal=SYS_VS_tim1
 board=custom
 rtos.0.ip=STMicroelectronics.X-CUBE-FREERTOS.1.2.0
-rtos.0.tasks.0=allocationType,Static;bufferName,bufferTestTask;codeGen,As weak;controlBlockName,controlBlockTestTask;entry,startTestTask;name,testTask;parameter,NULL;priority,osPriorityNormal;stackSize,128
+rtos.0.tasks.0=allocationType,Static;bufferName,bufferTestTask;codeGen,As weak;controlBlockName,controlBlockTestTask;entry,startTestTask;name,testTask;parameter,NULL;priority,osPriorityNormal;stackSize,256

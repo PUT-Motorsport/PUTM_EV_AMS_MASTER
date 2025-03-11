@@ -64,11 +64,15 @@ void startTestTask([[maybe_unused]] void *argument)
 
 	led_ok.set();
 
+	bq.init_uart();
+	
+	while(bq.init_stack() == HAL_BUSY) osDelay(1);
+
 	while(true)
 	{
 		osDelay(500);
 
-		adc.update();
+		//adc.update();
 
 //		led_err.toggle();
 //		led_wrn.toggle();

@@ -8,5 +8,6 @@
         "deque": "cpp",
         "string": "cpp",
         "vector": "cpp"
-    }
+    },
+    "cmake.sourceDirectory": "C:/Users/user/Desktop/inne/tuptopsrotom/PUTM_EV_BMS_HV_MASTER_2023/firmware"
 }

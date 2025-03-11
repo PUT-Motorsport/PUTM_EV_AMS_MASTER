@@ -47,7 +47,7 @@ typedef StaticTask_t osStaticThreadDef_t;
 /* USER CODE END Variables */
 /* Definitions for testTask */
 osThreadId_t testTaskHandle;
-uint32_t bufferTestTask[ 128 ];
+uint32_t bufferTestTask[ 256 ];
 osStaticThreadDef_t controlBlockTestTask;
 const osThreadAttr_t testTask_attributes = {
   .name = "testTask",

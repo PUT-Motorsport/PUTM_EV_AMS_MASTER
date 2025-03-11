@@ -38,7 +38,7 @@ namespace Bq796xx
 		template<typename T>
 		uint8_t tob(T s)
 		{
-			return (uint8_t)*(void*)&s;
+			return (uint8_t)*(uint8_t*)&s;
 		}
 
 
@@ -746,12 +746,7 @@ namespace Bq796xx
 		*	@brief init Bq796xx, set receiver timeout to t_rx_timeout (~300 us) for the uart handler to for data in IT or DMA mode
 		*	@param `huart` uart handle
 		*/
-		Bq796xx(UART_HandleTypeDef *huart) : huart(huart) 
-		{ 
-			constexpr uint32_t rx_timeout_baudblocks = to_bb(t_rx_timeout, default_baudrate);
-
-			HAL_UART_ReceiverTimeout_Config(huart, rx_timeout_baudblocks);
-		}
+		Bq796xx(UART_HandleTypeDef *huart) : huart(huart) { }
 	private:
 		UART_HandleTypeDef *huart;
 
@@ -772,7 +767,16 @@ namespace Bq796xx
 		* 	@brief 	This function inits all bq in a stach
 		* 	@retval	HAL_BUSY when init is in progress is in progress, HAL_OK when done
 		*/
-		HAL_StatusTypeDef init()
+		HAL_StatusTypeDef init_uart()
+		{
+			constexpr uint32_t rx_timeout_baudblocks = to_bb(t_rx_timeout, default_baudrate);
+	
+			HAL_UART_ReceiverTimeout_Config(huart, rx_timeout_baudblocks);
+
+			return HAL_OK;
+		}
+
+		HAL_StatusTypeDef init_stack()
 		{
 			using namespace Utils;
 			switch(init_state)
@@ -896,7 +900,7 @@ namespace Bq796xx
 
 				if(HAL_UART_DeInit(huart) != HAL_OK) Error_Handler();
 				huart->Init.BaudRate = default_baudrate;
-				if(HAL_UART_DeInit(huart) != HAL_OK) Error_Handler();
+				if(HAL_UART_Init(huart) != HAL_OK) Error_Handler();
 
 				huart->TxCpltCallback = HAL_UART_TxCpltCallback;
 
@@ -958,7 +962,7 @@ namespace Bq796xx
 				if(not state.init_done or state.status == UartStatus::Error) Error_Handler();
 
 				bq->write_done = true;
-				huart->TxCpltCallback = HAL_SPI_TxCpltCallback;
+				huart->TxCpltCallback = HAL_UART_TxCpltCallback;
 				huart->UserData = nullptr;
 			};
 
@@ -971,6 +975,7 @@ namespace Bq796xx
 
 	private:
 		bool read_done { false };
+		size_t read_size { 0 };
 	public:
 		/*
 		* 	@brief 	Send `data` of `size` to a device at `address`. If data was send before this function
@@ -993,11 +998,22 @@ namespace Bq796xx
 			if(read_done) 
 			{ 
 				read_done = false; 
-				(size + 6) * read_count<REQ_TYPE>();
+				size_t count = read_count<REQ_TYPE>();
+				auto it_begin = in.begin();
+				auto it_end = in.begin() + size + 6;
+				auto it_data = data;
+				for(size_t i = 0; i < count; i++)
+				{
+					std::copy(it_begin, it_end, it_data);
+					it_begin += size + 6;
+					it_end += size + 6;
+					it_data += size;
+				}
 				return HAL_OK; 
 			}
 
 			huart->UserData = (void*)this;
+			read_size = size;
 			
 			out.at(0) = Utils::init_byte_read<REQ_TYPE>();
 
@@ -1013,6 +1029,19 @@ namespace Bq796xx
 			out.at(5) = (uint8_t)(crc >> 8);
 			out.at(6) = (uint8_t)(crc);
 
+			callback_write = [](UART_HandleTypeDef* huart)
+			{
+				if(huart->UserData == nullptr) Error_Handler();
+				Bq796xx *bq = (Bq796xx*)huart->UserData;
+				
+				volatile UartState state (huart->gState);
+				if(not state.init_done or state.status == UartStatus::Error) Error_Handler();
+
+				if(HAL_UART_Receive_DMA(huart, (uint8_t*)bq->in.begin(), (bq->read_size + 6) * read_count<REQ_TYPE>()) != HAL_OK) Error_Handler();
+				
+				huart->TxCpltCallback = HAL_UART_TxCpltCallback;
+			};
+
 			callback_read = [](UART_HandleTypeDef* huart)
 			{
 				if(huart->UserData == nullptr) Error_Handler();
@@ -1022,15 +1051,15 @@ namespace Bq796xx
 				if(not state.init_done or state.status == UartStatus::Error) Error_Handler();
 
 				bq->read_done = true;
-				huart->RxCpltCallback = HAL_SPI_RxCpltCallback;
+				huart->RxCpltCallback = HAL_UART_RxCpltCallback;
 				huart->UserData = nullptr;
 			};
 
-			//huart->TxCpltCallback = callback_write;
 			huart->RxCpltCallback = callback_read;
+			huart->TxCpltCallback = callback_write;
 
 			if(HAL_UART_Transmit_DMA(huart, (uint8_t*)out.begin(), 7) != HAL_OK) Error_Handler();
-			if(HAL_UART_Receive_DMA(huart, (uint8_t*)in.begin(), (size + 6) * read_count<REQ_TYPE>()) != HAL_OK) Error_Handler();
+			//if(HAL_UART_Receive_DMA(huart, (uint8_t*)in.begin(), (size + 6) * read_count<REQ_TYPE>()) != HAL_OK) Error_Handler();
 
 			return HAL_BUSY;
 		}
