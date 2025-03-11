@@ -16,12 +16,7 @@
 #include "cmath"
 #include "crc16ibm.hpp"
 
-//============================================================================================//
-// make sure its the input clock on spi not the spi clock after prescaler
-static constexpr double SPI_CLOCK = 6e6; 
-//============================================================================================//
-
-namespace Bq
+namespace PUTM
 {
 	namespace Utils
 	{
@@ -746,44 +741,37 @@ namespace Bq
 	template<size_t CHAIN_SIZE> requires ( CHAIN_SIZE <= 64 )
 	class Bq796xx
 	{
+	private: 
+		/* Bq79600 has a preset baud rate of 1Mbps [bps] */
+		constexpr uint32_t default_baudrate = 1'000'000;
+		/* t hold wakeup, in range <2500, 3000> [us] */
+		constexpr uint32_t t_wakeup = 2'750;
+		/* rx timeout [us] */
+		constexpr uint32_t t_rx_timeout = 300;
+		
+		/*
+		*	@brief 	convert us and baudrate to needed baudblocks
+		*	@param `time` in us
+		*	@param `baudrate` in bps
+		*	@return	baudblocks
+		*/
+		consteval uint32_t to_bb(uint32_t time, uint32_t baudrate) { return (uint32_t)((double)(1.0 / time) * (double)baudrate); }
+
 	public:
-		Bq796xx(UART_HandleTypeDef *huart) : huart(huart) { }
+		Bq796xx(UART_HandleTypeDef *huart) : huart(huart) 
+		{ 
+			constexpr uint32_t rx_timeout_baudblocks = to_bb(t_rx_timeout, default_baudrate);
+
+			HAL_UART_ReceiverTimeout_Config(huart, rx_timeout_baudblocks);
+		}
 	private:
-		UART_HandleTypeDef huart;
+		UART_HandleTypeDef *huart;
 
-		/*
-		* 	@brief 	This funciton evalueates how much space is needed for buffers
-		* 	@retval	evaluated min size needed
-		*/
-		// consteval size_t EVAL_NEEDED_BITS()
-		// {
-		// 	constexpr double CLK_PERIOD = 1 / SPI_CLOCK * 256;
-		// 	constexpr size_t NEEDED_BITS = std::round(0.0025 / CLK_PERIOD);
-
-		// 	static_assert(NEEDED_BITS <= 256, "too much needed bits");
-		// 	static_assert(NEEDED_BITS * CLK_PERIOD > 0.003, "SPI is to slow sadge");
-		// 	static_assert(NEEDED_BITS * CLK_PERIOD < 0.0025, "SPI is to fast sadge");
-
-		// 	return NEEDED_BITS;
-		// }
-
-		/*
-		* 	@brief 	This funciton evalueates how much space is needed for buffers
-		* 	@retval	evaluated min size needed
-		*/
-		// consteval size_t EVAL_SIZE()
-		// {
-		// 	// up to 16 bytes + 2 init + 2 addr + 2 crc
-		// 	constexpr size_t REQUIRED_BY_CHAIN = CHAIN_SIZE * (22);
-			
-		// 	if constexpr(EVAL_NEEDED_BITS() > REQUIRED_BY_CHAIN) return EVAL_NEEDED_BITS();
-
-		// 	return REQUIRED_BY_CHAIN;
-		// }
+		pUART_CallbackTypeDef callback_read { nullptr };
+		pUART_CallbackTypeDef callback_write { nullptr };
 
 		std::array<uint8_t, 256> out { 0 };
 		std::array<uint8_t, 256> in { 0 };
-
 	public:
 		/*
 		* 	@brief 	This function inits all bq in a stach
@@ -796,10 +784,6 @@ namespace Bq
 
 	private:
 		bool wake_up_done { false };
-		uint32_t prev_baud_rate_prescale { 0 };
-
-		pUART_CallbackTypeDef callback_read { nullptr };
-		pUART_CallbackTypeDef callback_write { nullptr };
 	public:
 		/*
 		* 	@brief 	Wake up function for BQ79600 IC, this functions tries to hold the MOSI line
@@ -808,22 +792,22 @@ namespace Bq
 		*/
 		HAL_StatusTypeDef wake_up()
 		{
-			// prevent override during checks
-			volatile uint32_t state = huart->State;
+			/* prevent override during checks */
+			volatile uint32_t state = huart->gState;
 
 			if(state == HAL_UART_STATE_RESET) Error_Handler();
-			if(state == HAL_SPI_STATE_ABORT or state == HAL_SPI_STATE_ERROR) Error_Handler();
+			if(state == HAL_UART_STATE_RESET or state == HAL_UART_STATE_RESET) Error_Handler();
 
-			if(state == HAL_SPI_STATE_READY and wake_up_done) { wake_up_done = false; return HAL_OK; }
+			if(state == HAL_UART_STATE_RESET and wake_up_done) { wake_up_done = false; return HAL_OK; }
 
-			if(state != HAL_SPI_STATE_READY) return HAL_BUSY;
+			if(state != HAL_UART_STATE_RESET) return HAL_BUSY;
 
 			wake_up_done = false;
 
-			if(HAL_SPI_DeInit(hspi) != HAL_OK) Error_Handler();
-			prev_baud_rate_prescale = hspi->Init.BaudRatePrescaler;
-			hspi->Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_256;
-			if(HAL_SPI_Init(hspi) != HAL_OK) Error_Handler();
+			if(HAL_UART_DeInit(huart) != HAL_OK) Error_Handler();
+
+			huart->Init.BaudRate = (uint32_t)(1'000'000.0 / (double)t_wakeup * 6.0);
+			if(HAL_UART_Init(huart) != HAL_OK) Error_Handler();
 
 			std::fill(out.begin(), out.begin() + EVAL_NEEDED_BITS(), 0);
 

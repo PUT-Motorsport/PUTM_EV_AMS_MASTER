@@ -48,7 +48,7 @@ for i, line in enumerate(content):
 
 # If UserData does not exist, add it
 if not user_data_exists and spi_handle_start != -1:
-    print("UserData not found in SPI_HandleTypeDef. Adding it...")
+    print("UserData not found in UART_HandleTypeDef. Adding it...")
     # Find the line to insert UserData (before the end of the structure)
     for i in range(spi_handle_start, len(content)):
         if "}" in content[i] and not content[i].strip().startswith("/*"):
