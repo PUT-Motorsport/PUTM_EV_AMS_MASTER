@@ -14,9 +14,10 @@
 #include "spi.h"
 #include "gpio.h"
 #include "cmath"
+#include "uart_wrap.hpp"
 #include "crc16ibm.hpp"
 
-namespace PUTM
+namespace Bq796xx
 {
 	namespace Utils
 	{
@@ -32,13 +33,15 @@ namespace PUTM
 		concept IsReg = std::is_base_of<IReg, T>::value and not std::is_polymorphic<T>::value and sizeof(T) == 1;
 
 		template<typename T>
-		int constexpr sta() { return T::ADDRESS; }
+		uint16_t constexpr sta() { return T::ADDRESS; }
 
 		template<typename T>
 		uint8_t tob(T s)
 		{
 			return (uint8_t)*(void*)&s;
 		}
+
+
 
 		void throw_consteval_failure(char const*);
 
@@ -677,65 +680,26 @@ namespace PUTM
 		concept IsReqType = 0 <= (uint8_t)REQ_TYPE and (uint8_t)REQ_TYPE <= 2;
 
 		template<ReqType REQ_TYPE> requires IsReqType<REQ_TYPE>
-		consteval uint8_t req_type_write()
+		uint8_t init_byte_write(uint8_t data_size)
 		{
-			switch(REQ_TYPE)
-			{
-			case ReqType::Single:
-				return 0b001;
-			case ReqType::Stack:
-				return 0b011;
-			case ReqType::Broadcast:
-				return 0b101;
-			}
+			// uint8_t rsvd = 0b0000'0000;
+			uint8_t frame_type = 0b1'0000000;
+			uint8_t req_type = 0b0'001'0000 | (uint8_t)REQ_TYPE << 5;
+			if(data_size > 8) data_size = 8;
 
-			throw_consteval_failure("WRONG");
+			return frame_type | req_type | data_size;
 		}
 
 		template<ReqType REQ_TYPE> requires IsReqType<REQ_TYPE>
-		consteval size_t req_data_to_read(size_t chain_size)
+		uint8_t init_byte_read()
 		{
-			switch(REQ_TYPE)
-			{
-			case ReqType::Single:
-				return 1;
-			case ReqType::Stack:
-				return chain_size;
-			case ReqType::Broadcast:
-				return chain_size + 1;
-			}
+			// uint8_t rsvd = 0b0000'0000;
+			uint8_t frame_type = 0b1'0000000;
+			uint8_t req_type = 0b0'000'0000 | (uint8_t)REQ_TYPE << 5;\
+			// uint8_t data_size = 0b0000'0000;
 
-			throw_consteval_failure("WRONG");
+			return frame_type | req_type;
 		}
-
-		template<ReqType REQ_TYPE> requires IsReqType<REQ_TYPE>
-		consteval uint8_t req_type_read()
-		{
-			switch(REQ_TYPE)
-			{
-			case ReqType::Single:
-				return 0b000;
-			case ReqType::Stack:
-				return 0b010;
-			case ReqType::Broadcast:
-				return 0b100;
-			}
-			throw_consteval_failure("WRONG");
-		}
-
-		struct __packed Init
-		{
-		public:
-			Init(uint8_t req_type, uint8_t data_size) : data_size(data_size - 1), req_type(req_type) { }
-			uint8_t data_size : 3 { 0 };
-		private:
-			const uint8_t rsvd : 1 { 0 };
-		public:
-			uint8_t req_type : 3 { 0 };
-		private:
-			uint8_t frame_type : 1 { 1 };
-		};
-
 	}
 
 	template<size_t CHAIN_SIZE> requires ( CHAIN_SIZE <= 64 )
@@ -743,11 +707,31 @@ namespace PUTM
 	{
 	private: 
 		/* Bq79600 has a preset baud rate of 1Mbps [bps] */
-		constexpr uint32_t default_baudrate = 1'000'000;
+		constexpr static inline uint32_t default_baudrate = 1'000'000;
 		/* t hold wakeup, in range <2500, 3000> [us] */
-		constexpr uint32_t t_wakeup = 2'750;
-		/* rx timeout [us] */
-		constexpr uint32_t t_rx_timeout = 300;
+		constexpr static inline uint32_t t_wakeup = 2'750;
+		/* rx timeout [us] (2 * defualt) */
+		constexpr static inline uint32_t t_rx_timeout = 500;
+		/* baudrate for init [bps], assume 1 bit high before, 6 bits of low time and 1 bit high after, this should create the required pattern */
+		constexpr static inline uint32_t baudrate_wakeup = (uint32_t)(1'000'000.0 / (double)t_wakeup * 6.0);
+		
+		/*
+		* 	
+		*/
+		template<Utils::ReqType REQ_TYPE> requires Utils::IsReqType<REQ_TYPE>
+		static consteval size_t read_count()
+		{
+			switch (REQ_TYPE)
+			{
+			case Utils::ReqType::Single:
+				return 1;
+			case Utils::ReqType::Stack:
+				return CHAIN_SIZE;
+			case Utils::ReqType::Broadcast:
+				return CHAIN_SIZE + 1;
+			}
+			Utils::throw_consteval_failure("WRONG");
+		}
 		
 		/*
 		*	@brief 	convert us and baudrate to needed baudblocks
@@ -755,9 +739,13 @@ namespace PUTM
 		*	@param `baudrate` in bps
 		*	@return	baudblocks
 		*/
-		consteval uint32_t to_bb(uint32_t time, uint32_t baudrate) { return (uint32_t)((double)(1.0 / time) * (double)baudrate); }
+		static consteval uint32_t to_bb(uint32_t time, uint32_t baudrate) { return (uint32_t)((double)(1.0 / time) * (double)baudrate); }
 
 	public:
+		/*
+		*	@brief init Bq796xx, set receiver timeout to t_rx_timeout (~300 us) for the uart handler to for data in IT or DMA mode
+		*	@param `huart` uart handle
+		*/
 		Bq796xx(UART_HandleTypeDef *huart) : huart(huart) 
 		{ 
 			constexpr uint32_t rx_timeout_baudblocks = to_bb(t_rx_timeout, default_baudrate);
@@ -770,8 +758,15 @@ namespace PUTM
 		pUART_CallbackTypeDef callback_read { nullptr };
 		pUART_CallbackTypeDef callback_write { nullptr };
 
+		/* for now leave the size at 256 */
 		std::array<uint8_t, 256> out { 0 };
+		/* for now leave the size at 256 */
 		std::array<uint8_t, 256> in { 0 };
+
+		size_t init_state { 0 };
+		size_t dummy_write_step { 0 };
+		size_t auto_address_step { 0 };
+		size_t dummy_read_step { 0 };
 	public:
 		/*
 		* 	@brief 	This function inits all bq in a stach
@@ -779,7 +774,87 @@ namespace PUTM
 		*/
 		HAL_StatusTypeDef init()
 		{
-			static size_t state = 0;
+			using namespace Utils;
+			switch(init_state)
+			{
+			case 0:
+			{
+				if(wake_up() == HAL_BUSY) return HAL_BUSY;
+				else init_state = 1;
+			} break;
+			case 1:
+			{
+				Control1 ctrl1;
+				ctrl1.send_wake = true;
+				uint8_t data = tob(ctrl1);
+				if(write<ReqType::Single>(&data, 1, sta<Control1>()) == HAL_BUSY) return HAL_BUSY;
+				else init_state = 2;
+			} break;
+			case 2:
+			{
+				uint8_t data = 0x00;
+				if(write<ReqType::Stack>(&data, 1, 0x343 + dummy_write_step) == HAL_BUSY) return HAL_BUSY;
+				else if(dummy_write_step < 8) dummy_write_step++;
+				else init_state = 3;
+			} break;
+			case 3:
+			{
+				uint8_t data = 0x01;
+				if(write<ReqType::Broadcast>(&data, 1, 0x309) == HAL_BUSY) return HAL_BUSY;
+				else init_state = 4;
+			} break;
+			case 4:
+			{
+				uint8_t data = auto_address_step;
+				if(write<ReqType::Stack>(&data, 1, 0x306) == HAL_BUSY) return HAL_BUSY;
+				else if(auto_address_step < CHAIN_SIZE) auto_address_step++;
+				else init_state = 5;
+			} break;
+			case 5:
+			{
+				uint8_t data = 0x02;
+				if(write<ReqType::Stack>(&data, 1, 0x308) == HAL_BUSY) return HAL_BUSY;
+				else init_state = 6;
+			} break;
+			case 6:
+			{
+				uint8_t data = 0x03;
+				if(write<ReqType::Single>(&data, 1, 0x308, CHAIN_SIZE) == HAL_BUSY) return HAL_BUSY;
+				else init_state = 7;
+			} break;
+			case 7:
+			{
+				uint8_t data[CHAIN_SIZE] { 0x00 };
+				if(read<ReqType::Stack>(data, 1, 0x343 + dummy_read_step) == HAL_BUSY) return HAL_BUSY;
+				else if(dummy_read_step < 8) dummy_read_step++;
+				else init_state = 8;
+			} break;
+			case 8:
+			{
+				uint8_t data[CHAIN_SIZE] { 0x00 };
+				if(read<ReqType::Stack>(data, 1, 0x306) == HAL_BUSY) return HAL_BUSY;
+				else init_state = 9;
+			}
+			case 9:
+			{
+				uint8_t data { 0x00 };
+				if(read<ReqType::Stack>(&data, 1, 0x2001) == HAL_BUSY) return HAL_BUSY;
+				else 
+				{
+					if(data != 0x14) Error_Handler();
+					init_state = 10;
+				}
+			}
+			default:
+			{
+				init_state = 0;
+				dummy_write_step = 0;
+				auto_address_step = 0;
+				dummy_read_step = 0;
+				return HAL_OK;
+			} break;
+			}
+			return HAL_BUSY;
 		}
 
 	private:
@@ -793,52 +868,50 @@ namespace PUTM
 		HAL_StatusTypeDef wake_up()
 		{
 			/* prevent override during checks */
-			volatile uint32_t state = huart->gState;
+			volatile UartState state (huart->gState);
 
-			if(state == HAL_UART_STATE_RESET) Error_Handler();
-			if(state == HAL_UART_STATE_RESET or state == HAL_UART_STATE_RESET) Error_Handler();
+			if(not state.init_done or state.status == UartStatus::Error) Error_Handler();
 
-			if(state == HAL_UART_STATE_RESET and wake_up_done) { wake_up_done = false; return HAL_OK; }
+			if(state.tx_busy or state.uart_busy) return HAL_BUSY;
 
-			if(state != HAL_UART_STATE_RESET) return HAL_BUSY;
+			if(wake_up_done) { wake_up_done = false; return HAL_OK; }
 
-			wake_up_done = false;
+			huart->UserData = (void*)this;
+
+			out.at(0) = 0b1000'0001;
 
 			if(HAL_UART_DeInit(huart) != HAL_OK) Error_Handler();
-
-			huart->Init.BaudRate = (uint32_t)(1'000'000.0 / (double)t_wakeup * 6.0);
+			huart->Init.BaudRate = baudrate_wakeup;
 			if(HAL_UART_Init(huart) != HAL_OK) Error_Handler();
 
-			std::fill(out.begin(), out.begin() + EVAL_NEEDED_BITS(), 0);
-
-			hspi->UserData = (void*)this;
-
 			// FIXME: might not work
-			callback_write = [](SPI_HandleTypeDef* hspi)
+			callback_write = [](UART_HandleTypeDef* huart)
 			{
-				if(hspi->UserData == nullptr) Error_Handler();
-				Bq796xx *bq = (Bq796xx*)hspi->UserData;
+				if(huart->UserData == nullptr) Error_Handler();
+				Bq796xx *bq = (Bq796xx*)huart->UserData;
 
-				if(hspi->State == HAL_SPI_STATE_ERROR or hspi->State == HAL_SPI_STATE_ABORT) Error_Handler();
+				volatile UartState state (huart->gState);
 
-				if(HAL_SPI_DeInit(hspi) != HAL_OK) Error_Handler();
-				bq->hspi->Init.BaudRatePrescaler = bq->prev_baud_rate_prescale;
-				if(HAL_SPI_Init(hspi) != HAL_OK) Error_Handler();
+				if(not state.init_done or state.status == UartStatus::Error) Error_Handler();
 
-				hspi->TxCpltCallback = nullptr;
+				if(HAL_UART_DeInit(huart) != HAL_OK) Error_Handler();
+				huart->Init.BaudRate = default_baudrate;
+				if(HAL_UART_DeInit(huart) != HAL_OK) Error_Handler();
+
+				huart->TxCpltCallback = HAL_UART_TxCpltCallback;
 
 				bq->wake_up_done = true;
 			};
 
-			hspi->TxCpltCallback = callback_write;
+			huart->TxCpltCallback = callback_write;
 
-			if(HAL_SPI_Transmit_DMA(hspi, (uint8_t*)out.begin(), EVAL_NEEDED_BITS())!= HAL_OK) Error_Handler();
+			if(HAL_UART_Transmit_DMA(huart, (uint8_t*)out.begin(), 1) != HAL_OK) Error_Handler();
 
 			return HAL_BUSY;
 		}
 
 	private:
-		bool wite_done { false };
+		bool write_done { false };
 	public:
 		/*
 		* 	@brief 	Send `data` of `size` to a device at `address`. If data was send before this function
@@ -850,59 +923,54 @@ namespace PUTM
 		*	@param 	`address` address of a device to be written to - assumes 0
 		* 	@retval	HAL_BUSY when writeSingle is in progress, HAL_OK when done or caller provided no data/size
 		*/
-		template<typename REG, Utils::ReqType REQ_TYPE, uint8_t SIZE> requires (SIZE <= 8 and Utils::IsReg<REG> and Utils::IsReqType<REQ_TYPE>)
-		HAL_StatusTypeDef write(std::array<uint8_t, SIZE> &data, uint8_t address = 0)
+		template<Utils::ReqType REQ_TYPE> requires (Utils::IsReqType<REQ_TYPE>)
+		HAL_StatusTypeDef write(uint8_t *data, size_t size, uint16_t reg_address, uint8_t address = 0)
 		{
-			using namespace Utils;
+			/* prevent override during checks? */
+			volatile UartState state (huart->gState);
 
-			// prevent override during checks
-			volatile uint32_t state = hspi->State;
+			if(not state.init_done or state.status == UartStatus::Error) Error_Handler();
+			if(state.tx_busy or state.uart_busy) return HAL_BUSY;
+			if(write_done) { write_done = false; return HAL_OK; }
 
-			if(state == HAL_SPI_STATE_RESET) Error_Handler();
-			if(state == HAL_SPI_STATE_ABORT or state == HAL_SPI_STATE_ERROR) Error_Handler();
-
-			if(state == HAL_SPI_STATE_READY and wite_done) { wite_done = false; return HAL_OK; } 
-
-			if(state != HAL_SPI_STATE_READY) return HAL_BUSY;
-
-			hspi->UserData = (void*)this;
+			huart->UserData = (void*)this;
 			
-			out.at(0) = tob(Init(1, req_type_write<REQ_TYPE>(), data.size()));
+			out.at(0) = Utils::init_byte_write<REQ_TYPE>(size);
 
 			if(address > 0x3f) address = 0x3f;
 			out.at(1) = address;
 
-			uint16_t reg_addr = sta<REG>();
-			out.at(2) = (uint8_t)reg_addr >> 8;
-			out.at(3) = (uint8_t)reg_addr;
+			out.at(2) = (uint8_t)reg_address >> 8;
+			out.at(3) = (uint8_t)reg_address;
 
-			uint16_t crc = fastcrc16ibm(out.begin(), 4);
-			out.at(4) = (uint8_t)(crc >> 8);
-			out.at(5) = (uint8_t)(crc);
+			std::copy(data, data + size, out.begin() + 4);
 
-			callback_write = [](SPI_HandleTypeDef* hspi)
+			uint16_t crc = crc16.fast(out.begin(), size + 4);
+			out.at(size + 4) = (uint8_t)(crc >> 8);
+			out.at(size + 5) = (uint8_t)(crc);
+
+			callback_write = [](UART_HandleTypeDef* huart)
 			{
-				if(hspi->UserData == nullptr) Error_Handler();
-				Bq796xx *bq = (Bq796xx*)hspi->UserData;
+				if(huart->UserData == nullptr) Error_Handler();
+				Bq796xx *bq = (Bq796xx*)huart->UserData;
 
-				if(hspi->State == HAL_SPI_STATE_ERROR or hspi->State == HAL_SPI_STATE_ABORT) Error_Handler();
+				volatile UartState state (huart->gState);
+				if(not state.init_done or state.status == UartStatus::Error) Error_Handler();
 
-				hspi->TxCpltCallback = HAL_SPI_TxCpltCallback;
-				
-				hspi->UserData = nullptr;
 				bq->write_done = true;
+				huart->TxCpltCallback = HAL_SPI_TxCpltCallback;
+				huart->UserData = nullptr;
 			};
 
-			hspi->TxCpltCallback = callback_write;
+			huart->TxCpltCallback = callback_write;
 
-			if(HAL_SPI_Transmit_DMA(hspi, (uint8_t*)out.begin(), data.size() + 6) != HAL_OK) Error_Handler();
+			if(HAL_UART_Transmit_DMA(huart, (uint8_t*)out.begin(), size + 6) != HAL_OK) Error_Handler();
 
 			return HAL_BUSY;
 		}
 
 	private:
 		bool read_done { false };
-		size_t data_counter { 0 };
 	public:
 		/*
 		* 	@brief 	Send `data` of `size` to a device at `address`. If data was send before this function
@@ -910,81 +978,63 @@ namespace PUTM
 		*			or `HAL_OK` (done)
 		* 	@tparam	`REG` first register to write, if more registers are writen they need to have an incrementing address
 		*	@tparam	`REQ_TYPE` write type
-		* 	@param 	`data` data, cant be largen than 8 bytes
+		* 	@param 	`data`
 		*	@param 	`address` address of a device to be written to - assumes 0
 		* 	@retval	HAL_BUSY when writeSingle is in progress, HAL_OK when done or caller provided no data/size
 		*/
-		template<typename REG, Utils::ReqType REQ_TYPE, uint8_t SIZE> requires (1 <= SIZE and SIZE <= 8 and Utils::IsReg<REG> and Utils::IsReqType<REQ_TYPE>)
-		HAL_StatusTypeDef read(std::array<std::array<uint8_t, SIZE>, CHAIN_SIZE> &data, uint8_t address = 0)
+		template<Utils::ReqType REQ_TYPE> requires (Utils::IsReqType<REQ_TYPE>)
+		HAL_StatusTypeDef read(uint8_t *data, size_t size, uint16_t reg_address, uint8_t address = 0)
 		{
-			using namespace Utils;
+			/* prevent override during checks? */
+			volatile UartState state (huart->gState);
 
-			// prevent override during checks
-			volatile uint32_t state = hspi->State;
+			if(not state.init_done or state.status == UartStatus::Error) Error_Handler();
+			if(state.tx_busy or state.uart_busy) return HAL_BUSY;
+			if(read_done) 
+			{ 
+				read_done = false; 
+				(size + 6) * read_count<REQ_TYPE>();
+				return HAL_OK; 
+			}
 
-			if(state == HAL_SPI_STATE_RESET) Error_Handler();
-			if(state == HAL_SPI_STATE_ABORT or state == HAL_SPI_STATE_ERROR) Error_Handler();
-
-			if(state == HAL_SPI_STATE_READY and read_done) { read_done = false; return HAL_OK; } 
-
-			if(state != HAL_SPI_STATE_READY) return HAL_BUSY;
-
-			hspi->UserData = (void*)this;
-			hgpio->UserData = (void*)this;
-			data_counter = req_data_to_read<REQ_TYPE>(CHAIN_SIZE);
+			huart->UserData = (void*)this;
 			
-			out.at(0) = tob(Init(1, req_type_read<REQ_TYPE>(), data.size()));
+			out.at(0) = Utils::init_byte_read<REQ_TYPE>();
 
-			if(address > 0x3f) address = 0x3f; 
+			if(address > 0x3f) address = 0x3f;
 			out.at(1) = address;
 
-			uint16_t reg_addr = sta<REG>();
-			out.at(2) = (uint8_t)reg_addr >> 8;
-			out.at(3) = (uint8_t)reg_addr;
+			out.at(2) = (uint8_t)reg_address >> 8;
+			out.at(3) = (uint8_t)reg_address;
 
-			std::copy(data.begin(), data.end(), out.begin() + 4);
-			
-			uint16_t crc = fastcrc16ibm(out.begin(), data.size() + 4);
-			out.at(data.size() + 4) = (uint8_t)(crc >> 8);
-			out.at(data.size() + 5) = (uint8_t)(crc);
+			out.at(4) = size;
 
-			callback_read = [](SPI_HandleTypeDef* hspi)
+			uint16_t crc = crc16.fast(out.begin(), 5);
+			out.at(5) = (uint8_t)(crc >> 8);
+			out.at(6) = (uint8_t)(crc);
+
+			callback_read = [](UART_HandleTypeDef* huart)
 			{
-				if(hspi->UserData == nullptr) Error_Handler();
-				Bq796xx *bq = (Bq796xx*)hspi->UserData;
+				if(huart->UserData == nullptr) Error_Handler();
+				Bq796xx *bq = (Bq796xx*)huart->UserData;
 
-				if(hspi->State == HAL_SPI_STATE_ERROR or hspi->State == HAL_SPI_STATE_ABORT) Error_Handler();
+				volatile UartState state (huart->gState);
+				if(not state.init_done or state.status == UartStatus::Error) Error_Handler();
 
-				if(bq->data_counter == 0) { hspi->RxCpltCallback = HAL_SPI_RxCpltCallback; bq->read_done = true; }
+				bq->read_done = true;
+				huart->RxCpltCallback = HAL_SPI_RxCpltCallback;
+				huart->UserData = nullptr;
 			};
 
-			callback_write = [](SPI_HandleTypeDef* hspi)
-			{
-				if(hspi->UserData == nullptr) Error_Handler();
-				Bq796xx *bq = (Bq796xx*)hspi->UserData;
+			//huart->TxCpltCallback = callback_write;
+			huart->RxCpltCallback = callback_read;
 
-				if(hspi->State == HAL_SPI_STATE_ERROR or hspi->State == HAL_SPI_STATE_ABORT) Error_Handler();
-
-				hspi->TxCpltCallback = HAL_SPI_TxCpltCallback;
-				//if(HAL_SPI_RegisterCallback(hspi, HAL_SPI_RX_COMPLETE_CB_ID, callback_read) != HAL_OK) Error_Handler();
-			};
-			
-			callback_exit = [](GPIO_HandleTypeDef* hgpio)
-			{
-				if(hgpio->UserData == nullptr) Error_Handler();
-				Bq796xx *bq = (Bq796xx*)hgpio->UserData;
-
-				if(HAL_SPI_Receive_DMA(bq->hspi, (uint8_t*)bq->out.begin(), 6) != HAL_OK) Error_Handler();
-			};
-
-			hspi->TxCpltCallback = callback_write;
-			hspi->RxCpltCallback = callback_read;
-			hgpio->Exit1RisingCallback = callback_exit;
-
-			if(HAL_SPI_Transmit_DMA(hspi, (uint8_t*)out.begin(), 6) != HAL_OK) Error_Handler();
+			if(HAL_UART_Transmit_DMA(huart, (uint8_t*)out.begin(), 7) != HAL_OK) Error_Handler();
+			if(HAL_UART_Receive_DMA(huart, (uint8_t*)in.begin(), (size + 6) * read_count<REQ_TYPE>()) != HAL_OK) Error_Handler();
 
 			return HAL_BUSY;
 		}
+
 	};
 }
 

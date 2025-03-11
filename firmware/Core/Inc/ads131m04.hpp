@@ -22,7 +22,7 @@ using auint32_t = std::atomic<uint32_t>;
 static_assert(USE_HAL_SPI_REGISTER_CALLBACKS == 1UL, "Use registered callback for SPI");
 static_assert(offsetof(SPI_HandleTypeDef, UserData), "Add \"void* userData;\" to SPI_HandleTypeDef implementation");
 
-namespace Adc
+namespace Ads131m04
 {
 	namespace Regs
 	{

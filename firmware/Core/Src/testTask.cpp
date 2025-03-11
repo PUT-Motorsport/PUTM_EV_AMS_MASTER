@@ -37,7 +37,8 @@ Tim fan5(&htim3, TIM_CHANNEL_1);
 Tim fan6(&htim3, TIM_CHANNEL_2);
 Tim fan7(&htim3, TIM_CHANNEL_3);
 
-Adc::Ads131m04 adc(&hspi1);
+Ads131m04::Ads131m04 adc(&hspi1);
+Bq796xx::Bq796xx<1> bq(&huart4);
 
 std::array<Tim*, 7> fans { &fan1, &fan2, &fan3, &fan4, &fan5, &fan6, &fan7 };
 std::array<Gpio*, 5> gpios_ins { &det_air_pre, &det_air_p, &det_air_m, &det_tsms, &det_charger };

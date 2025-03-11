@@ -84,8 +84,9 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
 # Modify SPI HAL drivers
 add_custom_target(
     CUSTOM_COMMANDS ALL
+    COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/custom_spi.py ${CMAKE_CURRENT_SOURCE_DIR}
     COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/custom_uart.py ${CMAKE_CURRENT_SOURCE_DIR}
-    COMMENT "Modifing SPI HAL drivers"
+    COMMENT "Modifing HAL drivers"
 )
 
 add_dependencies(${CMAKE_PROJECT_NAME} CUSTOM_COMMANDS)
