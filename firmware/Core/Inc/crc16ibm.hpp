@@ -6,7 +6,7 @@
 class Crc16
 {
 private:
-    std::array<uint8_t, 256> crc16lut { 0 };
+    std::array<uint16_t, 256> crc16lut { 0 };
     std::array<uint8_t, 256> crc16ref { 0 };
     bool is_init { false };
 public:
@@ -22,7 +22,7 @@ public:
 
         for (size_t dividend = 0; dividend < 256; ++dividend)
         {
-            remainder = dividend << (16 - 8);
+            remainder = dividend << 8;
             for (uint8_t bit = 8; bit > 0; --bit)
             {		
                 if (remainder & 0x8000) remainder = (remainder << 1) ^ 0x8005;
@@ -52,7 +52,7 @@ public:
             uint8_t tableIndex = (crc >> 8) ^ crc16ref[data[i]];
             crc = (crc << 8) ^ crc16lut[tableIndex];
         }
-        crc = crc16ref[(crc >> 8)] << 8 | crc16ref[(crc)];
+        crc = crc16ref[(crc >> 8)] << 8 | crc16ref[(crc & 0xff)];
         return crc;
     }
 };

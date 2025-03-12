@@ -28,6 +28,7 @@ Gpio det_air_m(DET_AIR_M_GPIO_Port, DET_AIR_M_Pin, false);
 Gpio det_tsms(DET_TSMS_GPIO_Port, DET_TSMS_Pin, false);
 Gpio det_charger(DET_CHARGER_GPIO_Port, DET_CHARGER_Pin, false);
 Gpio adc_dry(ADC_NDRY_GPIO_Port, ADC_NDRY_Pin, true);
+Gpio bq_flt(NFLT_GPIO_Port, NFLT_Pin, true);
 
 Tim fan1(&htim2, TIM_CHANNEL_1);
 Tim fan2(&htim2, TIM_CHANNEL_2);
@@ -50,13 +51,6 @@ void startTestTask([[maybe_unused]] void *argument)
 
 	sig_err.reset();
 
-	[[maybe_unused]] float i = 0.f;
-	[[maybe_unused]] float iii = 25.f;
-	[[maybe_unused]] float inc = iii;
-
-	[[maybe_unused]] size_t k = 1;
-	[[maybe_unused]] int kinc = -1;
-
 	//en_12v.set();
 	en_12v.reset();
 
@@ -66,12 +60,17 @@ void startTestTask([[maybe_unused]] void *argument)
 
 	bq.init_uart();
 	
-	while(bq.init_stack() == HAL_BUSY) osDelay(1);
+	osDelay(100);
+	//while(bq_flt.read()) { osDelay(500); led_wrn.toggle(); }
+
+	uint32_t state; 
+	do { state = bq.init_stack(); osDelay(1); } while(state == HAL_BUSY);
 
 	while(true)
 	{
 		osDelay(500);
-
+		if(bq_flt.read()) led_wrn.toggle();
+		if(state == HAL_ERROR) led_err.toggle();
 		//adc.update();
 
 //		led_err.toggle();
