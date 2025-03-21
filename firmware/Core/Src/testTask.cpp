@@ -14,7 +14,7 @@
 #include "ads131m04.hpp"
 #include "bq796xx.hpp"
 
-Gpio led_err(LED_ERROR_GPIO_Port, LED_ERROR_Pin, true);
+//Gpio led_err(LED_ERROR_GPIO_Port, LED_ERROR_Pin, true);
 Gpio led_wrn(LED_WARNING_GPIO_Port, LED_WARNING_Pin, true);
 Gpio led_ok(LED_OK_GPIO_Port, LED_OK_Pin, true);
 Gpio sig_err(SIG_AMS_ERROR_GPIO_Port, SIG_AMS_ERROR_Pin, true);
@@ -63,14 +63,20 @@ void startTestTask([[maybe_unused]] void *argument)
 	osDelay(100);
 	//while(bq_flt.read()) { osDelay(500); led_wrn.toggle(); }
 
-	uint32_t state; 
-	do { state = bq.init_stack(); osDelay(1); } while(state == HAL_BUSY);
+	HAL_StatusTypeDef status;
+	do { status = bq.init_stack(); osDelay(1); } while(status != HAL_OK);
+	if(status == HAL_ERROR) Error_Handler();
+
+	do { status = bq.init_voltage_measurement(); osDelay(1); } while(status != HAL_OK);
+	if(status == HAL_ERROR) Error_Handler();
+
+	do { status = bq.set_ovuv(3050); osDelay(1); } while(status != HAL_OK);
+	if(status == HAL_ERROR) Error_Handler();
 
 	while(true)
 	{
-		osDelay(500);
-		if(bq_flt.read()) led_wrn.toggle();
-		if(state == HAL_ERROR) led_err.toggle();
+		osDelay(100);
+		bq.update_voltages();
 		//adc.update();
 
 //		led_err.toggle();

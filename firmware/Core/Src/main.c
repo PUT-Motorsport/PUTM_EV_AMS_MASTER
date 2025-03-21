@@ -225,6 +225,8 @@ void Error_Handler(void)
   __disable_irq();
   while (1)
   {
+    HAL_Delay(500);
+    HAL_GPIO_TogglePin(LED_ERROR_GPIO_Port, LED_ERROR_Pin);
   }
   /* USER CODE END Error_Handler_Debug */
 }
