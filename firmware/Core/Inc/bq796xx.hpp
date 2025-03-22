@@ -1062,19 +1062,35 @@ namespace Bq796xx
 		/*
 		*	@brief poll stack status to local storage
 		*/
-		// HAL_StatusTypeDef update_status()
-		// {
-		// 	using namespace Utils;
+		HAL_StatusTypeDef update_status()
+		{
+			using namespace Utils;
 
-		// 	uint8_t buffer[4 * STACK_SIZE] { 0 };
+			constexpr data_size = 4;
 
-		// 	/* read ov1/2 and uv1/2, 0x053C, address of FAULT_OV1, yes i started getting lazy */
-		// 	HAL_StatusTypeDef status = read<ReqType::Stack>(buffer, 4, 0x053C);
+			uint8_t buffer[data_size * STACK_SIZE] { 0 };
 
-		// 	if(status != HAL_OK) return status;
+			/* read ov1/2 and uv1/2, 0x053C, address of FAULT_OV1, yes i started getting lazy */
+			HAL_StatusTypeDef status = read<ReqType::Stack>(buffer, data_size, 0x053C);
+
+			if(status != HAL_OK) return status;
 			
-		// 	return HAL_OK;
-		// }
+			for(size_t idev = 0; idev < STACK_SIZE; idev++)
+			{
+				size_t offset = data_size * idev;
+				uint16_t ov_tmp = *(uint16_t*)buffer[0 + offset];
+				uint16_t uv_tmp = *(uint16_t*)buffer[2 + offset];
+				uint16_t ovuv_tmp = ov_tmp | uv_tmp;
+
+				for(size_t ich = 0; ich < 16; ich++)
+				{
+					size_t bit_index = 1 << ich;
+					stack_device_status[idev].ovuv[ich] = (bool)(ovuv_tmp & bit_index);
+				}
+			}
+
+			return HAL_OK;
+		}
 	private:
 		/*
 		*	@brief struct for local stack data storage
