@@ -64,19 +64,17 @@ void startTestTask([[maybe_unused]] void *argument)
 	//while(bq_flt.read()) { osDelay(500); led_wrn.toggle(); }
 
 	HAL_StatusTypeDef status;
-	do { status = bq.init_stack(); osDelay(1); } while(status != HAL_OK);
-	if(status == HAL_ERROR) Error_Handler();
+	bq.init_stack();
 
-	do { status = bq.init_voltage_measurement(); osDelay(1); } while(status != HAL_OK);
-	if(status == HAL_ERROR) Error_Handler();
+	bq.init_voltage_measurement();
 
-	do { status = bq.set_ovuv(3050); osDelay(1); } while(status != HAL_OK);
-	if(status == HAL_ERROR) Error_Handler();
+	bq.init_ovuv(3050, 4300);
 
 	while(true)
 	{
 		osDelay(100);
 		bq.update_voltages();
+		bq.update_status();
 		//adc.update();
 
 //		led_err.toggle();

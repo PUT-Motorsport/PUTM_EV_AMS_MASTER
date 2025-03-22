@@ -1771,7 +1771,7 @@ HAL_StatusTypeDef HAL_UART_DMAStop(UART_HandleTypeDef *huart)
   * @note   This procedure is executed in blocking mode : when exiting function, Abort is considered as completed.
   * @retval HAL status
   */
-HAL_StatusTypeDef HAL_UART_Abort(UART_HandleTypeDef *huart)
+HAL_StatusTypeDef  HAL_UART_Abort(UART_HandleTypeDef *huart)
 {
   /* Disable TXE, TC, RXNE, PE, RXFT, TXFT and ERR (Frame error, noise error, overrun error) interrupts */
   ATOMIC_CLEAR_BIT(huart->Instance->CR1, (USART_CR1_RXNEIE_RXFNEIE | USART_CR1_PEIE |

@@ -17,6 +17,9 @@
 #include "uart_wrap.hpp"
 #include "crc16ibm.hpp"
 #include "cassert"
+#include "FreeRTOS.h"
+
+// TODO: rewrite to use task notify
 
 namespace Bq796xx
 {
@@ -436,18 +439,15 @@ namespace Bq796xx
 		{
 			No,
 			Single,
-			Continous
+			RoundRobin
 		};
 
 		struct __packed AdcCtrl1 : public IReg, IAddress<0x030d>
 		{
-		public:
-			AdcCtrl1(MainMode main_mode = MainMode::No, bool main_go = false, bool lpf_cell_en = false, bool lpf_bb_en = false) : main_mode(main_mode), main_go(main_go), lpf_cell_en(lpf_cell_en), lpf_bb_en(lpf_bb_en) { }
 			MainMode main_mode : 2 { 0b00 };
 			bool main_go : 1 { 0b0 };
 			bool lpf_cell_en : 1 { 0b0 };
 			bool lpf_bb_en : 1 { 0b0 };
-		private:
 			uint8_t reserved : 3 { 0b000 };
 		};
 
@@ -725,7 +725,6 @@ namespace Bq796xx
 
 		struct __packed OVUVCtrl : public IReg, IAddress<0x032C>
 		{
-			OVUVCtrl(OVUVMode ovuv_mode = OVUVMode::Stop, bool ovuv_go = false, uint8_t ovuv_lock = 0, uint8_t vcbdone_thr_lock = 0) : ovuv_mode(ovuv_mode), ovuv_go(ovuv_go), ovuv_lock(ovuv_lock), vcbdone_thr_lock(vcbdone_thr_lock) { }
 			OVUVMode ovuv_mode : 2 { OVUVMode::Stop };
 			bool ovuv_go : 1 { false };
 			uint8_t ovuv_lock : 4 { 0 };
@@ -851,13 +850,6 @@ namespace Bq796xx
 
 			return HAL_OK;
 		}
-	private:
-		size_t init_stack_state { 0 };
-		size_t dummy_write_step { 0 };
-		size_t auto_address_step { 0 };
-		size_t dummy_read_step { 0 };
-
-		uint32_t tick { 0 };
 	public:
 		/*
 		* 	@brief 	This function inits whole stack communication
@@ -866,136 +858,79 @@ namespace Bq796xx
 		HAL_StatusTypeDef init_stack()
 		{
 			using namespace Utils;
+			
+			uint8_t data[16];
 
-			switch(init_stack_state)
+			wake_up();
+
+			/* wait at least 4ms */
+			osDelay(4);
+
+			/* cmd wake up slaves */
+			data[0] = tob((Control1){.send_wake = true});
+			write<ReqType::Single>(data, 1, sta<Control1>());
+
+			/* wait ~15ms */
+			osDelay(15);
+
+			/* dummy write 0x00, sync internal dlls */
+			data[0] = 0x00;
+			for(size_t step = 0; step < 8; step++)
 			{
-			case 0: /* wake up bq79600 */
-			{
-				if(wake_up() == HAL_BUSY) return HAL_BUSY;
-				else { init_stack_state = 1; tick = HAL_GetTick(); }
-			} break;
-			case 1: /* make sure wait lasted at least 4ms*/
-			{
-				if(HAL_GetTick() - tick < 4) return HAL_BUSY;
-				else init_stack_state = 2;
-			} break;
-			case 2: /* cmd wake up slaves */
-			{
-				Control1 ctrl1;
-				ctrl1.send_wake = true;
-				uint8_t data = tob(ctrl1);
-				if(write<ReqType::Single>(&data, 1, sta<Control1>()) == HAL_BUSY) return HAL_BUSY;
-				else { init_stack_state = 3; tick = HAL_GetTick(); }
-			} break;
-			case 3: /* make sure wait lasted at least 15ms*/
-			{
-				if(HAL_GetTick() - tick < 15) return HAL_BUSY;
-				else init_stack_state = 4;
-			} break;
-			case 4: /* dummy write 0x00, sync internal dlls */
-			{
-				uint8_t data = 0x00;
-				if(write<ReqType::Broadcast>(&data, 1, 0x343 + dummy_write_step) == HAL_BUSY) return HAL_BUSY;
-				else if(dummy_write_step < 8) dummy_write_step++;
-				if(dummy_write_step == 8) init_stack_state = 5;
-			} break;
-			case 5: /* enable auto adressing */
-			{
-				uint8_t data = 0x01;
-				if(write<ReqType::Broadcast>(&data, 1, 0x309) == HAL_BUSY) return HAL_BUSY;
-				else init_stack_state = 6;
-			} break;
-			case 6: /* auto addressing */
-			{
-				uint8_t data = auto_address_step;
-				if(write<ReqType::Broadcast>(&data, 1, 0x306) == HAL_BUSY) return HAL_BUSY;
-				else if(auto_address_step < STACK_SIZE) auto_address_step++;
-				if(auto_address_step == STACK_SIZE) init_stack_state = 7;
-			} break;
-			case 7: /* set bq7961x as stack device */
-			{
-				uint8_t data = 0x02;
-				if(write<ReqType::Broadcast>(&data, 1, 0x308) == HAL_BUSY) return HAL_BUSY;
-				else init_stack_state = 8;
-			} break;
-			case 8: /* set which bq is last */
-			{
-				uint8_t data = 0x03;
-				if(write<ReqType::Single>(&data, 1, 0x308, STACK_SIZE) == HAL_BUSY) return HAL_BUSY;
-				else init_stack_state = 9;
-			} break;
-			case 9: /* dummy read sync internal dlls */
-			{
-				uint8_t data[STACK_SIZE] { 0x00 };
-				if(read<ReqType::Stack>(data, 1, 0x343 + dummy_read_step) == HAL_BUSY) return HAL_BUSY;
-				else if(dummy_read_step < 8) dummy_read_step++;
-				if(dummy_read_step == 8) init_stack_state = 10;
-			} break;
-			case 10: /* verify adresses */
-			{
-				uint8_t data[STACK_SIZE] { 0x00 };
-				if(read<ReqType::Stack>(data, 1, 0x306) == HAL_BUSY) return HAL_BUSY;
-				else 
-				{
-					// TODO: internal status error
-					// for(size_t i = 0; i < STACK_SIZE; i++) if(data[i] != i + 1) ;
-					init_stack_state = 11;
-				}
-			} break;
-			case 11: /* check sth on bq79600 */
-			{
-				uint8_t data { 0x00 };
-				if(read<ReqType::Single>(&data, 1, 0x2001) == HAL_BUSY) return HAL_BUSY;
-				else 
-				{
-					// TODO: internal status error
-					// if(data != 0x14) return HAL_ERROR;
-					init_stack_state = 12;
-				}
-			} break;
-			default: /* '12' finish init */
-			{
-				init_stack_state = 0;
-				dummy_write_step = 0;
-				auto_address_step = 0;
-				dummy_read_step = 0;
-				return HAL_OK;
-			} break;
+				write<ReqType::Broadcast>(data, 1, 0x343 + step);
 			}
 
-			return HAL_BUSY;
+			/* enable auto adressing */
+			data[0] = 0x01;
+			write<ReqType::Broadcast>(data, 1, 0x309);
+
+			/* auto addressing */
+			for(size_t address = 0; address <= STACK_SIZE; address++)
+			{
+				data[0] = address;
+				write<ReqType::Broadcast>(data, 1, 0x306);
+			}
+
+			/* set bq7961x as stack device */
+			data[0] = 0x02;
+			write<ReqType::Broadcast>(data, 1, 0x308);
+
+			/* set which bq is last */
+			data[0] = 0x03;
+			write<ReqType::Single>(data, 1, 0x308, STACK_SIZE);
+
+			/* dummy read sync internal dlls */
+			for(size_t step = 0; step < 8; step++)
+			{
+				read<ReqType::Stack>(nullptr, 1, 0x343 + step);
+			}
+
+			/* verify adresses */
+			for(size_t address = 0; address <= STACK_SIZE; address++)
+			{
+				// TODO: internal status error
+				read<ReqType::Stack>(data, 1, 0x306);
+			}
+
+			return HAL_OK;
 		}
-	private:
-		size_t init_voltages_measurement_state { 0 };	
 	public:
 		HAL_StatusTypeDef init_voltage_measurement()
 		{
 			using namespace Utils;
 
-			switch(init_voltages_measurement_state)
-			{
-			case 0: /* set active cells in series */
-			{
-				/* set active cells to 14S */
-				uint8_t data = 0x8; 
-				if(write<ReqType::Broadcast>(&data, 1, 0x0003) == HAL_BUSY) return HAL_BUSY;
-				else init_voltages_measurement_state = 1;
-			} break;
-			case 1: /* set control */
-			{
-				/* set adc continous, start conversion, enable lpf */
-				uint8_t data = tob(AdcCtrl1(MainMode::Continous, true, true)); 
-				if(write<ReqType::Broadcast>(&data, 1, 0x030D) == HAL_BUSY) return HAL_BUSY;
-				else init_voltages_measurement_state = 2;
-			} break;
-			default:
-			{
-				init_voltages_measurement_state = 0;
-				return HAL_OK;
-			} break;
-			}
+			uint8_t data[16];
 
-			return HAL_BUSY;
+			/* set active cells in series */
+			data[0] = 0x8; 
+			write<ReqType::Stack>(data, 1, 0x0003);
+
+			/* set control */
+			/* set adc continous, start conversion, enable lpf */
+			data[0] = tob((AdcCtrl1){.main_mode = MainMode::RoundRobin, .main_go = true, .lpf_cell_en = true}); 
+			write<ReqType::Stack>(data, 1, sta<AdcCtrl1>());
+
+			return HAL_OK;
 		}
 	public:
 		/* 	
@@ -1004,19 +939,27 @@ namespace Bq796xx
 		*	@param	`overvoltage` in mV, must be between 2700 and 4475
 		*	@retval HAL_OK when done, HAL_BUSY when init in progress, HAL_ERROR on fail
 		*/
-		HAL_StatusTypeDef set_ovuv(uint32_t undervoltage, uint32_t overvoltage)
+		HAL_StatusTypeDef init_ovuv(uint32_t undervoltage, uint32_t overvoltage)
 		{
 			using namespace Utils;
 
 			assert(1200 <= undervoltage and undervoltage <= 3100);
 			assert(2700 <= overvoltage and overvoltage <= 4475);
 
-			uint8_t uv = (uint8_t)((undervoltage - 1200 / 50) & 0x3f);
-			uint8_t ov = (uint8_t)((overvoltage - 2700 / 25) & 0x3f);
+			uint8_t data[2] = { 0 };
 
-			uint8_t data[] = { ov, uv };
+			/* set boundries */
+			data[0] = (uint8_t)((undervoltage - 1200 / 50) & 0x3f);
+			data[1] = (uint8_t)((overvoltage - 2700 / 25) & 0x3f);
 
-			return write<ReqType::Stack>(data, 2, sta<OVThresh>());
+			write<ReqType::Stack>(data, 2, sta<OVThresh>());
+
+			/* enable ovuv */
+			data[0] = tob((OVUVCtrl){.ovuv_mode = OVUVMode::RoundRobin, .ovuv_go = true});
+
+			write<ReqType::Stack>(data, 1, 0x032C);
+
+			return HAL_OK;
 		}
 	public:
 		/* 	
@@ -1037,17 +980,9 @@ namespace Bq796xx
 
 			uint8_t data[] = { (uint8_t)(buffer >> 8 & 0xff), (uint8_t)(buffer & 0xff) };
 			
-			return write<ReqType::Stack>(data, 2, sta<UVDisable1>());
-		}
-	public:
-		HAL_StatusTypeDef set_ovuv_enable()
-		{
-			using namespace Utils;
+			write<ReqType::Stack>(data, 2, sta<UVDisable1>());
 
-			/* set ovuv mode to round robin and enable ovuv */
-			uint8_t data[] = { tob(OVUVCtrl(OVUVMode::RoundRobin, true)) };
-
-			return write<ReqType::Stack>(data, 1, 0x032C);
+			return HAL_OK;
 		}
 	private:
 		/*
@@ -1066,20 +1001,18 @@ namespace Bq796xx
 		{
 			using namespace Utils;
 
-			constexpr data_size = 4;
+			constexpr size_t data_size = 4;
 
 			uint8_t buffer[data_size * STACK_SIZE] { 0 };
 
 			/* read ov1/2 and uv1/2, 0x053C, address of FAULT_OV1, yes i started getting lazy */
-			HAL_StatusTypeDef status = read<ReqType::Stack>(buffer, data_size, 0x053C);
-
-			if(status != HAL_OK) return status;
+			read<ReqType::Stack>(buffer, data_size, 0x053C);
 			
 			for(size_t idev = 0; idev < STACK_SIZE; idev++)
 			{
 				size_t offset = data_size * idev;
-				uint16_t ov_tmp = *(uint16_t*)buffer[0 + offset];
-				uint16_t uv_tmp = *(uint16_t*)buffer[2 + offset];
+				uint16_t ov_tmp = (uint16_t)buffer[0 + offset] << 8 | (uint16_t)buffer[1 + offset];
+				uint16_t uv_tmp = (uint16_t)buffer[2 + offset] << 8 | (uint16_t)buffer[3 + offset];
 				uint16_t ovuv_tmp = ov_tmp | uv_tmp;
 
 				for(size_t ich = 0; ich < 16; ich++)
@@ -1113,10 +1046,8 @@ namespace Bq796xx
 		 	uint8_t buffer[data_count * STACK_SIZE] { 0 };
 
 		 	/* read ovoltages, address of VCELL16_HI */
-		 	HAL_StatusTypeDef status = read<ReqType::Stack>(buffer, data_count, 0x0568);
+		 	read<ReqType::Stack>(buffer, data_count, 0x0568);
 
-		 	if(status != HAL_OK) return status;
-			
 			/* voltages */
 			for(size_t idev = 0; idev < STACK_SIZE; idev++)
 			{
@@ -1144,9 +1075,12 @@ namespace Bq796xx
 		// }
 	private:
 		/*
-		*	@brief 	wake up state
+		*	@brief 	wake up handle
 		*/
-		State wake_up_state { State::Idle };
+		struct WakeUpHandle
+		{
+			TaskHandle_t task { nullptr };
+		} hwake;
 	public:
 		/*
 		* 	@brief 	Wake up function for BQ79600 IC, this functions tries to hold the MOSI line
@@ -1160,20 +1094,14 @@ namespace Bq796xx
 
 			if(not state.init_done or state.status == UartStatus::Error) Error_Handler();
 
-			if(state.tx_busy or state.uart_busy or wake_up_state == State::InProgress) return HAL_BUSY;
-
-			if(wake_up_state == State::Done) { wake_up_state = State::Idle; return HAL_OK; }
-
-			huart->UserData = (void*)this;
-
-			/* uart sends lsb first, this sequence includes start bit for a total of '6' bits*/
+			/* uart sends lsb first, this sequence includes start bit for a total of '6' bits */
 			out.at(0) = 0b1110'0000;
 
+			/* init uart with a custom baudrate which allows for generating wakeup signal */
 			if(HAL_UART_DeInit(huart) != HAL_OK) Error_Handler();
 			huart->Init.BaudRate = baudrate_wakeup;
 			if(HAL_UART_Init(huart) != HAL_OK) Error_Handler();
 
-			// FIXME: might not work
 			callback_write = [](UART_HandleTypeDef* huart)
 			{
 				if(huart->UserData == nullptr) Error_Handler();
@@ -1187,20 +1115,28 @@ namespace Bq796xx
 				huart->Init.BaudRate = default_baudrate;
 				if(HAL_UART_Init(huart) != HAL_OK) Error_Handler();
 
-				bq->wake_up_state = State::Done;
 				huart->TxCpltCallback = HAL_UART_TxCpltCallback;
+
+				vTaskNotifyGiveFromISR(bq->hwake.task, nullptr);
 			};
 
+			hwake.task = xTaskGetCurrentTaskHandle(); 
 			huart->TxCpltCallback = callback_write;
+			huart->UserData = (void*)this;
 
 			if(HAL_UART_Transmit_DMA(huart, (uint8_t*)out.begin(), 1) != HAL_OK) Error_Handler();
+			auto notify_received = xTaskNotifyWait(0x00, 0xffffffff, nullptr, 10);
 
-			wake_up_state = State::InProgress;
-			return HAL_BUSY;
+			if(notify_received != pdTRUE) Error_Handler();
+
+			return HAL_OK;
 		}
 
 	private:
-		State write_state { State::Idle };
+		struct WriteHandle
+		{
+			TaskHandle_t task { nullptr };
+		} hwrite;
 	public:
 		/*
 		* 	@brief 	Send `data` of `size` to a device at `address` in `REQ_TYPE` mode. All registers are 1 byte in len, 
@@ -1216,15 +1152,13 @@ namespace Bq796xx
 		template<Utils::ReqType REQ_TYPE> requires (Utils::IsReqType<REQ_TYPE>)
 		HAL_StatusTypeDef write(uint8_t *data, size_t size, uint16_t reg_address, uint8_t address = 0)
 		{
+			// assert((data == nullptr));
+			// assert((size == 0));
+
 			/* prevent override during checks? */
 			volatile UartState state (huart->gState);
 
-			if(data == nullptr or size == 0) Error_Handler();
 			if(not state.init_done or state.status == UartStatus::Error) Error_Handler();
-			else if(state.tx_busy or state.uart_busy or write_state == State::InProgress) return HAL_BUSY;
-			else if(write_state == State::Done) { write_state = State::Idle; return HAL_OK; }
-
-			huart->UserData = (void*)this;
 			
 			size_t i = 0;
 			out.at(i++) = Utils::init_byte_write<REQ_TYPE>(size);
@@ -1248,23 +1182,29 @@ namespace Bq796xx
 				volatile UartState state (huart->gState);
 				if(not state.init_done or state.status == UartStatus::Error) Error_Handler();
 
-				bq->write_state = State::Done;
 				huart->TxCpltCallback = HAL_UART_TxCpltCallback;
 				huart->UserData = nullptr;
+
+				vTaskNotifyGiveFromISR(bq->hwrite.task, nullptr);
 			};
 
+			hwrite.task = xTaskGetCurrentTaskHandle(); 
+			huart->UserData = (void*)this;
 			huart->TxCpltCallback = callback_write;
 
 			if(HAL_UART_Transmit_DMA(huart, (uint8_t*)out.begin(), size + i) != HAL_OK) Error_Handler();
+			auto notify_received = xTaskNotifyWait(0x00, 0xffffffff, nullptr, 10);
 
-			write_state = State::InProgress;
-			return HAL_BUSY;
+			if(notify_received != pdTRUE) Error_Handler();
+			return HAL_OK;
 		}
 
 	private:
-		State read_state { State::Idle };
-		size_t read_size { 0 };
-		uint32_t read_start { 0 };
+		struct ReadHandle
+		{
+			TaskHandle_t task { nullptr };
+			size_t size;
+		} hread;
 	public:
 		/*
 		* 	@brief 	read `data` of `size` from a device at `address` in `REQ_TYPE` mode. All registers are 1 byte in len, 
@@ -1283,40 +1223,13 @@ namespace Bq796xx
 		template<Utils::ReqType REQ_TYPE> requires (Utils::IsReqType<REQ_TYPE>)
 		HAL_StatusTypeDef read(uint8_t *data, size_t count, uint16_t reg_address, uint8_t address = 0)
 		{
+			// assert((data == nullptr));
+			// assert((count == 0 or count > 128));
+
+			if(count == 0 or count > 128) Error_Handler;
+
 			/* prevent override during checks? */
 			volatile UartState state (huart->gState);
-
-			if(data == nullptr or count == 0) Error_Handler();
-			if(not state.init_done or state.status == UartStatus::Error or count > 128 or count < 1) Error_Handler();
-			else if(HAL_GetTick() - read_start > 1 and read_state == State::InProgress)
-			{
-				if(HAL_UART_AbortReceive(huart) != HAL_OK) Error_Handler();
-
-				read_state = State::Idle; 
-				constexpr size_t size = read_count<REQ_TYPE>();
-				std::fill(data, data + count * size, 0);
-				return HAL_TIMEOUT;
-			}
-			else if(state.tx_busy or state.uart_busy or read_state == State::InProgress) return HAL_BUSY;
-			else if(read_state == State::Done) 
-			{ 
-				read_state = State::Idle; 
-				constexpr size_t size = read_count<REQ_TYPE>();
-				auto it_data_begin = in.begin() + 4;
-				auto it_data_end = in.begin() + 4 + count;
-				auto it_data = data;
-				for(size_t i = 0; i < size; i++)
-				{
-					std::copy(it_data_begin, it_data_end, it_data);
-					it_data_begin += count + 6;
-					it_data_end += count + 6;
-					it_data += count;
-				}
-				return HAL_OK; 
-			}
-
-			huart->UserData = (void*)this;
-			read_size = count;
 			
 			size_t i = 0;
 			out.at(i++) = Utils::init_byte_read<REQ_TYPE>();
@@ -1341,7 +1254,7 @@ namespace Bq796xx
 				if(not state.init_done or state.status == UartStatus::Error) Error_Handler();
 
 				HAL_UART_EnableReceiverTimeout(huart);
-				if(HAL_UART_Receive_DMA(huart, (uint8_t*)bq->in.begin(), (bq->read_size + 6) * read_count<REQ_TYPE>()) != HAL_OK) Error_Handler();
+				if(HAL_UART_Receive_DMA(huart, (uint8_t*)bq->in.begin(), bq->hread.size) != HAL_OK) Error_Handler();
 				
 				huart->TxCpltCallback = HAL_UART_TxCpltCallback;
 			};
@@ -1354,20 +1267,40 @@ namespace Bq796xx
 				volatile UartState state (huart->gState);
 				if(not state.init_done or state.status == UartStatus::Error) Error_Handler();
 
-				bq->read_state = State::Done;
 				huart->RxCpltCallback = HAL_UART_RxCpltCallback;
 				huart->UserData = nullptr;
+
+				vTaskNotifyGiveFromISR(bq->hread.task, nullptr);
 			};
 
+			hread.size = (count + 6) * read_count<REQ_TYPE>();
+			hread.task = xTaskGetCurrentTaskHandle(); 
 			huart->TxCpltCallback = callback_write;
 			huart->RxCpltCallback = callback_read;
+			huart->UserData = (void*)this;
 
 			if(HAL_UART_Transmit_DMA(huart, (uint8_t*)out.begin(), i) != HAL_OK) Error_Handler();
-			//if(HAL_UART_Receive_DMA(huart, (uint8_t*)in.begin(), (size + 6) * read_count<REQ_TYPE>()) != HAL_OK) Error_Handler();
+			auto notify_received = xTaskNotifyWait(0x00, 0xffffffff, nullptr, 10);
 
-			read_start = HAL_GetTick();
-			read_state = State::InProgress;
-			return HAL_BUSY;
+			if(notify_received != pdTRUE) { HAL_UART_Abort(huart); return HAL_OK; }
+			
+			if(data == nullptr) return HAL_OK;
+
+			constexpr size_t size = read_count<REQ_TYPE>();
+			auto it_data_begin = in.begin() + 4;
+			auto it_data_end = in.begin() + 4 + count;
+			auto it_data = data;
+			
+			for(size_t i = 0; i < size; i++)
+			{
+				// TODO: CRC?
+				std::copy(it_data_begin, it_data_end, it_data);
+				it_data_begin += count + 6;
+				it_data_end += count + 6;
+				it_data += count;
+			}
+
+			return HAL_OK; 
 		}
 	};
 }
