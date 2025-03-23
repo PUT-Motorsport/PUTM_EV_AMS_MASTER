@@ -1,6 +1,0 @@
-[submodule "PUTM_EV_CAN_LIBRARY"]
-	path = firmware/Middlewares/PUTMotosport
-	url = git@github.com:PUT-Motorsport/PUTM_EV_CAN_LIBRARY.git
-# [submodule embedded_json]
-# 	path = firmware/Core/Inc/embedded_json
-# 	url = git@github.com:KozAAAAA/embedded_json.git
