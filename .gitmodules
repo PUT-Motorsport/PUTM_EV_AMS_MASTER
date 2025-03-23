@@ -1,10 +1,6 @@
-[submodule "firmware/Core/Inc/PUTM_EV_CAN_LIBRARY"]
-	path = firmware/Core/Inc/PUTM_EV_CAN_LIBRARY
+[submodule PUTM_EV_CAN_LIBRARY]
+	path = firmware\Middlewares\PUTMotosport
 	url = git@github.com:PUT-Motorsport/PUTM_EV_CAN_LIBRARY.git
-[submodule "firmware/Core/Inc/embedded_json"]
-	path = firmware/Core/Inc/embedded_json
-	url = git@github.com:KozAAAAA/embedded_json.git
-[submodule "hardware/PUTM_Kicad_Library"]
-	path = hardware/PUTM_Kicad_Library
-	url = https://github.com/PUT-Motorsport/PUTM_Kicad_Library.git
-	branch = kicad7
+# [submodule embedded_json]
+# 	path = firmware/Core/Inc/embedded_json
+# 	url = git@github.com:KozAAAAA/embedded_json.git
