@@ -45,6 +45,8 @@ add_executable(${CMAKE_PROJECT_NAME})
 
 # Add STM32CubeMX generated sources
 add_subdirectory(cmake/stm32cubemx)
+# Add middleware for custom git submodules
+add_subdirectory(Middlewares)
 
 # Link directories setup
 target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
@@ -56,8 +58,8 @@ file(GLOB CXX_SRC "${PROJECT_SOURCE_DIR}/Core/Src/*.cpp")
 
 # Add sources to executable
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
-    ${CXX_SRC}
     # Add user sources here
+    ${CXX_SRC}
 )
 
 # file(GLOB CXX_INC "${PROJECT_SOURCE_DIR}/Core/Inc/*.hpp")
@@ -65,13 +67,14 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
 
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
-    # ${CXX_INC}
     # Add user defined include paths
+    # ${CXX_INC}
 )
 
 # Add project symbols (macros)
 target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined symbols
+    PUTM_USE_CAN_FD
 )
 
 # Add linked libraries
@@ -81,11 +84,11 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
     # Add user defined libraries
 )
 
-# Modify SPI HAL drivers
+# Modify HAL drivers
 add_custom_target(
     CUSTOM_COMMANDS ALL
-    COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/custom_spi.py ${CMAKE_CURRENT_SOURCE_DIR}
-    COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/custom_uart.py ${CMAKE_CURRENT_SOURCE_DIR}
+    COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/Scripts/custom_spi.py ${CMAKE_CURRENT_SOURCE_DIR}
+    COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/Scripts/custom_uart.py ${CMAKE_CURRENT_SOURCE_DIR}
     COMMENT "Modifing HAL drivers"
 )
 

@@ -13,8 +13,10 @@
 #include "tim.h"
 #include "ads131m04.hpp"
 #include "bq796xx.hpp"
+#include "can_interface.hpp"
+#include "fdcan.h"
 
-//Gpio led_err(LED_ERROR_GPIO_Port, LED_ERROR_Pin, true);
+Gpio led_err(LED_ERROR_GPIO_Port, LED_ERROR_Pin, true);
 Gpio led_wrn(LED_WARNING_GPIO_Port, LED_WARNING_Pin, true);
 Gpio led_ok(LED_OK_GPIO_Port, LED_OK_Pin, true);
 Gpio sig_err(SIG_AMS_ERROR_GPIO_Port, SIG_AMS_ERROR_Pin, true);
@@ -45,6 +47,10 @@ std::array<Tim*, 7> fans { &fan1, &fan2, &fan3, &fan4, &fan5, &fan6, &fan7 };
 std::array<Gpio*, 5> gpios_ins { &det_air_pre, &det_air_p, &det_air_m, &det_tsms, &det_charger };
 std::array<bool, 5> gpios_state;
 
+using namespace PUTM_CAN;
+
+static void fdcan_init(FDCAN_HandleTypeDef *hfdcan);
+
 void startTestTask([[maybe_unused]] void *argument)
 {
 	adc.init();
@@ -57,54 +63,41 @@ void startTestTask([[maybe_unused]] void *argument)
 	for(auto& f : fans) f->startPwm();
 
 	led_ok.set();
+	led_err.reset();
+	led_wrn.reset();
 
-	bq.init_uart();
+	// bq.init_uart();
 	
 	osDelay(100);
 	//while(bq_flt.read()) { osDelay(500); led_wrn.toggle(); }
 
-	HAL_StatusTypeDef status;
-	bq.init_stack();
+	// bq.init_stack();
 
-	bq.init_voltage_measurement();
+	// bq.init_voltage_measurement();
 
-	bq.init_ovuv(3050, 4300);
+	// bq.init_ovuv(3050, 4300);
+
+	HAL_FDCAN_Start(&hfdcan1);
+	HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
+
+	HAL_FDCAN_Start(&hfdcan2);
+	HAL_FDCAN_ActivateNotification(&hfdcan2, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
 
 	while(true)
 	{
 		osDelay(100);
-		bq.update_voltages();
-		bq.update_status();
-		//adc.update();
+		// bq.update_voltages();
+		// bq.update_status();
 
-//		led_err.toggle();
-//		led_wrn.toggle();
-//		led_ok.toggle();
-//		sig_air_pre.toggle();
-//		sig_air_p.toggle();
-//		sig_air_m.toggle();
-//
-//		sig_air_m.set(det_air_m.read());
-//		sig_air_p.set(det_air_p.read());
-//		sig_air_pre.set(det_air_pre.read());
-//
-//		if(i >= 100.f) inc = -iii;
-//		if(i <= 0.f) inc = iii;
-//
-//		if(i <= 0)
-//		{
-//			if(k == 6) kinc = -1;
-//			if(k == 0) kinc = 1;
-//			k += kinc;
-//		}
-//
-//		i += inc;
-//
-//		fans[k]->setFill(i / 10.f);
-//
-//		for(size_t i = 0; i < 5; i++)
-//		{
-//			gpios_state[i] = gpios_ins[i]->read();
-//		}
+		FrontData front_test { };
+
+		auto frame = Can_tx_message<FrontData>(front_test, can_tx_header_FRONT_DATA);
+
+		auto status = frame.send(hfdcan2);
+
+		if (status != HAL_StatusTypeDef::HAL_OK) 
+		{
+			led_wrn.toggle();
+		}
 	}
 }
