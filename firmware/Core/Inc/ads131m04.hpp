@@ -15,9 +15,7 @@
 #include "functional"
 #include "atomic"
 #include "cstring"
-
-using afloat32_t = std::atomic<float_t>;
-using auint32_t = std::atomic<uint32_t>;
+#include "FreeRTOS.h"
 
 static_assert(USE_HAL_SPI_REGISTER_CALLBACKS == 1UL, "Use registered callback for SPI");
 static_assert(offsetof(SPI_HandleTypeDef, UserData), "Add \"void* userData;\" to SPI_HandleTypeDef implementation");
@@ -388,7 +386,7 @@ namespace Ads131m04
 		 * @brief ReadReg cmd constructor
 		 * @ret corresponding read command for the required address register
 		 */
-		constexpr uint16_t read_reg(uint16_t addr, uint16_t count = 0)
+		consteval uint16_t read_reg(uint16_t addr, uint16_t count = 0)
 		{
 			// cmd = 101a aaaa accc cccc;
 			uint16_t a = addr & 0b11'1111 << 7;
@@ -400,13 +398,62 @@ namespace Ads131m04
 		 * @brief WriteReg cmd constructor
 		 * @ret corresponding write command for the required address register
 		 */
-		constexpr uint16_t write_reg(uint16_t addr, uint16_t count = 0)
+		consteval uint16_t write_reg(uint16_t addr, uint16_t count = 0)
 		{
 			// cmd = 101a aaaa accc cccc;
 			uint16_t a = addr & 0b11'1111 << 7;
 			uint16_t c = count & 0b111'1111;
 			uint16_t cmd = 0b0110'0000'0000'0000 | a | c;
 			return cmd ;
+		}
+
+		struct Cmd
+		{
+			uint16_t cmd;
+			uint32_t data[4];
+			uint16_t crc;
+			uint16_t response;
+		}
+
+		struct CmdNull : public Cmd
+		{
+			CmdNull()
+			{
+				cmd = 0x00;
+				std::fill(data + 0, data + 4, 0x00);
+				crc = 0x00;
+			}
+
+			Regs::Status get_response()
+			{
+				return *((Regs::Status*)&response)
+			}
+		}
+
+		struct CmdReset : public Cmd
+		{
+			CmdReset()
+			{
+				cmd = 0x0101;
+				std::fill(data + 0, data + 4, 0x00);
+				crc = 0x00;
+			}
+		}
+
+		template<typename T>
+		struct CmdRReg : public Cmd
+		{
+			CmdRReg()
+			{
+				cmd = read_reg(sta<T>());
+				std::fill(data + 0, data + 4, 0x00);
+				crc = 0x00;
+			}
+
+			T get_response()
+			{
+				return *((T*)&response)
+			}
 		}
 	}
 
@@ -416,31 +463,9 @@ namespace Ads131m04
 	class Ads131m04
 	{
 	private:
-		template<typename T> requires Utils::IsReg<T>
-		uint32_t construct_write()
-		{
-			constexpr uint32_t addr = Utils::sta<T>();
-			//constexpr uint16_t count = 1; //serial write not supported
-			constexpr uint32_t cmd = Cmd::write_reg(addr);
-
-			return cmd;
-		}
-
-		template<typename T> requires Utils::IsReg<T>
-		uint32_t construct_read()
-		{
-			constexpr uint16_t addr = Utils::sta<T>();
-			//constexpr uint16_t count = 1; //serial write not supported
-			constexpr uint32_t cmd = Cmd::read_reg(addr);
-
-			return cmd;
-		}
-
 		SPI_HandleTypeDef *hspi;
 
-		bool newData { false };
-
-		static inline constexpr size_t size = 6;
+		static inline constexpr size_t size = 5;
 
 		std::array<uint32_t, size> out { 0 };
 		std::array<uint32_t, size> in { 0 };
@@ -459,57 +484,83 @@ namespace Ads131m04
 			return;
 		}
 
+		void update()
+		{
+			auto c = Cmd::CmdNull();
+			cmd(&c);
+			status = c.get_response();
+		}
+
+		void reset()
+		{
+			auto c = Cmd::CmdReset();
+			cmd(&c);
+		}
+
+		void getStatus
+
+		/*
+		 * @brief none for now
+		 */
+
+		private:
+			struct CmdHandle
+			{
+				TaskHandle_t task;
+			} hcmd;
+		public:
 		/*
 		 * @brief 	update adc data
-		 * @note 	function overrides spi callback while in use then returns them to their default state
-		 * 			wait is realized with HAL_Delay override it if you are using any rtos
-		 * @retval 	HAL status returns HAL_OK when new data is avalable otherwise returns busy
+		 * @note 	function overrides spi callback
+		 * @retval 	HAL status returns HAL_OK when new data data is read;
 		 */
-		HAL_StatusTypeDef update()
+		HAL_StatusTypeDef cmd(Cmd::Cmd *cmd)
 		{
-			if(hspi->State == HAL_SPI_STATE_RESET) Error_Handler();
-			if(hspi->State == HAL_SPI_STATE_ABORT or hspi->State == HAL_SPI_STATE_ERROR) Error_Handler();
+			volatile HAL_SPI_StateTypeDef state = hspi->State;
 
-			if(hspi->State == HAL_SPI_STATE_READY and newData) return HAL_OK;
+			if(state == HAL_SPI_STATE_RESET) Error_Handler();
 
-			if(hspi->State != HAL_SPI_STATE_READY) return HAL_BUSY;
-
-
-			out[0] = construct_read<Regs::Status>();
-			
-			hspi->UserData = (void*)this;
+			out.at(0) = cmd()
+			std::copy(cmd->data.begin(), cmd->data.end(), out.begin() + 1)
 
 			pSPI_CallbackTypeDef callback = [](SPI_HandleTypeDef* hspi)
 			{
 				if(hspi->UserData == nullptr) Error_Handler();
-				Ads131m04 *adc = (Ads131m04*)hspi->UserData;
-				uint32_t *in = (uint32_t*)adc->in.begin();
+				Ads131m04 *ads = (Ads131m04*)hspi->UserData;
+				int32_t *in = (int32_t*)ads->in.begin();
 
-				if(hspi->State != HAL_SPI_STATE_ERROR and hspi->State != HAL_SPI_STATE_ABORT)
-				{
-					uint32_t tmp = in[0] >> 8;
-					std::memcpy((uint8_t*)&adc->status, (uint8_t*)&tmp, sizeof(uint16_t));
-
-					const float coef = 1.2f / 16777215.f;
-					adc->adc[0] = in[1] * coef;
-					adc->adc[1] = in[2] * coef;
-					adc->adc[2] = in[3] * coef;
-					adc->adc[3] = in[4] * coef;
-				}
-
-				if(HAL_SPI_UnRegisterCallback(hspi, HAL_SPI_TX_RX_COMPLETE_CB_ID) != HAL_OK) Error_Handler();
-
-				adc->newData = true;
+				vTaskNotifyGiveFromISR(ads->hcmd.task, nullptr);
 			};
 
-			//use inherence to go around this shit
-			if(HAL_SPI_RegisterCallback(hspi, HAL_SPI_TX_RX_COMPLETE_CB_ID, callback) != HAL_OK) Error_Handler();
+			hcmd.task = xTaskGetCurrentTaskHandle();
+			hspi->UserData = (void*)this;
+			hspi->TxRxCpltCallback = callback;
 
 			if(HAL_SPI_TransmitReceive_DMA(hspi, (uint8_t*)out.begin() , (uint8_t*)in.begin(), out.size()) != HAL_OK) Error_Handler();
+			auto notify_received = xTaskNotifyWait(0x00, 0xffffffff, nullptr, 10);
+			
+			if(notify_received != pdTRUE) return HAL_ERROR;
 
-			newData = false;
+			osDelay(10);
 
-			return HAL_BUSY;
+			if(HAL_SPI_TransmitReceive_DMA(hspi, (uint8_t*)out.begin() , (uint8_t*)in.begin(), out.size()) != HAL_OK) Error_Handler();
+			notify_received = xTaskNotifyWait(0x00, 0xffffffff, nullptr, 10);
+			hspi->TxRxCpltCallback = HAL_SPI_TxRxCpltCallback;
+
+			if(notify_received != pdTRUE) return HAL_ERROR;
+			else
+			{
+				cmd->response = (uint16_t)(in[0] >> 8);
+
+				static constexpr double v_lsb_adc = 2.4 / 8388608.0;
+
+				adc[0] = in[1] * v_lsb_adc;
+				adc[1] = in[2] * v_lsb_adc;
+				adc[2] = in[3] * v_lsb_adc;
+				adc[3] = in[4] * v_lsb_adc;
+			}
+
+			return HAL_OK;
 		}
 	};
 }

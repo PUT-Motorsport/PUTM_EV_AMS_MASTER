@@ -49,8 +49,6 @@ std::array<bool, 5> gpios_state;
 
 using namespace PUTM_CAN;
 
-static void fdcan_init(FDCAN_HandleTypeDef *hfdcan);
-
 void startTestTask([[maybe_unused]] void *argument)
 {
 	adc.init();
@@ -77,25 +75,29 @@ void startTestTask([[maybe_unused]] void *argument)
 
 	// bq.init_ovuv(3050, 4300);
 
-	HAL_FDCAN_Start(&hfdcan1);
-	HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
+	// HAL_FDCAN_Start(&hfdcan1);
+	// HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
 
-	HAL_FDCAN_Start(&hfdcan2);
-	HAL_FDCAN_ActivateNotification(&hfdcan2, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
+	// HAL_FDCAN_Start(&hfdcan2);
+	// HAL_FDCAN_ActivateNotification(&hfdcan2, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
+
+	adc.reset();
 
 	while(true)
 	{
-		osDelay(100);
+		osDelay(500);
 		// bq.update_voltages();
 		// bq.update_status();
 
-		FrontData front_test { };
+		// FrontData front_test { };
 
-		auto frame = Can_tx_message<FrontData>(front_test, can_tx_header_FRONT_DATA);
+		// auto frame = Can_tx_message<FrontData>(front_test, can_tx_header_FRONT_DATA);
 
-		auto status = frame.send(hfdcan2);
+		// auto status = frame.send(hfdcan2);
 
-		if (status != HAL_StatusTypeDef::HAL_OK) 
+		auto status = adc.update();
+
+		if (status != HAL_OK) 
 		{
 			led_wrn.toggle();
 		}
