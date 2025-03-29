@@ -44,21 +44,18 @@ namespace Ads131m04
 
 		struct Status : public IReg
 		{
-		public:
-			const bool drdy0: 1 { 0b0 };
-			const bool drdy1: 1 { 0b0 };
-			const bool drdy2: 1 { 0b0 };
-			const bool drdy3: 1 { 0b0 };
-		private:
-			const uint16_t reserved0: 4  { 0b0000 };
-		public:
-			const uint16_t wlength: 2 { 0b0 };
-			const bool reset: 1 { 0b0 };
-			const CrcType crc_type: 1 { 0b0 };
-			const bool crc_err: 1 { 0b0 };
-			const bool reg_map: 1 { 0b0 };
-			const bool f_resync: 1 { 0b0 };
-			const bool lock: 1 { 0b0 };
+			bool drdy0: 1 { 0b0 };
+			bool drdy1: 1 { 0b0 };
+			bool drdy2: 1 { 0b0 };
+			bool drdy3: 1 { 0b0 };
+			uint16_t reserved0: 4  { 0b0000 };
+			uint16_t wlength: 2 { 0b0 };
+			bool reset: 1 { 0b0 };
+			CrcType crc_type: 1 { 0b0 };
+			bool crc_err: 1 { 0b0 };
+			bool reg_map: 1 { 0b0 };
+			bool f_resync: 1 { 0b0 };
+			bool lock: 1 { 0b0 };
 		};
 
 		struct Mode : public IReg
@@ -413,7 +410,7 @@ namespace Ads131m04
 			uint32_t data[4];
 			uint16_t crc;
 			uint16_t response;
-		}
+		};
 
 		struct CmdNull : public Cmd
 		{
@@ -426,9 +423,9 @@ namespace Ads131m04
 
 			Regs::Status get_response()
 			{
-				return *((Regs::Status*)&response)
+				return *((Regs::Status*)&response);
 			}
-		}
+		};
 
 		struct CmdReset : public Cmd
 		{
@@ -438,23 +435,23 @@ namespace Ads131m04
 				std::fill(data + 0, data + 4, 0x00);
 				crc = 0x00;
 			}
-		}
+		};
 
 		template<typename T>
 		struct CmdRReg : public Cmd
 		{
 			CmdRReg()
 			{
-				cmd = read_reg(sta<T>());
+				cmd = read_reg(Utils::sta<T>());
 				std::fill(data + 0, data + 4, 0x00);
 				crc = 0x00;
 			}
 
 			T get_response()
 			{
-				return *((T*)&response)
+				return *((T*)&response);
 			}
-		}
+		};
 	}
 
 	/*
@@ -465,7 +462,7 @@ namespace Ads131m04
 	private:
 		SPI_HandleTypeDef *hspi;
 
-		static inline constexpr size_t size = 5;
+		static inline constexpr size_t size = 6;
 
 		std::array<uint32_t, size> out { 0 };
 		std::array<uint32_t, size> in { 0 };
@@ -497,8 +494,6 @@ namespace Ads131m04
 			cmd(&c);
 		}
 
-		void getStatus
-
 		/*
 		 * @brief none for now
 		 */
@@ -520,8 +515,8 @@ namespace Ads131m04
 
 			if(state == HAL_SPI_STATE_RESET) Error_Handler();
 
-			out.at(0) = cmd()
-			std::copy(cmd->data.begin(), cmd->data.end(), out.begin() + 1)
+			out.at(0) = cmd->cmd;
+			std::copy(cmd->data + 0, cmd->data + 4, out.begin() + 1);
 
 			pSPI_CallbackTypeDef callback = [](SPI_HandleTypeDef* hspi)
 			{
@@ -552,12 +547,13 @@ namespace Ads131m04
 			{
 				cmd->response = (uint16_t)(in[0] >> 8);
 
-				static constexpr double v_lsb_adc = 2.4 / 8388608.0;
+				static constexpr double v_lsb_adc = 2.4 / ( 16777216.0 * 256.0 );
 
-				adc[0] = in[1] * v_lsb_adc;
-				adc[1] = in[2] * v_lsb_adc;
-				adc[2] = in[3] * v_lsb_adc;
-				adc[3] = in[4] * v_lsb_adc;
+				for(size_t i = 1; i < 5; i++) in[i] <<= 8;
+				adc[0] = (int32_t)in[1] * v_lsb_adc;
+				adc[1] = (int32_t)in[2] * v_lsb_adc;
+				adc[2] = (int32_t)in[3] * v_lsb_adc;
+				adc[3] = (int32_t)in[4] * v_lsb_adc;
 			}
 
 			return HAL_OK;

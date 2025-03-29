@@ -52,7 +52,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+// USBD_HandleTypeDef hUSBDDevice;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -73,7 +73,6 @@ void MX_FREERTOS_Init(void);
   */
 int main(void)
 {
-
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
@@ -107,8 +106,18 @@ int main(void)
   MX_TIM2_Init();
   MX_UART4_Init();
   /* USER CODE BEGIN 2 */
+  // /* Init Device Library */
+  // USBD_Init(&hUSBDDevice, &VCP_Desc, 0);
 
-  /* USER CODE END 2 */
+  // /* Add Supported Class */
+  // USBD_RegisterClass(&hUSBDDevice, &USBD_CDC);
+
+  // /* Add CDC Interface Class */
+  // USBD_CDC_RegisterInterface(&hUSBDDevice, &USBD_CDC_fops);
+
+  // /* Start Device Process */
+  // USBD_Start(&hUSBDDevice);
+  // /* USER CODE END 2 */
 
   /* Init scheduler */
   osKernelInitialize();

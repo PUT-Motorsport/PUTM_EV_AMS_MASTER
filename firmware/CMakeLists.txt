@@ -46,7 +46,7 @@ add_executable(${CMAKE_PROJECT_NAME})
 # Add STM32CubeMX generated sources
 add_subdirectory(cmake/stm32cubemx)
 # Add middleware for custom git submodules
-add_subdirectory(Middlewares)
+add_subdirectory(Components)
 
 # Link directories setup
 target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
@@ -60,15 +60,15 @@ file(GLOB CXX_SRC "${PROJECT_SOURCE_DIR}/Core/Src/*.cpp")
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user sources here
     ${CXX_SRC}
+    # ${PROJECT_SOURCE_DIR}/Core/Src/usbd_conf.c
+    # ${PROJECT_SOURCE_DIR}/Core/Src/usbd_desc.c
 )
-
-# file(GLOB CXX_INC "${PROJECT_SOURCE_DIR}/Core/Inc/*.hpp")
-# message(CXX_INC=${CXX_INC})
 
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined include paths
-    # ${CXX_INC}
+    # Added by ST
+    # ${PROJECT_SOURCE_DIR}/Core/Inc
 )
 
 # Add project symbols (macros)

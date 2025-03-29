@@ -95,11 +95,6 @@ void startTestTask([[maybe_unused]] void *argument)
 
 		// auto status = frame.send(hfdcan2);
 
-		auto status = adc.update();
-
-		if (status != HAL_OK) 
-		{
-			led_wrn.toggle();
-		}
+		adc.update();
 	}
 }
