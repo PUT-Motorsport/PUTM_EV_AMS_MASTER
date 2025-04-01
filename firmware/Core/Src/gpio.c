@@ -132,25 +132,11 @@ void MX_GPIO_Init(void)
   HAL_GPIO_Init(LED_ERROR_GPIO_Port, &GPIO_InitStruct);
 
   /* EXTI interrupt init*/
-  HAL_NVIC_SetPriority(EXTI1_IRQn, 5, 0);
+  HAL_NVIC_SetPriority(EXTI1_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(EXTI1_IRQn);
 
 }
 
 /* USER CODE BEGIN 2 */
-__weak void GPIO_Exit1RisingCallback(GPIO_HandleTypeDef *hgpio)
-{
-  UNUSED(hgpio);
-  return;
-}
 
-GPIO_HandleTypeDef hgpio = { GPIO_Exit1RisingCallback };
-
-void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
-{
-  if(GPIO_Pin == GPIO_PIN_1)
-  {
-    hgpio.Exit1RisingCallback(&hgpio);
-  }
-}
 /* USER CODE END 2 */

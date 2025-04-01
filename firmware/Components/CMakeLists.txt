@@ -1,3 +1,5 @@
 add_subdirectory(PUTM_EV_CAN_LIBRARY_2024)
-
-add_subdirectory(ST_USB_DEVICE)
+add_subdirectory(BQ796XX)
+add_subdirectory(ADS131M04)
+add_subdirectory(Utils)
+add_subdirectory(Wrappers)

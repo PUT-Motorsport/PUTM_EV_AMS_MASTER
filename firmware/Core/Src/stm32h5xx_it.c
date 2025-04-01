@@ -63,6 +63,7 @@ extern SPI_HandleTypeDef hspi1;
 extern DMA_HandleTypeDef handle_GPDMA1_Channel3;
 extern DMA_HandleTypeDef handle_GPDMA1_Channel2;
 extern UART_HandleTypeDef huart4;
+extern PCD_HandleTypeDef hpcd_USB_DRD_FS;
 extern TIM_HandleTypeDef htim1;
 
 /* USER CODE BEGIN EV */
@@ -305,6 +306,20 @@ void UART4_IRQHandler(void)
   /* USER CODE BEGIN UART4_IRQn 1 */
 
   /* USER CODE END UART4_IRQn 1 */
+}
+
+/**
+  * @brief This function handles USB FS global interrupt.
+  */
+void USB_DRD_FS_IRQHandler(void)
+{
+  /* USER CODE BEGIN USB_DRD_FS_IRQn 0 */
+
+  /* USER CODE END USB_DRD_FS_IRQn 0 */
+  HAL_PCD_IRQHandler(&hpcd_USB_DRD_FS);
+  /* USER CODE BEGIN USB_DRD_FS_IRQn 1 */
+
+  /* USER CODE END USB_DRD_FS_IRQn 1 */
 }
 
 /**

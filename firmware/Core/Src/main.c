@@ -17,8 +17,8 @@
   */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
+#include "app_threadx.h"
 #include "main.h"
-#include "cmsis_os2.h"
 #include "fdcan.h"
 #include "gpdma.h"
 #include "icache.h"
@@ -52,12 +52,11 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-// USBD_HandleTypeDef hUSBDDevice;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
-void MX_FREERTOS_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -73,6 +72,7 @@ void MX_FREERTOS_Init(void);
   */
 int main(void)
 {
+
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
@@ -100,33 +100,15 @@ int main(void)
   MX_FDCAN2_Init();
   MX_SPI1_Init();
   MX_USART1_UART_Init();
-  MX_USB_PCD_Init();
   MX_ICACHE_Init();
   MX_TIM3_Init();
   MX_TIM2_Init();
   MX_UART4_Init();
   /* USER CODE BEGIN 2 */
-  // /* Init Device Library */
-  // USBD_Init(&hUSBDDevice, &VCP_Desc, 0);
 
-  // /* Add Supported Class */
-  // USBD_RegisterClass(&hUSBDDevice, &USBD_CDC);
+  /* USER CODE END 2 */
 
-  // /* Add CDC Interface Class */
-  // USBD_CDC_RegisterInterface(&hUSBDDevice, &USBD_CDC_fops);
-
-  // /* Start Device Process */
-  // USBD_Start(&hUSBDDevice);
-  // /* USER CODE END 2 */
-
-  /* Init scheduler */
-  osKernelInitialize();
-
-  /* Call init function for freertos objects (in app_freertos.c) */
-  MX_FREERTOS_Init();
-
-  /* Start scheduler */
-  osKernelStart();
+  MX_ThreadX_Init();
 
   /* We should never get here as control is now taken by the scheduler */
 
@@ -232,10 +214,15 @@ void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */
-  //__disable_irq();
+  // __disable_irq();
+  HAL_GPIO_WritePin(LED_OK_GPIO_Port, LED_OK_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(LED_WARNING_GPIO_Port, LED_WARNING_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(LED_WARNING_GPIO_Port, LED_WARNING_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(SIG_AMS_ERROR_GPIO_Port, SIG_AMS_ERROR_Pin, GPIO_PIN_RESET);
+
   while (1)
   {
-    HAL_Delay(500);
+    HAL_Delay(100);
     HAL_GPIO_TogglePin(LED_ERROR_GPIO_Port, LED_ERROR_Pin);
   }
   /* USER CODE END Error_Handler_Debug */

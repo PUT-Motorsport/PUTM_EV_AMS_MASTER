@@ -16,8 +16,9 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
 
-# find_package(PythonInterp 2.7 REQUIRED)
-# find_package(PythonLibs 2.7 REQUIRED)
+# Find python packages and include them in cmake 
+find_package(PythonInterp 3.12 REQUIRED)
+find_package(PythonLibs 3.12 REQUIRED)
 
 # Define the build type
 if(NOT CMAKE_BUILD_TYPE)
@@ -33,42 +34,41 @@ include("cmake/gcc-arm-none-eabi.cmake")
 # Enable compile command to ease indexing with e.g. clangd
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 
-# Enable CMake support for ASM and C languages
-enable_language(C ASM CXX)
-
 # Core project settings
 project(${CMAKE_PROJECT_NAME})
-# message("Build type: " ${CMAKE_BUILD_TYPE})
+message("Build type: " ${CMAKE_BUILD_TYPE})
+
+# Enable CMake support for ASM and C languages
+enable_language(C ASM)
 
 # Create an executable object type
 add_executable(${CMAKE_PROJECT_NAME})
 
 # Add STM32CubeMX generated sources
 add_subdirectory(cmake/stm32cubemx)
-# Add middleware for custom git submodules
+# Add Components
 add_subdirectory(Components)
+# Add Tasks
+add_subdirectory(Threads)
 
 # Link directories setup
 target_link_directories(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined library search paths
 )
 
-file(GLOB CXX_SRC "${PROJECT_SOURCE_DIR}/Core/Src/*.cpp")
-# message(CXX_SRC=${CXX_SRC})
+file(GLOB UX_DCD_STM32_SRC "${CMAKE_CURRENT_SOURCE_DIR}/Middlewares/ST/usbx/common/usbx_stm32_device_controllers/ux_dcd_stm32_*.c")
+# message(UX_DCD_STM32_SRC=${UX_DCD_STM32_SRC})
 
 # Add sources to executable
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
+    ${UX_DCD_STM32_SRC}
     # Add user sources here
-    ${CXX_SRC}
-    # ${PROJECT_SOURCE_DIR}/Core/Src/usbd_conf.c
-    # ${PROJECT_SOURCE_DIR}/Core/Src/usbd_desc.c
 )
 
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined include paths
-    # Added by ST
-    # ${PROJECT_SOURCE_DIR}/Core/Inc
+    ${CMAKE_CURRENT_SOURCE_DIR}/Middlewares/ST/usbx/common/usbx_stm32_device_controllers/
 )
 
 # Add project symbols (macros)
@@ -81,15 +81,15 @@ target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
 target_link_libraries(${CMAKE_PROJECT_NAME}
     stm32cubemx
 
-    # Add user defined libraries
+    # Add user defined libraries    
 )
 
-# Modify HAL drivers
+# Modify HAL drivers this will not work without find package
 add_custom_target(
     CUSTOM_COMMANDS ALL
     COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/Scripts/custom_spi.py ${CMAKE_CURRENT_SOURCE_DIR}
     COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/Scripts/custom_uart.py ${CMAKE_CURRENT_SOURCE_DIR}
-    COMMENT "Modifing HAL drivers"
+    COMMENT "Modifing HAL drivers"  
 )
 
 add_dependencies(${CMAKE_PROJECT_NAME} CUSTOM_COMMANDS)

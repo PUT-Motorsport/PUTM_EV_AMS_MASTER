@@ -1,0 +1,16 @@
+set(ADS131M04_LIBRARY_INC 
+    ${CMAKE_CURRENT_SOURCE_DIR}/Inc 
+)
+
+set(ADS131M04_LIBRARY_SRC
+    ${CMAKE_CURRENT_SOURCE_DIR}/Src/ads131m04.cpp
+)
+
+add_library(ADS131M04_LIBRARY INTERFACE)
+# target_include_directories(PUTM_EV_CAN_LIBRARY INTERFACE ${MX_Include_Dirs})
+target_include_directories(ADS131M04_LIBRARY INTERFACE ${ADS131M04_LIBRARY_INC})
+target_sources(ADS131M04_LIBRARY PUBLIC ${ADS131M04_LIBRARY_SRC})
+
+target_link_libraries(${CMAKE_PROJECT_NAME} ADS131M04_LIBRARY)
+
+message("ADS131M04 included in the project")
