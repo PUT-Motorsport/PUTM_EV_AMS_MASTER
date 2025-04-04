@@ -151,7 +151,7 @@ ULONG                   device_state;
 
         /* Check if the endpoint is STALLED. In this case, we must refuse the transaction until the endpoint
            has been reset by the host.  */
-        while (endpoint->ux_slave_endpoint_state == UX_ENDPOINT_HALTED)
+        while (endpoint -> ux_slave_endpoint_state == UX_ENDPOINT_HALTED)
 
             /* Wait for 100ms for endpoint to be reset by a CLEAR_FEATURE command.  */
             _ux_utility_delay_ms(100);

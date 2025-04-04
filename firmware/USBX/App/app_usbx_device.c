@@ -49,18 +49,11 @@
 static ULONG cdc_acm_interface_number;
 static ULONG cdc_acm_configuration_number;
 static UX_SLAVE_CLASS_CDC_ACM_PARAMETER cdc_acm_parameter;
-static TX_THREAD ux_device_app_thread;
 
 /* USER CODE BEGIN PV */
-static TX_THREAD ux_cdc_read_thread;
-static TX_THREAD ux_cdc_write_thread;
-
-static UCHAR ux_cdc_read_thread_memory_pool[2*1024];
-static UCHAR ux_cdc_write_thread_memory_pool[2*1024];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
-static VOID app_ux_device_thread_entry(ULONG thread_input);
 static UINT USBD_ChangeFunction(ULONG Device_State);
 /* USER CODE BEGIN PFP */
 /* USER CODE END PFP */
@@ -95,7 +88,6 @@ UINT MX_USBX_Device_Init(VOID *memory_ptr)
   {
     /* USER CODE BEGIN USBX_ALLOCATE_STACK_ERROR */
     Error_Handler();
-    return TX_POOL_ERROR;
     /* USER CODE END USBX_ALLOCATE_STACK_ERROR */
   }
 
@@ -104,7 +96,6 @@ UINT MX_USBX_Device_Init(VOID *memory_ptr)
   {
     /* USER CODE BEGIN USBX_SYSTEM_INITIALIZE_ERROR */
     Error_Handler();
-    return UX_ERROR;
     /* USER CODE END USBX_SYSTEM_INITIALIZE_ERROR */
   }
 
@@ -135,7 +126,6 @@ UINT MX_USBX_Device_Init(VOID *memory_ptr)
   {
     /* USER CODE BEGIN USBX_DEVICE_INITIALIZE_ERROR */
     Error_Handler();
-    return UX_ERROR;
     /* USER CODE END USBX_DEVICE_INITIALIZE_ERROR */
   }
 
@@ -163,76 +153,23 @@ UINT MX_USBX_Device_Init(VOID *memory_ptr)
   {
     /* USER CODE BEGIN USBX_DEVICE_CDC_ACM_REGISTER_ERROR */
     Error_Handler();
-    return UX_ERROR;
     /* USER CODE END USBX_DEVICE_CDC_ACM_REGISTER_ERROR */
   }
-
-  /* Allocate the stack for device application main thread */
-  if (tx_byte_allocate(byte_pool, (VOID **) &pointer, UX_DEVICE_APP_THREAD_STACK_SIZE,
-                       TX_NO_WAIT) != TX_SUCCESS)
-  {
-    /* USER CODE BEGIN MAIN_THREAD_ALLOCATE_STACK_ERROR */
-    Error_Handler();
-    return TX_POOL_ERROR;
-    /* USER CODE END MAIN_THREAD_ALLOCATE_STACK_ERROR */
-  }
-
-  /* Create the device application main thread */
-  if (tx_thread_create(&ux_device_app_thread, UX_DEVICE_APP_THREAD_NAME, app_ux_device_thread_entry,
-                       0, pointer, UX_DEVICE_APP_THREAD_STACK_SIZE, UX_DEVICE_APP_THREAD_PRIO,
-                       UX_DEVICE_APP_THREAD_PREEMPTION_THRESHOLD, UX_DEVICE_APP_THREAD_TIME_SLICE,
-                       UX_DEVICE_APP_THREAD_START_OPTION) != TX_SUCCESS)
-  {
-    /* USER CODE BEGIN MAIN_THREAD_CREATE_ERROR */
-    Error_Handler();
-    return TX_THREAD_ERROR;
-    /* USER CODE END MAIN_THREAD_CREATE_ERROR */
-  }
-
   /* USER CODE BEGIN MX_USBX_Device_Init1 */
-  /* Allocate memory for the UX RX thread */
-  /* Create the UX RX thread */
-  if(tx_thread_create(&ux_cdc_read_thread, "cdc_acm_read_usbx_app_thread_entry", usbx_cdc_acm_read_thread_entry, 0, ux_cdc_read_thread_memory_pool, 2*1024, 20, 20, TX_NO_TIME_SLICE, TX_AUTO_START) != TX_SUCCESS)
-  {
-    Error_Handler();
-    return TX_THREAD_ERROR;
-  }
-  /* Allocate memory for the UX TX thread */
-  /* Create the UX TX thread */
-  if(tx_thread_create(&ux_cdc_write_thread, "cdc_acm_write_usbx_app_thread_entry", usbx_cdc_acm_write_thread_entry, 0, ux_cdc_write_thread_memory_pool, 2*1024, 20, 20, TX_NO_TIME_SLICE, TX_AUTO_START) != TX_SUCCESS)
-  {
-    Error_Handler();
-    return TX_THREAD_ERROR;
-  }
-  /* USER CODE END MX_USBX_Device_Init1 */
-
-  return ret;
-}
-
-/**
-  * @brief  Function implementing app_ux_device_thread_entry.
-  * @param  thread_input: User thread input parameter.
-  * @retval none
-  */
-static VOID app_ux_device_thread_entry(ULONG thread_input)
-{
-  /* USER CODE BEGIN app_ux_device_thread_entry */
-  tx_thread_sleep(100);
-
   MX_USB_PCD_Init();
   HAL_PCDEx_PMAConfig(&hpcd_USB_DRD_FS, 0x00 , PCD_SNG_BUF, 0x40);
   HAL_PCDEx_PMAConfig(&hpcd_USB_DRD_FS, 0x80 , PCD_SNG_BUF, 0x80);
   HAL_PCDEx_PMAConfig(&hpcd_USB_DRD_FS, 0x01, PCD_SNG_BUF, 0xC0);
   HAL_PCDEx_PMAConfig(&hpcd_USB_DRD_FS, 0x81, PCD_SNG_BUF, 0x100);
   HAL_PCDEx_PMAConfig(&hpcd_USB_DRD_FS, 0x82, PCD_SNG_BUF, 0x140);
-  ux_dcd_stm32_initialize(0U, (ULONG)&hpcd_USB_DRD_FS);
+  ux_dcd_stm32_initialize((0), (ULONG)&hpcd_USB_DRD_FS);
   HAL_PCD_Start(&hpcd_USB_DRD_FS);
+  /* USER CODE END MX_USBX_Device_Init1 */
 
-  while(1) tx_thread_sleep(100);
-  // tx_thread_delete(tx_thread_identify);
-  /* USER CODE END app_ux_device_thread_entry */
+  return ret;
 }
-
+ULONG state[8];
+size_t i = 0;
 /**
   * @brief  USBD_ChangeFunction
   *         This function is called when the device state changes.
@@ -244,7 +181,9 @@ static UINT USBD_ChangeFunction(ULONG Device_State)
    UINT status = UX_SUCCESS;
 
   /* USER CODE BEGIN USBD_ChangeFunction0 */
-
+  state[i] = Device_State;
+  i++;
+  if(i == 8) i = 0;
   /* USER CODE END USBD_ChangeFunction0 */
 
   switch (Device_State)

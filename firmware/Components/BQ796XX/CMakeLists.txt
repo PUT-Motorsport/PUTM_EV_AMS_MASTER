@@ -11,6 +11,3 @@ add_library(BQ796XX_LIBRARY INTERFACE)
 target_include_directories(BQ796XX_LIBRARY INTERFACE ${BQ796XX_LIBRARY_INC})
 target_sources(BQ796XX_LIBRARY PUBLIC ${BQ796XX_LIBRARY_SRC})
 
-target_link_libraries(${CMAKE_PROJECT_NAME} BQ796XX_LIBRARY)
-
-message("BQ796XX included in the project")

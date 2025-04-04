@@ -44,9 +44,6 @@ extern "C" {
 /* Exported constants --------------------------------------------------------*/
 #define USBX_DEVICE_MEMORY_STACK_SIZE       12*1024
 
-#define UX_DEVICE_APP_THREAD_STACK_SIZE   8*1024
-#define UX_DEVICE_APP_THREAD_PRIO         10
-
 /* USER CODE BEGIN EC */
 
 /* USER CODE END EC */
@@ -67,22 +64,6 @@ UINT MX_USBX_Device_Init(VOID *memory_ptr);
 /* USER CODE BEGIN PD */
 
 /* USER CODE END PD */
-
-#ifndef UX_DEVICE_APP_THREAD_NAME
-#define UX_DEVICE_APP_THREAD_NAME  "USBX Device App Main Thread"
-#endif
-
-#ifndef UX_DEVICE_APP_THREAD_PREEMPTION_THRESHOLD
-#define UX_DEVICE_APP_THREAD_PREEMPTION_THRESHOLD  UX_DEVICE_APP_THREAD_PRIO
-#endif
-
-#ifndef UX_DEVICE_APP_THREAD_TIME_SLICE
-#define UX_DEVICE_APP_THREAD_TIME_SLICE  TX_NO_TIME_SLICE
-#endif
-
-#ifndef UX_DEVICE_APP_THREAD_START_OPTION
-#define UX_DEVICE_APP_THREAD_START_OPTION  TX_AUTO_START
-#endif
 
 /* USER CODE BEGIN 1 */
 

@@ -147,7 +147,7 @@ ULONG ep_num = ep_addr & 0x7Fu;
 
     if (ep_num >= UX_DCD_STM32_MAX_ED ||
         ep_num >= dcd_stm32->pcd_handle->Init.dev_endpoints)
-        return(UX_NULL);
+        return(NULL);
 
 #if defined(UX_DEVICE_BIDIRECTIONAL_ENDPOINT_SUPPORT)
     if (ep_dir)

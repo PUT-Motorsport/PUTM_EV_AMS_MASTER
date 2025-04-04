@@ -43,7 +43,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
-static UX_SLAVE_CLASS_CDC_ACM *cdc_acm;
+UX_SLAVE_CLASS_CDC_ACM *cdc_acm;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -81,7 +81,7 @@ VOID USBD_CDC_ACM_Activate(VOID *cdc_acm_instance)
 VOID USBD_CDC_ACM_Deactivate(VOID *cdc_acm_instance)
 {
   /* USER CODE BEGIN USBD_CDC_ACM_Deactivate */
-  UX_PARAMETER_NOT_USED(cdc_acm_instance);
+  cdc_acm = TX_NULL;
   /* USER CODE END USBD_CDC_ACM_Deactivate */
 
   return;
@@ -103,34 +103,4 @@ VOID USBD_CDC_ACM_ParameterChange(VOID *cdc_acm_instance)
 }
 
 /* USER CODE BEGIN 1 */
-VOID usbx_cdc_acm_write_thread_entry(ULONG thread_input)
-{
-  /* Private Variables */
-  ULONG tx_actual_length;
-  const uint8_t message[] = "USBX Application Running!\r\n";
-  while(1)
-  {
-    if(cdc_acm != UX_NULL)
-    {
-      ux_device_class_cdc_acm_write(cdc_acm, (UCHAR *)(message), sizeof(message), &tx_actual_length);
-    }
-    tx_thread_sleep(100);
-  }
-}
-
-VOID usbx_cdc_acm_read_thread_entry(ULONG thread_input)
-{
-  /* Private Variables */
-  ULONG rx_actual_length;
-  uint8_t UserRxBuffer[64];
-  /* Infinite Loop */
-  while(1)
-  {
-    if(cdc_acm != UX_NULL)
-    {
-      ux_device_class_cdc_acm_read(cdc_acm, (UCHAR *)UserRxBuffer, 64, &rx_actual_length);
-    }
-    tx_thread_sleep(100);
-  }
-}
 /* USER CODE END 1 */

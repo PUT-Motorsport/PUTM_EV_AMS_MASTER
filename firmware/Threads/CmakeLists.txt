@@ -7,6 +7,10 @@ set(TASK_LIBRARY_SRC
     ${CMAKE_CURRENT_SOURCE_DIR}/Src/bq796xx_thread.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Src/ads131m04_thread.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Src/main_thread.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/Src/init_threads.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/Src/usb_com_thread.cpp
+    # ${CMAKE_CURRENT_SOURCE_DIR}/Src/usb_rx_thread.cpp
+    # ${CMAKE_CURRENT_SOURCE_DIR}/Src/usb_tx_thread.cpp
 )
 
 add_library(TASK_LIBRARY INTERFACE)

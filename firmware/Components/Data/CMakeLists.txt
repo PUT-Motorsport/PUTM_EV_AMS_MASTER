@@ -1,0 +1,6 @@
+set(DATA_LIBRARY_INC 
+    ${CMAKE_CURRENT_SOURCE_DIR}/Inc 
+)
+
+add_library(DATA_LIBRARY INTERFACE)
+target_include_directories(DATA_LIBRARY INTERFACE ${DATA_LIBRARY_INC})
