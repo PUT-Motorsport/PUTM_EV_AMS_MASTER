@@ -3,4 +3,4 @@ set(CONFIG_LIBRARY_INC
 )
 
 add_library(CONFIG_LIBRARY INTERFACE)
-target_include_directories(CONFIG_LIBRARY INTERFACE ${DATA_LIBRARY_INC})
+target_include_directories(CONFIG_LIBRARY INTERFACE ${CONFIG_LIBRARY_INC})

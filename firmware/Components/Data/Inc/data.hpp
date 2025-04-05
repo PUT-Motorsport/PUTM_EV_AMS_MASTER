@@ -19,6 +19,7 @@ namespace PUTM
         static float cell_voltages[Config::STACK_SIZE][Config::CELL_COUNT] { 0.f };
         static float cell_temperatures[Config::STACK_SIZE][Config::TEMPERATURES_COUNT] { 0.f };
 
-        
+        /* generic error flag it should be raised if error condition was found */
+        static bool error;
     }
 }
