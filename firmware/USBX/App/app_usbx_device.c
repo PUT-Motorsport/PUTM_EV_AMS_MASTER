@@ -155,6 +155,7 @@ UINT MX_USBX_Device_Init(VOID *memory_ptr)
     Error_Handler();
     /* USER CODE END USBX_DEVICE_CDC_ACM_REGISTER_ERROR */
   }
+
   /* USER CODE BEGIN MX_USBX_Device_Init1 */
   MX_USB_PCD_Init();
   HAL_PCDEx_PMAConfig(&hpcd_USB_DRD_FS, 0x00 , PCD_SNG_BUF, 0x40);
@@ -168,8 +169,7 @@ UINT MX_USBX_Device_Init(VOID *memory_ptr)
 
   return ret;
 }
-ULONG state[8];
-size_t i = 0;
+
 /**
   * @brief  USBD_ChangeFunction
   *         This function is called when the device state changes.
