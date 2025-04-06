@@ -218,6 +218,7 @@ void Error_Handler(void)
   HAL_GPIO_WritePin(LED_OK_GPIO_Port, LED_OK_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(LED_WARNING_GPIO_Port, LED_WARNING_Pin, GPIO_PIN_SET);
   HAL_GPIO_WritePin(SIG_AMS_ERROR_GPIO_Port, SIG_AMS_ERROR_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(LED_ERROR_GPIO_Port, LED_ERROR_Pin, GPIO_PIN_RESET);
   while (1)
   {
   }

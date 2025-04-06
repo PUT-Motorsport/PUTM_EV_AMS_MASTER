@@ -181,9 +181,7 @@ static UINT USBD_ChangeFunction(ULONG Device_State)
    UINT status = UX_SUCCESS;
 
   /* USER CODE BEGIN USBD_ChangeFunction0 */
-  state[i] = Device_State;
-  i++;
-  if(i == 8) i = 0;
+  
   /* USER CODE END USBD_ChangeFunction0 */
 
   switch (Device_State)

@@ -9,9 +9,9 @@ extern "C"
 #endif /* __cplusplus */
 
 /**
- *  @brief  Initialize all threads
+ *  @brief  Initialize stuf
  */
-VOID init_static_threads();
+VOID init();
 
 /**
  *  @brief  Main thread, manages all other threads states, internal states etc.

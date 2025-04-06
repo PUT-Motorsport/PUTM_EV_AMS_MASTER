@@ -62,7 +62,7 @@ UINT App_ThreadX_Init(VOID *memory_ptr)
   /* USER CODE BEGIN App_ThreadX_MEM_POOL */
   /* USER CODE END App_ThreadX_MEM_POOL */
   /* USER CODE BEGIN App_ThreadX_Init */
-  init_static_threads();
+  init();
   /* USER CODE END App_ThreadX_Init */
 
   return ret;

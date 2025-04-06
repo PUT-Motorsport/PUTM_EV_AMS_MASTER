@@ -93,3 +93,10 @@ add_custom_target(
 )
 
 add_dependencies(${CMAKE_PROJECT_NAME} CUSTOM_COMMANDS)
+
+# Add user compile flags
+set(GCC_USER_COMPILE_FLAGS
+    # g++ throws ((void*)0) conversion errors in threadx libs -> allow it
+    "-fpermissive"    
+)
+set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_USER_COMPILE_FLAGS}")

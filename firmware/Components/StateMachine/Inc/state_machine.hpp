@@ -38,17 +38,34 @@ namespace PUTM
         StateEdge* next_edge { nullptr };
     };
     
-    struct StateMachine
+    class StateMachine
     {
     public:
         State* current_state { nullptr };
     public:
+        /**
+         *  @brief  Udate state machine, call on_update fun
+         */
         void update();
     public:
+        /**
+         *  @brief  Start state machine from state
+         *  @param  state Pointer to the first state from which the machine should start
+         */
         void start(State* state);
     private:
+        /**
+         *  @brief  Add edges helper function
+         *  @param  edge Pointer to the next edge to be initialized by the state machine
+         */
         void add_edges_helper(StateEdge *edge);
     public:
+        /**
+         *  @brief  Variadic param function which adds multiple edges 
+         *  @tparam ARGS Variadic template param it accepts all StateEdge classes
+         *  @param  args variadic param for multiple edge init, pass all the defined edges
+         *          to this function
+         */
         template<typename ... ARGS>
         void add_edges(ARGS&&... args)
         {

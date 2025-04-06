@@ -1,7 +1,8 @@
-#include "threads.hpp"
-
 #include "main.h"
 #include "tx_api.h"
+#include "ArduinoJson.h"
+
+#include "threads.hpp"
 
 TX_THREAD test_thread;
 static constexpr size_t test_thread_pool_size { 1024U };
@@ -31,10 +32,7 @@ TX_THREAD usb_rx_thread;
 static constexpr size_t usb_rx_thread_pool_size { 1024U };
 uint8_t usb_rx_thread_pool[usb_rx_thread_pool_size];
 
-extern TX_MUTEX tx_buffer_mutex;
-extern TX_MUTEX rx_buffer_mutex;
-
-VOID init_static_threads()
+VOID init()
 {
     // tx_thread_create(test_thread, "Test thread", test_thread_entry, 0U, test_thread_pool, test_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
     tx_thread_create(&bq796xx_thread, (CHAR*)"BQ796XX thread", bq796xx_thread_entry, 0U, bq796xx_thread_pool, bq796xx_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
@@ -44,6 +42,7 @@ VOID init_static_threads()
     tx_thread_create(&usb_tx_thread, (CHAR*)"USB TX thread", usb_tx_thread_entry, 0U, usb_tx_thread_pool, usb_tx_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
     tx_thread_create(&usb_rx_thread, (CHAR*)"USB RX thread", usb_rx_thread_entry, 0U, usb_rx_thread_pool, usb_rx_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
 
+    // tx_byte_pool_create(json_byte_pool, "Json byte pool", &json_byte_pool_pool, json_byte_pool_size);
     // tx_thread_suspend(&usb_com_thread);
     // tx_thread_suspend(&usb_tx_thread);
     // tx_thread_suspend(&usb_rx_thread);
