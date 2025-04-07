@@ -30,6 +30,10 @@ add_subdirectory(StateMachine)
 target_link_libraries(${CMAKE_PROJECT_NAME} STATE_MACHINE_LIBRARY)
 message("State Machine included in the project")
 
+add_subdirectory(ErrorChecker)
+target_link_libraries(${CMAKE_PROJECT_NAME} ERROR_CHECKER_LIBRARY)
+message("Error Checker included in the project")
+
 # ArduinoJson
 add_subdirectory(ArduinoJson)
 target_link_libraries(${CMAKE_PROJECT_NAME} ArduinoJson)

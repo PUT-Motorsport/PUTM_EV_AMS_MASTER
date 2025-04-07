@@ -63,13 +63,13 @@ namespace PUTM
         /**
          *  @brief  Variadic param function which adds multiple edges 
          *  @tparam ARGS Variadic template param it accepts all StateEdge classes
-         *  @param  args variadic param for multiple edge init, pass all the defined edges
+         *  @param  edges variadic param for multiple edge init, pass all the defined edges
          *          to this function
          */
         template<typename ... ARGS>
-        void add_edges(ARGS&&... args)
+        void add_edges(ARGS&&... edges)
         {
-            (add_edges_helper(&args), ...);
+            (add_edges_helper(&edges), ...);
         }
     };
 }

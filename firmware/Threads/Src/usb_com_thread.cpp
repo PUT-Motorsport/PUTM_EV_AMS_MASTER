@@ -36,6 +36,20 @@ extern UX_SLAVE_CLASS_CDC_ACM *cdc_acm;
 VOID usb_com_thread_entry(__unused ULONG thread_input)
 {
     /* give it some time? */
+    tx_thread_sleep(200);
+    MX_USB_PCD_Init();
+    HAL_PCDEx_PMAConfig(&hpcd_USB_DRD_FS, 0x00 , PCD_SNG_BUF, 0x40);
+    HAL_PCDEx_PMAConfig(&hpcd_USB_DRD_FS, 0x80 , PCD_SNG_BUF, 0x80);
+    HAL_PCDEx_PMAConfig(&hpcd_USB_DRD_FS, 0x01, PCD_SNG_BUF, 0xC0);
+    HAL_PCDEx_PMAConfig(&hpcd_USB_DRD_FS, 0x81, PCD_SNG_BUF, 0x100);
+    HAL_PCDEx_PMAConfig(&hpcd_USB_DRD_FS, 0x82, PCD_SNG_BUF, 0x140);
+    ux_dcd_stm32_initialize((0), (ULONG)&hpcd_USB_DRD_FS);
+    HAL_PCD_Start(&hpcd_USB_DRD_FS);
+
+    // while(true)
+    // {
+    //     tx_thread_sleep(1000);
+    // }
 }
 
 /**
