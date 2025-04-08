@@ -12,7 +12,7 @@ void StateMachine::update()
         current_state->on_update();
     }
 
-    StateEdge *edge = current_state->edge;
+    StateEdge *edge = current_state->first_edge;
     while(edge != nullptr)
     {
         if(edge->condition == nullptr) break;
@@ -47,16 +47,16 @@ void StateMachine::start(State* state)
 
 void StateMachine::add_edges_helper(StateEdge *edge)
 {
-    StateEdge **edge_container;
-
     if(edge == nullptr) return;
     if(edge->prev_state == nullptr) return;
-
-    edge_container = &edge->prev_state->edge;
-    while(*edge_container != nullptr) 
+    if(edge->prev_state->first_edge == nullptr)
     {
-        if(*edge_container == edge) return;
-        edge_container = &((*edge_container)->next_edge);
+        edge->prev_state->first_edge = edge;
+        edge->prev_state->last_edge = edge;
+        return;
     }
-    *edge_container = edge;
+    // FIXME: yes, user can brake this code if he really wants to
+    // maybe fix it some time
+    edge->prev_state->last_edge->next_edge = edge;
+    edge->prev_state->last_edge = edge;
 }

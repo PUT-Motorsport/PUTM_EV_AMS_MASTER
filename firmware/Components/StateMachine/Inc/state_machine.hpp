@@ -19,13 +19,16 @@ namespace PUTM
     
         /* PRIVATE */
         /* next edge, behaves like a list not meant for user */
-        StateEdge* edge { nullptr };
+        StateEdge* first_edge { nullptr };
+        /* last edge, behaves like a list not meant for user */
+        StateEdge* last_edge { nullptr };
     };
     
     struct StateEdge
     {
         /* edge name best practice is to name it for example "idle -> on" */
         const char *name = { "" };
+        // TODO: maybe change it to a standard 0->pass other not pass
         /* if condition returns true machine will pass onto next state */
         bool (*condition)(void) { nullptr };
         /* prev state */

@@ -5,6 +5,7 @@
 #include "data.hpp"
 #include "config.hpp"
 #include "state_machine.hpp"
+#include "error_checker.hpp"
 
 using namespace PUTM;
 
@@ -81,7 +82,6 @@ static uint32_t precharge_on_enter_tick;
 /**
  *  @brief  Start precharge
  *  @note   In this state AIR- and precharge relay are activated to start precharge process
- *          
  */
 static PUTM::State precharge
 {

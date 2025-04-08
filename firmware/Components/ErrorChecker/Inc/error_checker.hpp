@@ -1,17 +1,34 @@
 #pragma once
 
 #include "main.h"
+#include "limits"
 
 struct Error
 {
     /* error name */
-    const char *name { nullptr };
-    /* condition to be passed for error to be raised */
-    bool (*condition)() { nullptr };
-    
+    const char *name { "" };
+    /**
+     *  @brief  Pointer to a function which should check condtion for the error to be
+     *          raised
+     *  @note   While this functions just checks if the return value is different from 0,
+     *          it is advised to use unique error codes if one error type is checked 
+     *          against multipe unique conditions
+     *  @return The pointed function should return 0 when no errors where found, a value 
+     *          bigger than 0 when an error was found
+     */
+    uint32_t (*condition)(void) { nullptr };
     
     /* PRIVATE */
     Error *next_error { nullptr };
+    uint32_t id { std::numeric_limits<uint32_t>::max() };
+};
+
+template<size_t SIZE>
+class ErrorLogger
+{
+public:
+
+private:
 };
 
 class ErrorChecker
@@ -36,6 +53,9 @@ public:
     }
 
 private:
-    /* added errors behave like list Error checker remembers the first one */
+    /* Added errors behave like list Error checker remembers the first one */
     Error *next_error { nullptr };
+    /* Last added error */
+    Error *last_error { nullptr };
+    uint32_t error_types_count { };
 };
