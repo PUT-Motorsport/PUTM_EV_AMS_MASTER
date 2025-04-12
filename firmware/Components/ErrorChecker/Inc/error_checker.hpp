@@ -29,8 +29,13 @@ struct Error
      *  @return String with the error message, it should be a static string.
      */
     const char* (*parse)(uint32_t) { nullptr };
+    
     /* PRIVATE */
     Error *next_error { nullptr };
+    /* it is used to determine the rate at which the error is detected, its sampled if last time_stamp was long time ago */
+    uint32_t time_stamp;
+    /* counts errors in a certain time frame, resets if last `time_stamp` was long time ago */
+    uint32_t count;
 };
 
 /**

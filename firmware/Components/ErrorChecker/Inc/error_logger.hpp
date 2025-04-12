@@ -10,7 +10,10 @@ struct ErrorLog
     uint32_t code { 0 };
     /* Error message */
     const char *message { "" };
+    /* Time stamp */
+    uint32_t timestamp { 0 };
 }
+
 
 template<size_t SIZE>
 class ErrorLogger
