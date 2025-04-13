@@ -1,5 +1,7 @@
 #include "error_checker.hpp"
 
+using namespace PUTM;
+
 void ErrorChecker::add_errors_helper(Error *error)
 {
     // how?
@@ -16,4 +18,11 @@ void ErrorChecker::add_errors_helper(Error *error)
         last_error->next_error = error;
         last_error = error;
     }
+}
+
+bool ErrorChecker::check_errors()
+{
+    /* Update errors */
+
+    /* Check for true errors */
 }

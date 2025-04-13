@@ -57,12 +57,14 @@ void hv_on()
     sig_air_pre.reset();
 }
 
+/* State machine */
+
 /**
  *  @brief  Idle state
  *  @note   In this state not much happens the state machine set GPIO pins to their desired 
  *          default state
  */
-static PUTM::State idle
+static State idle
 {
     .name = "idle",
     .on_enter = []()
@@ -83,7 +85,7 @@ static uint32_t precharge_on_enter_tick;
  *  @brief  Start precharge
  *  @note   In this state AIR- and precharge relay are activated to start precharge process
  */
-static PUTM::State precharge
+static State precharge
 {
     .name = "precharge",
     .on_enter = []()
@@ -98,7 +100,7 @@ static PUTM::State precharge
 /**
  *  @brief  On state
  */
-static PUTM::State on
+static State on
 {
     .name = "on",
     .on_enter = []()
@@ -113,7 +115,7 @@ static PUTM::State on
  *  @brief  Error state
  *  @note   If AMS detects an error the machine will be stuck in this state 
  */
-static PUTM::State error
+static State error
 {
     .name = "error",
     .on_enter = []()
@@ -128,7 +130,7 @@ static PUTM::State error
     // .on_exit = [](){ }
 };
 
-static PUTM::StateEdge idle_to_precharge
+static StateEdge idle_to_precharge
 {
     .name = "idle -> precharge",
     .condition = []() -> bool
@@ -140,7 +142,7 @@ static PUTM::StateEdge idle_to_precharge
     .next_state = &precharge,
 };
 
-static PUTM::StateEdge idle_to_error
+static StateEdge idle_to_error
 {
     .name = "idle -> error",
     .condition = []() -> bool
@@ -151,7 +153,7 @@ static PUTM::StateEdge idle_to_error
     .next_state = &error,
 };
 
-static PUTM::StateEdge precharge_to_on
+static StateEdge precharge_to_on
 {
     .name = "precharge -> on",
     .condition = []() -> bool
@@ -164,7 +166,7 @@ static PUTM::StateEdge precharge_to_on
     .next_state = &on,
 };
 
-// static PUTM::StateEdge precharge_to_idle
+// static StateEdge precharge_to_idle
 // {
 //     .name = "precharge -> idle",
 //     .condition = []() -> bool
@@ -175,7 +177,7 @@ static PUTM::StateEdge precharge_to_on
 //     .next_state = &on,
 // };
 
-static PUTM::StateEdge precharge_to_error
+static StateEdge precharge_to_error
 {
     .name = "precharge -> error",
     .condition = []() -> bool
@@ -191,7 +193,7 @@ static PUTM::StateEdge precharge_to_error
     .next_state = &error,
 };
 
-static PUTM::StateEdge on_to_idle
+static StateEdge on_to_idle
 {
     .name = "on -> idle",
     .condition = []() -> bool
@@ -202,7 +204,7 @@ static PUTM::StateEdge on_to_idle
     .next_state = &idle,
 };
 
-static PUTM::StateEdge on_to_error
+static StateEdge on_to_error
 {
     .name = "on -> error",
     .condition = []() -> bool
@@ -214,7 +216,55 @@ static PUTM::StateEdge on_to_error
     .next_state = &error,
 };
 
-static PUTM::StateMachine state_machine;
+static StateMachine state_machine;
+
+/* Error handler */
+
+static Error com_error
+{
+    .name = "Communication error",
+    .timeout
+    .condition = []() -> uint32_t 
+    {
+        return 0;
+    }
+};
+
+static Error vcell_error
+{
+    .name = "Cell voltage error",
+    .condition = []() -> uint32_t 
+    {
+
+    }
+};
+
+static Error tcell_error
+{
+    .name = "Temperatures voltage error",
+    .condition = []() -> uint32_t 
+    {
+
+    }
+};
+
+static Error current_error
+{
+    .name = "Current error",
+    .condition = []() -> uint32_t 
+    {
+
+    }
+};
+
+static Error v_error
+{
+    .name = "Voltage Car/Acu error",
+    .condition []() -> uint32_t 
+    {
+
+    }
+};
 
 VOID main_thread_entry(__unused ULONG thread_input)
 {

@@ -33,5 +33,9 @@ namespace PUTM
 
         /* Delay between packet sends */
         static constexpr uint32_t USB_TX_DELAY { 200 };
+
+        // FIXME: maybe shorten the timeout on the board so the soft timeout can be lenghthen
+        /* Error check timeout */
+        static constexpr uint32_t ERROR_TIMEOUT { 200 };
     }
 }
