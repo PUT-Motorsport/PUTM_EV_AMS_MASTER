@@ -5,10 +5,27 @@
 
 namespace PUTM
 {
-    struct Error
+    /**
+     *  @brief  Error info class which is used to store the private error information
+     */
+    struct ErrorInfo
+    {
+    protected:
+        friend struct ErrorChecker;
+        /* Next error in the list */
+        Error *next_error { nullptr };
+        /* Next raised error in the list */
+        Error *next_raised_error { nullptr };
+        /* First time stamp at which the error was detected */
+        uint32_t timestamp { 0 };
+        /* */
+        uint32_t accumulator { 0 };
+    };
+
+    struct Error : public ErrorInfo
     {
         /* Error name */
-        const char *name { "" };
+        const char *name { nullptr };
         /* If error persists for longer than the timeout value, an true error will be raised */
         uint32_t timeout { 0 }; 
         /**
@@ -33,13 +50,6 @@ namespace PUTM
          *  @return String with the error message, it should be a static string.
          */
         const char* (*parse)(uint32_t) { nullptr };
-        
-        /* PRIVATE */
-        Error *next_error { nullptr };
-        /* it is used to determine the rate at which the error is detected, its sampled if last time_stamp was long time ago */
-        uint32_t time_stamp;
-        /* counts errors in a certain time frame, resets if last `time_stamp` was long time ago */
-        uint32_t count;
     };
 
     /**
@@ -68,18 +78,51 @@ namespace PUTM
         {
             (add_erros_helper(&errors), ...);
         }
-
+    public:
         /**
          *  @brief  Function which checks for errors in the system
+         *  @param  tick Time stamp of the system tick
          *  @note   This function should be called periodically to check for errors in the 
          *          system. It will check all the errors in the list and log them if they 
          *          are found.
+         * @return  True if an error was found, false otherwise
          */
-        bool check_errors(void);
+        bool check_errors(uint32_t tick);
+    public:
+        /**
+         *  @brief  If an error was raised, this function will return the next error in the list
+         *  @param  tick Time stamp of the system tick
+         *  @note   This function should be called when `check_errors` returns true. It will return 
+         *          the next error in the list which was raised. If no error was raised, it will return 
+         *          nullptr.
+         *  @return Pointer to the local copy of next error in the list which was raised, or nullptr 
+         *          if no more errors were detected.
+         */
+        Error* get_next_error();
+    public:
+        const char* get_error_message(uint32_t code)
+        {
+            /* Check if error is valid */
+            if(code == 0) return nullptr;
+            /* Check if error is valid */
+            if(next_error == nullptr) return nullptr;
+            /* Check if error is valid */
+            if(last_error == nullptr) return nullptr;
+            /* Check if error is valid */
+            if(last_error->parse == nullptr) return nullptr;
+            /* Parse the error code and return the error message */
+            return last_error->parse(code);
+        }
     private:
         /* Added errors behave like list Error checker remembers the first one */
         Error *next_error { nullptr };
         /* Last added error */
         Error *last_error { nullptr };
+        /* Next raised error */
+        Error *next_raised_error { nullptr };
+        /* Last raised error */
+        Error *last_raised_error { nullptr };
+        /* Error local copy */
+        Error raised_error_copy { nullptr };
     };
 }
