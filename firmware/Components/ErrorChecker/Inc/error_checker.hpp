@@ -5,6 +5,7 @@
 
 namespace PUTM
 {
+    struct Error;
     /**
      *  @brief  Error info class which is used to store the private error information
      */
@@ -16,18 +17,27 @@ namespace PUTM
         Error *next_error { nullptr };
         /* Next raised error in the list */
         Error *next_raised_error { nullptr };
+        /* Error added to raised list */
+        bool added_to_raised_list { false };
         /* First time stamp at which the error was detected */
         uint32_t timestamp { 0 };
-        /* */
-        uint32_t accumulator { 0 };
+        /* Time accumulator in [ms], its used to abstract the error timeout */
+        int32_t accumulator { 0 };
     };
 
+    /**
+     *  @brief  Error class which is used to store the error information
+     *  @note   The inherence from ErrorInfo allows this class to be trivially constructible
+     *          while allowing for protected parameters.
+     */
     struct Error : public ErrorInfo
     {
         /* Error name */
         const char *name { nullptr };
         /* If error persists for longer than the timeout value, an true error will be raised */
-        uint32_t timeout { 0 }; 
+        int32_t timeout { 0 }; 
+        /* Last error code */
+        uint32_t last_code { 0 };
         /**
          *  @brief  Pointer to a function which should check condtion for the error to be
          *          raised
@@ -76,7 +86,7 @@ namespace PUTM
         template<typename ... ARGS>
         void add_errors(ARGS&&... errors)
         {
-            (add_erros_helper(&errors), ...);
+            (add_errors_helper(&errors), ...);
         }
     public:
         /**
@@ -123,6 +133,6 @@ namespace PUTM
         /* Last raised error */
         Error *last_raised_error { nullptr };
         /* Error local copy */
-        Error raised_error_copy { nullptr };
+        Error raised_error_copy { };
     };
 }

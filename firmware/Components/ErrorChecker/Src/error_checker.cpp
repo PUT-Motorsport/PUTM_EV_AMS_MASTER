@@ -24,6 +24,8 @@ void ErrorChecker::add_errors_helper(Error *error)
 
 bool ErrorChecker::check_errors(uint32_t tick)
 {
+    /* Error was found */
+    bool error_found = false;
     /* Update errors */
     Error *error = next_error;
     while(error != nullptr)
@@ -35,36 +37,50 @@ bool ErrorChecker::check_errors(uint32_t tick)
         
         /* Check for errors */
         uint32_t code = error->condition();
+        /* First time? */
         if(error->timestamp == 0)
         {
             error->timestamp = tick;
             continue;
         }
+
+        /* *Time accumulator* */
         uint32_t time = tick - error->timestamp;
         if(code != 0)
         {
-            if(time > error->timeout)
-            {
-                /* True error was found, log it */
-                // log_error(error->name, code, error->parse(code));
-                // reset the error
-                error->count = 0;
-            }
-            else
-            {
-                /* Error was found, but it is not a true error yet */
-                // log_error(error->name, code, error->parse(code));
-                // increment the count
-                error->count++;
-            }
+            error->accumulator += time;
         }
         else
         {
-
+            error->accumulator -= time;
+            if(error->accumulator < 0) error->accumulator = 0;
+        }
+        
+        /* Check for timeout */
+        if(error->accumulator > error->timeout)
+        {
+            error_found = true;
+            if(next_raised_error == nullptr)
+            {
+                /* Begin listing */
+                next_raised_error = error;
+                last_raised_error = error;
+            }
+            /* Prevent looping */
+            else if(error->added_to_raised_list == false)
+            {
+                /* Add to list */
+                last_raised_error->next_raised_error = error;
+                last_raised_error = error;
+            }
+            error->added_to_raised_list = true;
+            error->accumulator = 0;
+            error->last_code = code;
         }
         error = error->next_error;
     }
-    /* Check for true errors */
+    
+    return error_found;
 }
 
 Error* ErrorChecker::get_next_error()
@@ -72,9 +88,23 @@ Error* ErrorChecker::get_next_error()
     /* Check if error is valid */
     if(next_raised_error == nullptr) return nullptr;
 
+    /* Make shallow copy */
     raised_error_copy = *next_raised_error;
 
-    next_raised_error = next_raised_error->next_raised_error;
-
+    /* End list */
+    if(next_raised_error == last_raised_error) 
+    {
+        next_raised_error = nullptr;    
+        last_raised_error = nullptr;
+    }
+    /* Iterate list */
+    else
+    {
+        Error *buffer = next_raised_error->next_raised_error;
+        next_raised_error->next_raised_error = nullptr;
+        next_raised_error->added_to_raised_list = false;
+        next_raised_error = buffer;
+    }
+    
     return &raised_error_copy;
 }

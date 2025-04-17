@@ -91,6 +91,6 @@ VOID usb_tx_thread_entry(__unused ULONG thread_input)
             serializeJsonPretty(json, tx_buffer, tx_rx_buffer_size);
             ux_device_class_cdc_acm_write(cdc_acm, (UCHAR *)(tx_buffer), strlen(tx_buffer), &tx_actual_size);
         }
-        tx_thread_sleep(Config::USB_TX_DELAY);
+        tx_thread_sleep(200);
     }
 }

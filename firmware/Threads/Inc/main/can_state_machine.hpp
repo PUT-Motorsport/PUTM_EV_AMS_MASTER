@@ -4,4 +4,4 @@
 
 #include "state_machine.hpp"
 
-void init_air_state_machine(PUTM::StateMachine *state_machine);
+void init_can_state_machine(PUTM::StateMachine *state_machine);

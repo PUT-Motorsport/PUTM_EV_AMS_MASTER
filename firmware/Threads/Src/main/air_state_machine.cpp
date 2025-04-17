@@ -1,20 +1,21 @@
 #include "main.h"
+#include "tx_api.h"
 
 #include "threads.hpp"
 #include "wrapper/gpio.hpp"
 #include "data.hpp"
 #include "config.hpp"
 #include "state_machine.hpp"
-#include "error_checker.hpp"
 
 using namespace PUTM;
 
 extern Gpio sig_air_p;
 extern Gpio sig_air_m;
 extern Gpio sig_air_pre;
-// extern Gpio led_err;
-// extern Gpio led_wrn;
-// extern Gpio sig_err;
+extern Gpio led_ok;
+extern Gpio led_err;
+extern Gpio led_wrn;
+extern Gpio sig_err;
 
 /**
  *  @brief  turn off hv
@@ -69,12 +70,12 @@ uint32_t precharge_on_enter_tick;
  *  @brief  Start precharge
  *  @note   In this state AIR- and precharge relay are activated to start precharge process
  */
-static State precharge
+State precharge
 {
     .name = "precharge",
     .on_enter = []()
     {
-        precharge_on_enter_tick = HAL_GetTick();
+        precharge_on_enter_tick = tx_time_get();
         hv_precharge();
     },
     // .on_update = [](){ },
@@ -84,11 +85,15 @@ static State precharge
 /**
  *  @brief  On state
  */
-static State on
+State on
 {
     .name = "on",
     .on_enter = []()
     { 
+        sig_err.reset();
+        led_wrn.reset();
+        led_ok.set();
+        led_err.reset();
         hv_on();
     },
     // .on_update = [](){ },
@@ -99,53 +104,55 @@ static State on
  *  @brief  Error state
  *  @note   If AMS detects an error the machine will be stuck in this state 
  */
-static State error
+State error
 {
     .name = "error",
     .on_enter = []()
     { 
        hv_off();
+       sig_err.set();
     },
     .on_update = []()
     { 
         // Flash error state
-        // led_err.toggle();
-        Error_Handler();
+        led_err.toggle();
+        // Error_Handler();
+        return;
     },
     // .on_exit = [](){ }
 };
 
-static StateEdge idle_to_precharge
+StateEdge idle_to_precharge
 {
     .name = "idle -> precharge",
     .condition = []() -> bool
     { 
-        return (data.car_voltage <= Config::HV_THRESH and not data.error and 
+        return (data.car_voltage <= Config::MIN_HV_THRESH and not data.error and 
                 data.tsms and data.cmd_on); 
     },
     .prev_state = &idle,
     .next_state = &precharge,
 };
 
-static StateEdge idle_to_error
+StateEdge idle_to_error
 {
     .name = "idle -> error",
     .condition = []() -> bool
     { 
-        return (data.car_voltage > Config::HV_THRESH or data.error); 
+        return (data.car_voltage > Config::MIN_HV_THRESH or data.error); 
     },
     .prev_state = &idle,
     .next_state = &error,
 };
 
-static StateEdge precharge_to_on
+StateEdge precharge_to_on
 {
     .name = "precharge -> on",
     .condition = []() -> bool
     {
         float car_thresh = data.acu_voltage * Config::CAR_CHARGE_THRESH;
         uint32_t time = HAL_GetTick() - precharge_on_enter_tick;
-        return (time > Config::PRECHARGE_MIN_WAIT and data.car_voltage >= car_thresh and not data.error); 
+        return (time > Config::MIN_PRECHARGE_WAIT and data.car_voltage >= car_thresh and not data.error); 
     },
     .prev_state = &precharge,
     .next_state = &on,
@@ -162,15 +169,15 @@ static StateEdge precharge_to_on
 //     .next_state = &on,
 // };
 
-static StateEdge precharge_to_error
+StateEdge precharge_to_error
 {
     .name = "precharge -> error",
     .condition = []() -> bool
     { 
         float car_thresh = data.acu_voltage * Config::CAR_CHARGE_THRESH;
         uint32_t time = HAL_GetTick() - precharge_on_enter_tick;
-        return (((data.car_voltage <= Config::HV_THRESH and time > Config::PRECHARGE_MIN_WAIT) or
-                (data.car_voltage < car_thresh and time > Config::PRECHARGE_MAX_WAIT) or
+        return (((data.car_voltage <= Config::MIN_HV_THRESH and time > Config::MIN_PRECHARGE_WAIT) or
+                (data.car_voltage < car_thresh and time > Config::MAX_PRECHARGE_WAIT) or
                 (data.error)) and not
                 (data.tsms or data.cmd_on));
     },
@@ -178,7 +185,7 @@ static StateEdge precharge_to_error
     .next_state = &error,
 };
 
-static StateEdge on_to_idle
+StateEdge on_to_idle
 {
     .name = "on -> idle",
     .condition = []() -> bool
@@ -189,12 +196,12 @@ static StateEdge on_to_idle
     .next_state = &idle,
 };
 
-static StateEdge on_to_error
+StateEdge on_to_error
 {
     .name = "on -> error",
     .condition = []() -> bool
     { 
-        return ((data.car_voltage <= Config::HV_THRESH or data.error) and not
+        return ((data.car_voltage <= Config::MIN_HV_THRESH or data.error) and not
                 (data.cmd_on or data.tsms)); 
     },
     .prev_state = &on,
@@ -203,15 +210,14 @@ static StateEdge on_to_error
 
 StateMachine air_state_machine;
 
-void init_air_state_machine(StateMachine *state_machine)
+void init_air_state_machine(StateMachine *sm)
 {
-    state_machine->add_edges(
+    sm->add_edges(
         idle_to_precharge, 
         idle_to_error, 
         precharge_to_on, 
         precharge_to_error, 
         on_to_idle, 
         on_to_error);
-    state_machine->start(&idle);
-    
+    sm->start(&idle);
 }

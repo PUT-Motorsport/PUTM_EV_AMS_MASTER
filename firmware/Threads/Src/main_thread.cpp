@@ -35,13 +35,40 @@ extern ErrorChecker error_checker;
 
 VOID main_thread_entry(__unused ULONG thread_input)
 {
-    init_air_state_machine();
-    init_error_checker();
+    led_wrn.reset();
+    led_ok.reset();
+    led_err.reset();
+    sig_err.reset();
+    sig_air_pre.reset();
+    sig_air_p.reset();
+    sig_air_m.reset();
+    en_12v.reset();
+
+    init_air_state_machine(&air_state_machine);
+    init_error_checker(&error_checker);
 
     while(true)
     {
+        /* Is alive */
         led_ok.toggle();
-        state_machine.update();
+
+        /* Pool trivial data */
+        data.tsms = det_tsms.read();
+        data.on_charger = det_charger.read();
+
+        /* AIR state machine */
+        air_state_machine.update();
+
+        /* Error checks */
+        if(error_checker.check_errors(tx_time_get()))
+        {
+            Error *error = error_checker.get_next_error();
+            while(error != nullptr)
+            {
+                error = error_checker.get_next_error();
+            }
+            data.error = true;
+        }
         tx_thread_sleep(50);
     }
 }

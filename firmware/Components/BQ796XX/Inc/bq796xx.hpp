@@ -7,6 +7,7 @@
 #include "usart.h"
 
 #include "utils.hpp"
+#include "config.hpp"
 
 namespace PUTM
 {
@@ -42,8 +43,8 @@ namespace PUTM
             std::array<uint8_t, 256> out { 0 };
             /* for now leave the size at 256 */
             std::array<uint8_t, 256> in { 0 };
-        private:
-            /*
+        public:
+            /**
             *	@brief struct for local stack status storage
             */
             struct StackDeviceStatus
@@ -51,8 +52,8 @@ namespace PUTM
                 std::array<bool, 16> ovuv;
             };
             std::array<StackDeviceStatus, STACK_SIZE> stack_device_status;
-        private:
-            /*
+        public:
+            /**
             *	@brief struct for local stack data storage
             */
             struct StackDeviceData
@@ -68,7 +69,7 @@ namespace PUTM
                 Broadcast	= 0b10
             };
         private:
-            /*
+            /**
             * 	@brief 	Staticly calculate the number of devices being read from
             *	@return	Number of devices being read from
             */
@@ -93,7 +94,7 @@ namespace PUTM
             template<ReqType REQ_TYPE>
             uint8_t init_byte_read();
         public:
-            /*
+            /**
             *	@brief Init Bq796xx, set receiver timeout to t_rx_timeout (~300 us) for the uart handler to for data in IT or DMA mode
             *	@param `huart` uart handle
             */
@@ -101,25 +102,25 @@ namespace PUTM
         public:
             HAL_StatusTypeDef init();
         public:
-            /*
+            /**
             * 	@brief 	This function inits other uart communication, call this function firsts
             * 	@retval	HAL_OK
             */
             HAL_StatusTypeDef init_uart();
         public:
-            /*
+            /**
             * 	@brief 	This function inits whole stack communication
             * 	@retval	HAL_OK
             */
             HAL_StatusTypeDef init_stack();
         public:
-            /*
+            /**
             *   @brief  This function inits voltage measurement
             * 	@retval	HAL_OK
             */
             HAL_StatusTypeDef init_voltage_measurement();
         public:
-            /* 	
+            /** 	
             *	@brief	Init undervoltage and overvoltage protection
             *	@param	`undervoltage` in mV, must be between 1200 and 3100
             *	@param	`overvoltage` in mV, must be between 2700 and 4475
@@ -127,7 +128,7 @@ namespace PUTM
             */
             HAL_StatusTypeDef init_ovuv(uint32_t undervoltage, uint32_t overvoltage);
         public:
-            /* 	
+            /** 	
             *	@brief	Disable undervoltage detection on selected channels, every call overrides past calls
             *	@param 	`channels` array with channel numbers
             *	@param	`size` size of array
@@ -135,24 +136,34 @@ namespace PUTM
             */
             // HAL_StatusTypeDef set_uv_disable(Utils::Channel *channels, size_t size);
         public:
-            /*
+            /**
+             *  @brief 	This function inits temperature measurement, this function sets GPIO pins to ADC_OTUT mode
+             */
+            HAL_StatusTypeDef init_temperature_measurements();
+        public:
+            /**
+             *  @brief  This function starts main adc conversion
+             */
+            HAL_StatusTypeDef start_measurements();
+        public:
+            /**
             *	@brief Poll stack status to local storage
             */
             HAL_StatusTypeDef update_status();
         public:
-            /*
+            /**
             *	@brief Poll stack voltages to local storage
             */
-            HAL_StatusTypeDef update_voltages();
+            HAL_StatusTypeDef update_data();
         public:
-            /*
+            /**
             * 	@brief 	Wake up function for BQ79600 IC, this functions tries to hold the MOSI line
             *			for aprox ~2.5ms
             * 	@retval	HAL_BUSY when wakeing up is in progress, HAL_OK when done
             */
             HAL_StatusTypeDef wake_up();
         public:
-            /*
+            /**
             * 	@brief 	Send `data` of `size` to a device at `address` in `REQ_TYPE` mode. All registers are 1 byte in len, 
             *			so any write with size > 1 is automaticaly interpreted as serial write begining at address `reg_address`.
             *			If data was send before this function can be called without any parameters to check the `writeSingle` state: 
@@ -166,17 +177,18 @@ namespace PUTM
             template<ReqType REQ_TYPE>
             HAL_StatusTypeDef write(uint8_t *data, size_t size, uint16_t reg_address, uint8_t address = 0);
         public:
-            /*
+            // FIXME: this code is kinda ass, change it in the future to be more predictable maybe just add size?
+            /**
             * 	@brief 	Read `data` of `size` from a device at `address` in `REQ_TYPE` mode. All registers are 1 byte in len, 
             *			so any read with size > 1 is automaticaly interpreted as serial read begining at address `reg_address`.
-            *			This function doesn't block it's caller however it will return HAL_BYSY, when reading data is in proggress 
+            *			This function blocks it's caller however it will return HAL_BYSY, when reading data is in proggress 
             *			so it's up to the user to hadle it properly. This function times out after 1ms.
-            *	@tparam	`REQ_TYPE` read type, Single, Stack or Broadcast
-            * 	@param 	`data` copies the received data to provided container, when new data was received. If for any reason data received
+            *	@tparam	REQ_TYPE read type, Single, Stack or Broadcast
+            * 	@param 	data copies the received data to provided container, when new data was received. If for any reason data received
             *			was coruppted or not received it will not be coppied over to the procided buffer. Data should point to a buffer of an
             *			appropriate size - size for single read, size * STACK_SIZE for stack read
-            *	@param 	`size` number of registers to read not the size of the array!
-            *	@param 	`address` address of a device to be written to in signle mode, assumes 0. In other modes it is ignored
+            *	@param 	count number of registers to read not the size of the array!
+            *	@param 	address address of a device to be written to in signle mode, assumes 0. In other modes it is ignored
             * 	@retval	HAL_BUSY when read is in progress, HAL_OK when done or caller provided no data/size, HAL_TIMEOUT when read operation wasn't
             *			properly executed.
             */
@@ -186,4 +198,4 @@ namespace PUTM
     }
 }
 
-template class PUTM::Bq796xx::Device<1>;
+template class PUTM::Bq796xx::Device<PUTM::Config::STACK_SIZE>;

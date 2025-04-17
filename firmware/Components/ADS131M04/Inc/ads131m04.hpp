@@ -29,6 +29,7 @@ namespace PUTM
             std::array<uint32_t, size> in { 0 };
     
         public:
+            /* ADC data in [V]*/
             std::array<float, 4> adc { 0.f };
             Regs::Status status;
         public:

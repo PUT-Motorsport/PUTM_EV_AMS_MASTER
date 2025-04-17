@@ -109,11 +109,9 @@ HAL_StatusTypeDef Device<STACK_SIZE>::init_stack()
     }
 
     /* verify adresses */
-    for(size_t address = 0; address <= STACK_SIZE; address++)
-    {
-        // TODO: internal status error
-        read<ReqType::Stack>(data, 1, 0x306);
-    }
+    
+    // TODO: internal status error
+    read<ReqType::Stack>(data, 1, 0x306);
 
     return HAL_OK;
 }
@@ -123,13 +121,13 @@ HAL_StatusTypeDef Device<STACK_SIZE>::init_voltage_measurement()
 {
     uint8_t data[16];
 
+    /* TODO: do it properly >.> */
     /* set active cells in series */
     data[0] = 0x8; 
     write<ReqType::Stack>(data, 1, 0x0003);
 
-    /* set control */
     /* set adc continous, start conversion, enable lpf */
-    data[0] = convert_to<uint8_t>((AdcCtrl1){.main_mode = Mode::RoundRobin, .main_go = true, .lpf_cell_en = true}); 
+    data[0] = convert_to<uint8_t>((AdcCtrl1){.main_mode = ScanMode::RoundRobin, .main_go = true, .lpf_cell_en = true}); 
     write<ReqType::Stack>(data, 1, address_of<AdcCtrl1>());
 
     return HAL_OK;
@@ -148,11 +146,29 @@ HAL_StatusTypeDef Device<STACK_SIZE>::init_ovuv(uint32_t undervoltage, uint32_t 
     write<ReqType::Stack>(data, 2, 0x0009);
 
     /* enable ovuv */
-    data[0] = convert_to<uint8_t>((OVUVCtrl){.ovuv_mode = Mode::RoundRobin, .ovuv_go = true});
+    data[0] = convert_to<uint8_t>((OVUVCtrl){.ovuv_mode = ScanMode::RoundRobin, .ovuv_go = true});
 
     write<ReqType::Stack>(data, 1, 0x032C);
 
     return HAL_OK;
+}
+
+template<size_t STACK_SIZE>
+HAL_StatusTypeDef Device<STACK_SIZE>::init_temperature_measurements()
+{
+    uint8_t data[4] { 0 };
+
+    data[0] = convert_to<uint8_t>((GpioConf1){ .gpio1 = GpioMode::AdcOtut, .gpio2 = GpioMode::AdcOtut });
+    data[1] = convert_to<uint8_t>((GpioConf2){ .gpio3 = GpioMode::AdcOtut, .gpio4 = GpioMode::AdcOtut });
+    data[2] = convert_to<uint8_t>((GpioConf3){ .gpio5 = GpioMode::AdcOtut, .gpio6 = GpioMode::AdcOtut });
+    data[3] = convert_to<uint8_t>((GpioConf4){ .gpio7 = GpioMode::AdcOtut, .gpio8 = GpioMode::AdcOtut });
+
+    write<ReqType::Stack>(data, 4, address_of<GpioConf1>());
+}
+
+HAL_StatusTypeDef start_measurements()
+{
+
 }
 
 // template<size_t STACK_SIZE>
@@ -201,7 +217,7 @@ HAL_StatusTypeDef Device<STACK_SIZE>::update_status()
 }
 
 template<size_t STACK_SIZE>
-HAL_StatusTypeDef Device<STACK_SIZE>::update_voltages()
+HAL_StatusTypeDef Device<STACK_SIZE>::update_data()
 {
     using namespace Utils;
 
@@ -209,7 +225,7 @@ HAL_StatusTypeDef Device<STACK_SIZE>::update_voltages()
     constexpr size_t data_count = 16 * 2;
     uint8_t buffer[data_count * STACK_SIZE] { 0 };
 
-    /* read ovoltages, address of VCELL16_HI */
+    /* read voltages, address of VCELL16_HI */
     read<ReqType::Stack>(buffer, data_count, 0x0568);
 
     /* voltages */
@@ -223,6 +239,8 @@ HAL_StatusTypeDef Device<STACK_SIZE>::update_voltages()
             stack_device_data[idev].voltages[15 - ich] = -(~volt + 1) * v_lsb_adc;
         }
     }
+
+    /* temperatures */
     
     return HAL_OK;
 }
@@ -322,10 +340,11 @@ template<size_t STACK_SIZE>
 template<Device<STACK_SIZE>::ReqType REQ_TYPE>
 HAL_StatusTypeDef Device<STACK_SIZE>::read(uint8_t *data, size_t count, uint16_t reg_address, uint8_t address)
 {
-    if(count == 0 or count > 128) Error_Handler;
 
     /* prevent override during checks? */
     volatile UartState state (huart->gState);
+
+    std::fill(in.begin(), in.end(), 0);
     
     size_t i = 0;
     out.at(i++) = init_byte_read<REQ_TYPE>();
