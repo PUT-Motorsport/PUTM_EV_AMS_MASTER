@@ -5,6 +5,7 @@
 #include "bq796xx/crc16ibm.hpp"
 #include "utils.hpp"
 #include "wrapper/uart.hpp"
+#include "algorithm"
 
 using namespace PUTM;
 using namespace Utils;
@@ -126,10 +127,6 @@ HAL_StatusTypeDef Device<STACK_SIZE>::init_voltage_measurement()
     data[0] = 0x8; 
     write<ReqType::Stack>(data, 1, 0x0003);
 
-    /* set adc continous, start conversion, enable lpf */
-    data[0] = convert_to<uint8_t>((AdcCtrl1){.main_mode = ScanMode::RoundRobin, .main_go = true, .lpf_cell_en = true}); 
-    write<ReqType::Stack>(data, 1, address_of<AdcCtrl1>());
-
     return HAL_OK;
 }
 
@@ -138,9 +135,17 @@ HAL_StatusTypeDef Device<STACK_SIZE>::init_ovuv(uint32_t undervoltage, uint32_t 
 {
     uint8_t data[2] = { 0 };
 
+    /* clamp */
+    undervoltage = std::clamp(undervoltage, 1200, 3100);
+    // FIXME: fuuuuuck
+    /* this one is complicated... for now leave it like that */
+    overvoltage = std::clamp(overvoltage, 4175, 4475);
+
     /* set boundries */
-    data[0] = (uint8_t)((undervoltage - 1200 / 50) & 0x3f);
-    data[1] = (uint8_t)((overvoltage - 2700 / 25) & 0x3f);
+    data[0] = (uint8_t)(((undervoltage - 1200) / 50) & 0x3f);
+    // FIXME: fuuuuuck
+    /* this one is complicated... for now leave it like that */
+    data[1] = (uint8_t)((((overvoltage - 4175) / 25) + 0x22) & 0x3f);
 
     /* write to ov uv threshold registers */
     write<ReqType::Stack>(data, 2, 0x0009);
@@ -148,7 +153,9 @@ HAL_StatusTypeDef Device<STACK_SIZE>::init_ovuv(uint32_t undervoltage, uint32_t 
     /* enable ovuv */
     data[0] = convert_to<uint8_t>((OVUVCtrl){.ovuv_mode = ScanMode::RoundRobin, .ovuv_go = true});
 
-    write<ReqType::Stack>(data, 1, 0x032C);
+    /* send twice, bq requires another 'go' cmd when setting are changed */
+    write<ReqType::Stack>(data, 1, address_of<OVUVCtrl>());
+    write<ReqType::Stack>(data, 1, address_of<OVUVCtrl>());
 
     return HAL_OK;
 }
@@ -166,9 +173,39 @@ HAL_StatusTypeDef Device<STACK_SIZE>::init_temperature_measurements()
     write<ReqType::Stack>(data, 4, address_of<GpioConf1>());
 }
 
+template<size_t STACK_SIZE>
+HAL_StatusTypeDef Device<STACK_SIZE>::init_otut(uint8_t undertemperature, uint8_t overtemperature)
+{
+    uint8_t data[1] = { 0 };
+
+    /* set boundries */
+    undertemperature = std::clamp(undertemperature, 66, 80);
+    overtemperature = std::clamp(overtemperature, 10, 39);
+
+    undertemperature = (uint8_t)((undertemperature - 66 / 2) & 0x08);
+    overtemperature = (uint8_t)((overtemperature - 10) & 0x1f);
+    
+    data[0] = convert_to<uint8_t>((OTUTThresh){ .ot_thr = overtemperature, .ut_thr = undertemperature });
+
+    /* write to ov uv threshold registers */
+    write<ReqType::Stack>(data, 1, address_of<OTUTThresh>());
+
+    /* enable otut */
+    data[0] = convert_to<uint8_t>((OVUVCtrl){ .ovuv_mode = ScanMode::RoundRobin, .ovuv_go = true });
+
+    /* send twice, bq requires another 'go' cmd when setting are changed */
+    write<ReqType::Stack>(data, 1, 0x032C);
+    write<ReqType::Stack>(data, 1, 0x032C);
+
+    return HAL_OK;
+}
+
 HAL_StatusTypeDef start_measurements()
 {
-
+    uint8_t data[1] { 0 };
+    /* set adc continous, start conversion, enable lpf */
+    data[0] = convert_to<uint8_t>((AdcCtrl1){ .main_mode = ScanMode::RoundRobin, .main_go = true, .lpf_cell_en = true }); 
+    write<ReqType::Stack>(data, 1, address_of<AdcCtrl1>());
 }
 
 // template<size_t STACK_SIZE>

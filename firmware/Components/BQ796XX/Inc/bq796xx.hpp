@@ -123,36 +123,48 @@ namespace PUTM
             /** 	
             *	@brief	Init undervoltage and overvoltage protection
             *	@param	`undervoltage` in mV, must be between 1200 and 3100
-            *	@param	`overvoltage` in mV, must be between 2700 and 4475
+            *	@param	`overvoltage` in mV, must be between 4175 and 4475
             *	@retval HAL_OK when done, HAL_BUSY when init in progress, HAL_ERROR on fail
             */
             HAL_StatusTypeDef init_ovuv(uint32_t undervoltage, uint32_t overvoltage);
         public:
             /** 	
             *	@brief	Disable undervoltage detection on selected channels, every call overrides past calls
-            *	@param 	`channels` array with channel numbers
-            *	@param	`size` size of array
-            *	@retval HAL_OK when done, HAL_BUSY when init in progress, HAL_ERROR on fail
+            *	@param 	channels array with channel numbers
+            *	@param	size size of array
+            *	@return HAL_OK when done, HAL_BUSY when init in progress, HAL_ERROR on fail
             */
             // HAL_StatusTypeDef set_uv_disable(Utils::Channel *channels, size_t size);
         public:
             /**
              *  @brief 	This function inits temperature measurement, this function sets GPIO pins to ADC_OTUT mode
+             *  @return HAL_OK
              */
             HAL_StatusTypeDef init_temperature_measurements();
         public:
             /**
+             *  @brief 	This function inits otut thresholds
+             *  @param  undertemperature threshold represendeted as a percentage 66% to 80% in steps of 2!
+             *  @param  overtemperature threshold represendeted as a percentage 10% to 39% in steps of 1
+             *  @return HAL_OK
+             */
+            HAL_StatusTypeDef init_otut(uint8_t undertemperature, uint8_t overtemperature)
+        public:
+            /**
              *  @brief  This function starts main adc conversion
+             *  @return HAL_OK
              */
             HAL_StatusTypeDef start_measurements();
         public:
             /**
             *	@brief Poll stack status to local storage
+             *  @return HAL_OK
             */
             HAL_StatusTypeDef update_status();
         public:
             /**
             *	@brief Poll stack voltages to local storage
+             *  @return HAL_OK
             */
             HAL_StatusTypeDef update_data();
         public:

@@ -15,7 +15,7 @@ namespace PUTM
         /* Temperatures count pre bq796xx */
         static constexpr size_t TEMPERATURES_COUNT { 7 };
         /* Overvoltage trigger in [mV] */
-        static constexpr uint32_t CELL_OV { 4000 };
+        static constexpr uint32_t CELL_OV { 4200 };
         /* Undervoltage trigger in [mV] */
         static constexpr uint32_t CELL_UV { 3000 };
         

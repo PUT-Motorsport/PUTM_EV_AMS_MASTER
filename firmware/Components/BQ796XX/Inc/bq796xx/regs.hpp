@@ -85,6 +85,21 @@ namespace PUTM
                 GpioMode gpio8 : 3 { GpioMode::HighZ };
                 uint8_t spare : 2 { 0x00 };
             };
+
+            struct __packed OTUTThresh : public Utils::IReg<0x000B>
+            {
+                uint8_t ot_thr : 5 { 0x00 };
+                uint8_t ut_thr : 3 { 0x00 };
+            };
+
+            struct __packed OTUTCtrl : public Utils::IReg<0x032D>
+            {
+                Types::ScanMode otut_mode : 2 { Types::Mode::Stop };
+                bool otut_go : 1 { false };
+                uint8_t otut_lock : 3 { 0 };
+                uint8_t vcbdone_thr_lock : 1 { 0 };
+                uint8_t reserved : 1 { 0 };
+            };
         }
     }
 }
