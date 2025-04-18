@@ -6,6 +6,11 @@
 
 namespace Utils
 {
+    uint8_t consteval operator ""ui8 (unsigned long long int value)
+    {
+        return static_cast<uint8_t>(value);
+    }
+
     template<size_t ADDRESS_START, size_t ADDRESS_OFFSET = 0>
     struct IReg
     {

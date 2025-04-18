@@ -16,6 +16,9 @@ VOID bq796xx_thread_entry(__unused ULONG thread_input)
     bq.init_stack();
     bq.init_voltage_measurement();
     bq.init_ovuv(3050, 4300);
+    bq.init_temperature_measurements();
+    bq.init_otut(70, 30);
+    bq.start_measurements();
 
     while(true)
     {

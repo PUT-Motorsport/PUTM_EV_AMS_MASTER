@@ -22,7 +22,7 @@ namespace PUTM
             {
                 HighZ,
                 AdcOtut
-            }
+            };
         }
 
         namespace Regs
@@ -50,7 +50,7 @@ namespace PUTM
     
             struct __packed OVUVCtrl : public Utils::IReg<0x032C>
             {
-                Types::ScanMode ovuv_mode : 2 { Types::Mode::Stop };
+                Types::ScanMode ovuv_mode : 2 { Types::ScanMode::Stop };
                 bool ovuv_go : 1 { false };
                 uint8_t ovuv_lock : 4 { 0 };
                 uint8_t vcbdone_thr_lock : 1 { 0 };
@@ -58,31 +58,31 @@ namespace PUTM
 
             struct __packed GPIOConf1 : public Utils::IReg<0x000E>
             {
-                GpioMode gpio1 : 3 { GpioMode::HighZ };
-                GpioMode gpio2 : 3 { GpioMode::HighZ };
+                Types::GpioMode gpio1 : 3 { Types::GpioMode::HighZ };
+                Types::GpioMode gpio2 : 3 { Types::GpioMode::HighZ };
                 bool spi_en : 1 { false };
                 bool fault_in_en : 1 { false };
             };
 
             struct __packed GPIOConf2 : public Utils::IReg<0x000F>
             {
-                GpioMode gpio3 : 3 { GpioMode::HighZ };
-                GpioMode gpio4 : 3 { GpioMode::HighZ };
+                Types::GpioMode gpio3 : 3 { Types::GpioMode::HighZ };
+                Types::GpioMode gpio4 : 3 { Types::GpioMode::HighZ };
                 bool reserved : 1 { false };
                 bool spare : 1 { false };
             };
 
             struct __packed GPIOConf3 : public Utils::IReg<0x0010>
             {
-                GpioMode gpio5 : 3 { GpioMode::HighZ };
-                GpioMode gpio6 : 3 { GpioMode::HighZ };
+                Types::GpioMode gpio5 : 3 { Types::GpioMode::HighZ };
+                Types::GpioMode gpio6 : 3 { Types::GpioMode::HighZ };
                 uint8_t spare : 2 { 0x00 };
             };
 
             struct __packed GPIOConf4 : public Utils::IReg<0x0011>
             {
-                GpioMode gpio7 : 3 { GpioMode::HighZ };
-                GpioMode gpio8 : 3 { GpioMode::HighZ };
+                Types::GpioMode gpio7 : 3 { Types::GpioMode::HighZ };
+                Types::GpioMode gpio8 : 3 { Types::GpioMode::HighZ };
                 uint8_t spare : 2 { 0x00 };
             };
 
@@ -94,7 +94,7 @@ namespace PUTM
 
             struct __packed OTUTCtrl : public Utils::IReg<0x032D>
             {
-                Types::ScanMode otut_mode : 2 { Types::Mode::Stop };
+                Types::ScanMode otut_mode : 2 { Types::ScanMode::Stop };
                 bool otut_go : 1 { false };
                 uint8_t otut_lock : 3 { 0 };
                 uint8_t vcbdone_thr_lock : 1 { 0 };

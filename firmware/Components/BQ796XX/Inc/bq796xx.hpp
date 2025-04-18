@@ -49,18 +49,20 @@ namespace PUTM
             */
             struct StackDeviceStatus
             {
-                std::array<bool, 16> ovuv;
+                bool ovuv[16] { false };
+                bool otut[8] { false };
             };
-            std::array<StackDeviceStatus, STACK_SIZE> stack_device_status;
+            StackDeviceStatus stack_device_status[STACK_SIZE];
         public:
             /**
             *	@brief struct for local stack data storage
             */
             struct StackDeviceData
             {
-                std::array<float, 16> voltages;
+                float voltages[16] { 0 };
+                float temperatures[8] { 0 };
             };
-            std::array<StackDeviceData, STACK_SIZE> stack_device_data;
+            StackDeviceData stack_device_data[STACK_SIZE] { };
         private:
             enum struct ReqType : uint8_t
             {
@@ -148,7 +150,7 @@ namespace PUTM
              *  @param  overtemperature threshold represendeted as a percentage 10% to 39% in steps of 1
              *  @return HAL_OK
              */
-            HAL_StatusTypeDef init_otut(uint8_t undertemperature, uint8_t overtemperature)
+            HAL_StatusTypeDef init_otut(uint8_t undertemperature, uint8_t overtemperature);
         public:
             /**
              *  @brief  This function starts main adc conversion
@@ -163,7 +165,7 @@ namespace PUTM
             HAL_StatusTypeDef update_status();
         public:
             /**
-            *	@brief Poll stack voltages to local storage
+            *	@brief Poll stack data to local storage
              *  @return HAL_OK
             */
             HAL_StatusTypeDef update_data();

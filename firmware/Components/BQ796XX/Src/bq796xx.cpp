@@ -136,10 +136,10 @@ HAL_StatusTypeDef Device<STACK_SIZE>::init_ovuv(uint32_t undervoltage, uint32_t 
     uint8_t data[2] = { 0 };
 
     /* clamp */
-    undervoltage = std::clamp(undervoltage, 1200, 3100);
+    undervoltage = std::clamp(undervoltage, 1200ul, 3100ul);
     // FIXME: fuuuuuck
     /* this one is complicated... for now leave it like that */
-    overvoltage = std::clamp(overvoltage, 4175, 4475);
+    overvoltage = std::clamp(overvoltage, 4175ul, 4475ul);
 
     /* set boundries */
     data[0] = (uint8_t)(((undervoltage - 1200) / 50) & 0x3f);
@@ -163,14 +163,16 @@ HAL_StatusTypeDef Device<STACK_SIZE>::init_ovuv(uint32_t undervoltage, uint32_t 
 template<size_t STACK_SIZE>
 HAL_StatusTypeDef Device<STACK_SIZE>::init_temperature_measurements()
 {
-    uint8_t data[4] { 0 };
+    uint8_t data[8] { 0 };
 
-    data[0] = convert_to<uint8_t>((GpioConf1){ .gpio1 = GpioMode::AdcOtut, .gpio2 = GpioMode::AdcOtut });
-    data[1] = convert_to<uint8_t>((GpioConf2){ .gpio3 = GpioMode::AdcOtut, .gpio4 = GpioMode::AdcOtut });
-    data[2] = convert_to<uint8_t>((GpioConf3){ .gpio5 = GpioMode::AdcOtut, .gpio6 = GpioMode::AdcOtut });
-    data[3] = convert_to<uint8_t>((GpioConf4){ .gpio7 = GpioMode::AdcOtut, .gpio8 = GpioMode::AdcOtut });
-
-    write<ReqType::Stack>(data, 4, address_of<GpioConf1>());
+    data[0] = convert_to<uint8_t>((GPIOConf1){ .gpio1 = GpioMode::AdcOtut, .gpio2 = GpioMode::AdcOtut });
+    data[1] = convert_to<uint8_t>((GPIOConf2){ .gpio3 = GpioMode::AdcOtut, .gpio4 = GpioMode::AdcOtut });
+    data[2] = convert_to<uint8_t>((GPIOConf3){ .gpio5 = GpioMode::AdcOtut, .gpio6 = GpioMode::AdcOtut });
+    data[3] = convert_to<uint8_t>((GPIOConf4){ .gpio7 = GpioMode::AdcOtut, .gpio8 = GpioMode::AdcOtut });
+    //
+    write<ReqType::Stack>(data, 4, address_of<GPIOConf1>());
+    
+    return HAL_OK;
 }
 
 template<size_t STACK_SIZE>
@@ -179,8 +181,8 @@ HAL_StatusTypeDef Device<STACK_SIZE>::init_otut(uint8_t undertemperature, uint8_
     uint8_t data[1] = { 0 };
 
     /* set boundries */
-    undertemperature = std::clamp(undertemperature, 66, 80);
-    overtemperature = std::clamp(overtemperature, 10, 39);
+    undertemperature = std::clamp(undertemperature, 66ui8, 80ui8);
+    overtemperature = std::clamp(overtemperature, 10ui8, 39ui8);
 
     undertemperature = (uint8_t)((undertemperature - 66 / 2) & 0x08);
     overtemperature = (uint8_t)((overtemperature - 10) & 0x1f);
@@ -200,12 +202,15 @@ HAL_StatusTypeDef Device<STACK_SIZE>::init_otut(uint8_t undertemperature, uint8_
     return HAL_OK;
 }
 
-HAL_StatusTypeDef start_measurements()
+template<size_t STACK_SIZE>
+HAL_StatusTypeDef Device<STACK_SIZE>::start_measurements()
 {
     uint8_t data[1] { 0 };
     /* set adc continous, start conversion, enable lpf */
     data[0] = convert_to<uint8_t>((AdcCtrl1){ .main_mode = ScanMode::RoundRobin, .main_go = true, .lpf_cell_en = true }); 
     write<ReqType::Stack>(data, 1, address_of<AdcCtrl1>());
+
+    return HAL_OK;
 }
 
 // template<size_t STACK_SIZE>
@@ -277,7 +282,20 @@ HAL_StatusTypeDef Device<STACK_SIZE>::update_data()
         }
     }
 
+    /* read temperatures, address of GPIO1_HI */
+    read<ReqType::Stack>(buffer, data_count, 0x058E);
+
     /* temperatures */
+    for(size_t idev = 0; idev < STACK_SIZE; idev++)
+    {
+        for(size_t igio = 0; igio < 8; igio++)
+        {
+            size_t index = idev * data_count + igio * 2;
+            int16_t volt = ((uint16_t)(buffer[index]) << 8 | (uint16_t)(buffer[index + 1]));
+            
+            stack_device_data[idev].temperatures[igio] = -(~volt + 1) * v_lsb_adc;
+        }
+    }
     
     return HAL_OK;
 }
