@@ -11,14 +11,12 @@
 #include "config.hpp"
 #include "state_machine.hpp"
 #include "math"
-/**
- *  @note This thread is used only for testing purposes, it is not used in the final application
- *        it is used to test the system and to check if the system is working properly. Define the
- *        TEST_MODE_1 macro to enable this thread.
- */
 
 using namespace PUTM;
 
+/**
+ *  @brief  Test init state
+ */
 State test_init_state
 {
     .name = "test init state",
@@ -27,6 +25,9 @@ State test_init_state
     // .on_exit = [](){ }
 };
 
+/**
+ *  @brief  Test idle state
+ */
 State test_idle_state 
 {
     .name = "test idle state",
@@ -35,9 +36,36 @@ State test_idle_state
     // .on_exit = [](){ }
 };
 
+/**
+ *  @brief  Test precharge state
+ */
 State test_precharge_state 
 {
     .name = "test precharge state",
+    // .on_enter = [](){ },
+    // .on_update = [](){ },
+    // .on_exit = [](){ }
+};
+
+/**
+ *  @brief  Test on state 
+ *  @note   This state is supposed to mimic the the on state of the car
+ */
+State test_on_state
+{
+    .name = "test on state",
+    // .on_enter = [](){ },
+    // .on_update = [](){ },
+    // .on_exit = [](){ }
+};
+
+/**
+ *  @brief  Test discharge state
+ *  @note   This state is supposed to mimic the discharging of hv caps
+ */
+State test_discharge_state
+{
+    .name = "test discharge state",
     // .on_enter = [](){ },
     // .on_update = [](){ },
     // .on_exit = [](){ }
