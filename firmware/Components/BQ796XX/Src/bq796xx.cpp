@@ -234,24 +234,39 @@ HAL_StatusTypeDef Device<STACK_SIZE>::update_status()
 {
     using namespace Utils;
 
-    constexpr size_t data_size = 4;
+    constexpr size_t ovuv_size = 4;
+    constexpr size_t otut_size = 2;
 
-    uint8_t buffer[data_size * STACK_SIZE] { 0 };
+    uint8_t buffer[(ovuv_size + otut_size) * STACK_SIZE] { 0 };
 
-    /* read ov1/2 and uv1/2, 0x053C, address of FAULT_OV1, yes i started getting lazy */
-    read<ReqType::Stack>(buffer, data_size, 0x053C);
+    /* read ov1/2, uv1/2, ot and ut, 0x053C, address of FAULT_OV1, yes i started getting lazy */
+    read<ReqType::Stack>(buffer, (ovuv_size + otut_size), 0x053C);
     
     for(size_t idev = 0; idev < STACK_SIZE; idev++)
     {
-        size_t offset = data_size * idev;
+        size_t offset = (ovuv_size + otut_size) * idev;
+        /* over and under voltage */
         uint16_t ov_tmp = (uint16_t)buffer[0 + offset] << 8 | (uint16_t)buffer[1 + offset];
         uint16_t uv_tmp = (uint16_t)buffer[2 + offset] << 8 | (uint16_t)buffer[3 + offset];
         uint16_t ovuv_tmp = ov_tmp | uv_tmp;
 
+        /* over and under temperature */
+        uint8_t ot_tmp = (uint16_t)buffer[4 + offset];
+        uint8_t ut_tmp = (uint16_t)buffer[5 + offset];
+        uint8_t otut_tmp = ot_tmp | ut_tmp;
+
+        /* voltages status */
         for(size_t ich = 0; ich < 16; ich++)
         {
             size_t bit_index = 1 << ich;
             stack_device_status[idev].ovuv[ich] = (bool)(ovuv_tmp & bit_index);
+        }
+
+        /* temperatures status */
+        for(size_t igio = 0; igio < 8; igio++)
+        {
+            size_t bit_index = 1 << igio;
+            stack_device_status[idev].otut[igio] = (bool)(otut_tmp & bit_index);
         }
     }
 
