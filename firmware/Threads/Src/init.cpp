@@ -32,15 +32,22 @@ TX_THREAD usb_rx_thread;
 static constexpr size_t usb_rx_thread_pool_size { 1024U };
 uint8_t usb_rx_thread_pool[usb_rx_thread_pool_size];
 
+TX_SEMAPHORE data_semaphore;
+
 VOID init()
 {
-    // tx_thread_create(test_thread, "Test thread", test_thread_entry, 0U, test_thread_pool, test_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
+#ifdef TEST_MODE_1
+    tx_thread_create(test_thread, (CHAR*)"Test thread", test_thread_entry, 0U, test_thread_pool, test_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
+#else    
     tx_thread_create(&bq796xx_thread, (CHAR*)"BQ796XX thread", bq796xx_thread_entry, 0U, bq796xx_thread_pool, bq796xx_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
     tx_thread_create(&ads131m04_thread, (CHAR*)"ADS131M04 thread", ads131m04_thread_entry, 0U, ads131m04_thread_pool, ads131m04_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
+#endif /* TEST_MODE_1 */
     tx_thread_create(&main_thread, (CHAR*)"Main thread", main_thread_entry, 0U, main_thread_pool, main_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
-    tx_thread_create(&usb_com_thread, (CHAR*)"USB -COM- INIT thread", usb_com_thread_entry, 0U, usb_com_thread_pool, usb_com_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
+    tx_thread_create(&usb_com_thread, (CHAR*)"-USB COM INIT thread-", usb_com_thread_entry, 0U, usb_com_thread_pool, usb_com_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
     tx_thread_create(&usb_tx_thread, (CHAR*)"USB TX thread", usb_tx_thread_entry, 0U, usb_tx_thread_pool, usb_tx_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
     tx_thread_create(&usb_rx_thread, (CHAR*)"USB RX thread", usb_rx_thread_entry, 0U, usb_rx_thread_pool, usb_rx_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
+
+    tx_semaphore_create(&data_semaphore, "Data semaphore", 0U);
 
     // tx_byte_pool_create(json_byte_pool, "Json byte pool", &json_byte_pool_pool, json_byte_pool_size);
     // tx_thread_suspend(&usb_com_thread);

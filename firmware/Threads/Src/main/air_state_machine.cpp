@@ -196,6 +196,18 @@ StateEdge on_to_idle
     .next_state = &idle,
 };
 
+//FIXME: add discharge state
+// StateEdge on_to_discharge
+// {
+//     .name = "on -> discharge",
+//     .condition = []() -> bool
+//     {
+//         // TODO: add discharge condition
+//     },
+//     .prev_state = &on,
+//     .next_state = &discharge,
+// };
+
 StateEdge on_to_error
 {
     .name = "on -> error",
@@ -208,6 +220,19 @@ StateEdge on_to_error
     .next_state = &error,
 };
 
+#ifdef TEST_MODE_1  
+StateEdge reset
+{
+    .name = "error -> idle",
+    .condition = []() -> bool
+    { 
+        return (data.reset_state_machine); 
+    },
+    .prev_state = &error,
+    .next_state = &idle,
+};
+#endif /* TEST_MODE_1 */
+
 StateMachine air_state_machine;
 
 void init_air_state_machine(StateMachine *sm)
@@ -219,5 +244,8 @@ void init_air_state_machine(StateMachine *sm)
         precharge_to_error, 
         on_to_idle, 
         on_to_error);
+#ifdef TEST_MODE_1
+    sm->add_edges(reset);
+#endif /* TEST_MODE_1 */
     sm->start(&idle);
 }

@@ -52,9 +52,11 @@ VOID main_thread_entry(__unused ULONG thread_input)
         /* Is alive */
         led_ok.toggle();
 
+#ifndef TEST_MODE_1
         /* Pool trivial data */
         data.tsms = det_tsms.read();
         data.on_charger = det_charger.read();
+#endif /* TEST_MODE_1 */
 
         /* AIR state machine */
         air_state_machine.update();
