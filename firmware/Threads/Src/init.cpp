@@ -37,6 +37,11 @@ TX_SEMAPHORE data_semaphore;
 VOID init()
 {
 #ifdef TEST_MODE_1
+    /**
+     *  @note This thread is used only for testing purposes, it is not used in the final application
+     *        it is used to test the system and to check if the system is working properly. Define the
+     *        TEST_MODE_1 macro to enable this thread.
+     */
     tx_thread_create(test_thread, (CHAR*)"Test thread", test_thread_entry, 0U, test_thread_pool, test_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
 #else    
     tx_thread_create(&bq796xx_thread, (CHAR*)"BQ796XX thread", bq796xx_thread_entry, 0U, bq796xx_thread_pool, bq796xx_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
