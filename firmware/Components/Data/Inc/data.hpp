@@ -27,6 +27,11 @@ namespace PUTM
         bool cmd_on { false };
         /* if ams is plugged to charger */
         bool on_charger { false };
+
+#ifdef TEST_MODE_1
+        /* reset state machine */
+        bool reset_state_machine { false };
+#endif /* TEST_MODE_1 */
     };
 }
 

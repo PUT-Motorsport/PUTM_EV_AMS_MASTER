@@ -43,6 +43,16 @@ State test_precharge_state
     // .on_exit = [](){ }
 };
 
+State test_hv_on_state 
+{
+    .name = "test hv on state",
+    // .on_enter = [](){ },
+    // .on_update = [](){ },
+    // .on_exit = [](){ }
+};
+
+
+
 VOID test_thread_entry(__unused ULONG thread_input)
 {
     while(true)
