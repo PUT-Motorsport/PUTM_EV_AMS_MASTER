@@ -216,7 +216,13 @@ void PeriphCommonClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+int __io_putchar(int ch) {
+  // Code to write character 'ch' on the UART
+  while(!(USART1->ISR & USART_ISR_TXE));
+  USART1->TDR = ch;
+  return ch;  //  On success, the character written is returned.
+  //  If a writing error occurs, EOF is returned and the error indicator (ferror) is set.
+}
 /* USER CODE END 4 */
 
 /**

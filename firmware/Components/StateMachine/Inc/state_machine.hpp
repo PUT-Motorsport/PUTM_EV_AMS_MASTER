@@ -56,6 +56,18 @@ namespace PUTM
          *  @param  state Pointer to the first state from which the machine should start
          */
         void start(State* state);
+    public:
+        /**
+         *  @brief  Set the current state of the state machine
+         *  @param  state Pointer to the state which should be set as current state
+         */
+        void set_current_state(State* state);
+    public:
+        /**
+         *  @brief  Get the current state of the state machine
+         *  @return Pointer to the current state of the state machine
+         */
+        State* get_current_state() const;
     private:
         /**
          *  @brief  Add edges helper function

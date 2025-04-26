@@ -60,3 +60,13 @@ void StateMachine::add_edges_helper(StateEdge *edge)
     edge->prev_state->last_edge->next_edge = edge;
     edge->prev_state->last_edge = edge;
 }
+
+void StateMachine::set_current_state(State* state)
+{
+    current_state = state;
+} 
+
+State* StateMachine::get_current_state() const
+{
+    return current_state;
+}

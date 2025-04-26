@@ -18,6 +18,8 @@ namespace PUTM
         float soc { 0.f };
         float cell_voltages[Config::STACK_SIZE][Config::CELL_COUNT] { 0.f };
         float cell_temperatures[Config::STACK_SIZE][Config::TEMPERATURES_COUNT] { 0.f };
+        bool cell_ovuv[Config::STACK_SIZE][Config::CELL_COUNT] { false };
+        bool cell_otut[Config::STACK_SIZE][Config::TEMPERATURES_COUNT] { false };
 
         /* generic error flag it should be raised if error condition was found */
         bool error { false };

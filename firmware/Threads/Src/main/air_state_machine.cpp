@@ -65,7 +65,8 @@ State idle
     // .on_exit = [](){ }
 };
 
-uint32_t precharge_on_enter_tick;
+/* When state machine has entered the precharge state */
+uint32_t precharge_enter_tick;
 /**
  *  @brief  Start precharge
  *  @note   In this state AIR- and precharge relay are activated to start precharge process
@@ -75,7 +76,7 @@ State precharge
     .name = "precharge",
     .on_enter = []()
     {
-        precharge_on_enter_tick = tx_time_get();
+        precharge_enter_tick = tx_time_get();
         hv_precharge();
     },
     // .on_update = [](){ },
@@ -151,7 +152,7 @@ StateEdge precharge_to_on
     .condition = []() -> bool
     {
         float car_thresh = data.acu_voltage * Config::CAR_CHARGE_THRESH;
-        uint32_t time = HAL_GetTick() - precharge_on_enter_tick;
+        uint32_t time = tx_time_get() - precharge_enter_tick;
         return (time > Config::MIN_PRECHARGE_WAIT and data.car_voltage >= car_thresh and not data.error); 
     },
     .prev_state = &precharge,
@@ -175,7 +176,7 @@ StateEdge precharge_to_error
     .condition = []() -> bool
     { 
         float car_thresh = data.acu_voltage * Config::CAR_CHARGE_THRESH;
-        uint32_t time = HAL_GetTick() - precharge_on_enter_tick;
+        uint32_t time = tx_time_get() - precharge_enter_tick;
         return (((data.car_voltage <= Config::MIN_HV_THRESH and time > Config::MIN_PRECHARGE_WAIT) or
                 (data.car_voltage < car_thresh and time > Config::MAX_PRECHARGE_WAIT) or
                 (data.error)) and not
@@ -219,19 +220,6 @@ StateEdge on_to_error
     .prev_state = &on,
     .next_state = &error,
 };
-
-#ifdef TEST_MODE_1  
-StateEdge reset
-{
-    .name = "error -> idle",
-    .condition = []() -> bool
-    { 
-        return (data.reset_state_machine); 
-    },
-    .prev_state = &error,
-    .next_state = &idle,
-};
-#endif /* TEST_MODE_1 */
 
 StateMachine air_state_machine;
 

@@ -36,7 +36,7 @@ TX_SEMAPHORE data_semaphore;
 
 VOID init()
 {
-#ifdef TEST_MODE_1
+#ifdef DEBUG_TEST_MODE_1
     /**
      *  @note This thread is used only for testing purposes, it is not used in the final application
      *        it is used to test the system and to check if the system is working properly. Define the
