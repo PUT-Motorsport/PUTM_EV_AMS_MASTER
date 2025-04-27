@@ -33,7 +33,11 @@ namespace PUTM
         static constexpr float MAX_BAT_VOLTAGE { 600.f };
         // FIXME: this is a temporary value, change it to real when done with tests
         /* Min voltage on battery */
-        static constexpr float MIN_BAT_VOLTAGE { 50.f };
+#ifdef DEBUG_TEST_MODE_1
+        static constexpr float MIN_BAT_VOLTAGE { 200.f };
+#else
+        static constexpr float MIN_BAT_VOLTAGE { 400.f };7
+#endif /* DEBUG_TEST_MODE_1 */
 
         // FIXME: for test i changed it to 4000ms change it back to 250ms when done with tests
         /* Precharge min waiting time expresed in [ms], if caps charge too slowly this shit will timeout */

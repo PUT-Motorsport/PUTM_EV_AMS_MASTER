@@ -66,6 +66,7 @@ bool ErrorChecker::check_errors(uint32_t tick)
                 next_raised_error = error;
                 last_raised_error = error;
             }
+            //FIXME: This may not work as expected, if the error is not added to the list, it will be added again
             /* Prevent looping */
             else if(error->added_to_raised_list == false)
             {
@@ -89,6 +90,7 @@ Error* ErrorChecker::get_next_error()
     if(next_raised_error == nullptr) return nullptr;
 
     /* Make shallow copy */
+    //FIXME: Make shallow copy of the error without the pointers inside, maybe use a shared_ptr or a unique_ptr
     raised_error_copy = *next_raised_error;
 
     /* End list */

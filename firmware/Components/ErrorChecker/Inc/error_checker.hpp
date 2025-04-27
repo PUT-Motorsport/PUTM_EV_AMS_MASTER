@@ -19,7 +19,7 @@ namespace PUTM
         Error *next_raised_error { nullptr };
         /* Error added to raised list */
         bool added_to_raised_list { false };
-        /* First time stamp at which the error was detected */
+        /* Last time stamp at which the error was detected */
         uint32_t timestamp { 0 };
         /* Time accumulator in [ms], its used to abstract the error timeout */
         int32_t accumulator { 0 };
@@ -93,15 +93,13 @@ namespace PUTM
          *  @brief  Function which checks for errors in the system
          *  @param  tick Time stamp of the system tick
          *  @note   This function should be called periodically to check for errors in the 
-         *          system. It will check all the errors in the list and log them if they 
-         *          are found.
+         *          system. It will check all the errors in the list
          * @return  True if an error was found, false otherwise
          */
         bool check_errors(uint32_t tick);
     public:
         /**
          *  @brief  If an error was raised, this function will return the next error in the list
-         *  @param  tick Time stamp of the system tick
          *  @note   This function should be called when `check_errors` returns true. It will return 
          *          the next error in the list which was raised. If no error was raised, it will return 
          *          nullptr.
@@ -123,6 +121,32 @@ namespace PUTM
             /* Parse the error code and return the error message */
             return last_error->parse(code);
         }
+#ifdef DEBUG_TEST_MODE_1
+    public:
+        /**
+         *  @brief  Function which resets the error checker
+         *  @note   This function should be called when the error checker is reset. It will reset
+         */    
+        void reset(void)
+        {
+            /* Reset the error checker */
+            next_raised_error = nullptr;
+            last_raised_error = nullptr;
+            raised_error_copy = { };
+            /* Iterate over all added erros */
+            Error *error = next_error;
+            while(error != nullptr)
+            {
+                /* Reset the error */
+                error->added_to_raised_list = false;
+                error->next_raised_error = nullptr;
+                error->last_code = 0;
+                error->accumulator = 0;
+                error->timestamp = 0;
+                error = error->next_error;
+            }
+        }
+#endif
     private:
         /* Added errors behave like list Error checker remembers the first one */
         Error *next_error { nullptr };
