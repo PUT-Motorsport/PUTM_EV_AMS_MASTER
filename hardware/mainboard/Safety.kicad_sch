@@ -1,7 +1,7 @@
 (kicad_sch
-	(version 20231120)
+	(version 20250114)
 	(generator "eeschema")
-	(generator_version "8.0")
+	(generator_version "9.0")
 	(uuid "ac37d2f9-5b24-4dfa-8733-95dcd0025fee")
 	(paper "A4")
 	(title_block
@@ -77,35 +77,11 @@
 			)
 			(symbol "74AUP1G32_0_1"
 				(arc
-					(start -3.81 -2.54)
+					(start -3.81 2.54)
 					(mid -2.919 0)
-					(end -3.81 2.54)
+					(end -3.81 -2.54)
 					(stroke
 						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(arc
-					(start 0 -2.54)
-					(mid 1.601 -1.601)
-					(end 2.54 0)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -3.81 -1.27) (xy -3.175 -1.27)
-					)
-					(stroke
-						(width 0)
 						(type default)
 					)
 					(fill
@@ -126,14 +102,38 @@
 				)
 				(polyline
 					(pts
-						(xy 0 -2.54) (xy -3.81 -2.54)
+						(xy -3.81 -1.27) (xy -3.175 -1.27)
 					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start 2.54 0)
+					(mid 1.601 -1.601)
+					(end 0 -2.54)
 					(stroke
 						(width 0.254)
 						(type default)
 					)
 					(fill
-						(type background)
+						(type none)
+					)
+				)
+				(arc
+					(start 0 2.54)
+					(mid 1.6136 1.6136)
+					(end 2.54 0)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
 					)
 				)
 				(polyline
@@ -148,16 +148,16 @@
 						(type background)
 					)
 				)
-				(arc
-					(start 2.54 0)
-					(mid 1.6136 1.6136)
-					(end 0 2.54)
+				(polyline
+					(pts
+						(xy 0 -2.54) (xy -3.81 -2.54)
+					)
 					(stroke
 						(width 0.254)
 						(type default)
 					)
 					(fill
-						(type none)
+						(type background)
 					)
 				)
 			)
@@ -191,6 +191,24 @@
 						)
 					)
 					(number "2"
+						(effects
+							(font
+								(size 1.016 1.016)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 0 5.08 270)
+					(length 2.54)
+					(name "V"
+						(effects
+							(font
+								(size 1.016 1.016)
+							)
+						)
+					)
+					(number "5"
 						(effects
 							(font
 								(size 1.016 1.016)
@@ -234,30 +252,17 @@
 						)
 					)
 				)
-				(pin power_in line
-					(at 0 5.08 270)
-					(length 2.54)
-					(name "V"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-					(number "5"
-						(effects
-							(font
-								(size 1.016 1.016)
-							)
-						)
-					)
-				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "Connector:TestPoint_Small"
-			(pin_numbers hide)
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
-				(offset 0.762) hide)
+				(offset 0.762)
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -355,11 +360,16 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "Device:C_Small"
-			(pin_numbers hide)
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
-				(offset 0.254) hide)
+				(offset 0.254)
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -429,10 +439,10 @@
 			(symbol "C_Small_0_1"
 				(polyline
 					(pts
-						(xy -1.524 -0.508) (xy 1.524 -0.508)
+						(xy -1.524 0.508) (xy 1.524 0.508)
 					)
 					(stroke
-						(width 0.3302)
+						(width 0.3048)
 						(type default)
 					)
 					(fill
@@ -441,10 +451,10 @@
 				)
 				(polyline
 					(pts
-						(xy -1.524 0.508) (xy 1.524 0.508)
+						(xy -1.524 -0.508) (xy 1.524 -0.508)
 					)
 					(stroke
-						(width 0.3048)
+						(width 0.3302)
 						(type default)
 					)
 					(fill
@@ -490,11 +500,16 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "Device:D_Schottky_Small"
-			(pin_numbers hide)
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
-				(offset 0.254) hide)
+				(offset 0.254)
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -564,6 +579,18 @@
 			(symbol "D_Schottky_Small_0_1"
 				(polyline
 					(pts
+						(xy -1.27 0.762) (xy -1.27 1.016) (xy -0.762 1.016) (xy -0.762 -1.016) (xy -0.254 -1.016) (xy -0.254 -0.762)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
 						(xy -0.762 0) (xy 0.762 0)
 					)
 					(stroke
@@ -577,18 +604,6 @@
 				(polyline
 					(pts
 						(xy 0.762 -1.016) (xy -0.762 0) (xy 0.762 1.016) (xy 0.762 -1.016)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -1.27 0.762) (xy -1.27 1.016) (xy -0.762 1.016) (xy -0.762 -1.016) (xy -0.254 -1.016) (xy -0.254 -0.762)
 					)
 					(stroke
 						(width 0.254)
@@ -637,11 +652,16 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "Device:R_Small"
-			(pin_numbers hide)
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
-				(offset 0.254) hide)
+				(offset 0.254)
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -759,6 +779,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "GND_2"
 			(power)
@@ -838,7 +859,8 @@
 			(symbol "GND_2_1_1"
 				(pin power_in line
 					(at 0 0 270)
-					(length 0) hide
+					(length 0)
+					(hide yes)
 					(name "GND"
 						(effects
 							(font
@@ -855,6 +877,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "GND_4"
 			(power)
@@ -934,7 +957,8 @@
 			(symbol "GND_4_1_1"
 				(pin power_in line
 					(at 0 0 270)
-					(length 0) hide
+					(length 0)
+					(hide yes)
 					(name "GND"
 						(effects
 							(font
@@ -951,6 +975,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "GND_5"
 			(power)
@@ -1030,7 +1055,8 @@
 			(symbol "GND_5_1_1"
 				(pin power_in line
 					(at 0 0 270)
-					(length 0) hide
+					(length 0)
+					(hide yes)
 					(name "GND"
 						(effects
 							(font
@@ -1047,6 +1073,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "GND_6"
 			(power)
@@ -1126,7 +1153,8 @@
 			(symbol "GND_6_1_1"
 				(pin power_in line
 					(at 0 0 270)
-					(length 0) hide
+					(length 0)
+					(hide yes)
 					(name "GND"
 						(effects
 							(font
@@ -1143,6 +1171,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "GND_8"
 			(power)
@@ -1222,7 +1251,8 @@
 			(symbol "GND_8_1_1"
 				(pin power_in line
 					(at 0 0 270)
-					(length 0) hide
+					(length 0)
+					(hide yes)
 					(name "GND"
 						(effects
 							(font
@@ -1239,9 +1269,12 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "Samacsys_kicad_sym:IMB03ITS"
-			(pin_names hide)
+			(pin_names
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -1281,7 +1314,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "Body Features: Product Weight .75 G | Product Weight .026 OZ | Insulation Special Features 2500V Initial Surge Withstand Voltage between Contacts & Coil | Contact Features: Contact Base Material AgNi | Contact Number of Poles 1 | Contact Current Rating (Max) 2 AMP | Contact Special Features Single Contact | Contact Arrangement 1 Form A (NO) | Contact Plating Material Gold | Contact Current Class 0  2 AMP | Dimensions: Product Length 10 MM | Height Class (Mechanical) 0  6 MM | Width Class (Mechanical) "
+			(property "Description" "Body Features: Product Weight .75 G | Product Weight .026 OZ | Insulation Special Features 2500V Initial Surge Withstand Voltage between Contacts & Coil | Contact Features: Contact Base Material AgNi | Contact Number of Poles 1 | Contact Current Rating (Max) 2 AMP | Contact Special Features Single Contact | Contact Arrangement 1 Form A (NO) | Contact Plating Material Gold | Contact Current Class 0  2 AMP | Dimensions: Product Length 10 MM | Height Class (Mechanical) 0  6 MM | Width Class (Mechanical)"
 				(at 0 0 0)
 				(effects
 					(font
@@ -1366,17 +1399,6 @@
 						(type background)
 					)
 				)
-				(rectangle
-					(start -1.905 4.445)
-					(end 0.635 0.635)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
 				(polyline
 					(pts
 						(xy -2.54 -2.54) (xy -3.81 -2.54)
@@ -1401,12 +1423,11 @@
 						(type none)
 					)
 				)
-				(polyline
-					(pts
-						(xy -1.905 2.54) (xy -3.81 2.54)
-					)
+				(rectangle
+					(start -1.905 4.445)
+					(end 0.635 0.635)
 					(stroke
-						(width 0)
+						(width 0.254)
 						(type default)
 					)
 					(fill
@@ -1427,7 +1448,19 @@
 				)
 				(polyline
 					(pts
-						(xy -0.635 -0.635) (xy -0.635 -1.27)
+						(xy -1.905 2.54) (xy -3.81 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -0.635 0.635) (xy -0.635 0)
 					)
 					(stroke
 						(width 0.254)
@@ -1439,7 +1472,7 @@
 				)
 				(polyline
 					(pts
-						(xy -0.635 0.635) (xy -0.635 0)
+						(xy -0.635 -0.635) (xy -0.635 -1.27)
 					)
 					(stroke
 						(width 0.254)
@@ -1500,24 +1533,6 @@
 					)
 				)
 				(pin passive line
-					(at 5.08 -2.54 180)
-					(length 2.54)
-					(name "NO"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "6"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
 					(at 5.08 2.54 180)
 					(length 2.54)
 					(name "COIL_2"
@@ -1535,10 +1550,31 @@
 						)
 					)
 				)
+				(pin passive line
+					(at 5.08 -2.54 180)
+					(length 2.54)
+					(name "NO"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "Transistor_FET:2N7002"
-			(pin_names hide)
+			(pin_names
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -1611,18 +1647,6 @@
 			(symbol "2N7002_0_1"
 				(polyline
 					(pts
-						(xy 0.254 0) (xy -2.54 0)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
 						(xy 0.254 1.905) (xy 0.254 -1.905)
 					)
 					(stroke
@@ -1635,7 +1659,19 @@
 				)
 				(polyline
 					(pts
-						(xy 0.762 -1.27) (xy 0.762 -2.286)
+						(xy 0.254 0) (xy -2.54 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 2.286) (xy 0.762 1.27)
 					)
 					(stroke
 						(width 0.254)
@@ -1659,34 +1695,10 @@
 				)
 				(polyline
 					(pts
-						(xy 0.762 2.286) (xy 0.762 1.27)
+						(xy 0.762 -1.27) (xy 0.762 -2.286)
 					)
 					(stroke
 						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 2.54 2.54) (xy 2.54 1.778)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 2.54 -2.54) (xy 2.54 0) (xy 0.762 0)
-					)
-					(stroke
-						(width 0)
 						(type default)
 					)
 					(fill
@@ -1717,6 +1729,63 @@
 						(type outline)
 					)
 				)
+				(circle
+					(center 1.651 0)
+					(radius 2.794)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.54 2.54) (xy 2.54 1.778)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 2.54 1.778)
+					(radius 0.254)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(circle
+					(center 2.54 -1.778)
+					(radius 0.254)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.54 -2.54) (xy 2.54 0) (xy 0.762 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
 				(polyline
 					(pts
 						(xy 2.794 0.508) (xy 2.921 0.381) (xy 3.683 0.381) (xy 3.81 0.254)
@@ -1741,39 +1810,6 @@
 						(type none)
 					)
 				)
-				(circle
-					(center 1.651 0)
-					(radius 2.794)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 2.54 -1.778)
-					(radius 0.254)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(circle
-					(center 2.54 1.778)
-					(radius 0.254)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
 			)
 			(symbol "2N7002_1_1"
 				(pin input line
@@ -1787,24 +1823,6 @@
 						)
 					)
 					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 2.54 -5.08 90)
-					(length 2.54)
-					(name "S"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1830,7 +1848,26 @@
 						)
 					)
 				)
+				(pin passive line
+					(at 2.54 -5.08 90)
+					(length 2.54)
+					(name "S"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "power:+3.3V"
 			(power)
@@ -1908,7 +1945,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 0) (xy 0 2.54)
+						(xy 0 2.54) (xy 0.762 1.27)
 					)
 					(stroke
 						(width 0)
@@ -1920,7 +1957,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 2.54) (xy 0.762 1.27)
+						(xy 0 0) (xy 0 2.54)
 					)
 					(stroke
 						(width 0)
@@ -1934,7 +1971,8 @@
 			(symbol "+3.3V_1_1"
 				(pin power_in line
 					(at 0 0 90)
-					(length 0) hide
+					(length 0)
+					(hide yes)
 					(name "+3V3"
 						(effects
 							(font
@@ -1951,6 +1989,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "power:+5V"
 			(power)
@@ -2028,7 +2067,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 0) (xy 0 2.54)
+						(xy 0 2.54) (xy 0.762 1.27)
 					)
 					(stroke
 						(width 0)
@@ -2040,7 +2079,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 2.54) (xy 0.762 1.27)
+						(xy 0 0) (xy 0 2.54)
 					)
 					(stroke
 						(width 0)
@@ -2054,7 +2093,8 @@
 			(symbol "+5V_1_1"
 				(pin power_in line
 					(at 0 0 90)
-					(length 0) hide
+					(length 0)
+					(hide yes)
 					(name "+5V"
 						(effects
 							(font
@@ -2071,6 +2111,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "power:GND"
 			(power)
@@ -2150,7 +2191,8 @@
 			(symbol "GND_1_1"
 				(pin power_in line
 					(at 0 0 270)
-					(length 0) hide
+					(length 0)
+					(hide yes)
 					(name "GND"
 						(effects
 							(font
@@ -2167,7 +2209,212 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
+	)
+	(arc
+		(start 93.98 123.19)
+		(mid 98.4419 119.4138)
+		(end 104.14 118.11)
+		(stroke
+			(width 0)
+			(type default)
+			(color 132 0 132 1)
+		)
+		(fill
+			(type none)
+		)
+		(uuid 6bdfe01b-0f91-43c7-b9e4-3b9fcf75e375)
+	)
+	(rectangle
+		(start 15.24 15.24)
+		(end 173.99 99.06)
+		(stroke
+			(width 0)
+			(type dash)
+			(color 132 132 132 1)
+		)
+		(fill
+			(type none)
+		)
+		(uuid 936087e0-c2ef-4983-9f33-dfb702ad4801)
+	)
+	(arc
+		(start 87.63 123.19)
+		(mid 89.2983 121.5652)
+		(end 91.44 120.65)
+		(stroke
+			(width 0)
+			(type default)
+			(color 132 0 132 1)
+		)
+		(fill
+			(type none)
+		)
+		(uuid 9416a7bb-71a0-4c3f-9972-a27f847ef24a)
+	)
+	(rectangle
+		(start 15.24 166.37)
+		(end 173.99 195.58)
+		(stroke
+			(width 0)
+			(type dash)
+			(color 132 132 132 1)
+		)
+		(fill
+			(type none)
+		)
+		(uuid b427685a-3794-40fd-8abe-6f500396df13)
+	)
+	(rectangle
+		(start 15.24 101.6)
+		(end 173.99 163.83)
+		(stroke
+			(width 0)
+			(type dash)
+			(color 132 132 132 1)
+		)
+		(fill
+			(type none)
+		)
+		(uuid ea1e3a29-bc1f-4c3c-907a-ff67407ef0a6)
+	)
+	(text "MCU - DISCHARGE CAP"
+		(exclude_from_sim no)
+		(at 33.02 128.27 0)
+		(effects
+			(font
+				(size 1 1)
+				(color 132 0 132 1)
+			)
+		)
+		(uuid "08646405-7a8c-4677-bce5-0122d21a2050")
+	)
+	(text "OK"
+		(exclude_from_sim no)
+		(at 35.56 133.35 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(color 132 0 132 1)
+			)
+			(justify top)
+		)
+		(uuid "249af5ab-918a-48a5-ac68-934b49ebcf76")
+	)
+	(text "AMS Light Indicator is controled by periodically sending the AMS_OK CAN frame. If SDC is open / AMS throws error (stops reseting\nSDC control circuit) , CAN frames aren't being send anymore and AMS Light Indicator is being lit via the cocpit control circuit."
+		(exclude_from_sim no)
+		(at 17.78 172.72 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(color 132 0 132 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "44db398b-f1e9-47c6-b8dc-b6eb6b425c19")
+	)
+	(text "SAFETY CONTROL"
+		(exclude_from_sim no)
+		(at 172.72 162.56 0)
+		(effects
+			(font
+				(size 2.032 2.032)
+				(thickness 1)
+				(bold yes)
+				(color 132 132 132 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "48de6d3b-303e-4a7e-978a-88d367b703b1")
+	)
+	(text "~200ms"
+		(exclude_from_sim no)
+		(at 99.695 115.57 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(color 132 0 132 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "97781fce-9d20-4be8-9f03-24848bade973")
+	)
+	(text "SAFETY"
+		(exclude_from_sim no)
+		(at 172.72 97.79 0)
+		(effects
+			(font
+				(size 2.032 2.032)
+				(thickness 1)
+				(bold yes)
+				(color 132 132 132 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "9d6cab5f-d0b6-4fd2-b3e6-4fbffc936fcd")
+	)
+	(text "AMS LED INDICATOR EXPLANATION"
+		(exclude_from_sim no)
+		(at 172.72 194.31 0)
+		(effects
+			(font
+				(size 2.032 2.032)
+				(thickness 1)
+				(bold yes)
+				(color 132 132 132 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "cd1e337e-f7ed-4726-8085-5ff8550931c0")
+	)
+	(text "ERR"
+		(exclude_from_sim no)
+		(at 31.75 133.35 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(color 132 0 132 1)
+			)
+			(justify right top)
+		)
+		(uuid "d1ea12fe-125d-4d79-a0e4-6687d547f9c5")
+	)
+	(text "LATCHED ERROR"
+		(exclude_from_sim no)
+		(at 151.13 128.27 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(color 132 0 132 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "d384bdd4-0d2e-44ac-a705-aa1a174d719a")
+	)
+	(text "2V"
+		(exclude_from_sim no)
+		(at 83.82 118.11 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(color 132 0 132 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "dc4df9d9-e6c7-4932-8ff0-287552bc3f95")
+	)
+	(text "t_{>2V} = ~200ms"
+		(exclude_from_sim no)
+		(at 55.88 130.81 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(color 132 0 132 1)
+			)
+			(justify left bottom)
+		)
+		(uuid "df06600a-5709-4239-8e3f-678360367394")
 	)
 	(junction
 		(at 50.8 139.7)
@@ -3036,210 +3283,6 @@
 			(type default)
 		)
 		(uuid "ffa7eb7f-4b4f-4ad0-9c24-40135facd65f")
-	)
-	(arc
-		(start 93.98 123.19)
-		(mid 98.4419 119.4138)
-		(end 104.14 118.11)
-		(stroke
-			(width 0)
-			(type default)
-			(color 132 0 132 1)
-		)
-		(fill
-			(type none)
-		)
-		(uuid 6bdfe01b-0f91-43c7-b9e4-3b9fcf75e375)
-	)
-	(rectangle
-		(start 15.24 15.24)
-		(end 173.99 99.06)
-		(stroke
-			(width 0)
-			(type dash)
-			(color 132 132 132 1)
-		)
-		(fill
-			(type none)
-		)
-		(uuid 936087e0-c2ef-4983-9f33-dfb702ad4801)
-	)
-	(arc
-		(start 87.63 123.19)
-		(mid 89.2983 121.5652)
-		(end 91.44 120.65)
-		(stroke
-			(width 0)
-			(type default)
-			(color 132 0 132 1)
-		)
-		(fill
-			(type none)
-		)
-		(uuid 9416a7bb-71a0-4c3f-9972-a27f847ef24a)
-	)
-	(rectangle
-		(start 15.24 166.37)
-		(end 173.99 195.58)
-		(stroke
-			(width 0)
-			(type dash)
-			(color 132 132 132 1)
-		)
-		(fill
-			(type none)
-		)
-		(uuid b427685a-3794-40fd-8abe-6f500396df13)
-	)
-	(rectangle
-		(start 15.24 101.6)
-		(end 173.99 163.83)
-		(stroke
-			(width 0)
-			(type dash)
-			(color 132 132 132 1)
-		)
-		(fill
-			(type none)
-		)
-		(uuid ea1e3a29-bc1f-4c3c-907a-ff67407ef0a6)
-	)
-	(text "MCU - DISCHARGE CAP"
-		(exclude_from_sim no)
-		(at 33.02 128.27 0)
-		(effects
-			(font
-				(size 1 1)
-				(color 132 0 132 1)
-			)
-		)
-		(uuid "08646405-7a8c-4677-bce5-0122d21a2050")
-	)
-	(text "OK"
-		(exclude_from_sim no)
-		(at 35.56 133.35 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-				(color 132 0 132 1)
-			)
-			(justify top)
-		)
-		(uuid "249af5ab-918a-48a5-ac68-934b49ebcf76")
-	)
-	(text "AMS Light Indicator is controled by periodically sending the AMS_OK CAN frame. If SDC is open / AMS throws error (stops reseting\nSDC control circuit) , CAN frames aren't being send anymore and AMS Light Indicator is being lit via the cocpit control circuit."
-		(exclude_from_sim no)
-		(at 17.78 172.72 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-				(color 132 0 132 1)
-			)
-			(justify left bottom)
-		)
-		(uuid "44db398b-f1e9-47c6-b8dc-b6eb6b425c19")
-	)
-	(text "SAFETY CONTROL"
-		(exclude_from_sim no)
-		(at 172.72 162.56 0)
-		(effects
-			(font
-				(size 2.032 2.032)
-				(thickness 1)
-				(bold yes)
-				(color 132 132 132 1)
-			)
-			(justify right bottom)
-		)
-		(uuid "48de6d3b-303e-4a7e-978a-88d367b703b1")
-	)
-	(text "~200ms"
-		(exclude_from_sim no)
-		(at 99.695 115.57 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-				(color 132 0 132 1)
-			)
-			(justify right bottom)
-		)
-		(uuid "97781fce-9d20-4be8-9f03-24848bade973")
-	)
-	(text "SAFETY"
-		(exclude_from_sim no)
-		(at 172.72 97.79 0)
-		(effects
-			(font
-				(size 2.032 2.032)
-				(thickness 1)
-				(bold yes)
-				(color 132 132 132 1)
-			)
-			(justify right bottom)
-		)
-		(uuid "9d6cab5f-d0b6-4fd2-b3e6-4fbffc936fcd")
-	)
-	(text "AMS LED INDICATOR EXPLANATION"
-		(exclude_from_sim no)
-		(at 172.72 194.31 0)
-		(effects
-			(font
-				(size 2.032 2.032)
-				(thickness 1)
-				(bold yes)
-				(color 132 132 132 1)
-			)
-			(justify right bottom)
-		)
-		(uuid "cd1e337e-f7ed-4726-8085-5ff8550931c0")
-	)
-	(text "ERR"
-		(exclude_from_sim no)
-		(at 31.75 133.35 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-				(color 132 0 132 1)
-			)
-			(justify right top)
-		)
-		(uuid "d1ea12fe-125d-4d79-a0e4-6687d547f9c5")
-	)
-	(text "LATCHED ERROR"
-		(exclude_from_sim no)
-		(at 151.13 128.27 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-				(color 132 0 132 1)
-			)
-			(justify left bottom)
-		)
-		(uuid "d384bdd4-0d2e-44ac-a705-aa1a174d719a")
-	)
-	(text "2V"
-		(exclude_from_sim no)
-		(at 83.82 118.11 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-				(color 132 0 132 1)
-			)
-			(justify left bottom)
-		)
-		(uuid "dc4df9d9-e6c7-4932-8ff0-287552bc3f95")
-	)
-	(text "t_{>2V} = ~200ms"
-		(exclude_from_sim no)
-		(at 55.88 130.81 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-				(color 132 0 132 1)
-			)
-			(justify left bottom)
-		)
-		(uuid "df06600a-5709-4239-8e3f-678360367394")
 	)
 	(label "WEB"
 		(at 66.04 78.74 0)
