@@ -48,7 +48,7 @@
         "silk_text_thickness": 0.15,
         "silk_text_upright": false,
         "zones": {
-          "min_clearance": 0.0
+          "min_clearance": 0.1
         }
       },
       "diff_pair_dimensions": [
@@ -192,6 +192,8 @@
       "track_widths": [
         0.0,
         0.1,
+        0.1275,
+        0.1852,
         0.2,
         0.25,
         0.3,
@@ -520,17 +522,30 @@
         "wire_width": 6
       },
       {
+        "clearance": 0.2,
+        "diff_pair_gap": 0.2,
+        "diff_pair_width": 0.1275,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "name": "120Ohm",
+        "pcb_color": "rgb(0, 0, 255)",
+        "priority": 0,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.1275,
+        "via_diameter": 0.45,
+        "via_drill": 0.2
+      },
+      {
         "bus_width": 12,
         "clearance": 0.1,
         "diff_pair_gap": 0.1,
-        "diff_pair_via_gap": 0.25,
         "diff_pair_width": 0.3,
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
         "name": "50Ohm",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
-        "priority": 0,
+        "priority": 2,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
         "track_width": 0.25,
         "via_diameter": 0.45,
@@ -538,17 +553,30 @@
         "wire_width": 6
       },
       {
+        "clearance": 0.11,
+        "diff_pair_gap": 0.11,
+        "diff_pair_width": 0.1852,
+        "microvia_diameter": 0.3,
+        "microvia_drill": 0.1,
+        "name": "90Ohm",
+        "pcb_color": "rgb(255, 255, 0)",
+        "priority": 1,
+        "schematic_color": "rgba(0, 0, 0, 0.000)",
+        "track_width": 0.1852,
+        "via_diameter": 0.45,
+        "via_drill": 0.2
+      },
+      {
         "bus_width": 12,
         "clearance": 0.2,
         "diff_pair_gap": 0.1,
-        "diff_pair_via_gap": 0.25,
         "diff_pair_width": 0.1,
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
         "name": "HighCurrent",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
-        "priority": 1,
+        "priority": 3,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
         "track_width": 2.0,
         "via_diameter": 0.45,
@@ -559,14 +587,13 @@
         "bus_width": 12,
         "clearance": 0.1,
         "diff_pair_gap": 0.1,
-        "diff_pair_via_gap": 0.25,
         "diff_pair_width": 0.2,
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
         "name": "HighSpeed",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
-        "priority": 2,
+        "priority": 4,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
         "track_width": 0.25,
         "via_diameter": 0.45,
@@ -577,14 +604,13 @@
         "bus_width": 12,
         "clearance": 0.1,
         "diff_pair_gap": 0.25,
-        "diff_pair_via_gap": 0.25,
         "diff_pair_width": 0.2,
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
         "name": "TS_HV",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
-        "priority": 3,
+        "priority": 5,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
         "track_width": 0.25,
         "via_diameter": 0.45,
@@ -595,14 +621,13 @@
         "bus_width": 12,
         "clearance": 0.1,
         "diff_pair_gap": 0.1,
-        "diff_pair_via_gap": 0.25,
         "diff_pair_width": 0.37,
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
         "name": "VIO",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
-        "priority": 4,
+        "priority": 6,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
         "track_width": 0.4,
         "via_diameter": 0.45,
@@ -614,10 +639,35 @@
       "version": 4
     },
     "net_colors": null,
-    "netclass_assignments": null,
+    "netclass_assignments": {
+      "/CANFD1+": [
+        "120Ohm"
+      ],
+      "/CANFD1-": [
+        "120Ohm"
+      ],
+      "/CANFD2+": [
+        "120Ohm"
+      ],
+      "/CANFD2-": [
+        "120Ohm"
+      ],
+      "/D+": [
+        "90Ohm"
+      ],
+      "/D-": [
+        "90Ohm"
+      ],
+      "Net-(U2-USBDM)": [
+        "90Ohm"
+      ],
+      "Net-(U2-USBDP)": [
+        "90Ohm"
+      ]
+    },
     "netclass_patterns": [
       {
-        "netclass": "Default",
+        "netclass": "HighCurrent",
         "pattern": "+24V"
       },
       {
@@ -710,10 +760,6 @@
       },
       {
         "netclass": "HighCurrent",
-        "pattern": "+24V"
-      },
-      {
-        "netclass": "HighCurrent",
         "pattern": "+12V"
       },
       {
@@ -773,7 +819,7 @@
           "group_by": false,
           "label": "Reference",
           "name": "Reference",
-          "show": false
+          "show": true
         },
         {
           "group_by": true,
@@ -791,7 +837,7 @@
           "group_by": true,
           "label": "Footprint",
           "name": "Footprint",
-          "show": false
+          "show": true
         },
         {
           "group_by": false,
@@ -870,6 +916,48 @@
           "label": "DigiKey Part Number",
           "name": "DigiKey Part Number",
           "show": false
+        },
+        {
+          "group_by": false,
+          "label": "License",
+          "name": "License",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "MPN",
+          "name": "MPN",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "Sim.Device",
+          "name": "Sim.Device",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "Sim.Pins",
+          "name": "Sim.Pins",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "Sim.Type",
+          "name": "Sim.Type",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "Manufacturer",
+          "name": "Manufacturer",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "Author",
+          "name": "Author",
+          "show": false
         }
       ],
       "filter_string": "",
@@ -935,28 +1023,16 @@
       "Root"
     ],
     [
-      "850c2180-a634-437d-8598-d7516be18fb3",
-      "Input2"
+      "fddfd40b-128d-4439-b7b1-2bfdbdc0083e",
+      "Power"
     ],
     [
       "6eb4a2b1-8e5b-451b-b593-8aaaa3a4213e",
       "Safety"
     ],
     [
-      "91f3f49c-791c-4c8e-878a-f1a86cae1b35",
-      "AIR Precharge"
-    ],
-    [
-      "ca5dc7a3-a7a4-462d-9283-6de561582cc8",
-      "AIR Minus"
-    ],
-    [
-      "50824e4c-3a23-46ed-a6a0-b956059fc001",
-      "AIR Plus"
-    ],
-    [
       "6dd12385-8249-456a-9bdd-ab767e747ed7",
-      "Isolated ADC"
+      "ADC"
     ],
     [
       "ce12d4e7-22c6-44b1-ad25-5b799a9893d1",
@@ -971,12 +1047,8 @@
       "Connectivity"
     ],
     [
-      "af25626c-6516-4a84-af7c-6fa2b3e0256c",
-      "Input1"
-    ],
-    [
-      "66c3869d-de11-4d8d-b4de-9d98c32ec205",
-      "Power"
+      "966640b3-7a11-41e5-818e-eba0d3c90b57",
+      "IsolationBarrier"
     ],
     [
       "7084a49d-455d-4cdd-914a-a6fa8e6c3cf4",

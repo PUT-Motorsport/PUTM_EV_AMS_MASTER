@@ -107,4 +107,52 @@ D Audio Transformers / Signal Transformers 125uH min 120uH Nom
 K
 F http://products.sumida.com/products/pdf/CBM5D33_Ver1.0_E.pdf
 $ENDCMP
+#
+$CMP M80-5102042
+D HARWIN - M80-5102042 - Wire-To-Board Connector, Dual in Line, Datamate J-Tek M80-5 Series, Through Hole, Plug, 20, 2 mm
+K
+F https://cdn.harwin.com/pdfs/M80-510.pdf
+$ENDCMP
+#
+$CMP M80-5100842
+D 8 Male DIL Vertical Throughboard Conn. Jackscrews, 2.00mm Pitch High-Reliability Connector - Datamate J-Tek
+K
+F https://cdn.harwin.com/pdfs/M80-510.pdf
+$ENDCMP
+#
+$CMP AMC3330DWER
+D Isolation Amplifiers +/-1-V input, precision reinforced isolated amplifier with integrated DC/DC converter and high CMTI 16-SOIC -40 to 125
+K
+F https://www.ti.com/lit/ds/symlink/amc3330.pdf?ts=1627904955935&ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252FAMC3330
+$ENDCMP
+#
+$CMP TPS2115ADRBR
+D Autoswitching Power Mux
+K
+F http://www.ti.com/lit/gpn/tps2115a
+$ENDCMP
+#
+$CMP TPS2113PWR
+D Dual In/Single Out Autoswitching Power MUX, Auto Sw, Adj. Cur Limit, Adj. Vol Threshold, Sw Status
+K
+F http://www.ti.com/lit/ds/symlink/tps2113.pdf
+$ENDCMP
+#
+$CMP IM07DTS
+D Body Features: Insulation Special Features 2000V Initial Surge Withstand Voltage Between Contacts & Coil | Product Weight .026 OZ | Product Weight .75 G | Contact Features: Contact Arrangement 2 Form C (2 CO) | Contact Number of Poles 2 | Contact Current Rating (Max) 5 AMP | Contact Special Features Bifurcated/Twin Contacts | Contact Base Material AgNi+Au | Contact Plating Material Gold | Contact Current Class 0  5 AMP | Dimensions: Product Height 5.65 MM | Product Width 6 MM | Length Class (Mechanical)
+K
+F https://www.te.com/commerce/DocumentDelivery/DDEController?Action=srchrtrv&DocNm=108-98001&DocType=Data%20Sheet&DocLang=English&PartCntxt=7-1462039-2&DocFormat=pdf
+$ENDCMP
+#
+$CMP SM91502ALE
+D Surface Mount PCB Transformer
+K
+F https://www.bourns.com/docs/product-datasheets/SM91502AL.pdf
+$ENDCMP
+#
+$CMP TLV61046ADBVT
+D 28-V Output Voltage Boost Converter with Power Diode and Isolation Switch
+K
+F http://www.ti.com/lit/gpn/tlv61046a
+$ENDCMP
 #End Doc Library
