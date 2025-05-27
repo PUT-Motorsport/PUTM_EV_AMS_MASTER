@@ -1165,7 +1165,7 @@
 	)
 	(wire
 		(pts
-			(xy 153.67 95.25) (xy 175.26 95.25)
+			(xy 153.67 95.25) (xy 186.69 95.25)
 		)
 		(stroke
 			(width 0)
@@ -1415,7 +1415,7 @@
 	)
 	(wire
 		(pts
-			(xy 180.34 97.79) (xy 182.88 97.79)
+			(xy 191.77 97.79) (xy 196.85 97.79)
 		)
 		(stroke
 			(width 0)
@@ -1425,7 +1425,7 @@
 	)
 	(wire
 		(pts
-			(xy 165.1 97.79) (xy 175.26 97.79)
+			(xy 165.1 97.79) (xy 186.69 97.79)
 		)
 		(stroke
 			(width 0)
@@ -1515,7 +1515,7 @@
 	)
 	(wire
 		(pts
-			(xy 180.34 95.25) (xy 182.88 95.25)
+			(xy 191.77 95.25) (xy 196.85 95.25)
 		)
 		(stroke
 			(width 0)
@@ -1649,7 +1649,7 @@
 	)
 	(hierarchical_label "OUT+"
 		(shape bidirectional)
-		(at 182.88 95.25 0)
+		(at 196.85 95.25 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1660,7 +1660,7 @@
 	)
 	(hierarchical_label "OUT-"
 		(shape bidirectional)
-		(at 182.88 97.79 0)
+		(at 196.85 97.79 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -1668,6 +1668,134 @@
 			(justify left)
 		)
 		(uuid "ab09fa3e-a445-4d6b-8840-ba42702cb636")
+	)
+	(netclass_flag ""
+		(length 2.54)
+		(shape round)
+		(at 177.8 95.25 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "12b6b955-7ba1-4203-b9e2-10a12385e656")
+		(property "Netclass" "120Ohm"
+			(at 178.4096 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Component Class" ""
+			(at -95.25 2.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+					(italic yes)
+				)
+				(justify right)
+			)
+		)
+	)
+	(netclass_flag ""
+		(length 2.54)
+		(shape round)
+		(at 177.8 97.79 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "2ce1eeb9-3080-45d2-8017-af15519be13c")
+		(property "Netclass" "120Ohm"
+			(at 178.4096 100.33 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Component Class" ""
+			(at -95.25 190.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+					(italic yes)
+				)
+				(justify right)
+			)
+		)
+	)
+	(netclass_flag ""
+		(length 2.54)
+		(shape round)
+		(at 194.31 95.25 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "5501aec0-34e7-47df-b3c0-b3099b7ae657")
+		(property "Netclass" "120Ohm"
+			(at 194.9196 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Component Class" ""
+			(at -78.74 2.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+					(italic yes)
+				)
+				(justify right)
+			)
+		)
+	)
+	(netclass_flag ""
+		(length 2.54)
+		(shape round)
+		(at 194.31 97.79 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "e45572d9-9f10-4599-acdb-a4755611b4be")
+		(property "Netclass" "120Ohm"
+			(at 194.9196 100.33 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Component Class" ""
+			(at -78.74 190.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+					(italic yes)
+				)
+				(justify right)
+			)
+		)
 	)
 	(symbol
 		(lib_name "GND_7")
@@ -2232,7 +2360,7 @@
 	)
 	(symbol
 		(lib_id "Device:R_Small")
-		(at 177.8 95.25 270)
+		(at 189.23 95.25 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2240,7 +2368,7 @@
 		(dnp no)
 		(uuid "4fd0bf9e-eab7-4c61-be0c-f679f796d8ec")
 		(property "Reference" "R96"
-			(at 177.8 90.17 90)
+			(at 189.23 90.17 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2248,7 +2376,7 @@
 			)
 		)
 		(property "Value" "51"
-			(at 177.8 92.71 90)
+			(at 189.23 92.71 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2256,7 +2384,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 177.8 95.25 0)
+			(at 189.23 95.25 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2265,7 +2393,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 177.8 95.25 0)
+			(at 189.23 95.25 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2274,7 +2402,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 177.8 95.25 0)
+			(at 189.23 95.25 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2283,7 +2411,7 @@
 			)
 		)
 		(property "Manufacturer_Name" "--"
-			(at 177.8 95.25 0)
+			(at 189.23 95.25 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2292,7 +2420,7 @@
 			)
 		)
 		(property "Manufacturer_Part_Number" "--"
-			(at 177.8 95.25 0)
+			(at 189.23 95.25 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2301,7 +2429,7 @@
 			)
 		)
 		(property "Arrow Part Number" ""
-			(at 177.8 95.25 0)
+			(at 189.23 95.25 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2310,7 +2438,7 @@
 			)
 		)
 		(property "Arrow Price/Stock" ""
-			(at 177.8 95.25 0)
+			(at 189.23 95.25 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2319,7 +2447,7 @@
 			)
 		)
 		(property "Mouser Part Number" "594-MCT06030C5109FP5"
-			(at 177.8 95.25 0)
+			(at 189.23 95.25 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2328,7 +2456,7 @@
 			)
 		)
 		(property "DigiKey Part Number" ""
-			(at 177.8 95.25 0)
+			(at 189.23 95.25 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2999,7 +3127,7 @@
 	)
 	(symbol
 		(lib_id "Device:R_Small")
-		(at 177.8 97.79 270)
+		(at 189.23 97.79 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -3007,7 +3135,7 @@
 		(dnp no)
 		(uuid "a4bcbc9c-399e-4ef6-9835-64c56e65633d")
 		(property "Reference" "R98"
-			(at 177.8 100.33 90)
+			(at 189.23 100.33 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3015,7 +3143,7 @@
 			)
 		)
 		(property "Value" "51"
-			(at 177.8 102.87 90)
+			(at 189.23 102.87 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3023,7 +3151,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 177.8 97.79 0)
+			(at 189.23 97.79 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3032,7 +3160,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 177.8 97.79 0)
+			(at 189.23 97.79 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3041,7 +3169,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 177.8 97.79 0)
+			(at 189.23 97.79 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3050,7 +3178,7 @@
 			)
 		)
 		(property "Manufacturer_Name" "--"
-			(at 177.8 97.79 0)
+			(at 189.23 97.79 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3059,7 +3187,7 @@
 			)
 		)
 		(property "Manufacturer_Part_Number" "--"
-			(at 177.8 97.79 0)
+			(at 189.23 97.79 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3068,7 +3196,7 @@
 			)
 		)
 		(property "Arrow Part Number" ""
-			(at 177.8 97.79 0)
+			(at 189.23 97.79 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3077,7 +3205,7 @@
 			)
 		)
 		(property "Arrow Price/Stock" ""
-			(at 177.8 97.79 0)
+			(at 189.23 97.79 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3086,7 +3214,7 @@
 			)
 		)
 		(property "Mouser Part Number" "594-MCT06030C5109FP5"
-			(at 177.8 97.79 0)
+			(at 189.23 97.79 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3095,7 +3223,7 @@
 			)
 		)
 		(property "DigiKey Part Number" ""
-			(at 177.8 97.79 0)
+			(at 189.23 97.79 0)
 			(effects
 				(font
 					(size 1.27 1.27)

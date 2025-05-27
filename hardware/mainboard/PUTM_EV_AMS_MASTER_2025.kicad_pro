@@ -652,11 +652,29 @@
       "/CANFD2-": [
         "120Ohm"
       ],
+      "/CCO+": [
+        "120Ohm"
+      ],
+      "/CCO-": [
+        "120Ohm"
+      ],
       "/D+": [
         "90Ohm"
       ],
       "/D-": [
         "90Ohm"
+      ],
+      "/Isolated SPI/COM+": [
+        "120Ohm"
+      ],
+      "/Isolated SPI/COM-": [
+        "120Ohm"
+      ],
+      "/Isolated SPI/OUT+": [
+        "120Ohm"
+      ],
+      "/Isolated SPI/OUT-": [
+        "120Ohm"
       ],
       "Net-(U2-USBDM)": [
         "90Ohm"
@@ -665,124 +683,7 @@
         "90Ohm"
       ]
     },
-    "netclass_patterns": [
-      {
-        "netclass": "HighCurrent",
-        "pattern": "+24V"
-      },
-      {
-        "netclass": "Default",
-        "pattern": "+3.3VA"
-      },
-      {
-        "netclass": "Default",
-        "pattern": "+3V3"
-      },
-      {
-        "netclass": "Default",
-        "pattern": "+5V"
-      },
-      {
-        "netclass": "VIO",
-        "pattern": "+3.3VIO"
-      },
-      {
-        "netclass": "50Ohm",
-        "pattern": "/CCO[-+]"
-      },
-      {
-        "netclass": "HighSpeed",
-        "pattern": "/*D+*"
-      },
-      {
-        "netclass": "50Ohm",
-        "pattern": "/OUT[+-]"
-      },
-      {
-        "netclass": "HighSpeed",
-        "pattern": "/*UC_SPI*"
-      },
-      {
-        "netclass": "HighSpeed",
-        "pattern": "/Connectivity.UC_D[+-]"
-      },
-      {
-        "netclass": "HighSpeed",
-        "pattern": "/*EXT*"
-      },
-      {
-        "netclass": "HighSpeed",
-        "pattern": "/Connectivity/UC_CANFD[123]_[TR]X"
-      },
-      {
-        "netclass": "HighSpeed",
-        "pattern": "/*MOSI"
-      },
-      {
-        "netclass": "HighSpeed",
-        "pattern": "/*MISO"
-      },
-      {
-        "netclass": "HighSpeed",
-        "pattern": "/*SCK"
-      },
-      {
-        "netclass": "HighSpeed",
-        "pattern": "/Fan Control/FAN*"
-      },
-      {
-        "netclass": "HighSpeed",
-        "pattern": "/SWCLK"
-      },
-      {
-        "netclass": "HighSpeed",
-        "pattern": "/SWDIO"
-      },
-      {
-        "netclass": "HighSpeed",
-        "pattern": "/UART*"
-      },
-      {
-        "netclass": "HighSpeed",
-        "pattern": "/NRST"
-      },
-      {
-        "netclass": "HighSpeed",
-        "pattern": "/CAN*"
-      },
-      {
-        "netclass": "HighSpeed",
-        "pattern": "/*CS*"
-      },
-      {
-        "netclass": "HighCurrent",
-        "pattern": "VDD"
-      },
-      {
-        "netclass": "HighCurrent",
-        "pattern": "+12V"
-      },
-      {
-        "netclass": "HighCurrent",
-        "pattern": "/Power/SW_12V"
-      },
-      {
-        "netclass": "HighCurrent",
-        "pattern": "/Power/F_12V"
-      },
-      {
-        "netclass": "HighCurrent",
-        "pattern": "/Power/F_24V"
-      },
-      {
-        "netclass": "HighSpeed",
-        "pattern": "/*D-*"
-      },
-      {
-        "netclass": "HighSpeed",
-        "pattern": "/C[RT]X[12]"
-      }
-    ]
+    "netclass_patterns": []
   },
   "pcbnew": {
     "last_paths": {

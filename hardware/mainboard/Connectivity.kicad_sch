@@ -7544,7 +7544,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://www.ftdichip.com/Support/Documents/DataSheets/ICs/DS_FT230X.pdf"
+		(property "Datasheet" "https://www.mouser.pl/datasheet/2/163/DS_FT230X-5395.pdf"
 			(at 336.55 73.66 0)
 			(effects
 				(font
