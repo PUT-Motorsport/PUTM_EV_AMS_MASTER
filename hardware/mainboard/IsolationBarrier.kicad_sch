@@ -1063,22 +1063,10 @@
 		(uuid "0ff32edb-189b-4336-b7fa-a2c72fd2a378")
 	)
 	(junction
-		(at 87.63 43.18)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "152c288b-832a-4269-be94-80391d0f95c0")
-	)
-	(junction
 		(at 171.45 43.18)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "202906e0-24e7-4b80-845e-3a8a8ae36097")
-	)
-	(junction
-		(at 87.63 115.57)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "2819d55a-91fe-4ca3-97ef-985fb178afbf")
 	)
 	(junction
 		(at 120.65 115.57)
@@ -1097,12 +1085,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "3e54474d-dfbd-422b-a26c-679de8218421")
-	)
-	(junction
-		(at 87.63 27.94)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "4ff3530c-ff4d-446c-8281-6af52354cab2")
 	)
 	(junction
 		(at 109.22 59.69)
@@ -1284,12 +1266,6 @@
 		(color 0 0 0 0)
 		(uuid "fa516a9f-3796-4e09-b7c6-5fce775c17d2")
 	)
-	(junction
-		(at 87.63 130.81)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "fbb398ae-8041-47d7-a50c-eef377fae92c")
-	)
 	(no_connect
 		(at 160.02 120.65)
 		(uuid "9a695a92-70e1-42cb-8476-acd5067bde27")
@@ -1300,7 +1276,7 @@
 	)
 	(wire
 		(pts
-			(xy 76.2 40.64) (xy 76.2 43.18)
+			(xy 87.63 40.64) (xy 87.63 43.18)
 		)
 		(stroke
 			(width 0)
@@ -1397,16 +1373,6 @@
 			(type default)
 		)
 		(uuid "0e9d37cc-8e10-4435-be9b-93deb48f0612")
-	)
-	(wire
-		(pts
-			(xy 87.63 128.27) (xy 87.63 130.81)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "11a996e3-e1f3-40d8-a1bf-5b2d5ebe6bb8")
 	)
 	(wire
 		(pts
@@ -1551,7 +1517,7 @@
 	)
 	(wire
 		(pts
-			(xy 76.2 128.27) (xy 76.2 130.81)
+			(xy 87.63 128.27) (xy 87.63 130.81)
 		)
 		(stroke
 			(width 0)
@@ -1628,16 +1594,6 @@
 			(type default)
 		)
 		(uuid "33594277-586c-4465-9f1a-7b0c23aebd0e")
-	)
-	(wire
-		(pts
-			(xy 87.63 40.64) (xy 87.63 43.18)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "35226421-31c2-4551-a01b-8cbd1fc7247c")
 	)
 	(wire
 		(pts
@@ -1741,16 +1697,6 @@
 		)
 		(uuid "4923633d-3088-48a1-9eef-ecd726ea6990")
 	)
-	(wire
-		(pts
-			(xy 87.63 35.56) (xy 87.63 27.94)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4977c3ba-0a85-4f31-9015-f2436d0e1fb2")
-	)
 	(polyline
 		(pts
 			(xy 140.97 143.51) (xy 140.97 135.89)
@@ -1771,16 +1717,6 @@
 			(type default)
 		)
 		(uuid "4d2c643e-a3bf-4099-8015-8ab02947a725")
-	)
-	(wire
-		(pts
-			(xy 76.2 130.81) (xy 87.63 130.81)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4e46930f-2608-4495-b12c-cc8158a01e51")
 	)
 	(wire
 		(pts
@@ -1844,7 +1780,7 @@
 	)
 	(wire
 		(pts
-			(xy 76.2 35.56) (xy 76.2 27.94)
+			(xy 87.63 35.56) (xy 87.63 27.94)
 		)
 		(stroke
 			(width 0)
@@ -1915,7 +1851,7 @@
 	)
 	(wire
 		(pts
-			(xy 76.2 123.19) (xy 76.2 115.57)
+			(xy 87.63 123.19) (xy 87.63 115.57)
 		)
 		(stroke
 			(width 0)
@@ -2206,16 +2142,6 @@
 	)
 	(wire
 		(pts
-			(xy 76.2 115.57) (xy 87.63 115.57)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9efe5529-34e4-46de-9eb3-30e941fcb5f0")
-	)
-	(wire
-		(pts
 			(xy 99.06 115.57) (xy 99.06 123.19)
 		)
 		(stroke
@@ -2344,16 +2270,6 @@
 			(type default)
 		)
 		(uuid "b592d219-515b-49e1-8e36-8fbacee4778e")
-	)
-	(wire
-		(pts
-			(xy 76.2 27.94) (xy 87.63 27.94)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "badfb30f-471d-439d-add0-dbec5aa5592e")
 	)
 	(wire
 		(pts
@@ -2690,26 +2606,6 @@
 	)
 	(wire
 		(pts
-			(xy 87.63 123.19) (xy 87.63 115.57)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f0f6161a-025a-42cc-a0f3-179eb3a2d85e")
-	)
-	(wire
-		(pts
-			(xy 76.2 43.18) (xy 87.63 43.18)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "f7e6283c-1561-40bf-86f7-689ed0df5477")
-	)
-	(wire
-		(pts
 			(xy 160.02 43.18) (xy 162.56 43.18)
 		)
 		(stroke
@@ -2898,7 +2794,7 @@
 	)
 	(symbol
 		(lib_id "Device:C_Small")
-		(at 76.2 38.1 0)
+		(at 87.63 38.1 0)
 		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
@@ -2907,7 +2803,7 @@
 		(dnp no)
 		(uuid "11e74767-e5b6-43e2-b989-218ff4b78186")
 		(property "Reference" "C16"
-			(at 73.66 36.83 0)
+			(at 85.09 36.83 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2916,7 +2812,7 @@
 			)
 		)
 		(property "Value" "1uF"
-			(at 73.66 39.37 0)
+			(at 85.09 39.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2925,7 +2821,7 @@
 			)
 		)
 		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 76.2 38.1 0)
+			(at 87.63 38.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2934,7 +2830,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 76.2 38.1 0)
+			(at 87.63 38.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2943,7 +2839,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 76.2 38.1 0)
+			(at 87.63 38.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2952,7 +2848,7 @@
 			)
 		)
 		(property "Manufacturer_Name" "--"
-			(at 76.2 38.1 0)
+			(at 87.63 38.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2961,7 +2857,7 @@
 			)
 		)
 		(property "Manufacturer_Part_Number" "C0603C104J3RACTU"
-			(at 76.2 38.1 0)
+			(at 87.63 38.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2970,7 +2866,7 @@
 			)
 		)
 		(property "In Order" ""
-			(at 76.2 38.1 0)
+			(at 87.63 38.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2979,7 +2875,7 @@
 			)
 		)
 		(property "Mouser Part Number" "80-C0603C104J3R"
-			(at 76.2 38.1 0)
+			(at 87.63 38.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2988,7 +2884,7 @@
 			)
 		)
 		(property "Mouser Price/Stock" "https://www.mouser.pl/ProductDetail/KEMET/C0603C104J3RACTU?qs=EHsFn6hSx4W0Oy0I8JUofQ%3D%3D"
-			(at 76.2 38.1 0)
+			(at 87.63 38.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2997,7 +2893,7 @@
 			)
 		)
 		(property "Arrow Part Number" ""
-			(at 76.2 38.1 0)
+			(at 87.63 38.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3006,7 +2902,7 @@
 			)
 		)
 		(property "Arrow Price/Stock" ""
-			(at 76.2 38.1 0)
+			(at 87.63 38.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3015,7 +2911,7 @@
 			)
 		)
 		(property "DigiKey Part Number" ""
-			(at 76.2 38.1 0)
+			(at 87.63 38.1 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3953,129 +3849,6 @@
 			(project "PUTM_EV_AMS_MASTER_2025"
 				(path "/b456cffc-d9d7-4c91-91f2-36ec9a65dd1b/966640b3-7a11-41e5-818e-eba0d3c90b57"
 					(reference "C92")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:C_Small")
-		(at 87.63 38.1 0)
-		(mirror x)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "618e8cae-5bb8-43bd-af80-3e9249dc24c6")
-		(property "Reference" "C96"
-			(at 85.09 36.83 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "1n"
-			(at 85.09 39.37 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 87.63 38.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 87.63 38.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 87.63 38.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer_Name" "--"
-			(at 87.63 38.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer_Part_Number" "--"
-			(at 87.63 38.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Arrow Part Number" ""
-			(at 87.63 38.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Arrow Price/Stock" ""
-			(at 87.63 38.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Mouser Part Number" "--"
-			(at 87.63 38.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "DigiKey Part Number" ""
-			(at 87.63 38.1 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "872be323-c56c-4239-b486-a1b7a14e237c")
-		)
-		(pin "2"
-			(uuid "27f4096b-542e-490a-b4b4-08bde5133d7e")
-		)
-		(instances
-			(project "PUTM_EV_AMS_MASTER_2025"
-				(path "/b456cffc-d9d7-4c91-91f2-36ec9a65dd1b/966640b3-7a11-41e5-818e-eba0d3c90b57"
-					(reference "C96")
 					(unit 1)
 				)
 			)
@@ -5409,7 +5182,7 @@
 	)
 	(symbol
 		(lib_id "Device:C_Small")
-		(at 76.2 125.73 0)
+		(at 87.63 125.73 0)
 		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
@@ -5418,147 +5191,6 @@
 		(dnp no)
 		(uuid "c2722c4a-0746-41f1-961b-fdc4fa409e9d")
 		(property "Reference" "C18"
-			(at 73.66 124.46 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Value" "1uF"
-			(at 73.66 127 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
-			(at 76.2 125.73 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 76.2 125.73 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 76.2 125.73 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer_Name" "--"
-			(at 76.2 125.73 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer_Part_Number" "C0603C104J3RACTU"
-			(at 76.2 125.73 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "In Order" ""
-			(at 76.2 125.73 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Mouser Part Number" "80-C0603C104J3R"
-			(at 76.2 125.73 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Mouser Price/Stock" "https://www.mouser.pl/ProductDetail/KEMET/C0603C104J3RACTU?qs=EHsFn6hSx4W0Oy0I8JUofQ%3D%3D"
-			(at 76.2 125.73 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Arrow Part Number" ""
-			(at 76.2 125.73 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Arrow Price/Stock" ""
-			(at 76.2 125.73 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "DigiKey Part Number" ""
-			(at 76.2 125.73 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "79be4aa7-3b5d-4284-ba33-7b578b6af9aa")
-		)
-		(pin "2"
-			(uuid "10fa8bad-0bbb-4a6e-a659-24794feb0054")
-		)
-		(instances
-			(project "PUTM_EV_AMS_MASTER_2025"
-				(path "/b456cffc-d9d7-4c91-91f2-36ec9a65dd1b/966640b3-7a11-41e5-818e-eba0d3c90b57"
-					(reference "C18")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:C_Small")
-		(at 87.63 125.73 0)
-		(mirror x)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "c342d349-9b35-496d-8325-56f8fe5b28cb")
-		(property "Reference" "C97"
 			(at 85.09 124.46 0)
 			(effects
 				(font
@@ -5567,7 +5199,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "1n"
+		(property "Value" "1uF"
 			(at 85.09 127 0)
 			(effects
 				(font
@@ -5612,7 +5244,34 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer_Part_Number" "--"
+		(property "Manufacturer_Part_Number" "C0603C104J3RACTU"
+			(at 87.63 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "In Order" ""
+			(at 87.63 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" "80-C0603C104J3R"
+			(at 87.63 125.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Mouser Price/Stock" "https://www.mouser.pl/ProductDetail/KEMET/C0603C104J3RACTU?qs=EHsFn6hSx4W0Oy0I8JUofQ%3D%3D"
 			(at 87.63 125.73 0)
 			(effects
 				(font
@@ -5639,15 +5298,6 @@
 				(hide yes)
 			)
 		)
-		(property "Mouser Part Number" "--"
-			(at 87.63 125.73 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
 		(property "DigiKey Part Number" ""
 			(at 87.63 125.73 0)
 			(effects
@@ -5657,15 +5307,15 @@
 			)
 		)
 		(pin "1"
-			(uuid "dc08b37c-a3e0-496f-a4d8-9b0dd7be43ec")
+			(uuid "79be4aa7-3b5d-4284-ba33-7b578b6af9aa")
 		)
 		(pin "2"
-			(uuid "7451610f-bcd7-47e7-a700-0503abb27b66")
+			(uuid "10fa8bad-0bbb-4a6e-a659-24794feb0054")
 		)
 		(instances
 			(project "PUTM_EV_AMS_MASTER_2025"
 				(path "/b456cffc-d9d7-4c91-91f2-36ec9a65dd1b/966640b3-7a11-41e5-818e-eba0d3c90b57"
-					(reference "C97")
+					(reference "C18")
 					(unit 1)
 				)
 			)
