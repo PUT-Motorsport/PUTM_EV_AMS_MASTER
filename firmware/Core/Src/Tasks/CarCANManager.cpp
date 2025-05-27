@@ -8,7 +8,7 @@
 #include <fdcan.h>
 #include <main.h>
 
-#include <PUTM_EV_CAN_LIBRARY/lib/can_interface.hpp>
+#include <PUTM_EV_CAN_LIBRARY_2024/lib/can_interface.hpp>
 #include <StackData.hpp>
 #include <Utils/CanUtils.hpp>
 #include <app_freertos.h>
@@ -60,7 +60,7 @@ void vCarCANManagerTask(void *argument)
 
 	while (true)
 	{
-		osDelay(50);
+		osDelay(10);
 //		while (getCanFifoMessageCount(hfdcan))
 //		{
 //			PUTM_CAN::can.parse_message(PUTM_CAN::Can_rx_message(hfdcan));

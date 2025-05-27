@@ -17,7 +17,7 @@
 
 namespace LtcConfig
 {
-	static constexpr size_t CHAIN_SIZE = 14;
+	static constexpr size_t CHAIN_SIZE = 12;
 
 //	static constexpr float UNDERVOLTAGE = 3.02f;
 //	static constexpr float OVERVOLTAGE = 4.18f;

@@ -127,7 +127,7 @@ void vExternalMeasurmentsManagerTask(void *argument)
 
 	while(true)
 	{
-		osDelay(100);
+		osDelay(10);
 
 		FullStackDataInstance::set().external.charger_connected = charger_detect.isActive();
 		FullStackDataInstance::set().external.tsms_on 			= safety_detect.isActive();
