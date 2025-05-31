@@ -16,3 +16,11 @@
 (rule "Can2 TX/RX length matching"
 	(constraint length (min "14.0mm"))
 	(condition "A.NetName == '/CRX2' || A.NetName =='/CTX2'"))
+
+(rule "90 single ended"
+	(constraint track_width (min "0.1852mm") (opt "0.1852mm") (max "0.1852mm"))
+	(condition "A.NetClass == '90Ohm'"))
+
+(rule "FTDI USB len match"
+	(constraint length (min "8.0mm"))
+	(condition "A.NetName == '/Connectivity/FTDIU+' || A.NetName =='/Connectivity/FTDIU-'"))

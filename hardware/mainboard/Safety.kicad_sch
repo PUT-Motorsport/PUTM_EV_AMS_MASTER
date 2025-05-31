@@ -2790,7 +2790,7 @@
 	)
 	(wire
 		(pts
-			(xy 125.73 133.35) (xy 147.32 133.35)
+			(xy 125.73 133.35) (xy 176.53 133.35)
 		)
 		(stroke
 			(width 0)
@@ -2974,6 +2974,16 @@
 		)
 		(uuid "5526a52b-0e43-4b3e-a748-979eddc44984")
 	)
+	(wire
+		(pts
+			(xy 176.53 133.35) (xy 176.53 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "55cc76cc-aa95-41bc-a3a6-9035391041d8")
+	)
 	(polyline
 		(pts
 			(xy 93.726 117.348) (xy 93.98 116.84)
@@ -3048,7 +3058,7 @@
 	)
 	(wire
 		(pts
-			(xy 91.44 82.55) (xy 93.98 82.55)
+			(xy 91.44 82.55) (xy 176.53 82.55)
 		)
 		(stroke
 			(width 0)
@@ -3496,6 +3506,16 @@
 		)
 		(uuid "ffa7eb7f-4b4f-4ad0-9c24-40135facd65f")
 	)
+	(label "LATCHERR"
+		(at 127 133.35 0)
+		(effects
+			(font
+				(size 0.508 0.508)
+			)
+			(justify left bottom)
+		)
+		(uuid "0af50ffd-b4a6-4511-a45e-d91840cde6c8")
+	)
 	(label "RELAY-"
 		(at 100.33 26.67 180)
 		(effects
@@ -3536,28 +3556,6 @@
 		)
 		(uuid "cd551207-63cb-43b6-8d28-dbd42db88e1e")
 	)
-	(hierarchical_label "WTDG_ERROR"
-		(shape output)
-		(at 147.32 133.35 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "0ffd0b87-d840-4918-ace4-1a483b3ea80f")
-	)
-	(hierarchical_label "LED_ERR"
-		(shape input)
-		(at 86.36 72.39 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left)
-		)
-		(uuid "498297f0-2f68-4cc0-a1c6-a681d8fef669")
-	)
 	(hierarchical_label "SAFETY_IN"
 		(shape bidirectional)
 		(at 118.11 45.72 0)
@@ -3593,14 +3591,14 @@
 	)
 	(hierarchical_label "WTDG_ERROR"
 		(shape output)
-		(at 93.98 82.55 0)
+		(at 86.36 72.39 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify left)
 		)
-		(uuid "a2491704-593f-4a90-a28f-c6e3049885d6")
+		(uuid "f67af443-8c85-4bbe-a75c-38e1e8193112")
 	)
 	(symbol
 		(lib_name "GND_8")

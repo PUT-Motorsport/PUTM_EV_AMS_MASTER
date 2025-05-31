@@ -4296,6 +4296,16 @@
 		)
 		(uuid "04091606-3c48-4309-b7ad-cb673e340f38")
 	)
+	(label "FTDIU+"
+		(at 365.6598 73.66 180)
+		(effects
+			(font
+				(size 0.508 0.508)
+			)
+			(justify right bottom)
+		)
+		(uuid "089c4201-0365-498b-bf58-2c528d510543")
+	)
 	(label "REF"
 		(at 115.57 71.12 0)
 		(effects
@@ -4325,6 +4335,16 @@
 			(justify right bottom)
 		)
 		(uuid "5a9f3070-0ec8-4b27-b049-51386f495f2d")
+	)
+	(label "FTDIU-"
+		(at 365.76 71.12 180)
+		(effects
+			(font
+				(size 0.508 0.508)
+			)
+			(justify right bottom)
+		)
+		(uuid "5d1c503c-e2b6-4738-974b-c8413825768d")
 	)
 	(label "REF"
 		(at 115.57 153.67 0)

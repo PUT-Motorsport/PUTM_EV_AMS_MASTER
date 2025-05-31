@@ -8116,6 +8116,16 @@
 		)
 		(uuid "927f59ed-1de2-4829-8ea6-97e7dba841bf")
 	)
+	(label "AMSERR"
+		(at 222.25 226.06 0)
+		(effects
+			(font
+				(size 0.508 0.508)
+			)
+			(justify left bottom)
+		)
+		(uuid "977919b5-76b6-4efd-9c87-3dd8a5aecd69")
+	)
 	(label "CAR_I"
 		(at 101.6 38.1 0)
 		(effects
@@ -8276,7 +8286,7 @@
 		)
 		(uuid "ebd578fe-7d0f-4b8c-9a73-50781a3b1bb9")
 	)
-	(label "VUSB"
+	(label "DETVUSB"
 		(at 222.25 124.46 0)
 		(effects
 			(font
@@ -8285,6 +8295,16 @@
 			(justify left bottom)
 		)
 		(uuid "ebfbbbbb-430d-4a41-8c51-f8410241f9f1")
+	)
+	(label "DETERR"
+		(at 222.25 228.6 0)
+		(effects
+			(font
+				(size 0.508 0.508)
+			)
+			(justify left bottom)
+		)
+		(uuid "ee855d45-000f-4ea3-b21f-73ea543abfbf")
 	)
 	(label "NRST"
 		(at 335.28 88.9 180)
