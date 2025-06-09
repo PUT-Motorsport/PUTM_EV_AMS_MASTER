@@ -1,26 +1,16 @@
 (version 1)
 (rule "Optimal clearance"
 	(constraint clearance (min "0.3mm"))
-	(condition "A.Type == 'Track' && B.Type == 'Track' && A.NetClass == 'HighSpeed' && B.NetClass == 'HighSpeed' && !AB.isCoupledDiffPair()"))
-(rule "Optimal clearance - on In2.Cu"
-	(constraint clearance (min "0.3mm"))
-	(condition "A.Type == 'Track' && B.Type == 'Track'"))
+	(condition "A.Type == 'Track' && B.Type == 'Track' && B.NetClass == 'HighSpeed' && !AB.isCoupledDiffPair()"))
+
 (rule "Optimal fill clearance"
 	(constraint clearance (min "0.3mm"))
 	(condition "A.Type == 'Track' && A.NetClass == 'HighSpeed' && B.NetName == 'GND' && B.Type != 'Pad'"))
-
-(rule "Can1 TX/RX length matching"
-	(constraint length (min "12.0mm"))
-	(condition "A.NetName == '/CRX1' || A.NetName =='/CTX1'"))
-
-(rule "Can2 TX/RX length matching"
-	(constraint length (min "14.0mm"))
-	(condition "A.NetName == '/CRX2' || A.NetName =='/CTX2'"))
 
 (rule "90 single ended"
 	(constraint track_width (min "0.1852mm") (opt "0.1852mm") (max "0.1852mm"))
 	(condition "A.NetClass == '90Ohm'"))
 
 (rule "FTDI USB len match"
-	(constraint length (min "8.0mm"))
+	(constraint length (min "7.9mm") (opt "8.0mm"))
 	(condition "A.NetName == '/Connectivity/FTDIU+' || A.NetName =='/Connectivity/FTDIU-'"))
