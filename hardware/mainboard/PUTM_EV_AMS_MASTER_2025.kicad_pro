@@ -699,7 +699,7 @@
       "plot": "",
       "pos_files": "",
       "specctra_dsn": "",
-      "step": "PUTM_EV_BMS_HV_Master_2021.step",
+      "step": "../../../../../../Downloads/PUTM_EV_AMS_MASTER_2025.step",
       "svg": "",
       "vrml": ""
     },
@@ -867,7 +867,7 @@
           "show": false
         }
       ],
-      "filter_string": "",
+      "filter_string": "R55",
       "group_symbols": true,
       "include_excluded_from_bom": false,
       "name": "",
