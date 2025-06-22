@@ -83,6 +83,7 @@ namespace LaGimela
 {
 	//ltc, meas - 0 - 13, 0 - 3
 	constexpr static std::array<std::pair<size_t, size_t>, 3> pomijanie_temperatury = { { { 11, 2 }, { 3, 2 }, { 12, 3 } } };
+	constexpr static std::array<std::pair<size_t, size_t>, 1> naprawianie_napiec = {{{ 1, 0 }}};
 }
 
 namespace

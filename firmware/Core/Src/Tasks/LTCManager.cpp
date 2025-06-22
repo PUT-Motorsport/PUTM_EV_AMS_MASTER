@@ -72,6 +72,13 @@ static void readVoltages()
 		{
 			size_t mapped_cell = CELL_TO_CH_MAP[cell];
 			auto voltage = voltages[mapped_cell + offset_ltc];
+			for(const auto& [scalak, pomiar] : LaGimela::naprawianie_napiec)
+			{
+				if(mapped_cell == pomiar and ltc == scalak)
+				{
+					voltage = 3.69f;
+				}
+			}
 			//voltage = voltage * float(not open_wire[mapped_cell + offset_ltc]);
 			fsd.ltc.voltages[cell + offset_cell] = voltage;
 			accumulator += voltage;
