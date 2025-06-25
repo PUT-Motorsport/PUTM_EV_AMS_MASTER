@@ -6,7 +6,6 @@
  *          to enable this thread. This code is not perfect!!!!
  */
 
-#define DEBUG_TEST_MODE_1
 
 #ifdef DEBUG_TEST_MODE_1
 #include "threads.hpp"
@@ -72,7 +71,7 @@ void set_data(float cv, bool ovuv, float ct, bool otut, float acv, float cvt, fl
     /* Set current to default for idle state */
     data.current = c;
     /* Reset cmd */
-    data.cmd_on = cmd;
+    data.cmd_hv = cmd;
     /* Reset error */
     data.error = err;
     /* Reset tsms */

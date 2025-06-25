@@ -12,7 +12,7 @@ set(CMAKE_C_STANDARD 17)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS ON)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
 
@@ -75,6 +75,7 @@ target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
 target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined symbols
     PUTM_USE_CAN_FD
+    DEBUG_PRINTF_ENABLE
 )
 
 # Add linked libraries
@@ -97,6 +98,6 @@ add_dependencies(${CMAKE_PROJECT_NAME} CUSTOM_COMMANDS)
 # Add user compile flags
 set(GCC_USER_COMPILE_FLAGS
     # g++ throws ((void*)0) conversion errors in threadx libs -> allow it
-    "-fpermissive"    
+    "-fpermissive -u _printf_float"
 )
 set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_USER_COMPILE_FLAGS}")

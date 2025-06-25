@@ -22,24 +22,55 @@ void Device::init()
 void Device::update()
 {
     auto c = Cmd::CmdNull();
-    read(&c);
+    com(&c);
     status = c.get_response();
 }
 
 void Device::reset()
 {
-    auto c = Cmd::CmdReset();
-    read(&c);
+    auto c1 = Cmd::CmdReset();
+    com(&c1);
+
+    auto c2 = Cmd::CmdWReg<Regs::Cfg>();
+    c2.set_data((Regs::Cfg){ .gc_en = true, .gc_dly = GcDly::_16 });
+    com(&c2);
 }
 
-HAL_StatusTypeDef Device::read(ICmd *cmd)
+void Device::enable_ch0_only()
+{
+    // auto c0 = Cmd::CmdWReg<Regs::ChCfg<0>>();
+    // c0.set_data((Regs::ChCfg<0>){.mux = Mux::InPN});
+    // com(&c0);
+
+    // auto c1 = Cmd::CmdWReg<Regs::ChCfg<1>>();
+    // c1.set_data((Regs::ChCfg<1>){.mux = Mux::AdcShorted});
+    // com(&c1);
+
+    // auto c2 = Cmd::CmdWReg<Regs::ChCfg<2>>();
+    // c2.set_data((Regs::ChCfg<2>){.mux = Mux::AdcShorted});
+    // com(&c2);
+
+    // auto c3 = Cmd::CmdWReg<Regs::ChCfg<3>>();
+    // c3.set_data((Regs::ChCfg<3>){.mux = Mux::AdcShorted});
+    // com(&c3);
+
+    // auto c = Cmd::CmdWReg<Regs::Cfg>();
+    // c.set_data((Regs::Cfg){ .gc_en = true, .gc_dly = GcDly::_16 });
+    // com(&c);
+}
+
+HAL_StatusTypeDef Device::com(ICmd *cmd)
 {
     volatile HAL_SPI_StateTypeDef state = hspi->State;
 
     if(state == HAL_SPI_STATE_RESET) Error_Handler();
 
-    out.at(0) = cmd->cmd;
-    std::copy(cmd->data + 0, cmd->data + 4, out.begin() + 1);
+    out.at(0) = (uint32_t)cmd->cmd << 8;
+    //std::copy(cmd->data + 0, cmd->data + 4, out.begin() + 1);
+    for(size_t i = 0; i < 4; i++) 
+    {
+        out.at(i + 1) = (uint32_t)cmd->data[i] << 8;
+    }
 
     pSPI_CallbackTypeDef callback = [](SPI_HandleTypeDef* hspi)
     {

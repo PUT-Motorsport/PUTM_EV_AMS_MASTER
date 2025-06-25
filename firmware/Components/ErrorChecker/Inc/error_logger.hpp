@@ -15,7 +15,6 @@ namespace PUTM
         uint32_t timestamp { 0 };
     }
 
-
     template<size_t SIZE>
     class ErrorLogger
     {

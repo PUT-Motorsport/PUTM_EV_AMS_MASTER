@@ -12,7 +12,7 @@ namespace PUTM
             struct ICmd
 			{
 				uint16_t cmd { 0 };
-				uint32_t data[4] { 0 };
+				uint16_t data[4] { 0 };
 				uint16_t crc { 0 };
 				uint16_t response { 0 };
 			};
@@ -40,7 +40,7 @@ namespace PUTM
              */
             struct CmdReset : public ICmd
 			{
-				CmdReset() { cmd = 0x0101; }
+				CmdReset() { cmd = 0x11; }
 			};
 
             /*
@@ -51,12 +51,26 @@ namespace PUTM
 			{
 				CmdRReg()
 				{
-					cmd = read_reg(Utils::address_of<T>());
+					cmd = (uint16_t)(0xa000 | (Utils::address_of<T>() & 0x3f) << 7);
 				}
 	
 				T get_response()
 				{
 					return *((T*)&response);
+				}
+			};
+
+			template<typename T>
+			struct CmdWReg : public ICmd
+			{
+				CmdWReg()
+				{
+					cmd = (uint16_t)(0x6000 | (Utils::address_of<T>() & 0x3f) << 7);
+				}
+
+				void set_data(T data)
+				{
+					this->data[0] = Utils::convert_to<uint32_t>(data);
 				}
 			};
         }

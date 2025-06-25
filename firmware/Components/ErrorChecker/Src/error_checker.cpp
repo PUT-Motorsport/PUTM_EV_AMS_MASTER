@@ -1,4 +1,7 @@
 #include "main.h"
+#include "tx_api.h"
+#include "cstdio"
+#include "usart.h"
 
 #include "error_checker.hpp"
 
@@ -37,12 +40,6 @@ bool ErrorChecker::check_errors(uint32_t tick)
         
         /* Check for errors */
         uint32_t code = error->condition();
-        /* First time? */
-        if(error->timestamp == 0)
-        {
-            error->timestamp = tick;
-            continue;
-        }
 
         /* *Time accumulator* */
         uint32_t time = tick - error->timestamp;
@@ -55,7 +52,15 @@ bool ErrorChecker::check_errors(uint32_t tick)
             error->accumulator -= time;
             if(error->accumulator < 0) error->accumulator = 0;
         }
+        error->timestamp = tick;
         
+        
+        // /* Print acu voltage */
+        // char buffer[128] { 0 };
+        // snprintf(buffer, sizeof(buffer), "Info: accumulator: %d\n", error->accumulator);
+        // HAL_UART_Transmit(&huart1, (uint8_t*)buffer, strlen(buffer), 100);
+        // snprintf(buffer, sizeof(buffer), "Info: error name: %s\n", error->name);
+        // HAL_UART_Transmit(&huart1, (uint8_t*)buffer, strlen(buffer), 100);
         /* Check for timeout */
         if(error->accumulator > error->timeout)
         {

@@ -34,6 +34,18 @@ add_subdirectory(ErrorChecker)
 target_link_libraries(${CMAKE_PROJECT_NAME} ERROR_CHECKER_LIBRARY)
 message("Error Checker included in the project")
 
+add_subdirectory(Charger)
+target_link_libraries(${CMAKE_PROJECT_NAME} CHARGER_LIBRARY)
+message("Charger included in the project")
+
+add_subdirectory(SoC)
+target_link_libraries(${CMAKE_PROJECT_NAME} SOC_LIBRARY)
+message("SoC included in the project")
+
+add_subdirectory(DSP)
+target_link_libraries(${CMAKE_PROJECT_NAME} DSP_LIBRARY)
+message("DSP included in the project")
+
 # ArduinoJson
 add_subdirectory(ArduinoJson)
 target_link_libraries(${CMAKE_PROJECT_NAME} ArduinoJson)

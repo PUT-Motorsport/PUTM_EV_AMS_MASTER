@@ -1,9 +1,3 @@
-#include "threads.hpp"
-#include "data.hpp"
-#include "config.hpp"
-
-#include "cstring"
-
 extern "C"
 {
 #include "main.h"
@@ -12,11 +6,27 @@ extern "C"
 #include "ux_dcd_stm32.h"
 #include "ux_device_cdc_acm.h"
 }
+#include "cstring"
+#include "cstdio"
+#include "usart.h"
+#include "algorithm"
+#include "fdcan.h"
 
 #include "ArduinoJson.h"
+#include "can_interface.hpp"
+
+#include "threads.hpp"
+#include "data.hpp"
+#include "config.hpp"
+#include "charger.hpp"
+#include "wrapper/fdcan.hpp"
+#include "state_machine.hpp"
+#include "com/charger_state_machine.hpp"
 
 using namespace PUTM;
 using namespace PUTM::Config;
+
+using namespace PUTM_CAN;
 
 static StaticJsonDocument<512> json;
 
@@ -33,10 +43,60 @@ extern TX_MUTEX rx_buffer_mutex;
 
 extern UX_SLAVE_CLASS_CDC_ACM *cdc_acm;
 
+VOID car_can_thread_entry(__unused ULONG thread_input)
+{
+    start_can(&hfdcan2);
+
+    while(true)
+    {
+        /* Send basic battery info on CAN */
+        BMS_HV_main bms_hv_main
+        {
+            .voltage_sum = (uint16_t)(data.acu_voltage * 10.f),
+            .current = (int16_t)(data.current * 10.f),
+            .temp_max = 100,//(uint8_t)(data.cell_max_temperature * 10.f),
+            .temp_avg = 100,//(uint8_t)(data.cell_avg_temperature * 10.f),
+            .soc = 100,//(uint16_t)(data.soc * 10.f),
+            .ok = true,//not data.error,
+            .precharge = data.precharge
+        };
+
+        /* Send data to CAN */
+        auto bms_hv_main_frame = PUTM_CAN::Can_tx_message(bms_hv_main, can_tx_header_BMS_HV_MAIN);
+        auto status = bms_hv_main_frame.send(hfdcan2);
+        if(status != HAL_StatusTypeDef::HAL_OK)
+        {
+            // Error_Handler();
+        }
+
+        if (PUTM_CAN::can.get_dashboard_new_data() && PUTM_CAN::can.get_dashboard().ts_activation_button)
+		{
+			data.cmd_hv = true;
+		}
+
+        tx_thread_sleep(20);
+    }
+}
+
+extern StateMachine charger_state_machine;
+
+VOID charger_can_thread_entry(__unused ULONG thread_input)
+{
+    start_can(&hfdcan1);
+
+    init_charger_state_machine(&charger_state_machine);
+
+    while(true)
+    {
+        charger_state_machine.update();
+        tx_thread_sleep(200);
+    }
+}
+
 VOID usb_com_thread_entry(__unused ULONG thread_input)
 {
     /* give it some time? */
-    tx_thread_sleep(200);
+    //tx_thread_sleep(200);
     MX_USB_PCD_Init();
     HAL_PCDEx_PMAConfig(&hpcd_USB_DRD_FS, 0x00 , PCD_SNG_BUF, 0x40);
     HAL_PCDEx_PMAConfig(&hpcd_USB_DRD_FS, 0x80 , PCD_SNG_BUF, 0x80);
@@ -48,7 +108,7 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
 
     // while(true)
     // {
-    //     tx_thread_sleep(1000);
+    //     tx_thread_sleep(20);
     // }
 }
 
@@ -65,7 +125,7 @@ VOID usb_rx_thread_entry(__unused ULONG thread_input)
         {
             ux_device_class_cdc_acm_read(cdc_acm, (UCHAR *)rx_buffer, tx_rx_buffer_size, &rx_actual_size);
         }
-        tx_thread_sleep(100);
+        tx_thread_sleep(20);
     }
 }
 
@@ -91,6 +151,6 @@ VOID usb_tx_thread_entry(__unused ULONG thread_input)
             serializeJsonPretty(json, tx_buffer, tx_rx_buffer_size);
             ux_device_class_cdc_acm_write(cdc_acm, (UCHAR *)(tx_buffer), strlen(tx_buffer), &tx_actual_size);
         }
-        tx_thread_sleep(200);
+        tx_thread_sleep(20);
     }
 }

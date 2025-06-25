@@ -1,0 +1,10 @@
+set(SOC_LIBRARY_INC 
+    ${CMAKE_CURRENT_SOURCE_DIR}/Inc 
+)
+
+set(SOC_LIBRARY_SRC 
+)
+
+add_library(SOC_LIBRARY INTERFACE)
+target_include_directories(SOC_LIBRARY INTERFACE ${SOC_LIBRARY_INC})
+target_sources(SOC_LIBRARY INTERFACE ${SOC_LIBRARY_SRC})

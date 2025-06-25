@@ -3,6 +3,8 @@
 #include "main.h"
 #include "limits"
 
+// TODO: change parse ptr to accept a string buffer and write to it instead of returning a string
+
 namespace PUTM
 {
     struct Error;
@@ -60,6 +62,16 @@ namespace PUTM
          *  @return String with the error message, it should be a static string.
          */
         const char* (*parse)(uint32_t) { nullptr };
+
+        const char* get_error_message()
+        {
+            /* Check if error is valid */
+            if(this->last_code == 0) return "No error???";
+            /* Check if error is valid */
+            if(this->parse == nullptr) return "No parser???";
+            /* Parse the error code and return the error message */
+            return this->parse(this->last_code);
+        }
     };
 
     /**
@@ -108,19 +120,6 @@ namespace PUTM
          */
         Error* get_next_error();
     public:
-        const char* get_error_message(uint32_t code)
-        {
-            /* Check if error is valid */
-            if(code == 0) return nullptr;
-            /* Check if error is valid */
-            if(next_error == nullptr) return nullptr;
-            /* Check if error is valid */
-            if(last_error == nullptr) return nullptr;
-            /* Check if error is valid */
-            if(last_error->parse == nullptr) return nullptr;
-            /* Parse the error code and return the error message */
-            return last_error->parse(code);
-        }
 #ifdef DEBUG_TEST_MODE_1
     public:
         /**

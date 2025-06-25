@@ -8,12 +8,12 @@
 
 #include "utils.hpp"
 #include "config.hpp"
+#include "wrapper/uart.hpp"
 
 namespace PUTM
 {
     namespace Bq796xx
     {
-        template<size_t STACK_SIZE>
         class Device
         {
         private: 
@@ -43,26 +43,6 @@ namespace PUTM
             std::array<uint8_t, 256> out { 0 };
             /* for now leave the size at 256 */
             std::array<uint8_t, 256> in { 0 };
-        public:
-            /**
-            *	@brief struct for local stack status storage
-            */
-            struct StackDeviceStatus
-            {
-                bool ovuv[16] { false };
-                bool otut[8] { false };
-            };
-            StackDeviceStatus stack_device_status[STACK_SIZE];
-        public:
-            /**
-            *	@brief struct for local stack data storage
-            */
-            struct StackDeviceData
-            {
-                float voltages[16] { 0 };
-                float temperatures[8] { 0 };
-            };
-            StackDeviceData stack_device_data[STACK_SIZE] { };
         private:
             enum struct ReqType : uint8_t
             {
@@ -83,9 +63,9 @@ namespace PUTM
             case ReqType::Single:
                 return 1;
             case ReqType::Stack:
-                return STACK_SIZE;
+                return Config::STACK_SIZE;
             case ReqType::Broadcast:
-                return STACK_SIZE + 1;
+                return Config::STACK_SIZE + 1;
             }
             Utils::throw_consteval_failure("WRONG");
         }
@@ -162,13 +142,15 @@ namespace PUTM
             *	@brief Poll stack status to local storage
              *  @return HAL_OK
             */
-            HAL_StatusTypeDef update_status();
+            HAL_StatusTypeDef update_status(bool (&ovuv_arr)[Config::STACK_SIZE * Config::CELL_COUNT], 
+                                            bool (&otut_arr)[Config::STACK_SIZE * Config::TEMPERATURES_COUNT]);
         public:
             /**
             *	@brief Poll stack data to local storage
              *  @return HAL_OK
             */
-            HAL_StatusTypeDef update_data();
+            HAL_StatusTypeDef update_data(float (&voltages_arr)[Config::STACK_SIZE * Config::CELL_COUNT], 
+                                          float (&temperatures_arr)[Config::STACK_SIZE * Config::TEMPERATURES_COUNT]);
         public:
             /**
             * 	@brief 	Wake up function for BQ79600 IC, this functions tries to hold the MOSI line
@@ -201,15 +183,14 @@ namespace PUTM
             * 	@param 	data copies the received data to provided container, when new data was received. If for any reason data received
             *			was coruppted or not received it will not be coppied over to the procided buffer. Data should point to a buffer of an
             *			appropriate size - size for single read, size * STACK_SIZE for stack read
-            *	@param 	count number of registers to read not the size of the array!
+            *   @param  size data size
+            *	@param 	reg_count number of registers to read not the size of the array!
             *	@param 	address address of a device to be written to in signle mode, assumes 0. In other modes it is ignored
             * 	@retval	HAL_BUSY when read is in progress, HAL_OK when done or caller provided no data/size, HAL_TIMEOUT when read operation wasn't
             *			properly executed.
             */
             template<ReqType REQ_TYPE>
-            HAL_StatusTypeDef read(uint8_t *data, size_t count, uint16_t reg_address, uint8_t address = 0);
+            HAL_StatusTypeDef read(uint8_t *data, size_t reg_count, uint16_t reg_address, uint8_t address = 0);
         };   
     }
 }
-
-template class PUTM::Bq796xx::Device<PUTM::Config::STACK_SIZE>;

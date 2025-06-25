@@ -1,15 +1,9 @@
-/*
-* tim_wrap.hpp
-*
-*  Created on: Feb 8, 2025
-*      Author: Piotr lesicki
-*/
-
-#ifndef INC_UART_WRAP_HPP_
-#define INC_UART_WRAP_HPP_
+#pragma once
 
 #include "main.h"
 #include "usart.h"
+#include "tx_api.h"
+
 
 enum struct UartStatus : uint8_t
 {
@@ -80,4 +74,178 @@ public:
     UartStatus status : 2 { 0 };
 };
 
-#endif /* INC_UART_WRAP_HPP_ */
+struct Uart
+{
+private:
+    UART_HandleTypeDef *huart;
+    TX_SEMAPHORE semaphore;
+    pUART_CallbackTypeDef tx_callback = [](UART_HandleTypeDef* huart)
+    {
+        if(huart->UserData == nullptr) Error_Handler();
+        TX_SEMAPHORE *semaphore = (TX_SEMAPHORE*)huart->UserData;
+
+        huart->TxCpltCallback = HAL_UART_TxCpltCallback;
+        huart->UserData = nullptr;
+
+        tx_semaphore_put(semaphore);
+    };
+    pUART_CallbackTypeDef rx_callback = [](UART_HandleTypeDef* huart)
+    {
+        if(huart->UserData == nullptr) Error_Handler();
+        TX_SEMAPHORE *semaphore = (TX_SEMAPHORE*)huart->UserData;
+        huart->RxCpltCallback = HAL_UART_RxCpltCallback;
+        huart->UserData = nullptr;
+        tx_semaphore_put(semaphore);   
+    };
+public:
+    /**
+     * 	@brief 	Constructor for Uart wrapper
+     * 	@param 	`huart` pointer to UART_HandleTypeDef
+     */
+    Uart(UART_HandleTypeDef *huart) : huart(huart) { }
+public:
+    /**
+     * 	@brief 	This function inits the UART wrapper
+     * 	@retval	HAL_OK
+     */
+    HAL_StatusTypeDef init()
+    {
+        if(tx_semaphore_create(&semaphore, "UART semaphore", 0) != TX_SUCCESS) return HAL_ERROR;
+        return HAL_OK;
+    }
+public:
+    /**
+     * 	@brief 	This function sets the UART baudrate
+     * 	@param 	`baudrate` baudrate in bps
+     * 	@retval	HAL_OK
+     */
+    HAL_StatusTypeDef set_baudrate(uint32_t baudrate)
+    {
+        if(HAL_UART_DeInit(huart) != HAL_OK) return HAL_ERROR;
+        huart->Init.BaudRate = baudrate;
+        if(HAL_UART_Init(huart) != HAL_OK) return HAL_ERROR;
+        return HAL_OK;
+    }
+public:
+    /**
+     * 	@brief 	This function sets the UART receiver timeout
+     * 	@param 	`baudblocks` receiver timeout in baudblocks
+     * 	@retval	HAL_OK
+     */
+    HAL_StatusTypeDef set_rx_timeout(uint32_t baudblocks)
+    {
+        HAL_UART_ReceiverTimeout_Config(huart, baudblocks);
+        if(HAL_UART_EnableReceiverTimeout(huart) != HAL_OK) return HAL_ERROR;
+        return HAL_OK;
+    }
+public:
+    /**
+     * 	@brief 	This function aborts the UART transmission
+     * 	@retval	HAL_OK
+     */
+    HAL_StatusTypeDef abort()
+    {
+        return HAL_UART_Abort(huart);
+    }
+public:
+    /**
+     * 	@brief 	This function transmits data over UART
+     * 	@param 	`tx_data` pointer to data to be transmitted
+     * 	@param 	`size` size of data to be transmitted
+     * 	@retval	HAL_OK
+     */
+    HAL_StatusTypeDef tx(uint8_t *tx_data, size_t size)
+    {
+        if(HAL_UART_Transmit(huart, tx_data, size, 100) != HAL_OK) return HAL_ERROR;
+        return HAL_OK;
+    }
+public:
+    /**
+     * 	@brief 	This function receives data over UART
+     * 	@param 	`rx_data` pointer to data to be received
+     * 	@param 	`size` size of data to be received
+     * 	@retval	HAL_OK
+     */
+    HAL_StatusTypeDef rx(uint8_t *rx_data, size_t size)
+    {
+        if(HAL_UART_Receive(huart, rx_data, size, 100) != HAL_OK) return HAL_ERROR;
+        return HAL_OK;
+    }
+public:
+    /**
+     * 	@brief 	This function transmits and receives data over UART
+     * 	@param 	`tx_data` pointer to data to be transmitted
+     * 	@param 	`rx_data` pointer to data to be received
+     * 	@param 	`size` size of data to be transmitted and received
+     * 	@retval	HAL_OK
+     */
+    // HAL_StatusTypeDef tx_rx(uint8_t *tx_data, uint8_t *rx_data, size_t size)
+    // {
+    //     if(HAL_UART_TransmitReceive(huart, tx_data, rx_data, size, 100) != HAL_OK) return HAL_ERROR;
+    //     return HAL_OK;
+    // }
+public:
+    /**
+     * 	@brief 	This function transmits data over UART in DMA mode
+     * 	@param 	`tx_data` pointer to data to be transmitted
+     * 	@param 	`size` size of data to be transmitted
+     *  @param 	`timeout` timeout in threadex system ticks, default is 100
+     * 	@retval	HAL_OK
+     */
+    HAL_StatusTypeDef async_tx_dma(uint8_t *tx_data, size_t size, size_t timeout = 100)
+    {
+        huart->TxCpltCallback = tx_callback;
+        huart->UserData = (void*)&semaphore;
+        if(HAL_UART_Transmit_DMA(huart, tx_data, size) != HAL_OK) return HAL_ERROR;
+        if(tx_semaphore_get(&semaphore, timeout) != 0) 
+        { 
+            HAL_UART_Abort(huart); 
+            return HAL_TIMEOUT;
+        }
+        return HAL_OK;
+    }
+public:
+    /**
+     * 	@brief 	This function receives data over UART in DMA mode
+     * 	@param 	`rx_data` pointer to data to be received
+     * 	@param 	`size` size of data to be received
+     *  @param 	`timeout` timeout in threadex system ticks, default is 100
+     * 	@retval	HAL_OK
+     */
+    HAL_StatusTypeDef async_rx_dma(uint8_t *rx_data, size_t size, size_t timeout = 100)
+    {
+        huart->RxCpltCallback = rx_callback;
+        huart->UserData = (void*)&semaphore;
+        if(HAL_UART_Receive_DMA(huart, rx_data, size) != HAL_OK) return HAL_ERROR;
+        if(tx_semaphore_get(&semaphore, timeout) != 0) 
+        { 
+            HAL_UART_Abort(huart); 
+            return HAL_TIMEOUT;
+        }
+        return HAL_OK;
+    }
+public: 
+    /**
+     * 	@brief 	This function transmits and receives data over UART in DMA mode
+     * 	@param 	`tx_data` pointer to data to be transmitted
+     *  @param 	`tx_size` size of data to be transmitted
+     * 	@param 	`rx_data` pointer to data to be received
+     *  @param 	`rx_size` size of data to be received
+     *  @param 	`timeout` timeout in threadex system ticks, default is 100
+     * 	@retval	HAL_OK
+     */
+    HAL_StatusTypeDef async_tx_rx_dma(uint8_t *tx_data, size_t tx_size, uint8_t *rx_data, size_t rx_size, size_t timeout = 100)
+    {
+        // huart->TxCpltCallback = tx_callback;
+        huart->RxCpltCallback = rx_callback;
+        huart->UserData = (void*)&semaphore;
+        if(HAL_UART_Transmit_DMA(huart, tx_data, tx_size) != HAL_OK) return HAL_ERROR;
+        if(HAL_UART_Receive_DMA(huart, rx_data, rx_size) != HAL_OK) return HAL_ERROR;
+        if(tx_semaphore_get(&semaphore, timeout) != 0) 
+        { 
+            HAL_UART_Abort(huart); 
+            return HAL_TIMEOUT;
+        }
+        return HAL_OK;
+    }
+};

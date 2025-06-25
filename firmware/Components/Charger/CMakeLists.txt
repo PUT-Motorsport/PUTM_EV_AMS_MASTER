@@ -1,0 +1,13 @@
+set(CHARGER_LIBRARY_INC 
+    ${CMAKE_CURRENT_SOURCE_DIR}/Inc 
+)
+
+set(CHARGER_LIBRARY_SRC
+    ${CMAKE_CURRENT_SOURCE_DIR}/Src/charger.cpp
+)
+
+add_library(CHARGER_LIBRARY INTERFACE)
+# target_include_directories(PUTM_EV_CAN_LIBRARY INTERFACE ${MX_Include_Dirs})
+target_include_directories(CHARGER_LIBRARY INTERFACE ${CHARGER_LIBRARY_INC})
+target_sources(CHARGER_LIBRARY PUBLIC ${CHARGER_LIBRARY_SRC})
+

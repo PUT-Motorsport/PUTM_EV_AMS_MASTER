@@ -51,6 +51,16 @@ VOID usb_rx_thread_entry(ULONG thread_input);
  */
 VOID usb_com_thread_entry(ULONG thread_input);
 
+/**
+ *  @brief  Car can thread, it is used to send data to car
+*/
+VOID car_can_thread_entry(ULONG thread_input);
+
+/**
+ *  @brief  Charger can thread, it is used to send data to charger
+ */
+VOID charger_can_thread_entry(ULONG thread_input);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

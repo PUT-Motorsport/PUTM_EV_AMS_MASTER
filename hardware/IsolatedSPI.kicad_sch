@@ -1,7 +1,7 @@
 (kicad_sch
-	(version 20231120)
+	(version 20250114)
 	(generator "eeschema")
-	(generator_version "8.0")
+	(generator_version "9.0")
 	(uuid "8396e9fc-2000-43d7-9a4e-da997d386393")
 	(paper "A4")
 	(lib_symbols
@@ -81,7 +81,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 0) (xy 0 2.54)
+						(xy 0 2.54) (xy 0.762 1.27)
 					)
 					(stroke
 						(width 0)
@@ -93,7 +93,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 2.54) (xy 0.762 1.27)
+						(xy 0 0) (xy 0 2.54)
 					)
 					(stroke
 						(width 0)
@@ -107,7 +107,8 @@
 			(symbol "+3.3V_11_1_1"
 				(pin power_in line
 					(at 0 0 90)
-					(length 0) hide
+					(length 0)
+					(hide yes)
 					(name "+3V3"
 						(effects
 							(font
@@ -124,6 +125,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "+3.3V_3"
 			(power)
@@ -201,7 +203,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 0) (xy 0 2.54)
+						(xy 0 2.54) (xy 0.762 1.27)
 					)
 					(stroke
 						(width 0)
@@ -213,7 +215,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 2.54) (xy 0.762 1.27)
+						(xy 0 0) (xy 0 2.54)
 					)
 					(stroke
 						(width 0)
@@ -227,7 +229,8 @@
 			(symbol "+3.3V_3_1_1"
 				(pin power_in line
 					(at 0 0 90)
-					(length 0) hide
+					(length 0)
+					(hide yes)
 					(name "+3V3"
 						(effects
 							(font
@@ -244,6 +247,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "+3.3V_4"
 			(power)
@@ -321,7 +325,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 0) (xy 0 2.54)
+						(xy 0 2.54) (xy 0.762 1.27)
 					)
 					(stroke
 						(width 0)
@@ -333,7 +337,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 2.54) (xy 0.762 1.27)
+						(xy 0 0) (xy 0 2.54)
 					)
 					(stroke
 						(width 0)
@@ -347,7 +351,8 @@
 			(symbol "+3.3V_4_1_1"
 				(pin power_in line
 					(at 0 0 90)
-					(length 0) hide
+					(length 0)
+					(hide yes)
 					(name "+3V3"
 						(effects
 							(font
@@ -364,6 +369,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "+3.3V_6"
 			(power)
@@ -441,7 +447,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 0) (xy 0 2.54)
+						(xy 0 2.54) (xy 0.762 1.27)
 					)
 					(stroke
 						(width 0)
@@ -453,7 +459,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 2.54) (xy 0.762 1.27)
+						(xy 0 0) (xy 0 2.54)
 					)
 					(stroke
 						(width 0)
@@ -467,7 +473,8 @@
 			(symbol "+3.3V_6_1_1"
 				(pin power_in line
 					(at 0 0 90)
-					(length 0) hide
+					(length 0)
+					(hide yes)
 					(name "+3V3"
 						(effects
 							(font
@@ -484,11 +491,16 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "Device:C_Small"
-			(pin_numbers hide)
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
-				(offset 0.254) hide)
+				(offset 0.254)
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -558,10 +570,10 @@
 			(symbol "C_Small_0_1"
 				(polyline
 					(pts
-						(xy -1.524 -0.508) (xy 1.524 -0.508)
+						(xy -1.524 0.508) (xy 1.524 0.508)
 					)
 					(stroke
-						(width 0.3302)
+						(width 0.3048)
 						(type default)
 					)
 					(fill
@@ -570,10 +582,10 @@
 				)
 				(polyline
 					(pts
-						(xy -1.524 0.508) (xy 1.524 0.508)
+						(xy -1.524 -0.508) (xy 1.524 -0.508)
 					)
 					(stroke
-						(width 0.3048)
+						(width 0.3302)
 						(type default)
 					)
 					(fill
@@ -619,11 +631,16 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "Device:R_Small"
-			(pin_numbers hide)
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
-				(offset 0.254) hide)
+				(offset 0.254)
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -741,6 +758,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "GND_16"
 			(power)
@@ -820,7 +838,8 @@
 			(symbol "GND_16_1_1"
 				(pin power_in line
 					(at 0 0 270)
-					(length 0) hide
+					(length 0)
+					(hide yes)
 					(name "GND"
 						(effects
 							(font
@@ -837,6 +856,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "GND_17"
 			(power)
@@ -916,7 +936,8 @@
 			(symbol "GND_17_1_1"
 				(pin power_in line
 					(at 0 0 270)
-					(length 0) hide
+					(length 0)
+					(hide yes)
 					(name "GND"
 						(effects
 							(font
@@ -933,6 +954,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "GND_7"
 			(power)
@@ -1012,7 +1034,8 @@
 			(symbol "GND_7_1_1"
 				(pin power_in line
 					(at 0 0 270)
-					(length 0) hide
+					(length 0)
+					(hide yes)
 					(name "GND"
 						(effects
 							(font
@@ -1029,6 +1052,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "Samacsys_kicad_sym:BQ79600PWRQ1"
 			(exclude_from_sim no)
@@ -1142,16 +1166,16 @@
 					)
 				)
 				(pin passive line
-					(at -11.43 -17.78 0)
+					(at -11.43 17.78 0)
 					(length 2.54)
-					(name "DVDD"
+					(name "VIO"
 						(effects
 							(font
 								(size 1.27 1.27)
 							)
 						)
 					)
-					(number "1"
+					(number "3"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1160,124 +1184,16 @@
 					)
 				)
 				(pin passive line
-					(at 11.43 -10.16 180)
+					(at -11.43 10.16 0)
 					(length 2.54)
-					(name "COMLP"
+					(name "SPI_RDY"
 						(effects
 							(font
 								(size 1.27 1.27)
 							)
 						)
 					)
-					(number "10"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 11.43 -7.62 180)
-					(length 2.54)
-					(name "COMLN"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "11"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 11.43 -5.08 180)
-					(length 2.54)
-					(name "COMHN"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "12"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 11.43 -2.54 180)
-					(length 2.54)
-					(name "COMHP"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "13"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 11.43 7.62 180)
-					(length 2.54)
-					(name "CVDD"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "14"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 11.43 17.78 180)
-					(length 2.54)
-					(name "BAT"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "15"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 11.43 12.7 180)
-					(length 2.54)
-					(name "INH"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "16"
+					(number "8"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1296,24 +1212,6 @@
 						)
 					)
 					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at -11.43 17.78 0)
-					(length 2.54)
-					(name "VIO"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1394,16 +1292,142 @@
 					)
 				)
 				(pin passive line
-					(at -11.43 10.16 0)
+					(at -11.43 -17.78 0)
 					(length 2.54)
-					(name "SPI_RDY"
+					(name "DVDD"
 						(effects
 							(font
 								(size 1.27 1.27)
 							)
 						)
 					)
-					(number "8"
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 11.43 17.78 180)
+					(length 2.54)
+					(name "BAT"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "15"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 11.43 12.7 180)
+					(length 2.54)
+					(name "INH"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "16"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 11.43 7.62 180)
+					(length 2.54)
+					(name "CVDD"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "14"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 11.43 -2.54 180)
+					(length 2.54)
+					(name "COMHP"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "13"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 11.43 -5.08 180)
+					(length 2.54)
+					(name "COMHN"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "12"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 11.43 -7.62 180)
+					(length 2.54)
+					(name "COMLN"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "11"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 11.43 -10.16 180)
+					(length 2.54)
+					(name "COMLP"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "10"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1430,6 +1454,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "Samacsys_kicad_sym:LTC6820IMS"
 			(exclude_from_sim no)
@@ -1490,6 +1515,42 @@
 						(type background)
 					)
 				)
+				(pin power_in line
+					(at -11.43 16.51 0)
+					(length 2.54)
+					(name "VDD"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "9"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at -11.43 13.97 0)
+					(length 2.54)
+					(name "VIO"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
 				(pin input line
 					(at -11.43 8.89 0)
 					(length 2.54)
@@ -1501,132 +1562,6 @@
 						)
 					)
 					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin input line
-					(at 11.43 13.97 180)
-					(length 2.54)
-					(name "IM"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "10"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin input line
-					(at 11.43 16.51 180)
-					(length 2.54)
-					(name "IP"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "11"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin input line
-					(at -11.43 -13.97 0)
-					(length 2.54)
-					(name "MSTR"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "12"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin input line
-					(at -11.43 -16.51 0)
-					(length 2.54)
-					(name "SLOW"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "13"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin power_in line
-					(at 11.43 -16.51 180)
-					(length 2.54)
-					(name "GND"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "14"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin input line
-					(at 11.43 -6.35 180)
-					(length 2.54)
-					(name "ICMP"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "15"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin input line
-					(at 11.43 -3.81 180)
-					(length 2.54)
-					(name "IBIAS"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "16"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1706,24 +1641,6 @@
 						)
 					)
 				)
-				(pin power_in line
-					(at -11.43 13.97 0)
-					(length 2.54)
-					(name "VIO"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "6"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
 				(pin input line
 					(at -11.43 -8.89 0)
 					(length 2.54)
@@ -1760,17 +1677,125 @@
 						)
 					)
 				)
-				(pin power_in line
-					(at -11.43 16.51 0)
+				(pin input line
+					(at -11.43 -13.97 0)
 					(length 2.54)
-					(name "VDD"
+					(name "MSTR"
 						(effects
 							(font
 								(size 1.27 1.27)
 							)
 						)
 					)
-					(number "9"
+					(number "12"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at -11.43 -16.51 0)
+					(length 2.54)
+					(name "SLOW"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "13"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at 11.43 16.51 180)
+					(length 2.54)
+					(name "IP"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "11"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at 11.43 13.97 180)
+					(length 2.54)
+					(name "IM"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "10"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at 11.43 -3.81 180)
+					(length 2.54)
+					(name "IBIAS"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "16"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin input line
+					(at 11.43 -6.35 180)
+					(length 2.54)
+					(name "ICMP"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "15"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin power_in line
+					(at 11.43 -16.51 180)
+					(length 2.54)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "14"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1779,7 +1804,124 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
+	)
+	(rectangle
+		(start 43.18 129.54)
+		(end 134.62 138.43)
+		(stroke
+			(width 0)
+			(type dash)
+			(color 132 132 132 1)
+		)
+		(fill
+			(type none)
+		)
+		(uuid 13f7a179-68e7-4038-8f54-2ff773cef0e5)
+	)
+	(rectangle
+		(start 137.16 35.56)
+		(end 264.16 127)
+		(stroke
+			(width 0)
+			(type dash)
+			(color 132 132 132 1)
+		)
+		(fill
+			(type none)
+		)
+		(uuid 545b34dc-63e9-4f10-80dc-930d2ab19aae)
+	)
+	(rectangle
+		(start 222.25 38.1)
+		(end 261.62 71.12)
+		(stroke
+			(width 0)
+			(type dash)
+			(color 132 132 132 1)
+		)
+		(fill
+			(type none)
+		)
+		(uuid 63852162-8bfa-46da-bad2-198c41fc7b44)
+	)
+	(rectangle
+		(start 43.18 35.56)
+		(end 134.62 127)
+		(stroke
+			(width 0)
+			(type dash)
+			(color 132 132 132 1)
+		)
+		(fill
+			(type none)
+		)
+		(uuid f3edbf3f-6997-4cc0-9061-9828f5a54f69)
+	)
+	(text "ISO SPI INTERFACE"
+		(exclude_from_sim no)
+		(at 133.35 125.73 0)
+		(effects
+			(font
+				(size 2 2)
+				(thickness 1)
+				(bold yes)
+				(color 132 132 132 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "0cce96e1-4f7c-4f5b-b0ca-172564cf79cf")
+	)
+	(text "SPI PULLUP"
+		(exclude_from_sim no)
+		(at 260.35 69.85 0)
+		(effects
+			(font
+				(size 0.889 0.889)
+				(thickness 1)
+				(bold yes)
+				(color 132 132 132 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "354fa62b-b919-4a74-9504-e3a395203910")
+	)
+	(text "BQ79600 ISO INTERFACE"
+		(exclude_from_sim no)
+		(at 262.89 125.73 0)
+		(effects
+			(font
+				(size 2 2)
+				(thickness 1)
+				(bold yes)
+				(color 132 132 132 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "b97e8332-d4e1-45fb-b8c6-f36a4e47f3c5")
+	)
+	(text_box "Dual compability only one ic should be used at one time"
+		(exclude_from_sim no)
+		(at 45.72 132.08 0)
+		(size 85.09 3.81)
+		(margins 0.9524 0.9524 0.9524 0.9524)
+		(stroke
+			(width -0.0001)
+			(type dash)
+			(color 132 132 132 1)
+		)
+		(fill
+			(type none)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(color 132 0 132 1)
+			)
+			(justify left top)
+		)
+		(uuid "11b94bb0-183d-4c56-9993-127d21fd2d96")
 	)
 	(junction
 		(at 218.44 97.79)
@@ -2808,121 +2950,6 @@
 			(type default)
 		)
 		(uuid "fa785b61-f264-4981-992c-450939cd857b")
-	)
-	(rectangle
-		(start 43.18 129.54)
-		(end 134.62 138.43)
-		(stroke
-			(width 0)
-			(type dash)
-			(color 132 132 132 1)
-		)
-		(fill
-			(type none)
-		)
-		(uuid 13f7a179-68e7-4038-8f54-2ff773cef0e5)
-	)
-	(rectangle
-		(start 137.16 35.56)
-		(end 264.16 127)
-		(stroke
-			(width 0)
-			(type dash)
-			(color 132 132 132 1)
-		)
-		(fill
-			(type none)
-		)
-		(uuid 545b34dc-63e9-4f10-80dc-930d2ab19aae)
-	)
-	(rectangle
-		(start 222.25 38.1)
-		(end 261.62 71.12)
-		(stroke
-			(width 0)
-			(type dash)
-			(color 132 132 132 1)
-		)
-		(fill
-			(type none)
-		)
-		(uuid 63852162-8bfa-46da-bad2-198c41fc7b44)
-	)
-	(rectangle
-		(start 43.18 35.56)
-		(end 134.62 127)
-		(stroke
-			(width 0)
-			(type dash)
-			(color 132 132 132 1)
-		)
-		(fill
-			(type none)
-		)
-		(uuid f3edbf3f-6997-4cc0-9061-9828f5a54f69)
-	)
-	(text_box "Dual compability only one ic should be used at one time"
-		(exclude_from_sim no)
-		(at 45.72 132.08 0)
-		(size 85.09 3.81)
-		(stroke
-			(width -0.0001)
-			(type dash)
-			(color 132 132 132 1)
-		)
-		(fill
-			(type none)
-		)
-		(effects
-			(font
-				(size 1.27 1.27)
-				(color 132 0 132 1)
-			)
-			(justify left top)
-		)
-		(uuid "11b94bb0-183d-4c56-9993-127d21fd2d96")
-	)
-	(text "ISO SPI INTERFACE"
-		(exclude_from_sim no)
-		(at 133.35 125.73 0)
-		(effects
-			(font
-				(size 2 2)
-				(thickness 1)
-				(bold yes)
-				(color 132 132 132 1)
-			)
-			(justify right bottom)
-		)
-		(uuid "0cce96e1-4f7c-4f5b-b0ca-172564cf79cf")
-	)
-	(text "SPI PULLUP"
-		(exclude_from_sim no)
-		(at 260.35 69.85 0)
-		(effects
-			(font
-				(size 0.889 0.889)
-				(thickness 1)
-				(bold yes)
-				(color 132 132 132 1)
-			)
-			(justify right bottom)
-		)
-		(uuid "354fa62b-b919-4a74-9504-e3a395203910")
-	)
-	(text "BQ79600 ISO INTERFACE"
-		(exclude_from_sim no)
-		(at 262.89 125.73 0)
-		(effects
-			(font
-				(size 2 2)
-				(thickness 1)
-				(bold yes)
-				(color 132 132 132 1)
-			)
-			(justify right bottom)
-		)
-		(uuid "b97e8332-d4e1-45fb-b8c6-f36a4e47f3c5")
 	)
 	(label "COM-"
 		(at 224.79 87.63 180)

@@ -6,9 +6,36 @@
 
 namespace Utils
 {
+    /**
+     *  @brief  This function is used to convert an integer to a uint8_t
+     *  @param  `value` integer value to convert
+     *  @return `value` casted to uint8_t 
+     */
     uint8_t consteval operator ""ui8 (unsigned long long int value)
     {
         return static_cast<uint8_t>(value);
+    }
+
+    /**
+     *  @brief  This function is used to convert an integer representing seconds to a used time
+     *          value, in this case its miliseconds (systems has 1000 ticks per second refresh rate)
+     *  @param  `value` integer value to convert
+     *  @return `value` in miliseconds
+     */
+    unsigned long long int consteval operator ""s (unsigned long long int value)
+    {
+        return value * 1000;
+    }
+
+    /**
+     *  @brief  This function is used to convert an integer representing miliseconds to a used time
+     *          value, in this case its miliseconds (systems has 1000 ticks per second refresh rate)
+     *  @param  `value` integer value to convert
+     *  @return `value` in miliseconds
+     */
+    unsigned long long int consteval operator ""ms (unsigned long long int value)
+    {
+        return value;
     }
 
     template<size_t ADDRESS_START, size_t ADDRESS_OFFSET = 0>

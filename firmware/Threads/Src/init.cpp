@@ -17,7 +17,7 @@ static constexpr size_t ads131m04_thread_pool_size { 1024U };
 uint8_t ads131m04_thread_pool[ads131m04_thread_pool_size];
 
 TX_THREAD main_thread;
-static constexpr size_t main_thread_pool_size { 1024U };
+static constexpr size_t main_thread_pool_size { 2048U };
 uint8_t main_thread_pool[main_thread_pool_size];
 
 TX_THREAD usb_com_thread;
@@ -31,6 +31,14 @@ uint8_t usb_tx_thread_pool[usb_tx_thread_pool_size];
 TX_THREAD usb_rx_thread;
 static constexpr size_t usb_rx_thread_pool_size { 1024U };
 uint8_t usb_rx_thread_pool[usb_rx_thread_pool_size];
+
+TX_THREAD car_can_thread;
+static constexpr size_t car_can_thread_pool_size { 1024U };
+uint8_t car_can_thread_pool[car_can_thread_pool_size];
+
+TX_THREAD charger_can_thread;
+static constexpr size_t charger_can_thread_pool_size { 1024U };
+uint8_t charger_can_thread_pool[charger_can_thread_pool_size];
 
 TX_SEMAPHORE data_semaphore;
 
@@ -51,16 +59,10 @@ VOID init()
     tx_thread_create(&usb_com_thread, (CHAR*)"-USB COM INIT thread-", usb_com_thread_entry, 0U, usb_com_thread_pool, usb_com_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
     tx_thread_create(&usb_tx_thread, (CHAR*)"USB TX thread", usb_tx_thread_entry, 0U, usb_tx_thread_pool, usb_tx_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
     tx_thread_create(&usb_rx_thread, (CHAR*)"USB RX thread", usb_rx_thread_entry, 0U, usb_rx_thread_pool, usb_rx_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
+    tx_thread_create(&car_can_thread, (CHAR*)"Other COM thread", car_can_thread_entry, 0U, car_can_thread_pool, car_can_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
+    tx_thread_create(&charger_can_thread, (CHAR*)"Charger COM thread", charger_can_thread_entry, 0U, charger_can_thread_pool, charger_can_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
 
-    tx_semaphore_create(&data_semaphore, "Data semaphore", 0U);
-
-    // tx_byte_pool_create(json_byte_pool, "Json byte pool", &json_byte_pool_pool, json_byte_pool_size);
-    // tx_thread_suspend(&usb_com_thread);
-    // tx_thread_suspend(&usb_tx_thread);
-    // tx_thread_suspend(&usb_rx_thread);
-
-    // /* init usb tx buffer mutex */
-    // tx_mutex_create(&tx_buffer_mutex, "tx_buffer_mutex", 0);
-    // /* init usb rx buffer mutex */
-    // tx_mutex_create(&rx_buffer_mutex, "rx_buffer_mutex", 0);
+    tx_semaphore_create(&data_semaphore, (CHAR*)"Data semaphore", 0U);
+    
+    //tx_thread_suspend(&charger_can_thread);
 }

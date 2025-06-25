@@ -35,29 +35,32 @@ namespace PUTM
         public:
             explicit Device(SPI_HandleTypeDef *hspi);
         public:
-            /*
+            /**
              *  @brief  init semaphore
              */
             void init();
         public:
-            /*
+            /**
              *  @brief  update data
-             *  @note   read function executes 2 times
+             *  @note   com function executes 2 times
              */
             void update();
         public:
-            /*
+            /**
              *  @brief  reset device
-             *  @note   read function executes 2 times
+             *  @note   com function executes 2 times
              */   
             void reset();
         public:
-            /*
+            void enable_ch0_only();
+        public:
+            /**
              *  @brief 	update adc data
+             *  @param  cmd pointer to command structure
+             *  @retval HAL_OK
              *  @note 	function overrides spi callback
-             *  @retval HAL status returns HAL_OK when new data data is read;
              */
-            HAL_StatusTypeDef read(Cmd::ICmd *cmd);
+            HAL_StatusTypeDef com(Cmd::ICmd *cmd);
         };
     }
 }

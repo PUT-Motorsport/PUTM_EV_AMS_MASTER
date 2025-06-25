@@ -1,0 +1,10 @@
+set(DSP_LIBRARY_INC 
+    ${CMAKE_CURRENT_SOURCE_DIR}/Inc 
+)
+
+set(DSP_LIBRARY_SRC
+)
+
+add_library(DSP_LIBRARY INTERFACE)
+target_include_directories(DSP_LIBRARY INTERFACE ${DSP_LIBRARY_INC})
+target_sources(DSP_LIBRARY INTERFACE ${DSP_LIBRARY_SRC})

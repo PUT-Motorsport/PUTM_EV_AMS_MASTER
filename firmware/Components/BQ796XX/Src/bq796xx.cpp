@@ -13,13 +13,10 @@ using namespace PUTM::Bq796xx;
 using namespace PUTM::Bq796xx::Regs;
 using namespace PUTM::Bq796xx::Types;
 
+Device::Device(UART_HandleTypeDef *huart) : huart(huart) { }
 
-template<size_t STACK_SIZE>
-Device<STACK_SIZE>::Device(UART_HandleTypeDef *huart) : huart(huart) { }
-
-template<size_t STACK_SIZE>
-template<Device<STACK_SIZE>::ReqType REQ_TYPE>
-uint8_t Device<STACK_SIZE>::init_byte_write(uint8_t data_size)
+template<Device::ReqType REQ_TYPE>
+uint8_t Device::init_byte_write(uint8_t data_size)
 {
     // uint8_t rsvd = 0b0000'0000;
     uint8_t frame_type = 0b1'0000000;
@@ -30,9 +27,8 @@ uint8_t Device<STACK_SIZE>::init_byte_write(uint8_t data_size)
     return frame_type | req_type | data_size;
 }
 
-template<size_t STACK_SIZE>
-template<Device<STACK_SIZE>::ReqType REQ_TYPE>
-uint8_t Device<STACK_SIZE>::init_byte_read()
+template<Device::ReqType REQ_TYPE>
+uint8_t Device::init_byte_read()
 {
     // uint8_t rsvd = 0b0000'0000;
     uint8_t frame_type = 0b1'0000000;
@@ -42,16 +38,15 @@ uint8_t Device<STACK_SIZE>::init_byte_read()
     return frame_type | req_type;
 }
 
-template<size_t STACK_SIZE>
-HAL_StatusTypeDef Device<STACK_SIZE>::init()
+HAL_StatusTypeDef Device::init()
 {
     tx_semaphore_create(&semaphore, "semaphore", 0);
 
     return HAL_OK;
 }
 
-template<size_t STACK_SIZE>
-HAL_StatusTypeDef Device<STACK_SIZE>::init_uart()
+
+HAL_StatusTypeDef Device::init_uart()
 {
     HAL_UART_ReceiverTimeout_Config(huart, rx_timeout_baudblocks);
     HAL_UART_EnableReceiverTimeout(huart);
@@ -60,8 +55,7 @@ HAL_StatusTypeDef Device<STACK_SIZE>::init_uart()
     return HAL_OK;
 }
 
-template<size_t STACK_SIZE>
-HAL_StatusTypeDef Device<STACK_SIZE>::init_stack()
+HAL_StatusTypeDef Device::init_stack()
 {
     uint8_t data[16];
 
@@ -89,7 +83,7 @@ HAL_StatusTypeDef Device<STACK_SIZE>::init_stack()
     write<ReqType::Broadcast>(data, 1, 0x309);
 
     /* auto addressing */
-    for(size_t address = 0; address <= STACK_SIZE; address++)
+    for(size_t address = 0; address <= Config::STACK_SIZE; address++)
     {
         data[0] = address;
         write<ReqType::Broadcast>(data, 1, 0x306);
@@ -101,7 +95,7 @@ HAL_StatusTypeDef Device<STACK_SIZE>::init_stack()
 
     /* set which bq is last */
     data[0] = 0x03;
-    write<ReqType::Single>(data, 1, 0x308, STACK_SIZE);
+    write<ReqType::Single>(data, 1, 0x308, Config::STACK_SIZE);
 
     /* dummy read sync internal dlls */
     for(size_t step = 0; step < 8; step++)
@@ -117,8 +111,8 @@ HAL_StatusTypeDef Device<STACK_SIZE>::init_stack()
     return HAL_OK;
 }
 
-template<size_t STACK_SIZE>
-HAL_StatusTypeDef Device<STACK_SIZE>::init_voltage_measurement()
+
+HAL_StatusTypeDef Device::init_voltage_measurement()
 {
     uint8_t data[16];
 
@@ -130,8 +124,8 @@ HAL_StatusTypeDef Device<STACK_SIZE>::init_voltage_measurement()
     return HAL_OK;
 }
 
-template<size_t STACK_SIZE>
-HAL_StatusTypeDef Device<STACK_SIZE>::init_ovuv(uint32_t undervoltage, uint32_t overvoltage)
+
+HAL_StatusTypeDef Device::init_ovuv(uint32_t undervoltage, uint32_t overvoltage)
 {
     uint8_t data[2] = { 0 };
 
@@ -160,8 +154,8 @@ HAL_StatusTypeDef Device<STACK_SIZE>::init_ovuv(uint32_t undervoltage, uint32_t 
     return HAL_OK;
 }
 
-template<size_t STACK_SIZE>
-HAL_StatusTypeDef Device<STACK_SIZE>::init_temperature_measurements()
+
+HAL_StatusTypeDef Device::init_temperature_measurements()
 {
     uint8_t data[8] { 0 };
 
@@ -175,8 +169,8 @@ HAL_StatusTypeDef Device<STACK_SIZE>::init_temperature_measurements()
     return HAL_OK;
 }
 
-template<size_t STACK_SIZE>
-HAL_StatusTypeDef Device<STACK_SIZE>::init_otut(uint8_t undertemperature, uint8_t overtemperature)
+
+HAL_StatusTypeDef Device::init_otut(uint8_t undertemperature, uint8_t overtemperature)
 {
     uint8_t data[1] = { 0 };
 
@@ -202,8 +196,8 @@ HAL_StatusTypeDef Device<STACK_SIZE>::init_otut(uint8_t undertemperature, uint8_
     return HAL_OK;
 }
 
-template<size_t STACK_SIZE>
-HAL_StatusTypeDef Device<STACK_SIZE>::start_measurements()
+
+HAL_StatusTypeDef Device::start_measurements()
 {
     uint8_t data[1] { 0 };
     /* set adc continous, start conversion, enable lpf */
@@ -229,20 +223,21 @@ HAL_StatusTypeDef Device<STACK_SIZE>::start_measurements()
 //     return HAL_OK;
 // }
 
-template<size_t STACK_SIZE>
-HAL_StatusTypeDef Device<STACK_SIZE>::update_status()
+
+HAL_StatusTypeDef Device::update_status(bool (&ovuv_arr)[Config::STACK_SIZE * Config::CELL_COUNT], 
+                                        bool (&otut_arr)[Config::STACK_SIZE * Config::TEMPERATURES_COUNT])
 {
     using namespace Utils;
 
     constexpr size_t ovuv_size = 4;
     constexpr size_t otut_size = 2;
 
-    uint8_t buffer[(ovuv_size + otut_size) * STACK_SIZE] { 0 };
+    uint8_t buffer[(ovuv_size + otut_size) * Config::STACK_SIZE] { 0 };
 
     /* read ov1/2, uv1/2, ot and ut, 0x053C, address of FAULT_OV1, yes i started getting lazy */
     read<ReqType::Stack>(buffer, (ovuv_size + otut_size), 0x053C);
     
-    for(size_t idev = 0; idev < STACK_SIZE; idev++)
+    for(size_t idev = 0; idev < Config::STACK_SIZE; idev++)
     {
         size_t offset = (ovuv_size + otut_size) * idev;
         /* over and under voltage */
@@ -259,70 +254,67 @@ HAL_StatusTypeDef Device<STACK_SIZE>::update_status()
         for(size_t ich = 0; ich < 16; ich++)
         {
             size_t bit_index = 1 << ich;
-            stack_device_status[idev].ovuv[ich] = (bool)(ovuv_tmp & bit_index);
+            ovuv_arr[idev * Config::STACK_SIZE + ich] = (bool)(ovuv_tmp & bit_index);
         }
 
         /* temperatures status */
         for(size_t igio = 0; igio < 8; igio++)
         {
             size_t bit_index = 1 << igio;
-            stack_device_status[idev].otut[igio] = (bool)(otut_tmp & bit_index);
+            otut_arr[idev * Config::STACK_SIZE + igio] = (bool)(otut_tmp & bit_index);
         }
     }
 
     return HAL_OK;
 }
 
-template<size_t STACK_SIZE>
-HAL_StatusTypeDef Device<STACK_SIZE>::update_data()
+HAL_StatusTypeDef Device::update_data(float (&voltages_arr)[Config::STACK_SIZE * Config::CELL_COUNT], 
+                                      float (&temperatures_arr)[Config::STACK_SIZE * Config::TEMPERATURES_COUNT])
 {
     using namespace Utils;
 
     /* 16 cells * 2 bytes */
-    constexpr size_t data_count = 16 * 2;
-    uint8_t buffer[data_count * STACK_SIZE] { 0 };
+    constexpr size_t CELL_DATA_COUNT = Config::CELL_COUNT * 2;
+    constexpr size_t REG_OFFSET = (16 - Config::CELL_COUNT) * 2;
+    uint8_t buffer[CELL_DATA_COUNT * Config::STACK_SIZE] { 0 };
 
     /* read voltages, address of VCELL16_HI */
-    read<ReqType::Stack>(buffer, data_count, 0x0568);
+    read<ReqType::Stack>(buffer, CELL_DATA_COUNT, 0x0568 + REG_OFFSET);
 
     /* voltages */
-    for(size_t idev = 0; idev < STACK_SIZE; idev++)
+    for(size_t idev = 0; idev < Config::STACK_SIZE; idev++)
     {
-        for(size_t ich = 0; ich < 16; ich++)
+        for(size_t ich = 0; ich < Config::CELL_COUNT; ich++)
         {
-            size_t index = idev * data_count + ich * 2;
+            size_t index = idev * CELL_DATA_COUNT + ich * 2;
             int16_t volt = ((uint16_t)(buffer[index]) << 8 | (uint16_t)(buffer[index + 1]));
             
-            stack_device_data[idev].voltages[15 - ich] = -(~volt + 1) * v_lsb_adc;
+            voltages_arr[idev * Config::STACK_SIZE + Config::CELL_COUNT - 1 - ich] = -(~volt + 1) * v_lsb_adc;
         }
     }
 
+    constexpr size_t TEMP_DATA_COUNT = 8 * 2;
+
     /* read temperatures, address of GPIO1_HI */
-    read<ReqType::Stack>(buffer, data_count, 0x058E);
+    read<ReqType::Stack>(buffer, TEMP_DATA_COUNT, 0x058E);
 
     /* temperatures */
-    for(size_t idev = 0; idev < STACK_SIZE; idev++)
+    for(size_t idev = 0; idev < Config::STACK_SIZE; idev++)
     {
         for(size_t igio = 0; igio < 8; igio++)
         {
-            size_t index = idev * data_count + igio * 2;
+            size_t index = idev * TEMP_DATA_COUNT + igio * 2;
             int16_t volt = ((uint16_t)(buffer[index]) << 8 | (uint16_t)(buffer[index + 1]));
             
-            stack_device_data[idev].temperatures[igio] = -(~volt + 1) * v_lsb_adc;
+            temperatures_arr[idev * Config::STACK_SIZE + igio] = -(~volt + 1) * v_lsb_adc;
         }
     }
     
     return HAL_OK;
 }
 
-template<size_t STACK_SIZE>
-HAL_StatusTypeDef Device<STACK_SIZE>::wake_up()
+HAL_StatusTypeDef Device::wake_up()
 {
-    /* prevent override during checks */
-    volatile UartState state (huart->gState);
-
-    if(not state.init_done or state.status == UartStatus::Error) Error_Handler();
-
     /* uart sends lsb first, this sequence includes start bit for a total of '6' bits */
     out.at(0) = 0b1110'0000;
 
@@ -360,14 +352,9 @@ HAL_StatusTypeDef Device<STACK_SIZE>::wake_up()
     return HAL_OK;
 }
 
-template<size_t STACK_SIZE>
-template<Device<STACK_SIZE>::ReqType REQ_TYPE>
-HAL_StatusTypeDef Device<STACK_SIZE>::write(uint8_t *data, size_t size, uint16_t reg_address, uint8_t address)
+template<Device::ReqType REQ_TYPE>
+HAL_StatusTypeDef Device::write(uint8_t *data, size_t size, uint16_t reg_address, uint8_t address)
 {
-    volatile UartState state (huart->gState);
-
-    if(not state.init_done or state.status == UartStatus::Error) Error_Handler();
-    
     size_t i = 0;
     out.at(i++) = init_byte_write<REQ_TYPE>(size);
 
@@ -406,13 +393,10 @@ HAL_StatusTypeDef Device<STACK_SIZE>::write(uint8_t *data, size_t size, uint16_t
     return HAL_OK;
 }
 
-template<size_t STACK_SIZE>
-template<Device<STACK_SIZE>::ReqType REQ_TYPE>
-HAL_StatusTypeDef Device<STACK_SIZE>::read(uint8_t *data, size_t count, uint16_t reg_address, uint8_t address)
+template<Device::ReqType REQ_TYPE>
+HAL_StatusTypeDef Device::read(uint8_t *data, size_t reg_count, uint16_t reg_address, uint8_t address)
 {
-
-    /* prevent override during checks? */
-    volatile UartState state (huart->gState);
+    constexpr size_t READ_COUNT = read_count<REQ_TYPE>();
 
     std::fill(in.begin(), in.end(), 0);
     
@@ -424,7 +408,7 @@ HAL_StatusTypeDef Device<STACK_SIZE>::read(uint8_t *data, size_t count, uint16_t
     out.at(i++) = (uint8_t)(reg_address >> 8);
     out.at(i++) = (uint8_t)(reg_address);
 
-    out.at(i++) = count - 1;
+    out.at(i++) = reg_count - 1;
 
     uint16_t crc = crc16.fast(out.begin(), i);
     out.at(i++) = (uint8_t)(crc >> 8);
@@ -458,7 +442,7 @@ HAL_StatusTypeDef Device<STACK_SIZE>::read(uint8_t *data, size_t count, uint16_t
         tx_semaphore_put(&bq->semaphore);
     };
 
-    read_size = (count + 6) * read_count<REQ_TYPE>();
+    read_size = (reg_count + 6) * read_count<REQ_TYPE>();
     huart->TxCpltCallback = callback_write;
     huart->RxCpltCallback = callback_read;
     huart->UserData = (void*)this;
@@ -477,18 +461,17 @@ HAL_StatusTypeDef Device<STACK_SIZE>::read(uint8_t *data, size_t count, uint16_t
         return HAL_ERROR;
     }
 
-    constexpr size_t size = read_count<REQ_TYPE>();
-    auto it_data_begin = in.begin() + 4;
-    auto it_data_end = in.begin() + 4 + count;
+    auto it_in_begin = in.begin() + 4;
+    auto it_in_end = in.begin() + 4 + reg_count;
     auto it_data = data;
     
-    for(size_t i = 0; i < size; i++)
+    for(size_t i = 0; i < READ_COUNT; i++)
     {
         // TODO: CRC?
-        std::copy(it_data_begin, it_data_end, it_data);
-        it_data_begin += count + 6;
-        it_data_end += count + 6;
-        it_data += count;
+        std::copy(it_in_begin, it_in_end, it_data);
+        it_in_begin += reg_count + 6;
+        it_in_end += reg_count + 6;
+        it_data += reg_count;
     }
 
     return HAL_OK; 

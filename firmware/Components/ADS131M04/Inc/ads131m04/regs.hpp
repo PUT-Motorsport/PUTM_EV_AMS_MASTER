@@ -138,7 +138,7 @@ namespace PUTM
                 uint16_t reserved0: 8 { 0x0 };
             };
 
-            struct __packedRegMapCrc : public Utils::IReg<0x3e>
+            struct __packed RegMapCrc : public Utils::IReg<0x3e>
             {
                 uint16_t reg_crc { 0x00 };
             };

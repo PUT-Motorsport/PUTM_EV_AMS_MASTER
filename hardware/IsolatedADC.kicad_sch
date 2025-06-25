@@ -1,7 +1,7 @@
 (kicad_sch
-	(version 20231120)
+	(version 20250114)
 	(generator "eeschema")
-	(generator_version "8.0")
+	(generator_version "9.0")
 	(uuid "c3eba7c2-c321-4c17-9fb9-5c88f89f5808")
 	(paper "A4")
 	(lib_symbols
@@ -81,7 +81,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 0) (xy 0 2.54)
+						(xy 0 2.54) (xy 0.762 1.27)
 					)
 					(stroke
 						(width 0)
@@ -93,7 +93,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 2.54) (xy 0.762 1.27)
+						(xy 0 0) (xy 0 2.54)
 					)
 					(stroke
 						(width 0)
@@ -107,7 +107,8 @@
 			(symbol "+3.3V_2_1_1"
 				(pin power_in line
 					(at 0 0 90)
-					(length 0) hide
+					(length 0)
+					(hide yes)
 					(name "+3V3"
 						(effects
 							(font
@@ -124,6 +125,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "+3.3V_3"
 			(power)
@@ -201,7 +203,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 0) (xy 0 2.54)
+						(xy 0 2.54) (xy 0.762 1.27)
 					)
 					(stroke
 						(width 0)
@@ -213,7 +215,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 2.54) (xy 0.762 1.27)
+						(xy 0 0) (xy 0 2.54)
 					)
 					(stroke
 						(width 0)
@@ -227,7 +229,8 @@
 			(symbol "+3.3V_3_1_1"
 				(pin power_in line
 					(at 0 0 90)
-					(length 0) hide
+					(length 0)
+					(hide yes)
 					(name "+3V3"
 						(effects
 							(font
@@ -244,11 +247,16 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "Device:C_Small"
-			(pin_numbers hide)
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
-				(offset 0.254) hide)
+				(offset 0.254)
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -318,10 +326,10 @@
 			(symbol "C_Small_0_1"
 				(polyline
 					(pts
-						(xy -1.524 -0.508) (xy 1.524 -0.508)
+						(xy -1.524 0.508) (xy 1.524 0.508)
 					)
 					(stroke
-						(width 0.3302)
+						(width 0.3048)
 						(type default)
 					)
 					(fill
@@ -330,10 +338,10 @@
 				)
 				(polyline
 					(pts
-						(xy -1.524 0.508) (xy 1.524 0.508)
+						(xy -1.524 -0.508) (xy 1.524 -0.508)
 					)
 					(stroke
-						(width 0.3048)
+						(width 0.3302)
 						(type default)
 					)
 					(fill
@@ -379,11 +387,16 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "Device:R_Small"
-			(pin_numbers hide)
+			(pin_numbers
+				(hide yes)
+			)
 			(pin_names
-				(offset 0.254) hide)
+				(offset 0.254)
+				(hide yes)
+			)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -501,6 +514,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "GND_11"
 			(power)
@@ -580,7 +594,8 @@
 			(symbol "GND_11_1_1"
 				(pin power_in line
 					(at 0 0 270)
-					(length 0) hide
+					(length 0)
+					(hide yes)
 					(name "GND"
 						(effects
 							(font
@@ -597,6 +612,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "GND_12"
 			(power)
@@ -676,7 +692,8 @@
 			(symbol "GND_12_1_1"
 				(pin power_in line
 					(at 0 0 270)
-					(length 0) hide
+					(length 0)
+					(hide yes)
 					(name "GND"
 						(effects
 							(font
@@ -693,6 +710,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "GND_15"
 			(power)
@@ -772,7 +790,8 @@
 			(symbol "GND_15_1_1"
 				(pin power_in line
 					(at 0 0 270)
-					(length 0) hide
+					(length 0)
+					(hide yes)
 					(name "GND"
 						(effects
 							(font
@@ -789,6 +808,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "GND_18"
 			(power)
@@ -868,7 +888,8 @@
 			(symbol "GND_18_1_1"
 				(pin power_in line
 					(at 0 0 270)
-					(length 0) hide
+					(length 0)
+					(hide yes)
 					(name "GND"
 						(effects
 							(font
@@ -885,6 +906,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "GND_30"
 			(power)
@@ -964,7 +986,8 @@
 			(symbol "GND_30_1_1"
 				(pin power_in line
 					(at 0 0 270)
-					(length 0) hide
+					(length 0)
+					(hide yes)
 					(name "GND"
 						(effects
 							(font
@@ -981,6 +1004,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "GND_8"
 			(power)
@@ -1060,7 +1084,8 @@
 			(symbol "GND_8_1_1"
 				(pin power_in line
 					(at 0 0 270)
-					(length 0) hide
+					(length 0)
+					(hide yes)
 					(name "GND"
 						(effects
 							(font
@@ -1077,6 +1102,7 @@
 					)
 				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "Samacsys_kicad_sym:ADS131M04"
 			(exclude_from_sim no)
@@ -1138,186 +1164,6 @@
 					)
 				)
 				(pin passive line
-					(at -13.97 10.16 0)
-					(length 2.54)
-					(name "CH0+"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 13.97 -15.24 180)
-					(length 2.54)
-					(name "~{CS}"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "10"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 13.97 -10.16 180)
-					(length 2.54)
-					(name "~{DRY}"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "11"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 13.97 -5.08 180)
-					(length 2.54)
-					(name "SCK"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "12"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 13.97 -2.54 180)
-					(length 2.54)
-					(name "SDO"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "13"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 13.97 0 180)
-					(length 2.54)
-					(name "SDI"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "14"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 13.97 5.08 180)
-					(length 2.54)
-					(name "CLKIN"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "15"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 13.97 10.16 180)
-					(length 2.54)
-					(name "CAP"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "16"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 2.54 -20.32 90)
-					(length 2.54)
-					(name "DGND"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "17"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 13.97 15.24 180)
-					(length 2.54)
-					(name "DVDD"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "18"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
 					(at -13.97 15.24 0)
 					(length 2.54)
 					(name "AVDD"
@@ -1336,6 +1182,24 @@
 					)
 				)
 				(pin passive line
+					(at -13.97 10.16 0)
+					(length 2.54)
+					(name "CH0+"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
 					(at -13.97 7.62 0)
 					(length 2.54)
 					(name "CH0-"
@@ -1346,42 +1210,6 @@
 						)
 					)
 					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at -2.54 -20.32 90)
-					(length 2.54)
-					(name "AGND"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "20"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 0 -20.32 90)
-					(length 2.54)
-					(name "PAD"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "21"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1498,6 +1326,186 @@
 					)
 				)
 				(pin passive line
+					(at -2.54 -20.32 90)
+					(length 2.54)
+					(name "AGND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "20"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -20.32 90)
+					(length 2.54)
+					(name "PAD"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "21"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 2.54 -20.32 90)
+					(length 2.54)
+					(name "DGND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "17"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 13.97 15.24 180)
+					(length 2.54)
+					(name "DVDD"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "18"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 13.97 10.16 180)
+					(length 2.54)
+					(name "CAP"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "16"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 13.97 5.08 180)
+					(length 2.54)
+					(name "CLKIN"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "15"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 13.97 0 180)
+					(length 2.54)
+					(name "SDI"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "14"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 13.97 -2.54 180)
+					(length 2.54)
+					(name "SDO"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "13"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 13.97 -5.08 180)
+					(length 2.54)
+					(name "SCK"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "12"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 13.97 -10.16 180)
+					(length 2.54)
+					(name "~{DRY}"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "11"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
 					(at 13.97 -12.7 180)
 					(length 2.54)
 					(name "~{SYNC}"
@@ -1515,7 +1523,26 @@
 						)
 					)
 				)
+				(pin passive line
+					(at 13.97 -15.24 180)
+					(length 2.54)
+					(name "~{CS}"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "10"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
 			)
+			(embedded_fonts no)
 		)
 		(symbol "Samacsys_kicad_sym:LTC1799"
 			(exclude_from_sim no)
@@ -1618,24 +1645,6 @@
 						)
 					)
 				)
-				(pin power_in line
-					(at -8.89 -2.54 0)
-					(length 2.54)
-					(name "GND"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
 				(pin output line
 					(at -8.89 0 0)
 					(length 2.54)
@@ -1655,16 +1664,16 @@
 					)
 				)
 				(pin power_in line
-					(at 8.89 -2.54 180)
+					(at -8.89 -2.54 0)
 					(length 2.54)
-					(name "DIV"
+					(name "GND"
 						(effects
 							(font
 								(size 1.27 1.27)
 							)
 						)
 					)
-					(number "4"
+					(number "2"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -1690,8 +1699,135 @@
 						)
 					)
 				)
+				(pin power_in line
+					(at 8.89 -2.54 180)
+					(length 2.54)
+					(name "DIV"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
 			)
+			(embedded_fonts no)
 		)
+	)
+	(rectangle
+		(start 92.71 31.75)
+		(end 213.36 160.02)
+		(stroke
+			(width 0)
+			(type dash)
+			(color 132 132 132 1)
+		)
+		(fill
+			(type none)
+		)
+		(uuid 6e7cf0e6-2a2d-4733-a672-183c750f7148)
+	)
+	(rectangle
+		(start 25.4 31.75)
+		(end 90.17 160.02)
+		(stroke
+			(width 0)
+			(type dash)
+			(color 132 132 132 1)
+		)
+		(fill
+			(type none)
+		)
+		(uuid 7f1189de-ac03-4ec0-b4e3-5f21c8cd5592)
+	)
+	(rectangle
+		(start 187.96 34.29)
+		(end 210.82 64.77)
+		(stroke
+			(width 0)
+			(type dash)
+			(color 132 132 132 1)
+		)
+		(fill
+			(type none)
+		)
+		(uuid 9c75d19a-18b8-442a-b07c-de6888c1c321)
+	)
+	(rectangle
+		(start 215.9 31.75)
+		(end 273.05 160.02)
+		(stroke
+			(width 0)
+			(type dash)
+			(color 132 132 132 1)
+		)
+		(fill
+			(type none)
+		)
+		(uuid b4e2dce8-a762-4b4a-a5b6-c705d0886293)
+	)
+	(text "SPI PULLUP"
+		(exclude_from_sim no)
+		(at 209.55 63.5 0)
+		(effects
+			(font
+				(size 0.889 0.889)
+				(thickness 1)
+				(bold yes)
+				(color 132 132 132 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "720ab5cd-2c4e-4b5f-883e-110ba73a8d98")
+	)
+	(text "INPUTS"
+		(exclude_from_sim no)
+		(at 88.9 158.75 0)
+		(effects
+			(font
+				(size 2 2)
+				(thickness 1)
+				(bold yes)
+				(color 132 132 132 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "752d10ae-5a13-43e8-b8e4-3955a13436ec")
+	)
+	(text "8.192 CLK GEN"
+		(exclude_from_sim no)
+		(at 271.78 158.75 0)
+		(effects
+			(font
+				(size 2 2)
+				(thickness 1)
+				(bold yes)
+				(color 132 132 132 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "831aa159-d803-4e87-b8cc-74ace3f23644")
+	)
+	(text "ISOLATED ADC"
+		(exclude_from_sim no)
+		(at 212.09 158.75 0)
+		(effects
+			(font
+				(size 2 2)
+				(thickness 1)
+				(bold yes)
+				(color 132 132 132 1)
+			)
+			(justify right bottom)
+		)
+		(uuid "aeff5823-bc2e-4b5d-954d-61d26c942553")
 	)
 	(junction
 		(at 251.46 90.17)
@@ -2838,114 +2974,6 @@
 			(type default)
 		)
 		(uuid "fef4165f-0451-4bfc-84fa-274ad9881c6a")
-	)
-	(rectangle
-		(start 92.71 31.75)
-		(end 213.36 160.02)
-		(stroke
-			(width 0)
-			(type dash)
-			(color 132 132 132 1)
-		)
-		(fill
-			(type none)
-		)
-		(uuid 6e7cf0e6-2a2d-4733-a672-183c750f7148)
-	)
-	(rectangle
-		(start 25.4 31.75)
-		(end 90.17 160.02)
-		(stroke
-			(width 0)
-			(type dash)
-			(color 132 132 132 1)
-		)
-		(fill
-			(type none)
-		)
-		(uuid 7f1189de-ac03-4ec0-b4e3-5f21c8cd5592)
-	)
-	(rectangle
-		(start 187.96 34.29)
-		(end 210.82 64.77)
-		(stroke
-			(width 0)
-			(type dash)
-			(color 132 132 132 1)
-		)
-		(fill
-			(type none)
-		)
-		(uuid 9c75d19a-18b8-442a-b07c-de6888c1c321)
-	)
-	(rectangle
-		(start 215.9 31.75)
-		(end 273.05 160.02)
-		(stroke
-			(width 0)
-			(type dash)
-			(color 132 132 132 1)
-		)
-		(fill
-			(type none)
-		)
-		(uuid b4e2dce8-a762-4b4a-a5b6-c705d0886293)
-	)
-	(text "SPI PULLUP"
-		(exclude_from_sim no)
-		(at 209.55 63.5 0)
-		(effects
-			(font
-				(size 0.889 0.889)
-				(thickness 1)
-				(bold yes)
-				(color 132 132 132 1)
-			)
-			(justify right bottom)
-		)
-		(uuid "720ab5cd-2c4e-4b5f-883e-110ba73a8d98")
-	)
-	(text "INPUTS"
-		(exclude_from_sim no)
-		(at 88.9 158.75 0)
-		(effects
-			(font
-				(size 2 2)
-				(thickness 1)
-				(bold yes)
-				(color 132 132 132 1)
-			)
-			(justify right bottom)
-		)
-		(uuid "752d10ae-5a13-43e8-b8e4-3955a13436ec")
-	)
-	(text "8.192 CLK GEN"
-		(exclude_from_sim no)
-		(at 271.78 158.75 0)
-		(effects
-			(font
-				(size 2 2)
-				(thickness 1)
-				(bold yes)
-				(color 132 132 132 1)
-			)
-			(justify right bottom)
-		)
-		(uuid "831aa159-d803-4e87-b8cc-74ace3f23644")
-	)
-	(text "ISOLATED ADC"
-		(exclude_from_sim no)
-		(at 212.09 158.75 0)
-		(effects
-			(font
-				(size 2 2)
-				(thickness 1)
-				(bold yes)
-				(color 132 132 132 1)
-			)
-			(justify right bottom)
-		)
-		(uuid "aeff5823-bc2e-4b5d-954d-61d26c942553")
 	)
 	(label "I+"
 		(at 121.92 100.33 180)

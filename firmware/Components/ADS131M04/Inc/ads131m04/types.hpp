@@ -54,7 +54,7 @@ namespace PUTM
             
             enum struct Mux : uint16_t
             {
-                InPM,
+                InPN,
                 AdcShorted,
                 DcTestP,
                 DcTestN
