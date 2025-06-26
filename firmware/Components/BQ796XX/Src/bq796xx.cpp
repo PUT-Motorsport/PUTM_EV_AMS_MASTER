@@ -224,8 +224,8 @@ HAL_StatusTypeDef Device::start_measurements()
 // }
 
 
-HAL_StatusTypeDef Device::update_status(bool (&ovuv_arr)[Config::STACK_SIZE * Config::CELL_COUNT], 
-                                        bool (&otut_arr)[Config::STACK_SIZE * Config::TEMPERATURES_COUNT])
+HAL_StatusTypeDef Device::update_status(bool (&ovuv_arr)[Config::STACK_SIZE * Config::CELL_COUNT_PER_DEVICE], 
+                                        bool (&otut_arr)[Config::STACK_SIZE * Config::TEMPERATURES_COUNT_PER_DEVICE])
 {
     using namespace Utils;
 
@@ -268,14 +268,14 @@ HAL_StatusTypeDef Device::update_status(bool (&ovuv_arr)[Config::STACK_SIZE * Co
     return HAL_OK;
 }
 
-HAL_StatusTypeDef Device::update_data(float (&voltages_arr)[Config::STACK_SIZE * Config::CELL_COUNT], 
-                                      float (&temperatures_arr)[Config::STACK_SIZE * Config::TEMPERATURES_COUNT])
+HAL_StatusTypeDef Device::update_data(float (&voltages_arr)[Config::STACK_SIZE * Config::CELL_COUNT_PER_DEVICE], 
+                                      float (&temperatures_arr)[Config::STACK_SIZE * Config::TEMPERATURES_COUNT_PER_DEVICE])
 {
     using namespace Utils;
 
     /* 16 cells * 2 bytes */
-    constexpr size_t CELL_DATA_COUNT = Config::CELL_COUNT * 2;
-    constexpr size_t REG_OFFSET = (16 - Config::CELL_COUNT) * 2;
+    constexpr size_t CELL_DATA_COUNT = Config::CELL_COUNT_PER_DEVICE * 2;
+    constexpr size_t REG_OFFSET = (16 - Config::CELL_COUNT_PER_DEVICE) * 2;
     uint8_t buffer[CELL_DATA_COUNT * Config::STACK_SIZE] { 0 };
 
     /* read voltages, address of VCELL16_HI */
@@ -284,12 +284,12 @@ HAL_StatusTypeDef Device::update_data(float (&voltages_arr)[Config::STACK_SIZE *
     /* voltages */
     for(size_t idev = 0; idev < Config::STACK_SIZE; idev++)
     {
-        for(size_t ich = 0; ich < Config::CELL_COUNT; ich++)
+        for(size_t ich = 0; ich < Config::CELL_COUNT_PER_DEVICE; ich++)
         {
             size_t index = idev * CELL_DATA_COUNT + ich * 2;
             int16_t volt = ((uint16_t)(buffer[index]) << 8 | (uint16_t)(buffer[index + 1]));
             
-            voltages_arr[idev * Config::STACK_SIZE + Config::CELL_COUNT - 1 - ich] = -(~volt + 1) * v_lsb_adc;
+            voltages_arr[idev * Config::STACK_SIZE + Config::CELL_COUNT_PER_DEVICE - 1 - ich] = -(~volt + 1) * v_lsb_adc;
         }
     }
 

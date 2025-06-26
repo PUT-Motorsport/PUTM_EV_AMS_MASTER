@@ -17,10 +17,10 @@ namespace PUTM
         float acu_voltage { 0.f };
         float car_voltage { 0.f };
         float soc { 0.f };
-        float cell_voltages[Config::STACK_SIZE * Config::CELL_COUNT] { 0.f };
-        float cell_temperatures[Config::STACK_SIZE * Config::TEMPERATURES_COUNT] { 0.f };
-        bool cell_ovuv[Config::STACK_SIZE * Config::CELL_COUNT] { false };
-        bool cell_otut[Config::STACK_SIZE * Config::TEMPERATURES_COUNT] { false };
+        float cell_voltages[Config::STACK_SIZE * Config::CELL_COUNT_PER_DEVICE] { 0.f };
+        float cell_temperatures[Config::STACK_SIZE * Config::TEMPERATURES_COUNT_PER_DEVICE] { 0.f };
+        bool cell_ovuv[Config::STACK_SIZE * Config::CELL_COUNT_PER_DEVICE] { false };
+        bool cell_otut[Config::STACK_SIZE * Config::TEMPERATURES_COUNT_PER_DEVICE] { false };
         float cell_max_voltage { 0.f };
         float cell_avg_voltage { 0.f };
         float cell_min_voltage { 0.f };

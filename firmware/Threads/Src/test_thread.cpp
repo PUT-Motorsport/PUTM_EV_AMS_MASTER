@@ -49,7 +49,7 @@ void set_data(float cv, bool ovuv, float ct, bool otut, float acv, float cvt, fl
     /* Set data cell voltages and ovuv for all devices to default */
     for(size_t i = 0; i < Config::STACK_SIZE; i++)
     {
-        for(size_t j = 0; j < Config::CELL_COUNT; j++)
+        for(size_t j = 0; j < Config::CELL_COUNT_PER_DEVICE; j++)
         {
             data.cell_voltages[i][j] = cv;
             data.cell_ovuv[i][j] = ovuv;
@@ -58,7 +58,7 @@ void set_data(float cv, bool ovuv, float ct, bool otut, float acv, float cvt, fl
     /* Set data cell temperatures and otut for all devices to default */
     for(size_t i = 0; i < Config::STACK_SIZE; i++)
     {
-        for(size_t j = 0; j < Config::TEMPERATURES_COUNT; j++)
+        for(size_t j = 0; j < Config::TEMPERATURES_COUNT_PER_DEVICE; j++)
         {
             data.cell_temperatures[i][j] = ct;
             data.cell_otut[i][j] = otut;

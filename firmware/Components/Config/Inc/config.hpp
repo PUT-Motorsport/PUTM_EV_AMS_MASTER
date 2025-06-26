@@ -8,12 +8,15 @@ namespace PUTM
 {
     namespace Config
     {
+        /* Bq796xx stack size */
         /* Stack size - bq79616 in series excluding bq79600 */
         static constexpr size_t STACK_SIZE { 1 };
         /* Cell count per bq796xx */
-        static constexpr size_t CELL_COUNT { 14 };
+        static constexpr size_t CELL_COUNT_PER_DEVICE { 14 };
+        /* Total cell count in stack */
+        static constexpr size_t TOTAL_CELL_COUNT { STACK_SIZE * CELL_COUNT_PER_DEVICE };
         /* Temperatures count pre bq796xx */
-        static constexpr size_t TEMPERATURES_COUNT { 7 };
+        static constexpr size_t TEMPERATURES_COUNT_PER_DEVICE { 7 };
         /* Overvoltage trigger in [mV] */
         static constexpr uint32_t CELL_OV { 4200 };
         /* Undervoltage trigger in [mV] */
@@ -29,10 +32,14 @@ namespace PUTM
         static constexpr float MIN_HV_THRESH { 60.f };
         /* Voltage as a percentage of max voltage till which car caps should charged, a value between 0 and 1 */
         static constexpr float CAR_CHARGE_THRESH { 0.95f };
-        /* Max current treshold */
-        static constexpr float MAX_CURRENT_THRESH { 150.f };
-        /* Min current treshold */
-        static constexpr float MIN_CURRENT_THRESH { -50.f };
+        /* Max current treshold for long timeout */
+        static constexpr float MAX_CURRENT_THRESH_LONG { 150.f };
+        /* Min current treshold for long timeout */
+        static constexpr float MIN_CURRENT_THRESH_LONG { -50.f };
+        /* Max current treshold for short timeout */
+        static constexpr float MAX_CURRENT_THRESH_SHORT { 200.f };
+        /* Min current treshold for short timeout */
+        static constexpr float MIN_CURRENT_THRESH_SHORT { -MAX_CURRENT_THRESH_LONG };
 
         // FIXME: this is a temporary value, change it to real when done with tests
         /* Max voltage on battery */
@@ -44,6 +51,12 @@ namespace PUTM
 #else
         static constexpr float MIN_BAT_VOLTAGE { 450.f };
 #endif /* DEBUG_TEST_MODE_1 */
+        // FIXME: maybe shorten the timeout on the board so the soft timeout can be lenghthen
+        /* Error check timeout, time after which an persistent error will be considered an true error */
+        static constexpr uint32_t STANDARD_ERROR_TIMEOUT { 200 };
+
+        /* Current error timeout, time after which an current error will be considered an true error */
+        static constexpr uint32_t CURRENT_ERROR_LONG_TIMEOUT { 2000 };
 
         // FIXME: for test i changed it to 4000ms change it back to 250ms when done with tests
         /* Precharge min waiting time expresed in [ms], if caps charge too slowly this shit will timeout */
@@ -52,9 +65,7 @@ namespace PUTM
         /* Precharge max wating time expresed in [ms], if caps charge too slowly this shit will timeout */
         static constexpr uint32_t MAX_PRECHARGE_WAIT { 6000 };
 
-        // FIXME: maybe shorten the timeout on the board so the soft timeout can be lenghthen
-        /* Error check timeout, time after which an persistent error will be considered an true error */
-        static constexpr uint32_t ERROR_TIMEOUT { 200 };
+        
 
         /* Which channel is used for car voltage measurement from 0 to 3*/
         static constexpr uint32_t CAR_VOLTAGE_CHANNEL { 1 };

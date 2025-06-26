@@ -34,10 +34,10 @@ VOID bq796xx_thread_entry(__unused ULONG thread_input)
         /* update max, min and avg */
         data.cell_max_voltage = *std::max_element(std::begin(data.cell_voltages), std::end(data.cell_voltages));
         data.cell_min_voltage = *std::min_element(std::begin(data.cell_voltages), std::end(data.cell_voltages));
-        data.cell_avg_voltage = std::accumulate(std::begin(data.cell_voltages), std::end(data.cell_voltages), 0.f) / (float)(Config::STACK_SIZE * Config::CELL_COUNT);
+        data.cell_avg_voltage = std::accumulate(std::begin(data.cell_voltages), std::end(data.cell_voltages), 0.f) / (float)(Config::STACK_SIZE * Config::CELL_COUNT_PER_DEVICE);
         data.cell_max_temperature = *std::max_element(std::begin(data.cell_temperatures), std::end(data.cell_temperatures));
         data.cell_min_temperature = *std::min_element(std::begin(data.cell_temperatures), std::end(data.cell_temperatures));
-        data.cell_avg_temperature = std::accumulate(std::begin(data.cell_temperatures), std::end(data.cell_temperatures), 0.f) / (float)(Config::STACK_SIZE * Config::TEMPERATURES_COUNT);
+        data.cell_avg_temperature = std::accumulate(std::begin(data.cell_temperatures), std::end(data.cell_temperatures), 0.f) / (float)(Config::STACK_SIZE * Config::TEMPERATURES_COUNT_PER_DEVICE);
 
         tx_thread_sleep(50);
     }

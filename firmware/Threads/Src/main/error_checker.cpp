@@ -21,7 +21,7 @@ extern State error;
 Error com_error
 {
     .name = "Communication error",
-    .timeout = Config::ERROR_TIMEOUT,
+    .timeout = Config::STANDARD_ERROR_TIMEOUT,
     .condition = []() -> uint32_t 
     {
         return 0;
@@ -36,12 +36,12 @@ static uint32_t encode_error(uint8_t dev, uint8_t cell, uint8_t error)
 Error vcell_error
 {
     .name = "Cell voltage error",
-    .timeout = Config::ERROR_TIMEOUT,
+    .timeout = Config::STANDARD_ERROR_TIMEOUT,
     .condition = []() -> uint32_t 
     {
         for(size_t i = 0; i < Config::STACK_SIZE; i++)
         {
-            for(size_t j = 0; j < Config::CELL_COUNT; j++)
+            for(size_t j = 0; j < Config::CELL_COUNT_PER_DEVICE; j++)
             {
                 if(data.cell_voltages[i * Config::STACK_SIZE + j] > Config::CELL_OV_FLOAT)
                 {
@@ -77,12 +77,12 @@ Error vcell_error
 Error tcell_error
 {
     .name = "Temperatures error",
-    .timeout = Config::ERROR_TIMEOUT,
+    .timeout = Config::STANDARD_ERROR_TIMEOUT,
     .condition = []() -> uint32_t 
     {
         for(size_t i = 0; i < Config::STACK_SIZE; i++)
         {
-            for(size_t j = 0; j < Config::TEMPERATURES_COUNT; j++)
+            for(size_t j = 0; j < Config::TEMPERATURES_COUNT_PER_DEVICE; j++)
             {
                 if(data.cell_temperatures[i * Config::STACK_SIZE + j] > Config::CELL_OT)
                 {
@@ -118,15 +118,15 @@ Error tcell_error
 Error current_error
 {
     .name = "Current error",
-    .timeout = Config::ERROR_TIMEOUT,
+    .timeout = Config::CURRENT_ERROR_TIMEOUT,
     .condition = []() -> uint32_t 
     {
         uint32_t code = 0;
-        if(data.current > Config::MAX_CURRENT_THRESH)
+        if(data.current > Config::MAX_CURRENT_THRESH_LONG)
         {
             code = 1;
         }
-        else if(data.current < Config::MIN_CURRENT_THRESH)
+        else if(data.current < Config::MIN_CURRENT_THRESH_LONG)
         {
             code = 2;
         }
@@ -149,7 +149,7 @@ Error current_error
 Error v_error
 {
     .name = "Voltage Car/Acu error",
-    .timeout = Config::ERROR_TIMEOUT,
+    .timeout = Config::STANDARD_ERROR_TIMEOUT,
     .condition = []() -> uint32_t 
     {
         uint32_t code = 0;
@@ -202,7 +202,7 @@ Error v_error
 Error precharge_timeout
 {
     .name = "Precharge timeout",
-    .timeout = Config::ERROR_TIMEOUT,
+    .timeout = Config::STANDARD_ERROR_TIMEOUT,
     .condition = []() -> uint32_t 
     {
         return data.precharge_error;

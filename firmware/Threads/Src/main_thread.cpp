@@ -39,7 +39,7 @@ Gpio det_charger(DET_CHARGER_GPIO_Port, DET_CHARGER_Pin, false);
 // Gpio adc_dry(ADC_NDRY_GPIO_Port, ADC_NDRY_Pin, true);
 // Gpio bq_flt(NFLT_GPIO_Port, NFLT_Pin, true);
 
-std::array<SoC, Config::STACK_SIZE * Config::CELL_COUNT> socs;
+std::array<SoC, Config::STACK_SIZE * Config::CELL_COUNT_PER_DEVICE> socs;
 
 ChargerCanRxController charger_rx;
 
@@ -67,9 +67,9 @@ VOID main_thread_entry(__unused ULONG thread_input)
     // init socs
     for(size_t i = 0; i < Config::STACK_SIZE; i++)
     {
-        for(size_t j = 0; j < Config::CELL_COUNT; j++)
+        for(size_t j = 0; j < Config::CELL_COUNT_PER_DEVICE; j++)
         {
-            socs[i * Config::CELL_COUNT + j].set_from_voltage(data.cell_voltages[i * Config::STACK_SIZE + j]);
+            socs[i * Config::CELL_COUNT_PER_DEVICE + j].set_from_voltage(data.cell_voltages[i * Config::STACK_SIZE + j]);
         }
     }
 
@@ -130,9 +130,9 @@ VOID main_thread_entry(__unused ULONG thread_input)
         /* Update SoC */
         for(size_t i = 0; i < Config::STACK_SIZE; i++)
         {
-            for(size_t j = 0; j < Config::CELL_COUNT; j++)
+            for(size_t j = 0; j < Config::CELL_COUNT_PER_DEVICE; j++)
             {
-                socs[i * Config::CELL_COUNT + j].update(data.cell_voltages[i * Config::STACK_SIZE + j], data.current, data.on_charger);
+                socs[i * Config::CELL_COUNT_PER_DEVICE + j].update(data.cell_voltages[i * Config::STACK_SIZE + j], data.current, data.on_charger);
             }
         }
 

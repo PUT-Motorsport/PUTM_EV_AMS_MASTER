@@ -142,15 +142,15 @@ namespace PUTM
             *	@brief Poll stack status to local storage
              *  @return HAL_OK
             */
-            HAL_StatusTypeDef update_status(bool (&ovuv_arr)[Config::STACK_SIZE * Config::CELL_COUNT], 
-                                            bool (&otut_arr)[Config::STACK_SIZE * Config::TEMPERATURES_COUNT]);
+            HAL_StatusTypeDef update_status(bool (&ovuv_arr)[Config::STACK_SIZE * Config::CELL_COUNT_PER_DEVICE], 
+                                            bool (&otut_arr)[Config::STACK_SIZE * Config::TEMPERATURES_COUNT_PER_DEVICE]);
         public:
             /**
             *	@brief Poll stack data to local storage
              *  @return HAL_OK
             */
-            HAL_StatusTypeDef update_data(float (&voltages_arr)[Config::STACK_SIZE * Config::CELL_COUNT], 
-                                          float (&temperatures_arr)[Config::STACK_SIZE * Config::TEMPERATURES_COUNT]);
+            HAL_StatusTypeDef update_data(float (&voltages_arr)[Config::STACK_SIZE * Config::CELL_COUNT_PER_DEVICE], 
+                                          float (&temperatures_arr)[Config::STACK_SIZE * Config::TEMPERATURES_COUNT_PER_DEVICE]);
         public:
             /**
             * 	@brief 	Wake up function for BQ79600 IC, this functions tries to hold the MOSI line
