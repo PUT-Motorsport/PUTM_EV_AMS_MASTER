@@ -38,17 +38,9 @@ uint8_t Device::init_byte_read()
     return frame_type | req_type;
 }
 
-HAL_StatusTypeDef Device::init(std::pair<uint32_t, uint32_t> ovuv, std::pair<uint32_t, uint32_t> otut)
+HAL_StatusTypeDef Device::init()
 {
     tx_semaphore_create(&semaphore, "semaphore", 0);
-
-    this->init_uart();
-    this->init_stack();
-    this->init_voltage_measurement();
-    this->init_ovuv(ovuv.first, ovuv.second);
-    this->init_temperature_measurements();
-    this->init_otut(otut.first, otut.second);
-    this->start_measurements();
 
     return HAL_OK;
 }
@@ -232,7 +224,7 @@ HAL_StatusTypeDef Device::start_measurements()
 // }
 
 
-HAL_StatusTypeDef Device::read_stack_status(bool (&ovuv_arr)[Config::STACK_SIZE * Config::CELL_COUNT_PER_DEVICE], 
+HAL_StatusTypeDef Device::update_status(bool (&ovuv_arr)[Config::STACK_SIZE * Config::CELL_COUNT_PER_DEVICE], 
                                         bool (&otut_arr)[Config::STACK_SIZE * Config::TEMPERATURES_COUNT_PER_DEVICE])
 {
     using namespace Utils;
@@ -276,7 +268,7 @@ HAL_StatusTypeDef Device::read_stack_status(bool (&ovuv_arr)[Config::STACK_SIZE 
     return HAL_OK;
 }
 
-HAL_StatusTypeDef Device::read_stack_data(float (&voltages_arr)[Config::STACK_SIZE * Config::CELL_COUNT_PER_DEVICE], 
+HAL_StatusTypeDef Device::update_data(float (&voltages_arr)[Config::STACK_SIZE * Config::CELL_COUNT_PER_DEVICE], 
                                       float (&temperatures_arr)[Config::STACK_SIZE * Config::TEMPERATURES_COUNT_PER_DEVICE])
 {
     using namespace Utils;

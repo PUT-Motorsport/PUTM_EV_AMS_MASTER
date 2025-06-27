@@ -56,9 +56,9 @@ VOID init()
     tx_thread_create(&ads131m04_thread, (CHAR*)"ADS131M04 thread", ads131m04_thread_entry, 0U, ads131m04_thread_pool, ads131m04_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
 #endif /* TEST_MODE_1 */
     tx_thread_create(&main_thread, (CHAR*)"Main thread", main_thread_entry, 0U, main_thread_pool, main_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
-    tx_thread_create(&usb_com_thread, (CHAR*)"-USB COM INIT thread-", usb_com_thread_entry, 0U, usb_com_thread_pool, usb_com_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
-    tx_thread_create(&usb_tx_thread, (CHAR*)"USB TX thread", usb_tx_thread_entry, 0U, usb_tx_thread_pool, usb_tx_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
-    tx_thread_create(&usb_rx_thread, (CHAR*)"USB RX thread", usb_rx_thread_entry, 0U, usb_rx_thread_pool, usb_rx_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
+    tx_thread_create(&usb_com_thread, (CHAR*)"USB COM INIT thread", usb_com_thread_entry, 0U, usb_com_thread_pool, usb_com_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
+    // tx_thread_create(&usb_tx_thread, (CHAR*)"USB TX thread", usb_tx_thread_entry, 0U, usb_tx_thread_pool, usb_tx_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
+    // tx_thread_create(&usb_rx_thread, (CHAR*)"USB RX thread", usb_rx_thread_entry, 0U, usb_rx_thread_pool, usb_rx_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
     tx_thread_create(&car_can_thread, (CHAR*)"Other COM thread", car_can_thread_entry, 0U, car_can_thread_pool, car_can_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
     tx_thread_create(&charger_can_thread, (CHAR*)"Charger COM thread", charger_can_thread_entry, 0U, charger_can_thread_pool, charger_can_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
 

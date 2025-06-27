@@ -15,30 +15,38 @@ Bq796xx::Device bq(&huart4);
 
 VOID bq796xx_thread_entry(__unused ULONG thread_input)
 {
-    bq.init();
-    bq.init_uart();
-    bq.init_stack();
-    bq.init_voltage_measurement();
-    bq.init_ovuv(3050, 4300);
-    bq.init_temperature_measurements();
-    bq.init_otut(70, 30);
-    bq.start_measurements();
+    bq.init({ Config::CELL_OV, Config::CELL_UV }, { Config::CELL_OT, Config::CELL_UT });
 
+    uint32_t last_status_poll { 0 };
+    uint32_t last_data_poll { 0 };
+    uint32_t device_address { 1 };
+    
     while(true)
     {
-        bq.update_data(data.cell_voltages,
-                       data.cell_temperatures);
-        bq.update_status(data.cell_ovuv,
-                         data.cell_otut);
+        if(tx_time_get() - last_status_poll > Config::STACK_COM_STATUS_POLL_INTERVAL)
+        {      
+            bq.read_stack_status(data.cell_ovuv,
+                            data.cell_otut);
+            last_status_poll = tx_time_get();
+        }
+        if(tx_time_get() - last_data_poll > Config::STACK_COM_DATA_POLL_INTERVAL)
+        {
+            bq.read_signle_data(data.cell_voltages,
+                                data.cell_temperatures,
+                                device_address);
+            last_data_poll = tx_time_get();
+            device_address++;
+            if(device_address > Config::STACK_SIZE) device_address = 1; 
+            
+            /* update max, min and avg */
+            data.cell_max_voltage = *std::max_element(std::begin(data.cell_voltages), std::end(data.cell_voltages));
+            data.cell_min_voltage = *std::min_element(std::begin(data.cell_voltages), std::end(data.cell_voltages));
+            data.cell_avg_voltage = std::accumulate(std::begin(data.cell_voltages), std::end(data.cell_voltages), 0.f) / (float)(Config::TOTAL_CELL_COUNT);
+            data.cell_max_temperature = *std::max_element(std::begin(data.cell_temperatures), std::end(data.cell_temperatures));
+            data.cell_min_temperature = *std::min_element(std::begin(data.cell_temperatures), std::end(data.cell_temperatures));
+            data.cell_avg_temperature = std::accumulate(std::begin(data.cell_temperatures), std::end(data.cell_temperatures), 0.f) / (float)(Config::TOTAL_TEMPERATURES_COUNT);
+        }
 
-        /* update max, min and avg */
-        data.cell_max_voltage = *std::max_element(std::begin(data.cell_voltages), std::end(data.cell_voltages));
-        data.cell_min_voltage = *std::min_element(std::begin(data.cell_voltages), std::end(data.cell_voltages));
-        data.cell_avg_voltage = std::accumulate(std::begin(data.cell_voltages), std::end(data.cell_voltages), 0.f) / (float)(Config::STACK_SIZE * Config::CELL_COUNT_PER_DEVICE);
-        data.cell_max_temperature = *std::max_element(std::begin(data.cell_temperatures), std::end(data.cell_temperatures));
-        data.cell_min_temperature = *std::min_element(std::begin(data.cell_temperatures), std::end(data.cell_temperatures));
-        data.cell_avg_temperature = std::accumulate(std::begin(data.cell_temperatures), std::end(data.cell_temperatures), 0.f) / (float)(Config::STACK_SIZE * Config::TEMPERATURES_COUNT_PER_DEVICE);
-
-        tx_thread_sleep(50);
+        tx_thread_sleep(10);
     }
 }

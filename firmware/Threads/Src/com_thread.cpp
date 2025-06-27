@@ -93,64 +93,84 @@ VOID charger_can_thread_entry(__unused ULONG thread_input)
     }
 }
 
+/**
+ *  @brief  USB communication thread entry point
+ *  @note   Usb communication is realized using an external USB<->UART converter
+ */
 VOID usb_com_thread_entry(__unused ULONG thread_input)
 {
-    /* give it some time? */
-    //tx_thread_sleep(200);
-    MX_USB_PCD_Init();
-    HAL_PCDEx_PMAConfig(&hpcd_USB_DRD_FS, 0x00 , PCD_SNG_BUF, 0x40);
-    HAL_PCDEx_PMAConfig(&hpcd_USB_DRD_FS, 0x80 , PCD_SNG_BUF, 0x80);
-    HAL_PCDEx_PMAConfig(&hpcd_USB_DRD_FS, 0x01, PCD_SNG_BUF, 0xC0);
-    HAL_PCDEx_PMAConfig(&hpcd_USB_DRD_FS, 0x81, PCD_SNG_BUF, 0x100);
-    HAL_PCDEx_PMAConfig(&hpcd_USB_DRD_FS, 0x82, PCD_SNG_BUF, 0x140);
-    ux_dcd_stm32_initialize((0), (ULONG)&hpcd_USB_DRD_FS);
-    HAL_PCD_Start(&hpcd_USB_DRD_FS);
+    Uart uart(&huart1);
+    uart.init();
+    uart.set_baudrate(115200);
 
-    // while(true)
-    // {
-    //     tx_thread_sleep(20);
-    // }
-}
+    ArduinoJson::StaticJsonDocument<Config::JSON_BUFFER_SIZE> json;
 
-/**
- *  @brief  Usb rx thread
- *  @note   The `ux_device_class_cdc_acm_read()` function works in a blocking mode until a transfer request froma host computer is
- *          received 
- */
-VOID usb_rx_thread_entry(__unused ULONG thread_input)
-{
     while(true)
     {
-        if(cdc_acm != UX_NULL)
+        if(data.usb_connected)
         {
-            ux_device_class_cdc_acm_read(cdc_acm, (UCHAR *)rx_buffer, tx_rx_buffer_size, &rx_actual_size);
-        }
-        tx_thread_sleep(20);
-    }
-}
-
-ULONG usbx_tx_status = 0;
-/**
- *  @brief  Usb tx thread
- *  @note   The `ux_device_class_cdc_acm_write()` function works in a blocking mode until a transfer request froma host computer is
- *          received 
- */
-VOID usb_tx_thread_entry(__unused ULONG thread_input)
-{
-    while(true)
-    {
-        if(cdc_acm != UX_NULL)
-        {
+            json.clear();
             json["timestamp"] = tx_time_get();
             json["current"] = data.current;
-            json["acu_voltage"] = data.acu_voltage;
+            json["acc_voltage"] = data.acu_voltage;
             json["car_voltage"] = data.car_voltage;
             json["soc"] = data.soc;
+            for(size_t i = 0; i < Config::TOTAL_CELL_COUNT; i++)
+            {
+                json["cell_voltages"][i] = data.cell_voltages[i];
+            }
+            for(size_t i 0 = 0; i < Config::TOTAL_TEMPERATURES_COUNT; i++)
+            {
+                json["cell_temperatures"][i] = data.cell_temperatures[i];
+            }
 
-            // serializeJson(json, tx_buffer, tx_rx_buffer_size);
-            serializeJsonPretty(json, tx_buffer, tx_rx_buffer_size);
-            ux_device_class_cdc_acm_write(cdc_acm, (UCHAR *)(tx_buffer), strlen(tx_buffer), &tx_actual_size);
+            char buffer[JSON_BUFFER_SIZE] { };
+            serializeJson(json, buffer, JSON_BUFFER_SIZE);
+            uart.async_tx_dma((uint8_t *)buffer, strlen(buffer));
         }
-        tx_thread_sleep(20);
+        tx_thread_sleep(200);
     }
 }
+
+// /**
+//  *  @brief  Usb rx thread
+//  *  @note   The `ux_device_class_cdc_acm_read()` function works in a blocking mode until a transfer request froma host computer is
+//  *          received 
+//  */
+// VOID usb_rx_thread_entry(__unused ULONG thread_input)
+// {
+//     while(true)
+//     {
+//         if(cdc_acm != UX_NULL)
+//         {
+//             ux_device_class_cdc_acm_read(cdc_acm, (UCHAR *)rx_buffer, tx_rx_buffer_size, &rx_actual_size);
+//         }
+//         tx_thread_sleep(20);
+//     }
+// }
+
+// ULONG usbx_tx_status = 0;
+// /**
+//  *  @brief  Usb tx thread
+//  *  @note   The `ux_device_class_cdc_acm_write()` function works in a blocking mode until a transfer request froma host computer is
+//  *          received 
+//  */
+// VOID usb_tx_thread_entry(__unused ULONG thread_input)
+// {
+//     while(true)
+//     {
+//         if(cdc_acm != UX_NULL)
+//         {
+//             json["timestamp"] = tx_time_get();
+//             json["current"] = data.current;
+//             json["acu_voltage"] = data.acu_voltage;
+//             json["car_voltage"] = data.car_voltage;
+//             json["soc"] = data.soc;
+
+//             // serializeJson(json, tx_buffer, tx_rx_buffer_size);
+//             serializeJsonPretty(json, tx_buffer, tx_rx_buffer_size);
+//             ux_device_class_cdc_acm_write(cdc_acm, (UCHAR *)(tx_buffer), strlen(tx_buffer), &tx_actual_size);
+//         }
+//         tx_thread_sleep(20);
+//     }
+// }

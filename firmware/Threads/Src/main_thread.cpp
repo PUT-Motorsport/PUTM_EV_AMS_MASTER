@@ -93,29 +93,29 @@ VOID main_thread_entry(__unused ULONG thread_input)
         // snprintf(buffer2, sizeof(buffer2), "%c%c%c%c",0x1B,0x5B,0x32,0x4A);
         // HAL_UART_Transmit(&huart1, (uint8_t*)buffer2, strlen(buffer2), 100);
         /* Print cmd_hv */
-        snprintf(buffer2, sizeof(buffer2), "Info: cmd_hv: %d\n", data.cmd_hv);
-        HAL_UART_Transmit(&huart1, (uint8_t*)buffer2, strlen(buffer2), 100);
-        /* Print cmd_charger */
-        snprintf(buffer2, sizeof(buffer2), "Info: cmd_charger: %d\n", data.cmd_charger);
-        HAL_UART_Transmit(&huart1, (uint8_t*)buffer2, strlen(buffer2), 100);
-        /* Print current air state machine name */
-        snprintf(buffer2, sizeof(buffer2), "Info: air: %s\n", air_state_machine.current_state->name);
-        HAL_UART_Transmit(&huart1, (uint8_t*)buffer2, strlen(buffer2), 100);
-        /* Print charger current state machine name */
-        snprintf(buffer2, sizeof(buffer2), "Info: charger: %s\n", charger_state_machine.current_state->name);
-        HAL_UART_Transmit(&huart1, (uint8_t*)buffer2, strlen(buffer2), 100);
-        // /* Print tsms state */
-        snprintf(buffer2, sizeof(buffer2), "Info: tsms: %d\n", data.tsms);
-        HAL_UART_Transmit(&huart1, (uint8_t*)buffer2, strlen(buffer2), 100);
-        /* Print acu voltage */
-        snprintf(buffer2, sizeof(buffer2), "Info: acu: %.2f\n", data.acu_voltage);
-        HAL_UART_Transmit(&huart1, (uint8_t*)buffer2, strlen(buffer2), 100);
-        /* Print car voltage */
-        snprintf(buffer2, sizeof(buffer2), "Info: car: %.2f\n", data.car_voltage);
-        HAL_UART_Transmit(&huart1, (uint8_t*)buffer2, strlen(buffer2), 100);
-        /* Print current */
-        snprintf(buffer2, sizeof(buffer2), "Info: current: %.2f\n", data.current);
-        HAL_UART_Transmit(&huart1, (uint8_t*)buffer2, strlen(buffer2), 100);
+        // snprintf(buffer2, sizeof(buffer2), "Info: cmd_hv: %d\n", data.cmd_hv);
+        // HAL_UART_Transmit(&huart1, (uint8_t*)buffer2, strlen(buffer2), 100);
+        // /* Print cmd_charger */
+        // snprintf(buffer2, sizeof(buffer2), "Info: cmd_charger: %d\n", data.cmd_charger);
+        // HAL_UART_Transmit(&huart1, (uint8_t*)buffer2, strlen(buffer2), 100);
+        // /* Print current air state machine name */
+        // snprintf(buffer2, sizeof(buffer2), "Info: air: %s\n", air_state_machine.current_state->name);
+        // HAL_UART_Transmit(&huart1, (uint8_t*)buffer2, strlen(buffer2), 100);
+        // /* Print charger current state machine name */
+        // snprintf(buffer2, sizeof(buffer2), "Info: charger: %s\n", charger_state_machine.current_state->name);
+        // HAL_UART_Transmit(&huart1, (uint8_t*)buffer2, strlen(buffer2), 100);
+        // // /* Print tsms state */
+        // snprintf(buffer2, sizeof(buffer2), "Info: tsms: %d\n", data.tsms);
+        // HAL_UART_Transmit(&huart1, (uint8_t*)buffer2, strlen(buffer2), 100);
+        // /* Print acu voltage */
+        // snprintf(buffer2, sizeof(buffer2), "Info: acu: %.2f\n", data.acu_voltage);
+        // HAL_UART_Transmit(&huart1, (uint8_t*)buffer2, strlen(buffer2), 100);
+        // /* Print car voltage */
+        // snprintf(buffer2, sizeof(buffer2), "Info: car: %.2f\n", data.car_voltage);
+        // HAL_UART_Transmit(&huart1, (uint8_t*)buffer2, strlen(buffer2), 100);
+        // /* Print current */
+        // snprintf(buffer2, sizeof(buffer2), "Info: current: %.2f\n", data.current);
+        // HAL_UART_Transmit(&huart1, (uint8_t*)buffer2, strlen(buffer2), 100);
         // /* Print erro state from data */
         // snprintf(buffer2, sizeof(buffer2), "Info: error: %d\n", data.error);
         // HAL_UART_Transmit(&huart1, (uint8_t*)buffer2, strlen(buffer2), 100);

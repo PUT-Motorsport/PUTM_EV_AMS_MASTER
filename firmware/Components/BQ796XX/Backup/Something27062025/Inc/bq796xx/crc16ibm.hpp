@@ -6,17 +6,17 @@
 class Crc16
 {
 private:
-    static inline std::array<uint16_t, 256> crc16lut { 0 };
-    static inline std::array<uint8_t, 256> crc16ref { 0 };
-    static bool is_init { false };
+    std::array<uint16_t, 256> crc16lut { 0 };
+    std::array<uint8_t, 256> crc16ref { 0 };
+    bool is_init { false };
 public:
     Crc16()
     {
-        Crc16::init();
+        init();
         is_init = true;
     }
 
-    static void init()
+    void init()
     {    
         uint16_t remainder;
 
@@ -44,7 +44,7 @@ public:
         }
     }
 
-    static uint16_t fast(uint8_t* data, size_t size)
+    uint16_t fast(uint8_t* data, size_t size)
     {
         uint16_t crc = 0xFFFF; // Initial value
         for (size_t i = 0; i < size; ++i) 

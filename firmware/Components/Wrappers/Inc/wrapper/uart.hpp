@@ -78,7 +78,7 @@ struct Uart
 {
 private:
     UART_HandleTypeDef *huart;
-    TX_SEMAPHORE semaphore;
+    TX_SEMAPHORE* semaphore;
     pUART_CallbackTypeDef tx_callback = [](UART_HandleTypeDef* huart)
     {
         if(huart->UserData == nullptr) Error_Handler();
