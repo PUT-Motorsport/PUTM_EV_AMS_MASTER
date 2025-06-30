@@ -192,7 +192,7 @@ public:
      *  @param 	`timeout` timeout in threadex system ticks, default is 100
      * 	@retval	HAL_OK
      */
-    HAL_StatusTypeDef async_tx_dma(uint8_t *tx_data, size_t size, size_t timeout = 100)
+    HAL_StatusTypeDef await_tx_dma(uint8_t *tx_data, size_t size, size_t timeout = 100)
     {
         huart->TxCpltCallback = tx_callback;
         huart->UserData = (void*)&semaphore;
@@ -206,13 +206,28 @@ public:
     }
 public:
     /**
+     *  @brief 	    This function transmits data over UART in DMA mode
+     *  @param      `tx_data` pointer to data to be transmitted
+     *  @param 	    `size` size of data to be transmitted
+     *  @note       This function is used for asynchronous transmission, it does not wait for the transmission to complete.
+     *  @retval     HAL_OK
+     */
+    HAL_StatusTypeDef async_tx_dma(uint8_t *tx_data, size_t size)
+    {
+        huart->TxCpltCallback = tx_callback;
+        huart->UserData = (void*)&semaphore;
+        if(HAL_UART_Transmit_DMA(huart, tx_data, size) != HAL_OK) return HAL_ERROR;
+        return HAL_OK;
+    }
+public:
+    /**
      * 	@brief 	This function receives data over UART in DMA mode
      * 	@param 	`rx_data` pointer to data to be received
      * 	@param 	`size` size of data to be received
      *  @param 	`timeout` timeout in threadex system ticks, default is 100
      * 	@retval	HAL_OK
      */
-    HAL_StatusTypeDef async_rx_dma(uint8_t *rx_data, size_t size, size_t timeout = 100)
+    HAL_StatusTypeDef await_rx_dma(uint8_t *rx_data, size_t size, size_t timeout = 100)
     {
         huart->RxCpltCallback = rx_callback;
         huart->UserData = (void*)&semaphore;

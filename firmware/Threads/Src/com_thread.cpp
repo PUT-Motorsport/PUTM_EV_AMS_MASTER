@@ -126,7 +126,7 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
 
             char buffer[JSON_BUFFER_SIZE] { };
             serializeJson(json, buffer, JSON_BUFFER_SIZE);
-            uart.async_tx_dma((uint8_t *)buffer, strlen(buffer));
+            uart.await_tx_dma((uint8_t *)buffer, strlen(buffer));
         }
         tx_thread_sleep(200);
     }
