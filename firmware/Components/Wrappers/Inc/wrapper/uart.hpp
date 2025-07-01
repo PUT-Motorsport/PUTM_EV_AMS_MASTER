@@ -78,7 +78,7 @@ struct Uart
 {
 private:
     UART_HandleTypeDef *huart;
-    TX_SEMAPHORE* semaphore;
+    TX_SEMAPHORE semaphore;
     pUART_CallbackTypeDef tx_callback = [](UART_HandleTypeDef* huart)
     {
         if(huart->UserData == nullptr) Error_Handler();
@@ -102,17 +102,21 @@ public:
      * 	@brief 	Constructor for Uart wrapper
      * 	@param 	`huart` pointer to UART_HandleTypeDef
      */
-    Uart(UART_HandleTypeDef *huart) : huart(huart) { }
+    Uart() : huart(nullptr), semaphore(nullptr) { }
+    Uart(UART_HandleTypeDef *huart) : huart(huart) 
+    {
+        if(tx_semaphore_create(&semaphore, "UART semaphore", 0) != TX_SUCCESS) Error_Handler();
+    }
 public:
     /**
      * 	@brief 	This function inits the UART wrapper
      * 	@retval	HAL_OK
      */
-    HAL_StatusTypeDef init()
-    {
-        if(tx_semaphore_create(&semaphore, "UART semaphore", 0) != TX_SUCCESS) return HAL_ERROR;
-        return HAL_OK;
-    }
+    // HAL_StatusTypeDef init()
+    // {
+    //     if(tx_semaphore_create(&semaphore, "UART semaphore", 0) != TX_SUCCESS) return HAL_ERROR;
+    //     return HAL_OK;
+    // }
 public:
     /**
      * 	@brief 	This function sets the UART baudrate
@@ -249,13 +253,13 @@ public:
      *  @param 	`timeout` timeout in threadex system ticks, default is 100
      * 	@retval	HAL_OK
      */
-    HAL_StatusTypeDef async_tx_rx_dma(uint8_t *tx_data, size_t tx_size, uint8_t *rx_data, size_t rx_size, size_t timeout = 100)
+    HAL_StatusTypeDef await_tx_rx_dma(uint8_t *tx_data, size_t tx_size, uint8_t *rx_data, size_t rx_size, size_t timeout = 100)
     {
         // huart->TxCpltCallback = tx_callback;
         huart->RxCpltCallback = rx_callback;
         huart->UserData = (void*)&semaphore;
-        if(HAL_UART_Transmit_DMA(huart, tx_data, tx_size) != HAL_OK) return HAL_ERROR;
         if(HAL_UART_Receive_DMA(huart, rx_data, rx_size) != HAL_OK) return HAL_ERROR;
+        if(HAL_UART_Transmit_DMA(huart, tx_data, tx_size) != HAL_OK) return HAL_ERROR;
         if(tx_semaphore_get(&semaphore, timeout) != 0) 
         { 
             HAL_UART_Abort(huart); 

@@ -42,11 +42,12 @@ namespace PUTM
                                            { 0.00000000f, 0.02000000f, 0.00000000f },
                                            { 0.00000000f, 0.00000000f, 0.02000000f }}};
         static inline constexpr float R { 2500000.0f };
-        static inline constexpr float R_charging { R + 99.f };
+        //FIXME: was + but * ?
+        static inline constexpr float R_charging { R * 99.f };
         static inline constexpr Polynomial ocv {{ 
 #include "embeded/ocv.csv"
         }};
-        Polynomial<9> docv = ocv.derivative();
+        static inline constexpr Polynomial<9> docv = ocv.derivative();
 
         Matrix<3,3> P {{{ 20.0000000f, 0.00000000f, 0.00000000f }, 
                         { 0.00000000f, 2.00000000f, 0.00000000f }, 
@@ -115,7 +116,7 @@ namespace PUTM
          */
         void set_from_voltage(float voltage)
         {
-            auto soc = newton_raphson(ocv, 0.5f, voltage);
+            auto soc = newton_raphson(ocv, docv, 0.5f, voltage);
             x.at(0) = std::clamp(soc, 0.0f, 1.0f);
         }
         /**

@@ -5,6 +5,8 @@
 #include "array"
 #include "type_traits"
 
+#include "utils.hpp"
+
 namespace PUTM
 {
     /**
@@ -35,10 +37,10 @@ namespace PUTM
          */
         consteval Polynomial(const TYPE (&coeffs)[N])
         {
-            for (size_t i = 0; i < N; ++i)
+            static_for<0, N>([&]<int I>() 
             {
                 this->coeffs[i] = coeffs[i];
-            }
+            });
         }
     public:
         /**
@@ -95,13 +97,13 @@ namespace PUTM
          *  @return A new polynomial representing the derivative of the original polynomial.
          *  @note   This function is consteval, allowing it to be evaluated at compile time.
          */
-        Polynomial<N-1, TYPE> derivative() const
+        consteval Polynomial<N-1, TYPE> derivative() const
         {
             Polynomial<N - 1, TYPE> result;
-            for (size_t i = 0; i < N - 1; ++i)
+            static_for<1, N>([&]<int I>() 
             {
-                result[i] = coeffs[i] * (N - 1 - i);
-            }
+                result[I - 1] = coeffs[I] * I;
+            });
             return result;
         }
     };
@@ -114,11 +116,11 @@ namespace PUTM
     // }
 
     template<size_t N, class TYPE>
-    constexpr TYPE newton_raphson(const Polynomial<N, TYPE> &poly, TYPE x0, TYPE y = { }, TYPE tolerance = 1e-3, size_t max_iter = 40)
+    constexpr TYPE newton_raphson(const Polynomial<N, TYPE> &polynomial, const Polynomial<N - 1, TYPE> &derivative, TYPE x0, TYPE y = { }, TYPE tolerance = 1e-3, size_t max_iter = 40)
     {
-        Polynomial derivative = poly.derivative();
+        //Polynomial derivative = poly.derivative();
         TYPE x = x0;
-        TYPE fx = poly.evaluate(x);
+        TYPE fx = polynomial.evaluate(x);
         TYPE dfx = derivative.evaluate(x);
         while (std::abs(fx) > tolerance and max_iter-- > 0)
         {

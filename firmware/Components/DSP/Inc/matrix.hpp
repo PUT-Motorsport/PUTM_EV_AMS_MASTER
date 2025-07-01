@@ -45,11 +45,24 @@ namespace PUTM
          */
         constexpr Matrix(TYPE const (&arr)[ROWS][COLS])
         {
-            for (size_t i = 0; i < ROWS; ++i)
+            if consteval
             {
-                for (size_t j = 0; j < COLS; ++j)
+                static_for<0, ROWS>([&]<int I>() 
                 {
-                    data[i * COLS + j] = arr[i][j];
+                    static_for<0, COLS>([&]<int J>() 
+                    {
+                        data[I * COLS + J] = arr[I][J];
+                    });
+                });
+            }
+            else
+            {
+                for (size_t i = 0; i < ROWS; ++i)
+                {
+                    for (size_t j = 0; j < COLS; ++j)
+                    {
+                        data[i * COLS + j] = arr[i][j];
+                    }
                 }
             }
         }
@@ -109,11 +122,24 @@ namespace PUTM
         constexpr Matrix<COLS, ROWS, TYPE> T() const
         {
             Matrix<COLS, ROWS, TYPE> result;
-            for (size_t i = 0; i < ROWS; ++i)
+            if consteval
             {
-                for (size_t j = 0; j < COLS; ++j)
+                static_for<0, ROWS>([&]<int I>() 
                 {
-                    result.at(j, i) = data[i * COLS + j];
+                    static_for<0, COLS>([&]<int J>() 
+                    {
+                        result.at(J, I) = data[I * COLS + J];
+                    });
+                });
+            }
+            else
+            {
+                for (size_t i = 0; i < ROWS; ++i)
+                {
+                    for (size_t j = 0; j < COLS; ++j)
+                    {
+                        result.at(j, i) = data[i * COLS + j];
+                    }
                 }
             }
             return result;
@@ -142,7 +168,7 @@ namespace PUTM
          *  @brief  Get the number of rows in the matrix.
          *  @return The number of rows in the matrix.
          */
-        constexpr size_t rows() const
+        consteval size_t rows() const
         {
             return ROWS;
         }
@@ -151,7 +177,7 @@ namespace PUTM
          *  @brief  Get the number of columns in the matrix.
          *  @return The number of columns in the matrix.
          */
-        constexpr size_t cols() const
+        consteval size_t cols() const
         {
             return COLS;
         }
@@ -161,7 +187,7 @@ namespace PUTM
          *  @return The number of elements in the matrix as a pair of number
          *          of rows and colmuns.
          */
-        constexpr std::pair<size_t, size_t> size() const
+        consteval std::pair<size_t, size_t> size() const
         {
             return { ROWS, COLS };
         }
@@ -401,11 +427,24 @@ namespace PUTM
     constexpr Matrix<N, N, TYPE> eye()
     {
         Matrix<N, N, TYPE> result;
-        for (size_t i = 0; i < result.rows(); ++i)
+        if consteval
         {
-            for (size_t j = 0; j < result.cols(); ++j)
+            static_for<0, N>([&]<int I>() 
             {
-                result.at(i, j) = (i == j) ? 1 : 0;
+                static_for<0, N>([&]<int J>() 
+                {
+                    result.at(I, J) = (I == J) ? 1 : 0;
+                });
+            });
+        }
+        else
+        {
+            for (size_t i = 0; i < result.rows(); ++i)
+            {
+                for (size_t j = 0; j < result.cols(); ++j)
+                {
+                    result.at(i, j) = (i == j) ? 1 : 0;
+                }
             }
         }
         return result;

@@ -81,10 +81,37 @@ namespace Utils
         return ret;
     }
 
-    /*
+    /**
     *   @brief  This function is used to throw compile errors in
     *           consteval function
     *   @note   This function should't be defined
     */
     void throw_consteval_failure(char const*);
+
+    /**
+     *  @brief  This function is used to run a function for each
+     *           integer in range [I, N)
+     *  @tparam `I` start index
+     *  @tparam `N` end index
+     *  @tparam `F` function type
+     *  @param  `f` function object
+     *  @return void
+     *  @note   This function is consteval, meaning it can be evaluated at compile time
+     *          and it will run the function for each integer in range [I, N).
+     *          The function object `f` should have a template member function `operator()<int I>()`
+     *          which will be called for each integer in range [I, N).
+     *  @example 
+     *  static_for<0,3>([&]<int I>() {
+     *  body of loop, where I is loop index
+     *  });
+     */
+    template<int BEGIN, int END, class FUNCTION>
+    consteval void static_for(FUNCTION f) 
+    {
+        if constexpr (BEGIN < END) 
+        {
+            f.template operator()<BEGIN>();
+            static_for<BEGIN + 1, END>(f);
+        }
+    }
 }

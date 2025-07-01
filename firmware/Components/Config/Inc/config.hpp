@@ -25,7 +25,7 @@ namespace PUTM
         /* Overvoltage trigger in [mV] */
         static constexpr uint32_t CELL_OV { CELL_MAX_VOLTAGE - 50 };
         /* Undervoltage trigger in [mV] */
-        static constexpr uint32_t CELL_OV { CELL_MAX_VOLTAGE + 50 };
+        static constexpr uint32_t CELL_UV { CELL_MIN_VOLTAGE + 50 };
         /* Overtemperature trigger in [degC] */
         static constexpr float CELL_OT { 100.f };
         /* Undertemperature trigger in [degC] */
