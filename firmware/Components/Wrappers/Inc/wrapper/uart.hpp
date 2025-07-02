@@ -102,11 +102,15 @@ public:
      * 	@brief 	Constructor for Uart wrapper
      * 	@param 	`huart` pointer to UART_HandleTypeDef
      */
-    Uart() : huart(nullptr), semaphore(nullptr) { }
+    Uart() : huart(nullptr) { }
     Uart(UART_HandleTypeDef *huart) : huart(huart) 
     {
-        if(tx_semaphore_create(&semaphore, "UART semaphore", 0) != TX_SUCCESS) Error_Handler();
+        if(tx_semaphore_create(&semaphore, (const char*)"UART semaphore", 0) != TX_SUCCESS) Error_Handler();
     }
+    Uart(const Uart&) = delete; // Disable copy constructor
+    Uart& operator=(const Uart&) = delete; // Disable copy assignment operator
+    Uart(Uart&&) = delete; // Disable move constructor
+    Uart& operator=(Uart&&) = delete; // Disable move assignment operator
 public:
     /**
      * 	@brief 	This function inits the UART wrapper

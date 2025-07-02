@@ -104,6 +104,8 @@ namespace PUTM
 
         /* JSON size buffer */
         static constexpr uint32_t JSON_BUFFER_SIZE { 2048 };
+
+        static constexpr float POLYNOMIAL_OCV[] { 2034.7852020f, -9878.314180f, 20304.286795f, -22998.124140f, 15652.018744f, -6548.995145f, 1657.8141810f, -240.64692800f, 18.231580000f,  3.143621f };
     }
 }
 

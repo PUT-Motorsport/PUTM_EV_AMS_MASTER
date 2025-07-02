@@ -44,23 +44,21 @@ namespace PUTM
         static inline constexpr float R { 2500000.0f };
         //FIXME: was + but * ?
         static inline constexpr float R_charging { R * 99.f };
-        static inline constexpr Polynomial ocv {{ 
-#include "embeded/ocv.csv"
-        }};
-        static inline constexpr Polynomial<9> docv = ocv.derivative();
+        static inline constexpr Polynomial ocv { Config::POLYNOMIAL_OCV };
+        static inline constexpr Polynomial docv = ocv.derivative();
 
         Matrix<3,3> P {{{ 20.0000000f, 0.00000000f, 0.00000000f }, 
                         { 0.00000000f, 2.00000000f, 0.00000000f }, 
                         { 0.00000000f, 0.00000000f, 2.00000000f }}};
         Matrix<3, 1> x {{{ 0.98f }, 
-                         { 0.0f }, 
-                         { 0.0f }}};
+                         { 0.00f }, 
+                         { 0.00f }}};
 
     private:
         void predict(float current)
         {
             x = A * x + B * current;
-            P = A * P * transpose(A) + Q;
+            P = A * P * A.T() + Q;
         }
         void correct(float voltage, float current, bool charging)
         {

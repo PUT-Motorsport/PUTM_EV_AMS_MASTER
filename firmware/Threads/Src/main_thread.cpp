@@ -69,7 +69,7 @@ VOID main_thread_entry(__unused ULONG thread_input)
     {
         for(size_t j = 0; j < Config::CELL_COUNT_PER_DEVICE; j++)
         {
-            socs[i * Config::CELL_COUNT_PER_DEVICE + j].set_from_voltage(data.cell_voltages[i * Config::STACK_SIZE + j]);
+            // socs[i * Config::CELL_COUNT_PER_DEVICE + j].set_from_voltage(data.cell_voltages[i * Config::STACK_SIZE + j]);
         }
     }
 
@@ -132,7 +132,7 @@ VOID main_thread_entry(__unused ULONG thread_input)
         {
             for(size_t j = 0; j < Config::CELL_COUNT_PER_DEVICE; j++)
             {
-                socs[i * Config::CELL_COUNT_PER_DEVICE + j].update(data.cell_voltages[i * Config::STACK_SIZE + j], data.current, data.on_charger);
+                // socs[i * Config::CELL_COUNT_PER_DEVICE + j].update(data.cell_voltages[i * Config::STACK_SIZE + j], data.current, data.on_charger);
             }
         }
 

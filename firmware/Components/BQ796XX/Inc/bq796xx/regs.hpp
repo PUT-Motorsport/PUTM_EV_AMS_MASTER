@@ -29,14 +29,14 @@ namespace PUTM
         {
             struct __packed Control1 : public Utils::IReg<0x0309>
             {
-                bool addr_wr : 1 { 0b0 };
-                bool soft_reset : 1 { 0b0 };
-                bool goto_sleep : 1 { 0b0 };
-                bool goto_shutdown : 1 { 0b0 };
-                bool send_slptoact : 1 { 0b0 };
-                bool send_wake : 1 { 0b0 };
-                bool send_shutdown : 1 { 0b0 };
-                bool dir_sel : 1 { 0b0 };
+                bool addr_wr : 1 { false };
+                bool soft_reset : 1 { false };
+                bool goto_sleep : 1 { false };
+                bool goto_shutdown : 1 { false };
+                bool send_slptoact : 1 { false };
+                bool send_wake : 1 { false };
+                bool send_shutdown : 1 { false };
+                bool dir_sel : 1 { false };
             };
 
             struct __packed AdcCtrl1 : public Utils::IReg<0x030d>

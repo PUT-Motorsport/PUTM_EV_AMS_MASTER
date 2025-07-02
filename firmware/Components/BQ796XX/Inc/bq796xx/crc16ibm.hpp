@@ -8,7 +8,7 @@ class Crc16
 private:
     static inline std::array<uint16_t, 256> crc16lut { 0 };
     static inline std::array<uint8_t, 256> crc16ref { 0 };
-    static bool is_init { false };
+    static inline bool is_init { false };
 public:
     Crc16()
     {

@@ -37,10 +37,20 @@ namespace PUTM
          */
         consteval Polynomial(const TYPE (&coeffs)[N])
         {
-            static_for<0, N>([&]<int I>() 
+            if consteval
             {
-                this->coeffs[i] = coeffs[i];
-            });
+                static_for<0, N>([&]<int I>() 
+                {
+                    this->coeffs[I] = coeffs[I];
+                });
+            }
+            else
+            {
+                for (size_t i = 0; i < N; ++i)
+                {
+                    this->coeffs[i] = coeffs[i];
+                }
+            }
         }
     public:
         /**
@@ -60,7 +70,7 @@ namespace PUTM
          *  @note   This function is not constexpr because it returns a reference
          *          to the coefficient.
          */
-        TYPE &operator[](size_t index)
+        constexpr TYPE &operator[](size_t index)
         {
             return coeffs[index];
         }
@@ -125,7 +135,7 @@ namespace PUTM
         while (std::abs(fx) > tolerance and max_iter-- > 0)
         {
             x -= fx / dfx;
-            fx = poly.evaluate(x) - y;
+            fx = polynomial.evaluate(x) - y;
             dfx = derivative.evaluate(x);
         }
         return x;

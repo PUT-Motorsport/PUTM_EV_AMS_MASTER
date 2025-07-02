@@ -43,11 +43,11 @@ Error vcell_error
         {
             for(size_t j = 0; j < Config::CELL_COUNT_PER_DEVICE; j++)
             {
-                if(data.cell_voltages[i * Config::STACK_SIZE + j] > Config::CELL_OV_FLOAT)
+                if(data.cell_voltages[i][j] > Config::CELL_OV_FLOAT)
                 {
                     return encode_error((uint8_t)i, (uint8_t)j, 1);
                 }
-                else if(data.cell_voltages[i * Config::STACK_SIZE + j] < Config::CELL_UV_FLOAT)
+                else if(data.cell_voltages[i][j] < Config::CELL_UV_FLOAT)
                 {
                     return encode_error((uint8_t)i, (uint8_t)j, 2);
                 }
@@ -84,11 +84,11 @@ Error tcell_error
         {
             for(size_t j = 0; j < Config::TEMPERATURES_COUNT_PER_DEVICE; j++)
             {
-                if(data.cell_temperatures[i * Config::STACK_SIZE + j] > Config::CELL_OT)
+                if(data.cell_temperatures[i][j] > Config::CELL_OT)
                 {
                     return encode_error((uint8_t)i, (uint8_t)j, 1);
                 }
-                else if(data.cell_temperatures[i * Config::STACK_SIZE + j] < Config::CELL_UT)
+                else if(data.cell_temperatures[i][j] < Config::CELL_UT)
                 {
                     return encode_error((uint8_t)i, (uint8_t)j, 2);
                 }
@@ -118,7 +118,7 @@ Error tcell_error
 Error current_error
 {
     .name = "Current error",
-    .timeout = Config::CURRENT_ERROR_TIMEOUT,
+    .timeout = Config::CURRENT_ERROR_LONG_TIMEOUT,
     .condition = []() -> uint32_t 
     {
         uint32_t code = 0;

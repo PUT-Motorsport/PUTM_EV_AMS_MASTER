@@ -28,7 +28,7 @@ using namespace PUTM::Config;
 
 using namespace PUTM_CAN;
 
-static StaticJsonDocument<512> json;
+static StaticJsonDocument<Config::JSON_BUFFER_SIZE> json;
 
 static constexpr ULONG tx_rx_buffer_size { 512 };
 
@@ -99,11 +99,9 @@ VOID charger_can_thread_entry(__unused ULONG thread_input)
  */
 VOID usb_com_thread_entry(__unused ULONG thread_input)
 {
-    Uart uart(&huart1);
-    uart.init();
-    uart.set_baudrate(115200);
-
-    ArduinoJson::StaticJsonDocument<Config::JSON_BUFFER_SIZE> json;
+    // Uart uart(&huart1);
+    // uart.init();
+    // uart.set_baudrate(115200);
 
     while(true)
     {
@@ -119,14 +117,14 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
             {
                 json["cell_voltages"][i] = data.cell_voltages[i];
             }
-            for(size_t i 0 = 0; i < Config::TOTAL_TEMPERATURES_COUNT; i++)
+            for(size_t i = 0; i < Config::TOTAL_TEMPERATURES_COUNT; i++)
             {
                 json["cell_temperatures"][i] = data.cell_temperatures[i];
             }
 
             char buffer[JSON_BUFFER_SIZE] { };
             serializeJson(json, buffer, JSON_BUFFER_SIZE);
-            uart.await_tx_dma((uint8_t *)buffer, strlen(buffer));
+            // uart.await_tx_dma((uint8_t *)buffer, strlen(buffer));
         }
         tx_thread_sleep(200);
     }

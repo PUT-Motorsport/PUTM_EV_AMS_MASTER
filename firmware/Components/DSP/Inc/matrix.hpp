@@ -1,7 +1,11 @@
 #pragma once
 
+#include "utils.hpp"
+
+
 namespace PUTM
 {
+    using Utils::static_for;
     /**
      *  @brief  A simple matrix class for 2D arrays.
      *  @tparam ROWS Number of rows in the matrix.
@@ -31,11 +35,71 @@ namespace PUTM
          */
         constexpr Matrix(const Matrix& other)
         {
-            for (size_t i = 0; i < ROWS * COLS; ++i)
+            if consteval
             {
-                data[i] = other.data[i];
+                static_for<0, ROWS * COLS>([&]<int I>() 
+                {
+                    data[I] = other.data[I];
+                });
+            }
+            else
+            {
+                for (size_t i = 0; i < ROWS * COLS; ++i)
+                {
+                    data[i] = other.data[i];
+                }
             }
         }
+
+    public:
+        // /**
+        //  *  @brief  Copy move constructor for the Matrix class.
+        //  *  @param  other The matrix to move from.
+        //  *  @note   This constructor allows moving the contents of another matrix
+        //  *          to this matrix, transferring ownership of the data.
+        //  */
+        // constexpr Matrix(Matrix&& other) noexcept
+        // {
+        //     if consteval
+        //     {
+        //         static_for<0, ROWS * COLS>([&]<int I>() 
+        //         {
+        //             data[I] = std::move(other.data[I]);
+        //         });
+        //     }
+        //     else
+        //     {
+        //         for (size_t i = 0; i < ROWS * COLS; ++i)
+        //         {
+        //             data[i] = std::move(other.data[i]);
+        //         }
+        //     }
+        // }
+    public:
+        // /**
+        //  *  @brief  Constructor for the Matrix class.
+        //  *  @param  arr A 1D array to initialize the matrix.
+        //  *  @note   This constructor allows initializing the matrix with a
+        //  *          predefined 1D array.
+        //  * 
+        //  */
+        // constexpr Matrix(TYPE const (&arr)[ROWS * COLS])
+        // {
+        //     if consteval
+        //     {
+        //         static_for<0, ROWS * COLS>([&]<int I>() 
+        //         {
+        //             data[I] = arr[I];
+        //         });
+        //     }
+        //     else
+        //     {
+        //         for (size_t i = 0; i < ROWS * COLS; ++i)
+        //         {
+        //             data[i] = arr[i];
+        //         }
+        //     }
+        // }
     public:
         /**
          *  @brief  Constructor for the Matrix class.
@@ -47,12 +111,11 @@ namespace PUTM
         {
             if consteval
             {
-                static_for<0, ROWS>([&]<int I>() 
+                static_for<0, ROWS * COLS>([&]<int I>() 
                 {
-                    static_for<0, COLS>([&]<int J>() 
-                    {
-                        data[I * COLS + J] = arr[I][J];
-                    });
+                    size_t i = I / COLS;
+                    size_t j = I % COLS;
+                    data[i * COLS + j] = arr[i][j];
                 });
             }
             else
@@ -124,12 +187,11 @@ namespace PUTM
             Matrix<COLS, ROWS, TYPE> result;
             if consteval
             {
-                static_for<0, ROWS>([&]<int I>() 
+                static_for<0, ROWS * COLS>([&]<int I>() 
                 {
-                    static_for<0, COLS>([&]<int J>() 
-                    {
-                        result.at(J, I) = data[I * COLS + J];
-                    });
+                    size_t i = I / COLS;
+                    size_t j = I % COLS;
+                    result.at(j, i) = data[i * COLS + j];
                 });
             }
             else
@@ -205,11 +267,23 @@ namespace PUTM
     constexpr Matrix<ROWS, COLS, TYPE> operator + (const Matrix<ROWS, COLS, TYPE> &mat, TYPE &scalar)
     {
         Matrix<ROWS, COLS, TYPE> result;
-        for (size_t i = 0; i < mat.rows(); ++i)
+        if consteval
         {
-            for (size_t j = 0; j < mat.cols(); ++j)
+            static_for<0, ROWS * COLS>([&]<int I>() 
             {
+                size_t i = I / COLS;
+                size_t j = I % COLS;
                 result.at(i, j) = mat.at(i, j) + scalar;
+            });
+        }
+        else
+        {
+            for (size_t i = 0; i < ROWS; ++i)
+            {
+                for (size_t j = 0; j < COLS; ++j)
+                {
+                    result.at(i, j) = mat.at(i, j) + scalar;
+                }
             }
         }
         return result;
@@ -225,14 +299,26 @@ namespace PUTM
      *  @note   This operator allows adding two matrices of the same size.
      */
     template<size_t ROWS, size_t COLS, typename TYPE>
-    constexpr Matrix<ROWS, COLS, TYPE> operator + (const Matrix<ROWS, COLS, TYPE> &mat_left, const Matrix<ROWS, COLS, TYPE> &mat_right)
+    constexpr Matrix<ROWS, COLS, TYPE> operator + (Matrix<ROWS, COLS, TYPE> const &mat_left, Matrix<ROWS, COLS, TYPE> const &mat_right)
     {
         Matrix<ROWS, COLS, TYPE> result;
-        for (size_t i = 0; i < mat_left.rows(); ++i)
+        if consteval
         {
-            for (size_t j = 0; j < mat_left.cols(); ++j)
+            static_for<0, ROWS * COLS>([&]<int I>() 
             {
+                size_t i = I / COLS;
+                size_t j = I % COLS;
                 result.at(i, j) = mat_left.at(i, j) + mat_right.at(i, j);
+            });
+        }
+        else
+        {
+            for (size_t i = 0; i < ROWS; ++i)
+            {
+                for (size_t j = 0; j < COLS; ++j)
+                {
+                    result.at(i, j) = mat_left.at(i, j) + mat_right.at(i, j);
+                }
             }
         }
         return result;
@@ -250,11 +336,23 @@ namespace PUTM
     constexpr Matrix<ROWS, COLS, TYPE> operator - (const Matrix<ROWS, COLS, TYPE> &mat, TYPE &scalar)
     {
         Matrix<ROWS, COLS, TYPE> result;
-        for (size_t i = 0; i < mat.rows(); ++i)
+        if consteval
         {
-            for (size_t j = 0; j < mat.cols(); ++j)
+            static_for<0, ROWS * COLS>([&]<int I>() 
             {
+                size_t i = I / COLS;
+                size_t j = I % COLS;
                 result.at(i, j) = mat.at(i, j) - scalar;
+            });
+        }
+        else
+        {
+            for (size_t i = 0; i < ROWS; ++i)
+            {
+                for (size_t j = 0; j < COLS; ++j)
+                {
+                    result.at(i, j) = mat.at(i, j) - scalar;
+                }
             }
         }
         return result;
@@ -273,11 +371,23 @@ namespace PUTM
     constexpr Matrix<ROWS, COLS, TYPE> operator - (const Matrix<ROWS, COLS, TYPE> &mat_left, const Matrix<ROWS, COLS, TYPE> &mat_right)
     {
         Matrix<ROWS, COLS, TYPE> result;
-        for (size_t i = 0; i < mat_left.rows(); ++i)
+        if consteval
         {
-            for (size_t j = 0; j < mat_left.cols(); ++j)
+            static_for<0, ROWS * COLS>([&]<int I>() 
             {
+                size_t i = I / COLS;
+                size_t j = I % COLS;
                 result.at(i, j) = mat_left.at(i, j) - mat_right.at(i, j);
+            });
+        }
+        else
+        {
+            for (size_t i = 0; i < ROWS; ++i)
+            {
+                for (size_t j = 0; j < COLS; ++j)
+                {
+                    result.at(i, j) = mat_left.at(i, j) - mat_right.at(i, j);
+                }
             }
         }
         return result;
@@ -295,11 +405,23 @@ namespace PUTM
     constexpr Matrix<ROWS, COLS, TYPE> operator * (const Matrix<ROWS, COLS, TYPE> mat, TYPE scalar)
     {
         Matrix<ROWS, COLS, TYPE> result;
-        for (size_t i = 0; i < mat.rows(); ++i)
+        if consteval
         {
-            for (size_t j = 0; j < mat.cols(); ++j)
+            static_for<0, ROWS * COLS>([&]<int I>() 
             {
+                size_t i = I / COLS;
+                size_t j = I % COLS;
                 result.at(i, j) = mat.at(i, j) * scalar;
+            });
+        }
+        else
+        {
+            for (size_t i = 0; i < mat.rows(); ++i)
+            {
+                for (size_t j = 0; j < mat.cols(); ++j)
+                {
+                    result.at(i, j) = mat.at(i, j) * scalar;
+                }
             }
         }
         return result;
@@ -317,22 +439,38 @@ namespace PUTM
      */
     template
     <
-        size_t RL, size_t CL,
-        size_t RR, size_t CR,
+        size_t ROWS_LEFT, size_t COLS_LEFT,
+        size_t ROWS_RIGHT, size_t COLS_RIGHT,
         typename TYPE
     >
-    requires (CL == RR && (RL * CR > 1)) 
-    constexpr Matrix<RL, CR, TYPE> operator * (const Matrix<RL, CL, TYPE> &mat_left, const Matrix<RR, CR, TYPE> &mat_right)
+    requires (COLS_LEFT == ROWS_RIGHT && (ROWS_LEFT * COLS_RIGHT > 1)) 
+    constexpr Matrix<ROWS_LEFT, COLS_RIGHT, TYPE> operator * (const Matrix<ROWS_LEFT, COLS_LEFT, TYPE> &mat_left, const Matrix<ROWS_RIGHT, COLS_RIGHT, TYPE> &mat_right)
     {
-        Matrix<RL, CR, TYPE> result;
-        for (size_t i = 0; i < mat_left.rows(); ++i)
+        Matrix<ROWS_LEFT, COLS_RIGHT, TYPE> result;
+        if consteval
         {
-            for (size_t j = 0; j < mat_right.cols(); ++j)
+            static_for<0, ROWS_LEFT * COLS_RIGHT * COLS_LEFT>([&]<int I>() 
             {
-                result.at(i, j) = 0;
-                for (size_t k = 0; k < mat_left.cols(); ++k)
+                size_t i = I / (COLS_RIGHT * COLS_LEFT);
+                size_t j = (I / COLS_LEFT) % COLS_RIGHT;
+                size_t k = I % COLS_LEFT;
+
+                if (k == 0) result.at(i, j) = 0;
+
+                result.at(i, j) += mat_left.at(i, k) * mat_right.at(k, j);
+            });
+        }
+        else
+        {
+            for (size_t i = 0; i < ROWS_LEFT; ++i)
+            {
+                for (size_t j = 0; j < COLS_RIGHT; ++j)
                 {
-                    result.at(i, j) += mat_left.at(i, k) * mat_right.at(k, j);
+                    result.at(i, j) = 0;
+                    for (size_t k = 0; k < COLS_LEFT; ++k)
+                    {
+                        result.at(i, j) += mat_left.at(i, k) * mat_right.at(k, j);
+                    }
                 }
             }
         }
@@ -341,20 +479,27 @@ namespace PUTM
 
     template
     <
-        size_t RL,
-        size_t CR,
+        size_t ROWS_LEFT,
+        size_t COLS_RIGHT,
         typename TYPE
     >
-    requires (RL == CR)
+    requires (ROWS_LEFT == COLS_RIGHT)
     // TYPE operator * (const Matrix<1, RL, TYPE> &mat_left, const Matrix<CR, 1, TYPE> &mat_right)
-    constexpr TYPE dot(const Matrix<1, RL, TYPE> &mat_left, const Matrix<CR, 1, TYPE> &mat_right)
+    constexpr TYPE dot(const Matrix<1, ROWS_LEFT, TYPE> &mat_left, const Matrix<COLS_RIGHT, 1, TYPE> &mat_right)
     {
         TYPE result { };
-        for (size_t i = 0; i < mat_left.rows(); ++i)
+        if consteval
         {
-            for (size_t j = 0; j < mat_right.cols(); ++j)
+            static_for<0, ROWS_LEFT>([&]<int I>() 
             {
-                result += mat_left.at(i, j) * mat_right.at(i, j);
+                result += mat_left.at(0, I) * mat_right.at(I, 0);
+            });
+        }
+        else
+        {
+            for (size_t i = 0; i < ROWS_LEFT; ++i)
+            {
+                result += mat_left.at(0, i) * mat_right.at(i, 0);
             }
         }
         return result;
@@ -372,11 +517,23 @@ namespace PUTM
     constexpr Matrix<ROWS, COLS, TYPE> operator / (const Matrix<ROWS, COLS, TYPE> &mat, TYPE scalar)
     {
         Matrix<ROWS, COLS, TYPE> result;
-        for (size_t i = 0; i < mat.rows(); ++i)
+        if consteval
         {
-            for (size_t j = 0; j < mat.cols(); ++j)
+            static_for<0, ROWS * COLS>([&]<int I>() 
             {
-                result[i, j] = mat[i, j] / scalar;
+                size_t i = I / COLS;
+                size_t j = I % COLS;
+                result.at(i, j) = mat.at(i, j) / scalar;
+            });
+        }
+        else
+        {
+            for (size_t i = 0; i < ROWS; ++i)
+            {
+                for (size_t j = 0; j < COLS; ++j)
+                {
+                    result.at(i, j) = mat.at(i, j) / scalar;
+                }
             }
         }
         return result;
@@ -386,11 +543,23 @@ namespace PUTM
     constexpr Matrix<COLS, ROWS, TYPE> transpose(const Matrix<ROWS, COLS, TYPE> &mat)
     {
         Matrix<COLS, ROWS, TYPE> result;
-        for (size_t i = 0; i < mat.rows(); ++i)
+        if consteval
         {
-            for (size_t j = 0; j < mat.cols(); ++j)
+            static_for<0, ROWS * COLS>([&]<int I>() 
             {
+                size_t i = I / COLS;
+                size_t j = I % COLS;
                 result.at(j, i) = mat.at(i, j);
+            });
+        }
+        else
+        {
+            for (size_t i = 0; i < ROWS; ++i)
+            {
+                for (size_t j = 0; j < COLS; ++j)
+                {
+                    result.at(j, i) = mat.at(i, j);
+                }
             }
         }
         return result;
@@ -429,12 +598,11 @@ namespace PUTM
         Matrix<N, N, TYPE> result;
         if consteval
         {
-            static_for<0, N>([&]<int I>() 
+            static_for<0, N * N>([&]<int I>() 
             {
-                static_for<0, N>([&]<int J>() 
-                {
-                    result.at(I, J) = (I == J) ? 1 : 0;
-                });
+                size_t i = I / N;
+                size_t j = I % N;
+                result.at(i, j) = (i == j) ? 1 : 0;
             });
         }
         else
