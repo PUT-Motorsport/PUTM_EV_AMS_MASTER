@@ -21,16 +21,16 @@ static constexpr size_t main_thread_pool_size { 2048U };
 uint8_t main_thread_pool[main_thread_pool_size];
 
 TX_THREAD usb_com_thread;
-static constexpr size_t usb_com_thread_pool_size { 1024U };
+static constexpr size_t usb_com_thread_pool_size { 4096U };
 uint8_t usb_com_thread_pool[usb_com_thread_pool_size];
 
-TX_THREAD usb_tx_thread;
-static constexpr size_t usb_tx_thread_pool_size { 1024U };
-uint8_t usb_tx_thread_pool[usb_tx_thread_pool_size];
+// TX_THREAD usb_tx_thread;
+// static constexpr size_t usb_tx_thread_pool_size { 1024U };
+// uint8_t usb_tx_thread_pool[usb_tx_thread_pool_size];
 
-TX_THREAD usb_rx_thread;
-static constexpr size_t usb_rx_thread_pool_size { 1024U };
-uint8_t usb_rx_thread_pool[usb_rx_thread_pool_size];
+// TX_THREAD usb_rx_thread;
+// static constexpr size_t usb_rx_thread_pool_size { 1024U };
+// uint8_t usb_rx_thread_pool[usb_rx_thread_pool_size];
 
 TX_THREAD car_can_thread;
 static constexpr size_t car_can_thread_pool_size { 1024U };

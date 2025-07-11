@@ -9,7 +9,7 @@ namespace PUTM
     namespace Config
     {
         /* Bq796xx stack size */
-        static constexpr size_t STACK_SIZE { 1 };
+        static constexpr size_t STACK_SIZE { 5 };
         /* Cell count per bq796xx */
         static constexpr size_t CELL_COUNT_PER_DEVICE { 14 };
         /* Total cell count in stack */

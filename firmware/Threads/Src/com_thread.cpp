@@ -32,11 +32,11 @@ static StaticJsonDocument<Config::JSON_BUFFER_SIZE> json;
 
 static constexpr ULONG tx_rx_buffer_size { 512 };
 
-static CHAR tx_buffer[tx_rx_buffer_size];
-static CHAR rx_buffer[tx_rx_buffer_size];
+// static CHAR tx_buffer[tx_rx_buffer_size];
+// static CHAR rx_buffer[tx_rx_buffer_size];
 
-static ULONG rx_actual_size { 0 };
-static ULONG tx_actual_size { 0 };
+// static ULONG rx_actual_size { 0 };
+// static ULONG tx_actual_size { 0 };
 
 extern TX_MUTEX tx_buffer_mutex;
 extern TX_MUTEX rx_buffer_mutex;
@@ -115,11 +115,15 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
             json["soc"] = data.soc;
             for(size_t i = 0; i < Config::TOTAL_CELL_COUNT; i++)
             {
-                json["cell_voltages"][i] = data.cell_voltages[i];
+                size_t idev = i / Config::CELL_COUNT_PER_DEVICE;
+                size_t icell = i % Config::CELL_COUNT_PER_DEVICE;
+                json["cell_voltages"][i] = data.cell_voltages[idev][icell];
             }
             for(size_t i = 0; i < Config::TOTAL_TEMPERATURES_COUNT; i++)
             {
-                json["cell_temperatures"][i] = data.cell_temperatures[i];
+                size_t idev = i / Config::CELL_COUNT_PER_DEVICE;
+                size_t icell = i % Config::CELL_COUNT_PER_DEVICE;
+                json["cell_temperatures"][i] = data.cell_temperatures[idev][icell];
             }
 
             char buffer[JSON_BUFFER_SIZE] { };

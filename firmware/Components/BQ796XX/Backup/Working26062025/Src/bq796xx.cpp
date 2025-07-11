@@ -268,35 +268,36 @@ HAL_StatusTypeDef Device::update_status(bool (&ovuv_arr)[Config::STACK_SIZE * Co
     return HAL_OK;
 }
 
-HAL_StatusTypeDef Device::update_data(float (&voltages_arr)[Config::STACK_SIZE * Config::CELL_COUNT_PER_DEVICE], 
-                                      float (&temperatures_arr)[Config::STACK_SIZE * Config::TEMPERATURES_COUNT_PER_DEVICE])
+HAL_StatusTypeDef Device::update_data(float (&voltages_arr)[Config::STACK_SIZE][Config::CELL_COUNT_PER_DEVICE], 
+                                      float (&temperatures_arr)[Config::STACK_SIZE][Config::TEMPERATURES_COUNT_PER_DEVICE])
 {
     using namespace Utils;
 
     /* 16 cells * 2 bytes */
     constexpr size_t CELL_DATA_COUNT = Config::CELL_COUNT_PER_DEVICE * 2;
     constexpr size_t REG_OFFSET = (16 - Config::CELL_COUNT_PER_DEVICE) * 2;
-    uint8_t buffer[CELL_DATA_COUNT * Config::STACK_SIZE] { 0 };
+    constexpr size_t TEMP_DATA_COUNT = 8 * 2;
+    
+    uint8_t buffer_v[Config::STACK_SIZE][CELL_DATA_COUNT] { 0 };
 
     /* read voltages, address of VCELL16_HI */
-    read<ReqType::Stack>(buffer, CELL_DATA_COUNT, 0x0568 + REG_OFFSET);
+    read<ReqType::Stack>(buffer_v, 0x0568 + REG_OFFSET);
 
     /* voltages */
     for(size_t idev = 0; idev < Config::STACK_SIZE; idev++)
     {
         for(size_t ich = 0; ich < Config::CELL_COUNT_PER_DEVICE; ich++)
         {
-            size_t index = idev * CELL_DATA_COUNT + ich * 2;
-            int16_t volt = ((uint16_t)(buffer[index]) << 8 | (uint16_t)(buffer[index + 1]));
+            int16_t volt = ((uint16_t)(buffer_v[idev][ich * 2]) << 8 | (uint16_t)(buffer_v[idev][ich * 2 + 1]));
             
-            voltages_arr[idev * Config::STACK_SIZE + Config::CELL_COUNT_PER_DEVICE - 1 - ich] = -(~volt + 1) * v_lsb_adc;
+            voltages_arr[idev][] = -(~volt + 1) * v_lsb_adc;
         }
     }
 
-    constexpr size_t TEMP_DATA_COUNT = 8 * 2;
+    uint8_t buffer_t[Config::STACK_SIZE][TEMP_DATA_COUNT] { 0 };
 
     /* read temperatures, address of GPIO1_HI */
-    read<ReqType::Stack>(buffer, TEMP_DATA_COUNT, 0x058E);
+    read<Stack>(buffer, 0x058E);
 
     /* temperatures */
     for(size_t idev = 0; idev < Config::STACK_SIZE; idev++)

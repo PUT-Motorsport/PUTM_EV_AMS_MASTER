@@ -72,5 +72,5 @@
         "stop_token": "cpp",
         "thread": "cpp"
     },
-    "cortex-debug.variableUseNaturalFormat": false,
+    "cortex-debug.variableUseNaturalFormat": true,
 }
