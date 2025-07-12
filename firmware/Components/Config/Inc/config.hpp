@@ -81,11 +81,11 @@ namespace PUTM
         static constexpr uint32_t MAX_PRECHARGE_WAIT { 6000 };
 
         /* Which channel is used for car voltage measurement from 0 to 3*/
-        static constexpr uint32_t CAR_VOLTAGE_CHANNEL { 1 };
+        static constexpr uint32_t CAR_VOLTAGE_CHANNEL { 2 };
         /* Which channel is used for accumulator voltage measurement from 0 to 3*/
-        static constexpr uint32_t ACU_VOLTAGE_CHANNEL { 0 };
+        static constexpr uint32_t ACU_VOLTAGE_CHANNEL { 1 };
         /* Which channel is used to measure current */
-        static constexpr uint32_t CURRENT_CHANNEL { 2 };
+        static constexpr uint32_t CURRENT_CHANNEL { 0 };
 
         // FIXME: topic for much later but maybe do a self offset/gain calibration
         static constexpr float CAR_VOLTAGE_OFFSET { 0.f };

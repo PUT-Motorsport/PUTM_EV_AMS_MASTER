@@ -17,8 +17,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS ON)
 
 # Find python packages and include them in cmake 
-find_package(PythonInterp 3.12 REQUIRED)
-find_package(PythonLibs 3.12 REQUIRED)
+# find_package(PythonInterp 3.12 REQUIRED)
+# find_package(PythonLibs 3.12 REQUIRED)
 
 # Define the build type
 if(NOT CMAKE_BUILD_TYPE)
@@ -48,7 +48,7 @@ add_executable(${CMAKE_PROJECT_NAME})
 add_subdirectory(cmake/stm32cubemx)
 # Add Components
 add_subdirectory(Components)
-# Add Tasks
+# Add Taskss
 add_subdirectory(Threads)
 
 # Link directories setup
@@ -88,8 +88,10 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
 # Modify HAL drivers this will not work without find package
 add_custom_target(
     CUSTOM_COMMANDS ALL
-    COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/Scripts/custom_spi.py ${CMAKE_CURRENT_SOURCE_DIR}
-    COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/Scripts/custom_uart.py ${CMAKE_CURRENT_SOURCE_DIR}
+    # COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/Scripts/custom_spi.py ${CMAKE_CURRENT_SOURCE_DIR}
+    # COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/Scripts/custom_uart.py ${CMAKE_CURRENT_SOURCE_DIR}
+    COMMAND python3 ${CMAKE_CURRENT_SOURCE_DIR}/Scripts/custom_spi.py ${CMAKE_CURRENT_SOURCE_DIR}
+    COMMAND python3 ${CMAKE_CURRENT_SOURCE_DIR}/Scripts/custom_uart.py ${CMAKE_CURRENT_SOURCE_DIR}
     COMMENT "Modifing HAL drivers"  
 )
 
