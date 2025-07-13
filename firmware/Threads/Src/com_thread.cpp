@@ -1,7 +1,6 @@
 extern "C"
 {
 #include "main.h"
-#include "ux_api.h"
 }
 #include "cstring"
 #include "cstdio"
@@ -17,6 +16,7 @@ extern "C"
 #include "config.hpp"
 #include "charger.hpp"
 #include "wrapper/fdcan.hpp"
+#include "wrapper/uart.hpp"
 #include "state_machine.hpp"
 #include "com/charger_state_machine.hpp"
 
@@ -31,7 +31,6 @@ static constexpr ULONG tx_rx_buffer_size { 512 };
 
 // static CHAR tx_buffer[tx_rx_buffer_size];
 // static CHAR rx_buffer[tx_rx_buffer_size];
-
 // static ULONG rx_actual_size { 0 };
 // static ULONG tx_actual_size { 0 };
 
@@ -49,10 +48,10 @@ VOID car_can_thread_entry(__unused ULONG thread_input)
         {
             .voltage_sum = (uint16_t)(data.acu_voltage * 10.f),
             .current = (int16_t)(data.current * 10.f),
-            .temp_max = 100,//(uint8_t)(data.cell_max_temperature * 10.f),
-            .temp_avg = 100,//(uint8_t)(data.cell_avg_temperature * 10.f),
-            .soc = 100,//(uint16_t)(data.soc * 10.f),
-            .ok = true,//not data.error,
+            .temp_max = 100, //(uint8_t)(data.cell_max_temperature * 10.f),
+            .temp_avg = 100, //(uint8_t)(data.cell_avg_temperature * 10.f),
+            .soc = 100, //(uint16_t)(data.soc * 10.f),
+            .ok = true, //not data.error,
             .precharge = data.precharge
         };
 
@@ -94,13 +93,13 @@ VOID charger_can_thread_entry(__unused ULONG thread_input)
  */
 VOID usb_com_thread_entry(__unused ULONG thread_input)
 {
-    // Uart uart(&huart1);
+    Uart uart(&huart1);
     // uart.init();
     // uart.set_baudrate(115200);
 
     while(true)
     {
-        if(data.usb_connected)
+        if(true) //if(data.usb_connected)
         {
             json.clear();
             json["timestamp"] = tx_time_get();
@@ -123,7 +122,7 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
 
             char buffer[JSON_BUFFER_SIZE] { };
             serializeJson(json, buffer, JSON_BUFFER_SIZE);
-            // uart.await_tx_dma((uint8_t *)buffer, strlen(buffer));
+            uart.await_tx_dma((uint8_t *)buffer, strlen(buffer), 500);
         }
         tx_thread_sleep(200);
     }

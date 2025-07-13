@@ -3,6 +3,7 @@
 #include "main.h"
 #include "usart.h"
 #include "tx_api.h"
+#include "cstdio"
 
 
 enum struct UartStatus : uint8_t
@@ -79,6 +80,7 @@ struct Uart
 private:
     UART_HandleTypeDef *huart;
     TX_SEMAPHORE semaphore;
+    CHAR semaphore_name[64] { 0 };
     pUART_CallbackTypeDef tx_callback = [](UART_HandleTypeDef* huart)
     {
         if(huart->UserData == nullptr) Error_Handler();
@@ -105,7 +107,8 @@ public:
     Uart() : huart(nullptr) { }
     Uart(UART_HandleTypeDef *huart) : huart(huart) 
     {
-        if(tx_semaphore_create(&semaphore, (const char*)"UART semaphore", 0) != TX_SUCCESS) Error_Handler();
+        std::snprintf(semaphore_name, 64, "UART semaphore %d", huart);
+        if(tx_semaphore_create(&semaphore, semaphore_name, 0) != TX_SUCCESS) Error_Handler();
     }
     Uart(const Uart&) = delete; // Disable copy constructor
     Uart& operator=(const Uart&) = delete; // Disable copy assignment operator
