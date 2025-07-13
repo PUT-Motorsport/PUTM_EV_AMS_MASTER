@@ -148,11 +148,11 @@
 
 /* Define control transfer timeout value in millisecond.
    The default is 10000 milliseconds.  */
-/* #define UX_CONTROL_TRANSFER_TIMEOUT                      10000 */
+#define UX_CONTROL_TRANSFER_TIMEOUT                         valueNotSetted
 
 /* Define non control transfer timeout value in millisecond.
    The default is 50000 milliseconds.  */
-/* #define UX_NON_CONTROL_TRANSFER_TIMEOUT                  50000 */
+#define UX_NON_CONTROL_TRANSFER_TIMEOUT                     valueNotSetted
 
 /* Defined, this value is the maximum number of classes that can be loaded by USBX. This value
    represents the class container and not the number of instances of a class. For instance, if a
