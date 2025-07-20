@@ -1,6 +1,8 @@
 #pragma once
 
 #include "main.h"
+#include "cstring"
+
 namespace PUTM
 {
     struct ErrorLog
@@ -28,10 +30,13 @@ namespace PUTM
          *          is full, the error will not be logged and the overflow flag will be set to
          *          true.
          */    
-        void log_error(const char *name, uint32_t code, const char *message)
+        void log_unique_error(const char *name, uint32_t code, const char *message)
         {
             if (index < size)
             {
+                for(size_t i = 0; i < index; i++)
+                    if(strcmp(buffer[i].name, name) == 0 and buffer[i].code == code)
+                        return;
                 buffer[index].name = name;
                 buffer[index].code = code;
                 buffer[index].message = message;

@@ -69,7 +69,7 @@ namespace PUTM
                 tx_buffer[i++] = (uint8_t)(crc >> 8);
                 tx_buffer[i++] = (uint8_t)(crc);
 
-                return uart->await_tx_dma(tx_buffer, i);
+                return uart->await_tx_dma(tx_buffer, i, Config::STACK_COM_TIMEOUT);
             }
             template<CommunicationMode COMMUNICATION_TYPE>
             HAL_StatusTypeDef write(uint8_t data, uint16_t reg_address, uint8_t dev_address = 1)
@@ -88,7 +88,7 @@ namespace PUTM
                 tx_buffer[i++] = (uint8_t)(crc >> 8);
                 tx_buffer[i++] = (uint8_t)(crc);
 
-                return uart->await_tx_dma(tx_buffer, i);
+                return uart->await_tx_dma(tx_buffer, i, Config::STACK_COM_TIMEOUT);
             }
         private:
             template
@@ -120,7 +120,7 @@ namespace PUTM
 
                 // if(uart.await_tx_dma(buffer, i) != HAL_OK) return HAL_ERROR;
                 // if(uart.await_rx_dma((uint8_t*)data, DEVICE_COUNT * DATA_COUNT + 2) != HAL_OK) return HAL_ERROR;
-                if(uart->await_tx_rx_dma(tx_buffer, i, rx_buffer, READ_DATA_COUNT) != HAL_OK) return HAL_ERROR;
+                if(uart->await_tx_rx_dma(tx_buffer, i, rx_buffer, READ_DATA_COUNT, Config::STACK_COM_TIMEOUT) != HAL_OK) return HAL_ERROR;
                 
                 for(size_t dev = 0; dev < DEVICE_COUNT; dev++)
                 {
@@ -145,17 +145,25 @@ namespace PUTM
                 using namespace Bq796xx::Regs;
                 using namespace Bq796xx::Types;
 
-                uart->set_rx_timeout(Config::RX_TIMEOUT_BAUDBLOCKS);
+                //uart->set_rx_timeout(Config::RX_TIMEOUT_BAUDBLOCKS);
                 
                 if(wake_up() != HAL_OK) return HAL_ERROR;  
                 
-                tx_thread_sleep(4);
+                tx_thread_sleep(5);
 
                 /* cmd wake up slaves */
-                write<Single>(Utils::convert_to<uint8_t>((Regs::Control1){.send_wake = true}), Utils::address_of<Regs::Control1>());
+                write<Single>(Utils::convert_to<uint8_t>((Control1){ .send_wake = true }), 
+                              Utils::address_of<Control1>(), 
+                              0);
 
                 /* wait ~15ms */
-                tx_thread_sleep(15);
+                tx_thread_sleep(20);
+
+                /* reset all devices */
+                write<Stack>(Utils::convert_to<uint8_t>((Control1){ .soft_reset = true }), 
+                             Utils::address_of<Control1>());
+
+                tx_thread_sleep(10);
 
                 /* dummy write 0x00, sync internal dlls */
                 for(size_t step = 0; step < 8; step++)
@@ -163,6 +171,7 @@ namespace PUTM
                     write<Broadcast>(0x00, 0x343 + step);
                 }
 
+                /* enable auto adressing */
                 write<Broadcast>(0x01, 0x309);
 
                 /* auto addressing */
@@ -223,7 +232,7 @@ namespace PUTM
                     write<Stack>(data1, 0x0009);
 
                     /* enable ovuv */
-                    uint8_t data2 = convert_to<uint8_t>((OVUVCtrl){.ovuv_mode = ScanMode::RoundRobin, .ovuv_go = true});
+                    uint8_t data2 = convert_to<uint8_t>((OVUVCtrl){ .ovuv_mode = ScanMode::RoundRobin, .ovuv_go = true });
                     
                     /* send twice, bq requires another 'go' cmd when setting are changed */
                     write<Stack>(data2, address_of<OVUVCtrl>());
@@ -247,7 +256,7 @@ namespace PUTM
                     write<Stack>(data1, address_of<OTUTThresh>());
 
                     /* enable otut */
-                    uint8_t data2 = convert_to<uint8_t>((OVUVCtrl){ .ovuv_mode = ScanMode::RoundRobin, .ovuv_go = true });
+                    uint8_t data2 = convert_to<uint8_t>((OTUTCtrl){ .otut_mode = ScanMode::RoundRobin, .otut_go = true });
 
                     /* send twice, bq requires another 'go' cmd when setting are changed */
                     write<Stack>(data2, 0x032C);
@@ -258,7 +267,8 @@ namespace PUTM
                 {
                     uint8_t data[1] { 0 };
                     /* set adc continous, start conversion, enable lpf */
-                    data[0] = convert_to<uint8_t>((AdcCtrl1){ .main_mode = ScanMode::RoundRobin, .main_go = true, .lpf_cell_en = true });
+                    data[0] = convert_to<uint8_t>((AdcCtrl1){ .main_mode = ScanMode2::RoundRobin, .main_go = true });
+                    write<Stack>(data, address_of<AdcCtrl1>());
                     write<Stack>(data, address_of<AdcCtrl1>());
                 }
 

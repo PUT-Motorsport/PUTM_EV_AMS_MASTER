@@ -111,18 +111,22 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
             {
                 size_t idev = i / Config::CELL_COUNT_PER_DEVICE;
                 size_t icell = i % Config::CELL_COUNT_PER_DEVICE;
-                json["cell_voltages"][i] = data.cell_voltages[idev][icell];
+                json["cell_voltages"][idev][icell] = data.cell_voltages[idev][icell];
             }
             for(size_t i = 0; i < Config::TOTAL_TEMPERATURES_COUNT; i++)
             {
-                size_t idev = i / Config::CELL_COUNT_PER_DEVICE;
-                size_t icell = i % Config::CELL_COUNT_PER_DEVICE;
-                json["cell_temperatures"][i] = data.cell_temperatures[idev][icell];
+                size_t idev = i / Config::TEMPERATURES_COUNT_PER_DEVICE;
+                size_t icell = i % Config::TEMPERATURES_COUNT_PER_DEVICE;
+                json["cell_temperatures"][idev][icell] = data.cell_temperatures[idev][icell];
             }
 
             char buffer[JSON_BUFFER_SIZE] { };
-            serializeJson(json, buffer, JSON_BUFFER_SIZE);
-            uart.await_tx_dma((uint8_t *)buffer, strlen(buffer), 500);
+            // serializeJson(json, buffer, JSON_BUFFER_SIZE);
+            serializeJsonPretty(json, buffer, JSON_BUFFER_SIZE);
+            if(uart.await_tx_dma((uint8_t *)buffer, strlen(buffer), 500) != HAL_OK)
+            {
+                data.warning = true;
+            }
         }
         tx_thread_sleep(200);
     }

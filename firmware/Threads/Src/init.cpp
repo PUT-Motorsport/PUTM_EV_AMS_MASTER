@@ -5,19 +5,19 @@
 #include "threads.hpp"
 
 TX_THREAD test_thread;
-static constexpr size_t test_thread_pool_size { 1024U };
+static constexpr size_t test_thread_pool_size { 2048U };
 uint8_t test_thread_pool[test_thread_pool_size];
 
 TX_THREAD bq796xx_thread;
-static constexpr size_t bq796xx_thread_pool_size { 1024U };
+static constexpr size_t bq796xx_thread_pool_size { 2048U };
 uint8_t bq796xx_thread_pool[bq796xx_thread_pool_size];
 
 TX_THREAD ads131m04_thread;
-static constexpr size_t ads131m04_thread_pool_size { 1024U };
+static constexpr size_t ads131m04_thread_pool_size { 2048U };
 uint8_t ads131m04_thread_pool[ads131m04_thread_pool_size];
 
 TX_THREAD main_thread;
-static constexpr size_t main_thread_pool_size { 2048U };
+static constexpr size_t main_thread_pool_size { 4096U };
 uint8_t main_thread_pool[main_thread_pool_size];
 
 TX_THREAD usb_com_thread;

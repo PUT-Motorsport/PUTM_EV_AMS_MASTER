@@ -2,6 +2,7 @@
 
 #include "main.h"
 #include "limits"
+#include <cstddef>
 
 // TODO: change parse ptr to accept a string buffer and write to it instead of returning a string
 
@@ -59,9 +60,14 @@ namespace PUTM
          *          return a string with the error message. It is advised to use unique error 
          *          codes for each error sub type.
          *  @param  code Error code to be parsed
-         *  @return String with the error message, it should be a static string.
+         *  @return Static string with the error message, it should be a static string.
          */
         const char* (*parse)(uint32_t) { nullptr };
+        /**
+         *  @brief  Pointer to a function which will serialize the code with some more information
+         *          
+         */
+        // void (*serialize)(uint32_t, char*, size_t) { nullptr };
 
         const char* get_error_message()
         {

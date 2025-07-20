@@ -76,6 +76,22 @@ set(STM32_Drivers_Src
 
 
 set(ThreadX_Src
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/tx_thread_performance_info_get.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/tx_thread_performance_system_info_get.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/tx_block_pool_performance_info_get.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/tx_block_pool_performance_system_info_get.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/tx_byte_pool_performance_info_get.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/tx_byte_pool_performance_system_info_get.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/tx_event_flags_performance_info_get.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/tx_event_flags_performance_system_info_get.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/tx_mutex_performance_info_get.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/tx_mutex_performance_system_info_get.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/tx_queue_performance_info_get.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/tx_queue_performance_system_info_get.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/tx_semaphore_performance_info_get.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/tx_semaphore_performance_system_info_get.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/tx_timer_performance_info_get.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/tx_timer_performance_system_info_get.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/ports/cortex_m33/gnu/src/tx_thread_context_restore.S
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/ports/cortex_m33/gnu/src/tx_thread_context_save.S
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/ports/cortex_m33/gnu/src/tx_thread_interrupt_control.S
@@ -253,22 +269,6 @@ set(ThreadX_Src
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/tx_trace_object_register.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/tx_trace_object_unregister.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/tx_trace_user_event_insert.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/tx_thread_performance_info_get.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/tx_thread_performance_system_info_get.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/tx_block_pool_performance_info_get.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/tx_block_pool_performance_system_info_get.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/tx_byte_pool_performance_info_get.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/tx_byte_pool_performance_system_info_get.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/tx_event_flags_performance_info_get.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/tx_event_flags_performance_system_info_get.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/tx_mutex_performance_info_get.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/tx_mutex_performance_system_info_get.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/tx_queue_performance_info_get.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/tx_queue_performance_system_info_get.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/tx_semaphore_performance_info_get.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/tx_semaphore_performance_system_info_get.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/tx_timer_performance_info_get.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../Middlewares/ST/threadx/common/src/tx_timer_performance_system_info_get.c
 )
 
 # Link directories setup

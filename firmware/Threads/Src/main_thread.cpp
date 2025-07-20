@@ -39,11 +39,11 @@ Gpio det_charger(DET_CHARGER_GPIO_Port, DET_CHARGER_Pin, false);
 // Gpio adc_dry(ADC_NDRY_GPIO_Port, ADC_NDRY_Pin, true);
 // Gpio bq_flt(NFLT_GPIO_Port, NFLT_Pin, true);
 
-std::array<SoC, Config::STACK_SIZE * Config::CELL_COUNT_PER_DEVICE> socs;
+SoC socs[Config::STACK_SIZE][Config::CELL_COUNT_PER_DEVICE];
 
 ChargerCanRxController charger_rx;
 
-Uart usb_uart(&huart1);
+Uart debug_uart(&huart4);
 
 extern StateMachine air_state_machine;
 extern StateMachine charger_state_machine;  
@@ -56,30 +56,35 @@ VOID main_thread_entry(__unused ULONG thread_input)
     led_ok.reset();
     led_err.reset();
     sig_err.reset();
-    sig_air_pre.reset();
-    sig_air_p.reset();
-    sig_air_m.reset();
+    sig_air_pre.set();
+    sig_air_p.set();
+    sig_air_m.set();
 
-    // init_air_state_machine(&air_state_machine);
-    // init_error_checker(&error_checker);
+    init_air_state_machine(&air_state_machine);
+    init_error_checker(&error_checker);
 
-    tx_thread_sleep(100);
+    while(not data.ads_init_done and not data.bq_init_done)
+    {
+        tx_thread_sleep(10);
+    }
 
     // init socs
     for(size_t i = 0; i < Config::STACK_SIZE; i++)
     {
         for(size_t j = 0; j < Config::CELL_COUNT_PER_DEVICE; j++)
         {
-            // socs[i * Config::CELL_COUNT_PER_DEVICE + j].set_from_voltage(data.cell_voltages[i * Config::STACK_SIZE + j]);
+            socs[i][j].set_from_voltage(data.cell_voltages[i][j]);
         }
     }
+
+    data.system_init_done = true;
 
     while(true)
     {
 #ifdef DEBUG_PRINTF_ENABLE
         // FIXME: this is a temporary solution, change it to real one
         char buffer { 0 };
-        HAL_UART_Receive(&huart1, (uint8_t*)&buffer, 1, 10);
+        // HAL_UART_Receive(&huart1, (uint8_t*)&buffer, 1, 10);
         if(buffer == '1')
         {
             data.cmd_hv = true;
@@ -133,7 +138,7 @@ VOID main_thread_entry(__unused ULONG thread_input)
         {
             for(size_t j = 0; j < Config::CELL_COUNT_PER_DEVICE; j++)
             {
-                // socs[i * Config::CELL_COUNT_PER_DEVICE + j].update(data.cell_voltages[i * Config::STACK_SIZE + j], data.current, data.on_charger);
+                socs[i][j].update(data.cell_voltages[i][j], data.current, data.on_charger);
             }
         }
 
@@ -149,11 +154,17 @@ VOID main_thread_entry(__unused ULONG thread_input)
                 /* Print error */
                 char buffer[128] { 0 };
                 snprintf(buffer, sizeof(buffer), "Error: %s\n", error->parse(error->last_code));
-                HAL_UART_Transmit(&huart1, (uint8_t*)buffer, strlen(buffer), 100);
+                // HAL_UART_Transmit(&huart1, (uint8_t*)buffer, strlen(buffer), 100);
 
                 error = error_checker.get_next_error();
             }
             data.error = true;
+        }
+
+        /* handle warning */
+        if(data.warning)
+        {
+            led_wrn.toggle();
         }
         tx_thread_sleep(50);
     }

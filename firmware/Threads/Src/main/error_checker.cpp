@@ -20,7 +20,7 @@ extern State error;
 
 Error com_error
 {
-    .name = "Communication error",
+    .name = "E: COM",
     .timeout = Config::STANDARD_ERROR_TIMEOUT,
     .condition = []() -> uint32_t 
     {
@@ -28,14 +28,14 @@ Error com_error
     }
 };
 
-static uint32_t encode_error(uint8_t dev, uint8_t cell, uint8_t error)
+static uint32_t encode_error(uint8_t dev, uint8_t unit, uint8_t error)
 {
-    return ((uint32_t)(dev) << 16) | ((uint32_t)(cell) << 8) | (uint32_t)(error);
+    return ((uint32_t)(dev) << 16) | ((uint32_t)(unit) << 8) | (uint32_t)(error);
 }
 
 Error vcell_error
 {
-    .name = "Cell voltage error",
+    .name = "E: CELL V",
     .timeout = Config::STANDARD_ERROR_TIMEOUT,
     .condition = []() -> uint32_t 
     {
@@ -65,9 +65,9 @@ Error vcell_error
         switch(error)
         {
             case 1:
-                return "Cell overvoltage";
+                return "OV";
             case 2:
-                return "Cell undervoltage";
+                return "UN";
             default:
                 return "";
         }
@@ -76,7 +76,7 @@ Error vcell_error
 
 Error tcell_error
 {
-    .name = "Temperatures error",
+    .name = "E: TEMP",
     .timeout = Config::STANDARD_ERROR_TIMEOUT,
     .condition = []() -> uint32_t 
     {
@@ -106,9 +106,9 @@ Error tcell_error
         switch(error)
         {
             case 1:
-                return "Temperature overtemperature";
+                return "OT";
             case 2:
-                return "Temperature undertemperature";
+                return "UT";
             default:
                 return "";
         }
@@ -117,7 +117,7 @@ Error tcell_error
 
 Error current_error
 {
-    .name = "Current error",
+    .name = "E: CURR",
     .timeout = Config::CURRENT_ERROR_LONG_TIMEOUT,
     .condition = []() -> uint32_t 
     {
@@ -137,9 +137,9 @@ Error current_error
         switch(code)
         {
             case 1:
-                return "Current too high";
+                return "CURR>MAX";
             case 2:
-                return "Current too low";
+                return "CURR<MIN";
             default:
                 return "";
         }
@@ -184,15 +184,15 @@ Error v_error
         switch(code)
         {
             case 1:
-                return "Acu voltage too high";
+                return "ACU V>MAX";
             case 2:
-                return "Acu voltage too low";
+                return "ACU V<MIN";
             case 3:
-                return "Car voltage too high";
+                return "CAR V>MAX";
             // case 4:
-            //     return "Car voltage too low";
+            //     return "CAR V<MIN";
             case 5:
-                return "Car voltage too low while on";
+                return "CAR V<MIN @ ON";
             default:
                 return "";
         }

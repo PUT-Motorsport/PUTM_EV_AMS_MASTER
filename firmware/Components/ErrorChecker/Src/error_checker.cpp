@@ -97,6 +97,14 @@ Error* ErrorChecker::get_next_error()
     /* Make shallow copy */
     //FIXME: Make shallow copy of the error without the pointers inside, maybe use a shared_ptr or a unique_ptr
     raised_error_copy = *next_raised_error;
+    
+    if(raised_error_copy.parse == nullptr)
+    {
+        raised_error_copy.parse = [](uint32_t code) -> const char*
+        {
+            return "No parser";
+        };
+    }
 
     /* End list */
     if(next_raised_error == last_raised_error) 

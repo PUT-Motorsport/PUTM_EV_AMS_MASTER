@@ -12,26 +12,29 @@
 
 using namespace PUTM;
 
-Uart uart4(&huart4);
+Uart uart3(&huart3);
 
-Bq796xx::Device bq(&uart4);
+Bq796xx::Device bq(&uart3);
 
 VOID bq796xx_thread_entry(__unused ULONG thread_input)
 {
-    // bq.init({ Config::CELL_OV, Config::CELL_UV }, { Config::CELL_OT, Config::CELL_UT });
-
-    auto tmp = bq.init();
-
     uint32_t last_status_poll { 0 };
     uint32_t last_data_poll { 0 };
     uint32_t device_address { 1 };
+
+    __unused auto tmp = bq.init();
+    bq.read_stack_data(data.cell_voltages, data.cell_temperatures);
+    bq.read_stack_data(data.cell_voltages, data.cell_temperatures);
     
+    data.bq_init_done = true;
+
     while(true)
     {
         if(tx_time_get() - last_status_poll > Config::STACK_COM_STATUS_POLL_INTERVAL)
         {      
             bq.read_stack_status(data.cell_ovuv,
                                  data.cell_otut);
+            data.update_times.bq_status_update_time = tx_time_get() - last_status_poll;
             last_status_poll = tx_time_get();
         }
         if(tx_time_get() - last_data_poll > Config::STACK_COM_DATA_POLL_INTERVAL)
@@ -56,6 +59,7 @@ VOID bq796xx_thread_entry(__unused ULONG thread_input)
             //                                               data.cell_min_temperature);
             // data.cell_avg_temperature = std::accumulate(std::begin(data.cell_temperatures), std::end(data.cell_temperatures), 0.f) / (float)(Config::TOTAL_TEMPERATURES_COUNT);
             
+            data.update_times.bq_data_update_time = tx_time_get() - last_data_poll;
             last_data_poll = tx_time_get();
             device_address++;
             if(device_address > Config::STACK_SIZE) device_address = 1; 

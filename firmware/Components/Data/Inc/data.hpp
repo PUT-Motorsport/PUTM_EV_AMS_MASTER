@@ -32,6 +32,8 @@ namespace PUTM
 
         /* generic error flag it should be raised if error condition was found */
         bool error { false };
+        /* generic warning flag */
+        bool warning { false };
         /* if tsms voltage is present */
         bool tsms { false };
         /* if any cmd_hv was received */
@@ -46,8 +48,21 @@ namespace PUTM
         bool hv_on { false };
         /* USB connected */
         bool usb_connected { false };
+        /* */
+        bool bq_init_done { false };
+        /* */
+        bool ads_init_done { false };
+        /* system init done */
+        bool system_init_done { false };
         /* Precharge error */
         uint32_t precharge_error { 0 };
+        
+        struct
+        {
+            float bq_data_update_time { 0.f };
+            float bq_status_update_time { 0.f };
+            float ads_data_update_time { 0.f };
+        } update_times;
 
 #ifdef TEST_MODE_1
         /* reset state machine */

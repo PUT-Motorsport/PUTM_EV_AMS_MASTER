@@ -18,6 +18,13 @@ namespace PUTM
                 SingleChannel
             };
 
+            enum struct ScanMode2 : uint8_t
+            {
+                Stop,
+                Single,
+                RoundRobin
+            };
+
             enum struct GpioMode : uint8_t
             {
                 HighZ,
@@ -41,7 +48,7 @@ namespace PUTM
 
             struct __packed AdcCtrl1 : public Utils::IReg<0x030d>
             {
-                Types::ScanMode main_mode : 2 { Types::ScanMode::Stop };
+                Types::ScanMode2 main_mode : 2 { Types::ScanMode2::Stop };
                 bool main_go : 1 { 0b0 };
                 bool lpf_cell_en : 1 { 0b0 };
                 bool lpf_bb_en : 1 { 0b0 };

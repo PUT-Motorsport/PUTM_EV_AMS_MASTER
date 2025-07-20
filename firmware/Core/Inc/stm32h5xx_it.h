@@ -59,7 +59,13 @@ void GPDMA1_Channel3_IRQHandler(void);
 void ADC1_IRQHandler(void);
 void TIM1_UP_IRQHandler(void);
 void SPI1_IRQHandler(void);
+void USART1_IRQHandler(void);
+void USART3_IRQHandler(void);
 void UART4_IRQHandler(void);
+void GPDMA2_Channel0_IRQHandler(void);
+void GPDMA2_Channel1_IRQHandler(void);
+void GPDMA2_Channel2_IRQHandler(void);
+void GPDMA2_Channel3_IRQHandler(void);
 void FDCAN2_IT0_IRQHandler(void);
 void FDCAN2_IT1_IRQHandler(void);
 /* USER CODE BEGIN EFP */

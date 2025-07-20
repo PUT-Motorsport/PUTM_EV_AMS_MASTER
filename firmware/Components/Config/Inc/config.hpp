@@ -9,7 +9,7 @@ namespace PUTM
     namespace Config
     {
         /* Bq796xx stack size */
-        static constexpr size_t STACK_SIZE { 5 };
+        static constexpr size_t STACK_SIZE { 10 };
         /* Cell count per bq796xx */
         static constexpr size_t CELL_COUNT_PER_DEVICE { 14 };
         /* Total cell count in stack */
@@ -43,7 +43,6 @@ namespace PUTM
         static constexpr float MAX_CURRENT_THRESH_SHORT { 200.f };
         /* Min current treshold for short timeout */
         static constexpr float MIN_CURRENT_THRESH_SHORT { -MAX_CURRENT_THRESH_LONG };
-        
 
         // FIXME: this is a temporary value, change it to real when done with tests
         /* Max voltage on battery in [V] */
@@ -91,9 +90,10 @@ namespace PUTM
         static constexpr float CAR_VOLTAGE_OFFSET { 0.f };
         static constexpr float CAR_VOLTAGE_GAIN { -1000.f / 2 }; //idk needs more calibration
         static constexpr float ACU_VOLTAGE_OFFSET { 0.f };
-        static constexpr float ACU_VOLTAGE_GAIN { 1000.f / 2 };
-        static constexpr float CURRENT_OFFSET { 300.f };
-        static constexpr float CURRENT_GAIN { 1 / 2.f };
+        static constexpr float ACU_VOLTAGE_GAIN { -1000.f / 2 };
+        static constexpr float CURRENT_OFFSET { 371.25 };
+        /* Current measurement gain * 3 is for the resistor divider on the input */
+        static constexpr float CURRENT_GAIN { 1.f / (2.f / 300.f) * 3.f };
 
         /* Cell nominal capacity */
         static constexpr float CELL_NOMINAL_CAPACITY { 7.25439f };
