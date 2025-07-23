@@ -1,7 +1,10 @@
 #include "main.h"
+#include "stm32h5xx_hal_def.h"
 #include "tx_api.h"
 #include "cstdio"
 #include "usart.h"
+
+#include "tuple"
 
 #include "threads.hpp"
 #include "wrapper/gpio.hpp"
@@ -18,20 +21,31 @@ extern State precharge;
 extern State on;
 extern State error;
 
+static uint32_t encode_error(uint8_t dev, uint8_t unit, uint8_t error)
+{
+    return ((uint32_t)(dev) * 10'000) + ((uint32_t)(unit) * 100) + (uint32_t)(error);
+}
+
+static std::tuple<uint8_t, uint8_t, uint8_t> decode_error(uint32_t code)
+{
+    return { code / 10'000 % 100, code / 100 % 100, code % 100 };
+}
+
 Error com_error
 {
     .name = "E: COM",
     .timeout = Config::STANDARD_ERROR_TIMEOUT,
     .condition = []() -> uint32_t 
     {
+        if(data.bq_init_status != HAL_OK) return 1;
+        if(data.bq_read_status_status != HAL_OK) return 2;
+        for(size_t i = 0; i < Config::STACK_SIZE; i++)
+        {
+            if(data.bq_read_data_status[i] != HAL_OK) return encode_error(i + 1,  0, 3);
+        }
         return 0;
     }
 };
-
-static uint32_t encode_error(uint8_t dev, uint8_t unit, uint8_t error)
-{
-    return ((uint32_t)(dev) << 16) | ((uint32_t)(unit) << 8) | (uint32_t)(error);
-}
 
 Error vcell_error
 {
@@ -58,16 +72,16 @@ Error vcell_error
     },
     .parse = [](uint32_t code) -> const char* 
     {
-        uint8_t dev = (code >> 16) & 0xFF;
-        uint8_t cell = (code >> 8) & 0xFF;
-        uint8_t error = code & 0xFF;
+        auto [dev, cell, error] = decode_error(code);
 
         switch(error)
         {
             case 1:
                 return "OV";
             case 2:
-                return "UN";
+                return "UV";
+            case 3:
+                return "STAT_OVUV";
             default:
                 return "";
         }
@@ -99,9 +113,7 @@ Error tcell_error
     },
     .parse = [](uint32_t code) -> const char* 
     {
-        uint8_t dev = (code >> 16) & 0xFF;
-        uint8_t cell = (code >> 8) & 0xFF;
-        uint8_t error = code & 0xFF;
+        auto [dev, cell, error] = decode_error(code);
 
         switch(error)
         {
@@ -109,6 +121,8 @@ Error tcell_error
                 return "OT";
             case 2:
                 return "UT";
+            case 3:
+                return "STAT_OTUT";
             default:
                 return "";
         }
@@ -137,9 +151,9 @@ Error current_error
         switch(code)
         {
             case 1:
-                return "CURR>MAX";
+                return ">MAX";
             case 2:
-                return "CURR<MIN";
+                return "<MIN";
             default:
                 return "";
         }
@@ -148,7 +162,7 @@ Error current_error
 
 Error v_error
 {
-    .name = "Voltage Car/Acu error",
+    .name = "E: V TS",
     .timeout = Config::STANDARD_ERROR_TIMEOUT,
     .condition = []() -> uint32_t 
     {
@@ -201,7 +215,7 @@ Error v_error
 
 Error precharge_timeout
 {
-    .name = "Precharge timeout",
+    .name = "E: PRE SLOW",
     .timeout = Config::STANDARD_ERROR_TIMEOUT,
     .condition = []() -> uint32_t 
     {
@@ -212,9 +226,9 @@ Error precharge_timeout
         switch(code)
         {
             case 1:
-                return "Precharge timeout low";
+                return "<60V";
             case 2:
-                return "Precharge timeout high";
+                return "<95%";
             default:
                 return "";
         }
@@ -228,7 +242,7 @@ void init_error_checker(ErrorChecker *ec)
     ec->add_errors(
         com_error,
         vcell_error,
-        //tcell_error, //FIXME: this error is not used yet
+        tcell_error,
         current_error,
         v_error);
 }

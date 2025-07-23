@@ -46,6 +46,13 @@ namespace PUTM
                 bool dir_sel : 1 { false };
             };
 
+            struct __packed Control2 : public Utils::IReg<0x030A>
+            {
+                bool tsref_en : 1 { false };
+                bool send_hw_reset : 1 { false };
+                uint8_t rsvd : 6 { 0b000000 };
+            };
+
             struct __packed AdcCtrl1 : public Utils::IReg<0x030d>
             {
                 Types::ScanMode2 main_mode : 2 { Types::ScanMode2::Stop };

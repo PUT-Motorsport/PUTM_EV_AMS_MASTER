@@ -1,9 +1,11 @@
 #pragma once
 
 #include "main.h"
+#include "stm32h5xx_hal_def.h"
 #include "tx_api.h"
 
 #include "config.hpp"
+#include "soc.hpp"
 
 #include "atomic"
 #include "array"
@@ -18,9 +20,11 @@ namespace PUTM
         float car_voltage { 0.f };
         float soc { 0.f };
         float cell_voltages[Config::STACK_SIZE][Config::CELL_COUNT_PER_DEVICE] { 0.f };
+        float gpio_voltages[Config::STACK_SIZE][Config::TEMPERATURES_COUNT_PER_DEVICE] { 0.f };
         float cell_temperatures[Config::STACK_SIZE][Config::TEMPERATURES_COUNT_PER_DEVICE] { 0.f };
-        bool cell_ovuv[Config::STACK_SIZE][Config::CELL_COUNT_PER_DEVICE] { false };
-        bool cell_otut[Config::STACK_SIZE][Config::TEMPERATURES_COUNT_PER_DEVICE] { false };
+        SoC cell_socs[Config::STACK_SIZE][Config::CELL_COUNT_PER_DEVICE] { };
+        // bool cell_ovuv[Config::STACK_SIZE][Config::CELL_COUNT_PER_DEVICE] { false };
+        // bool cell_otut[Config::STACK_SIZE][Config::TEMPERATURES_COUNT_PER_DEVICE] { false };
         float cell_max_voltage { 0.f };
         float cell_avg_voltage { 0.f };
         float cell_min_voltage { 0.f };
@@ -56,6 +60,12 @@ namespace PUTM
         bool system_init_done { false };
         /* Precharge error */
         uint32_t precharge_error { 0 };
+        /* bq init status */
+        HAL_StatusTypeDef bq_init_status { HAL_OK };
+        /* bq read status status */
+        HAL_StatusTypeDef bq_read_status_status { HAL_OK };
+        /* bq read data status */
+        HAL_StatusTypeDef bq_read_data_status[Config::STACK_SIZE] { HAL_OK };
         
         struct
         {

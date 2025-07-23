@@ -26,10 +26,11 @@ namespace PUTM
         static constexpr uint32_t CELL_OV { CELL_MAX_VOLTAGE - 50 };
         /* Undervoltage trigger in [mV] */
         static constexpr uint32_t CELL_UV { CELL_MIN_VOLTAGE + 50 };
+        //FIXME: config will definetly be to be repaired
         /* Overtemperature trigger in [degC] */
-        static constexpr float CELL_OT { 100.f };
+        static constexpr float CELL_OT { 50.f };// { 100.f };
         /* Undertemperature trigger in [degC] */
-        static constexpr float CELL_UT { -100.f };
+        static constexpr float CELL_UT { 0.f };
         
         /* Voltage that is considered "High Voltage" according to FSG rules */
         static constexpr float MIN_HV_THRESH { 60.f };
@@ -106,7 +107,17 @@ namespace PUTM
         static constexpr uint32_t JSON_BUFFER_SIZE { 2048 };
 
         static constexpr float POLYNOMIAL_OCV[] { 2034.7852020f, -9878.314180f, 20304.286795f, -22998.124140f, 15652.018744f, -6548.995145f, 1657.8141810f, -240.64692800f, 18.231580000f,  3.143621f };
-    }
+
+        // static constexpr float POLYNOMIAL_T_R[] { 2.828902e+02, 2.818811e-02, -1.131373e-05, 3.281373e-09, -6.383295e-13, 8.324239e-17, -7.271016e-21, 4.187227e-25, -1.522588e-29, 3.163823e-34, -2.860511e-39 };
+        //static constexpr float POLYNOMIAL_T_R[] { 2.828902e+02, 2.818811e-02, -1.131373e-05, 3.281373e-09, -6.383295e-13, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f };
+        // polynomial for T(R) where T is in K and R is in kOhm
+        static constexpr float POLYNOMIAL_T_R[] { 8.476916e-07, -7.580322e-05, 2.849150e-03, -5.860359e-02, 7.206923e-01, -5.455243e+00, 2.546881e+01, -7.461018e+01, 4.303188e+02 };
+        // nominal ntc resistance (at 24degC) in kOhm
+        static constexpr float NOMINAL_NTC_RESISTANCE { 10 };
+        // nominal voltage accross the resistor divider network for bq series its 5V
+        static constexpr float NOMINAL_TSREF { 5 };
+
+     }
 }
 
 /* TODO: implement config checker */

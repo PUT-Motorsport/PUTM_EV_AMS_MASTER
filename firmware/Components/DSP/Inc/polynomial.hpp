@@ -15,6 +15,7 @@ namespace PUTM
      *  @tparam TYPE The type of the coefficients.
      *  @note   This class is designed to be used with fixed-size polynomials.
      *          It does not support dynamic resizing or complex operations.
+     *          The coeficients go from N to 0 in order
      */
     template<size_t N, class TYPE = float>
     requires (N > 0) && std::is_arithmetic_v<TYPE>

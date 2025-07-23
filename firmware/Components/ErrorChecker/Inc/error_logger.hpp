@@ -5,6 +5,7 @@
 
 namespace PUTM
 {
+    template<size_t STRING_SIZE>
     struct ErrorLog
     {
         /* Error name */
@@ -12,12 +13,12 @@ namespace PUTM
         /* Error code */
         uint32_t code { 0 };
         /* Error message */
-        const char *message { "" };
+        const char message[STRING_SIZE] { '\0' };
         /* Time stamp */
         uint32_t timestamp { 0 };
     }
 
-    template<size_t SIZE>
+    template<size_t SIZE, size_t STRING_SIZE>
     class ErrorLogger
     {
     public:

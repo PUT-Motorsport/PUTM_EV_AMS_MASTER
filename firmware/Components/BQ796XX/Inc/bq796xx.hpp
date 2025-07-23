@@ -195,8 +195,15 @@ namespace PUTM
 
                 // FIXME: no receive verification
                 /* verify */
-                [[maybe_unused]] uint8_t buffer[Config::STACK_SIZE][1] { 0 };
-                read<Stack>(buffer, 0x306);
+                {
+                    [[maybe_unused]] uint8_t buffer[Config::STACK_SIZE][1] { 0 };
+                    read<Stack>(buffer, 0x306);  
+                }
+
+
+                /* init tsref first to allow it to settle */
+                write<Stack>(convert_to<uint8_t>((Control2){ .tsref_en = true }), 
+                             address_of<Control2>());
 
                 /* TODO: do it properly >.>, for now set all on*/
                 /* init voltage measurement, set active cells in series */
@@ -209,7 +216,7 @@ namespace PUTM
                         convert_to<uint8_t>((GPIOConf1){ .gpio1 = GpioMode::AdcOtut, .gpio2 = GpioMode::AdcOtut }),
                         convert_to<uint8_t>((GPIOConf2){ .gpio3 = GpioMode::AdcOtut, .gpio4 = GpioMode::AdcOtut }),
                         convert_to<uint8_t>((GPIOConf3){ .gpio5 = GpioMode::AdcOtut, .gpio6 = GpioMode::AdcOtut }),
-                        convert_to<uint8_t>((GPIOConf4){ .gpio7 = GpioMode::AdcOtut, .gpio8 = GpioMode::AdcOtut })
+                        convert_to<uint8_t>((GPIOConf4){ .gpio7 = GpioMode::AdcOtut, .gpio8 = GpioMode::HighZ })
                     };
 
                     write<Stack>(data, address_of<GPIOConf1>());
@@ -341,7 +348,7 @@ namespace PUTM
                     {
                         int16_t volt = ((uint16_t)(buffer_v[idev][ich * 2]) << 8 | (uint16_t)(buffer_v[idev][ich * 2 + 1]));
                         
-                        voltages_arr[idev][Config::CELL_COUNT_PER_DEVICE - 1 - ich] = -(~volt + 1) * Config::V_LSB_ADC;
+                        voltages_arr[idev][Config::CELL_COUNT_PER_DEVICE - 1 - ich] = -(~volt + 1) * Config::V_LSB_ADC_CELL;
                     }
                 }
 
@@ -357,7 +364,7 @@ namespace PUTM
                     {
                         int16_t volt = ((uint16_t)(buffer_t[idev][igio * 2]) << 8 | (uint16_t)(buffer_t[idev][igio * 2 + 1]));
                         
-                        temperatures_arr[idev][igio] = -(~volt + 1) * Config::V_LSB_ADC;
+                        temperatures_arr[idev][igio] = -(~volt + 1) * Config::V_LSB_ADC_GPIO;
                     }
                 }
 
@@ -385,7 +392,7 @@ namespace PUTM
                 {
                     int16_t volt = ((uint16_t)(buffer_v[0][ich * 2]) << 8 | (uint16_t)(buffer_v[0][ich * 2 + 1]));
                     
-                    voltages_arr[Config::CELL_COUNT_PER_DEVICE - 1 - ich] = -(~volt + 1) * Config::V_LSB_ADC;
+                    voltages_arr[Config::CELL_COUNT_PER_DEVICE - 1 - ich] = -(~volt + 1) * Config::V_LSB_ADC_CELL;
                 }
 
                 uint8_t buffer_t[1][TEMP_DATA_COUNT] { 0 };
@@ -399,7 +406,7 @@ namespace PUTM
                 {
                     int16_t volt = ((uint16_t)(buffer_t[0][igio * 2]) << 8 | (uint16_t)(buffer_t[0][igio * 2 + 1]));
                     
-                    temperatures_arr[igio] = -(~volt + 1) * Config::V_LSB_ADC;
+                    temperatures_arr[igio] = -(~volt + 1) * Config::V_LSB_ADC_GPIO;
                 }
 
                 return HAL_OK;

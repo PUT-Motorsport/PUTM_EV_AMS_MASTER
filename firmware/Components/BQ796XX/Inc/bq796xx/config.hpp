@@ -27,6 +27,8 @@ namespace PUTM
         /* Rx timeout represented in baudblocks */
         constexpr static inline uint32_t RX_TIMEOUT_BAUDBLOCKS = (uint32_t)((double)T_RX_TIMEOUT * (double)DEFAULT_BAUDRATE / 1'000'000.0);
         /* uV per bit */
-        constexpr static inline double V_LSB_ADC = 190.73e-6;
+        constexpr static inline double V_LSB_ADC_CELL = 190.73e-6;
+        /* uV per bit */
+        constexpr static inline double V_LSB_ADC_GPIO = 152.59e-6;
     }
 }
