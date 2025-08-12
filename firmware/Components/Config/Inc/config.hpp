@@ -8,6 +8,9 @@ namespace PUTM
 {
     namespace Config
     {
+        /* DEV CONFIG */
+        static constexpr bool TURN_OFF_ERRORS { false };
+
         /* Bq796xx stack size */
         static constexpr size_t STACK_SIZE { 10 };
         /* Cell count per bq796xx */
@@ -19,18 +22,18 @@ namespace PUTM
         /* Total temperatures count in stack */
         static constexpr size_t TOTAL_TEMPERATURES_COUNT { STACK_SIZE * TEMPERATURES_COUNT_PER_DEVICE };
         /* Cell max voltage in [mV] */
-        static constexpr uint32_t CELL_MAX_VOLTAGE { 4200 };
+        static constexpr uint32_t CELL_MAX_VOLTAGE { 4280 };
         /* Cell min voltage in [mV] */
         static constexpr uint32_t CELL_MIN_VOLTAGE { 3000 };
         /* Overvoltage trigger in [mV] */
-        static constexpr uint32_t CELL_OV { CELL_MAX_VOLTAGE - 50 };
+        static constexpr uint32_t CELL_OV { CELL_MAX_VOLTAGE - 20 };
         /* Undervoltage trigger in [mV] */
-        static constexpr uint32_t CELL_UV { CELL_MIN_VOLTAGE + 50 };
-        //FIXME: config will definetly be to be repaired
+        static constexpr uint32_t CELL_UV { CELL_MIN_VOLTAGE + 20 };
         /* Overtemperature trigger in [degC] */
-        static constexpr float CELL_OT { 50.f };// { 100.f };
+        static constexpr float CELL_OT_FLOAT { 50.f };
         /* Undertemperature trigger in [degC] */
-        static constexpr float CELL_UT { 0.f };
+        static constexpr float CELL_UT_FLOAT { 0.f };
+        /* Max cell balancing time */
         
         /* Voltage that is considered "High Voltage" according to FSG rules */
         static constexpr float MIN_HV_THRESH { 60.f };
@@ -43,71 +46,85 @@ namespace PUTM
         /* Max current treshold for short timeout */
         static constexpr float MAX_CURRENT_THRESH_SHORT { 200.f };
         /* Min current treshold for short timeout */
-        static constexpr float MIN_CURRENT_THRESH_SHORT { -MAX_CURRENT_THRESH_LONG };
+        static constexpr float MIN_CURRENT_THRESH_SHORT { -50.f };
 
-        // FIXME: this is a temporary value, change it to real when done with tests
         /* Max voltage on battery in [V] */
         static constexpr float MAX_BAT_VOLTAGE { TOTAL_CELL_COUNT * CELL_MAX_VOLTAGE / 1000.f };
         /* Max charging voltage in [V] */
-        static constexpr float CHARGING_VOLTAGE { TOTAL_CELL_COUNT * CELL_OV / 1000.f };
-        // FIXME: this is a temporary value, change it to real when done with tests
+        static constexpr float MAX_CHARGING_VOLTAGE { TOTAL_CELL_COUNT * CELL_OV / 1000.f };
+        /*  */
+        static constexpr float MAX_CHARGING_CURRENT { 12.f }; // [A] FIXME: change to real value
         /* Min voltage on battery */
 #ifdef DEBUG_TEST_MODE_1
         static constexpr float MIN_BAT_VOLTAGE { 200.f };
 #else
-        static constexpr float MIN_BAT_VOLTAGE { 450.f };
+        static constexpr float MIN_BAT_VOLTAGE { TOTAL_CELL_COUNT * CELL_MIN_VOLTAGE / 1000.f };
 #endif /* DEBUG_TEST_MODE_1 */
 
         /* Stack COM status poll interval in [ms] */
-        static constexpr uint32_t STACK_COM_STATUS_POLL_INTERVAL { 50 };
+        // static constexpr uint32_t STACK_COM_STATUS_POLL_INTERVAL { 50 };
         /* Stack COM data poll interval in (data is polled one at a time every interval) [ms] */
-        static constexpr uint32_t STACK_COM_DATA_POLL_INTERVAL { 100 };
+        static constexpr uint32_t STACK_COM_DATA_POLL_INTERVAL { 5 };
 
         /* Stack timeout configuration */
-        static constexpr uint32_t STACK_COM_TIMEOUT { 20 };
+        static constexpr uint32_t STACK_COM_TIMEOUT { 10 }; // [ms]
 
-        // FIXME: maybe shorten the timeout on the board so the soft timeout can be lenghthen
         /* Error check timeout, time after which an persistent error will be considered an true error */
         static constexpr uint32_t STANDARD_ERROR_TIMEOUT { 200 };
 
         /* Current error timeout, time after which an current error will be considered an true error */
         static constexpr uint32_t CURRENT_ERROR_LONG_TIMEOUT { 2000 };
 
-        // FIXME: for test i changed it to 4000ms change it back to 250ms when done with tests
-        /* Precharge min waiting time expresed in [ms], if caps charge too slowly this shit will timeout */
-        static constexpr uint32_t MIN_PRECHARGE_WAIT { 2000 };
+        /**
+         *	Precharge min waiting time expresed in [ms], if caps charge too slowly this shit will timeout,
+         *	also used for min precharge wait, so the airs dont change states to fast
+         */
+        static constexpr uint32_t MIN_PRECHARGE_WAIT { 500 };
         
         /* Precharge max wating time expresed in [ms], if caps charge too slowly this shit will timeout */
-        static constexpr uint32_t MAX_PRECHARGE_WAIT { 6000 };
+        static constexpr uint32_t MAX_PRECHARGE_WAIT { 10000 };
 
-        /* Which channel is used for car voltage measurement from 0 to 3*/
+        /** 
+         *	The air state machine starts in off state by default if it detects the charger it will exit the off 
+	 *	state and enter the idle state
+         */
+        static constexpr uint32_t STATE_MACHINE_OFF_TO_IDLE_WAIT { 200 };
+        /**
+         *	Idle state hiccup wait time - airs cant be turned on faster than once per second
+         */
+        static constexpr uint32_t STATE_MACHINE_IDLE_TO_PRECHARGE_WAIT { 1000 };
+
+        /* Which channel is used for car voltage measurement from 0 to s3*/
         static constexpr uint32_t CAR_VOLTAGE_CHANNEL { 2 };
         /* Which channel is used for accumulator voltage measurement from 0 to 3*/
         static constexpr uint32_t ACU_VOLTAGE_CHANNEL { 1 };
         /* Which channel is used to measure current */
         static constexpr uint32_t CURRENT_CHANNEL { 0 };
 
-        // FIXME: topic for much later but maybe do a self offset/gain calibration
+        // TODO: topic for much later but maybe do a self offset/gain calibration
         static constexpr float CAR_VOLTAGE_OFFSET { 0.f };
-        static constexpr float CAR_VOLTAGE_GAIN { -1000.f / 2 }; //idk needs more calibration
+        static constexpr float CAR_VOLTAGE_GAIN { 1000.f / 2 }; //idk needs more calibration
         static constexpr float ACU_VOLTAGE_OFFSET { 0.f };
-        static constexpr float ACU_VOLTAGE_GAIN { -1000.f / 2 };
+        static constexpr float ACU_VOLTAGE_GAIN { 1000.f / 2 };
         static constexpr float CURRENT_OFFSET { 371.25 };
         /* Current measurement gain * 3 is for the resistor divider on the input */
         static constexpr float CURRENT_GAIN { 1.f / (2.f / 300.f) * 3.f };
 
-        /* Cell nominal capacity */
-        static constexpr float CELL_NOMINAL_CAPACITY { 7.25439f };
+        /* Cell nominal capacity in Ah */
+        static constexpr float CELL_NOMINAL_CAPACITY { 13.0f };
+        static constexpr float CELL_INTERNAL_RESISTANCE { 0.005f };
 
         /* Quality of life */
         static constexpr float CELL_OV_FLOAT { static_cast<float>(CELL_OV) / 1000.f };
         static constexpr float CELL_UV_FLOAT { static_cast<float>(CELL_UV) / 1000.f };
 
         /* JSON size buffer */
-        static constexpr uint32_t JSON_BUFFER_SIZE { 2048 };
+        static constexpr uint32_t TX_JSON_BUFFER_SIZE { 8 * 1024U };
+        static constexpr uint32_t RX_JSON_BUFFER_SIZE { 1024U };
+        static constexpr uint32_t RX_UART_BUFFER_SIZE { 128U };
 
-        static constexpr float POLYNOMIAL_OCV[] { 2034.7852020f, -9878.314180f, 20304.286795f, -22998.124140f, 15652.018744f, -6548.995145f, 1657.8141810f, -240.64692800f, 18.231580000f,  3.143621f };
-
+        // static constexpr float POLYNOMIAL_OCV[] { 2034.7852020f, -9878.314180f, 20304.286795f, -22998.124140f, 15652.018744f, -6548.995145f, 1657.8141810f, -240.64692800f, 18.231580000f,  3.143621f };
+        static constexpr float POLYNOMIAL_OCV[] { -3.157435e+02, 1.313878e+03, -2.245027e+03, 2.032497e+03, -1.052418e+03, 3.165986e+02, -5.425675e+01, 5.359099e+00, 3.369238e+00 };
         // static constexpr float POLYNOMIAL_T_R[] { 2.828902e+02, 2.818811e-02, -1.131373e-05, 3.281373e-09, -6.383295e-13, 8.324239e-17, -7.271016e-21, 4.187227e-25, -1.522588e-29, 3.163823e-34, -2.860511e-39 };
         //static constexpr float POLYNOMIAL_T_R[] { 2.828902e+02, 2.818811e-02, -1.131373e-05, 3.281373e-09, -6.383295e-13, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f };
         // polynomial for T(R) where T is in K and R is in kOhm

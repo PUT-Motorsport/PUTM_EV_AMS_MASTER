@@ -3,9 +3,17 @@
 #include "cstdio"
 #include "usart.h"
 
+
 #include "error_checker.hpp"
 
 using namespace PUTM;
+
+void Error::reset()
+{
+    this->accumulator = 0;
+    this->last_code = 0;
+    this->raised = false;
+}
 
 void ErrorChecker::add_errors_helper(Error *error)
 {
@@ -34,9 +42,9 @@ bool ErrorChecker::check_errors(uint32_t tick)
     while(error != nullptr)
     {
         /* Check if error is valid */
-        if(error->condition == nullptr) Error_Handler();
+        if(error->condition == nullptr) return true;
         /* Check if error is valid */
-        if(error->name == nullptr) Error_Handler();
+        if(error->name == nullptr) return true;
         
         /* Check for errors */
         uint32_t code = error->condition();
@@ -46,6 +54,7 @@ bool ErrorChecker::check_errors(uint32_t tick)
         if(code != 0)
         {
             error->accumulator += time;
+            if(error->accumulator > error->timeout) error->accumulator = error->timeout;
         }
         else
         {
@@ -54,34 +63,20 @@ bool ErrorChecker::check_errors(uint32_t tick)
         }
         error->timestamp = tick;
         
-        
-        // /* Print acu voltage */
-        // char buffer[128] { 0 };
-        // snprintf(buffer, sizeof(buffer), "Info: accumulator: %d\n", error->accumulator);
-        // HAL_UART_Transmit(&huart1, (uint8_t*)buffer, strlen(buffer), 100);
-        // snprintf(buffer, sizeof(buffer), "Info: error name: %s\n", error->name);
-        // HAL_UART_Transmit(&huart1, (uint8_t*)buffer, strlen(buffer), 100);
-        /* Check for timeout */
-        if(error->accumulator > error->timeout)
+        if(error->accumulator >= error->timeout) // and not error->raised
         {
-            error_found = true;
-            if(next_raised_error == nullptr)
-            {
-                /* Begin listing */
-                next_raised_error = error;
-                last_raised_error = error;
-            }
-            //FIXME: This may not work as expected, if the error is not added to the list, it will be added again
-            /* Prevent looping */
-            else if(error->added_to_raised_list == false)
-            {
-                /* Add to list */
-                last_raised_error->next_raised_error = error;
-                last_raised_error = error;
-            }
-            error->added_to_raised_list = true;
-            error->accumulator = 0;
             error->last_code = code;
+            error->raised = true;
+            error_found = true;
+            if(error->callback != nullptr)
+            {
+                error->callback(error, code);
+            }
+        }
+        else if (error->accumulator <= error->timeout / 2)
+        {
+            error->raised = false;
+            error->last_code = 0;
         }
         error = error->next_error;
     }
@@ -89,37 +84,46 @@ bool ErrorChecker::check_errors(uint32_t tick)
     return error_found;
 }
 
-Error* ErrorChecker::get_next_error()
+
+ErrorChecker::Iterator ErrorChecker::begin()
 {
-    /* Check if error is valid */
-    if(next_raised_error == nullptr) return nullptr;
+    Error* error = next_error;
+    while(error != nullptr) 
+    {
+        if(error->raised) break;
+        error = error->next_error; 
+    }
+    return Iterator(error);
+}
+ErrorChecker::Iterator ErrorChecker::end()
+{
+    return Iterator(nullptr);
+}
 
-    /* Make shallow copy */
-    //FIXME: Make shallow copy of the error without the pointers inside, maybe use a shared_ptr or a unique_ptr
-    raised_error_copy = *next_raised_error;
-    
-    if(raised_error_copy.parse == nullptr)
+ErrorChecker::Iterator& ErrorChecker::Iterator::operator++()
+{
+    Error* error = this->current;
+    if(error != nullptr) error = error->next_error;
+    while(error != nullptr) 
     {
-        raised_error_copy.parse = [](uint32_t code) -> const char*
-        {
-            return "No parser";
-        };
+        if(error->raised) break;
+        error = error->next_error;
     }
+    this->current = error;
+    return *this;
+} 
 
-    /* End list */
-    if(next_raised_error == last_raised_error) 
-    {
-        next_raised_error = nullptr;    
-        last_raised_error = nullptr;
-    }
-    /* Iterate list */
-    else
-    {
-        Error *buffer = next_raised_error->next_raised_error;
-        next_raised_error->next_raised_error = nullptr;
-        next_raised_error->added_to_raised_list = false;
-        next_raised_error = buffer;
-    }
-    
-    return &raised_error_copy;
+bool ErrorChecker::Iterator::operator==(const Iterator& other) const
+{
+    return current == other.current;
+}
+
+bool ErrorChecker::Iterator::operator!=(const Iterator& other) const
+{
+    return current != other.current;
+}
+
+Error& ErrorChecker::Iterator::operator*() const
+{
+    return *current;
 }

@@ -1,9 +1,12 @@
 #pragma once
 
 #include "main.h"
+#include "stm32h5xx_hal_def.h"
 #include "usart.h"
 #include "tx_api.h"
 #include "cstdio"
+#include "functional"
+#include <cstdint>
 
 
 enum struct UartStatus : uint8_t
@@ -95,10 +98,22 @@ private:
     {
         if(huart->UserData == nullptr) Error_Handler();
         TX_SEMAPHORE *semaphore = (TX_SEMAPHORE*)huart->UserData;
+
         huart->RxCpltCallback = HAL_UART_RxCpltCallback;
         huart->UserData = nullptr;
+
         tx_semaphore_put(semaphore);   
     };
+    pUART_RxEventCallbackTypeDef async_rx_unknown_callback = [](UART_HandleTypeDef* huart, uint16_t pos)
+    {
+        if(huart->UserData2 == nullptr) Error_Handler();
+        std::function<void(size_t)> *callback = (std::function<void(size_t)>*)huart->UserData2;
+        huart->RxEventCallback = HAL_UARTEx_ReceiveToIdle_DMA;
+        huart->UserData2 = nullptr; 
+        callback->operator()(pos); // Call the callback function
+    };
+
+    std::function<void(size_t)>* async_rx_unknown_callback_callback;
 public:
     /**
      * 	@brief 	Constructor for Uart wrapper
@@ -240,14 +255,32 @@ public:
      */
     HAL_StatusTypeDef await_rx_dma(uint8_t *rx_data, size_t size, size_t timeout = 100)
     {
+        if(huart->RxCpltCallback != HAL_UART_RxCpltCallback) return HAL_BUSY;
         huart->RxCpltCallback = rx_callback;
         huart->UserData = (void*)&semaphore;
         if(HAL_UART_Receive_DMA(huart, rx_data, size) != HAL_OK) return HAL_ERROR;
         if(tx_semaphore_get(&semaphore, timeout) != 0) 
         { 
             HAL_UART_Abort(huart); 
+            huart->RxCpltCallback = HAL_UART_RxCpltCallback; // Reset the callback to default
+            huart->UserData = nullptr; // Reset UserData
             return HAL_TIMEOUT;
         }
+        return HAL_OK;
+    }
+public:
+    /**
+     * 	@brief 	This function gets the UART state
+     * 	@retval	UartState
+     */
+    HAL_StatusTypeDef async_rx_unknown_dma(uint8_t *rx_data, size_t size, std::function<void(size_t)> *callback)
+    {
+        // if(huart->RxCpltCallback != HAL_UART_RxCpltCallback) return HAL_BUSY; // If the callback is already set, return busy
+        // this->async_rx_unknown_callback_callback = callback;
+        if(huart->UserData2 != nullptr) return HAL_BUSY; // If UserData2 is already set, return error
+        huart->UserData2 = (void*)callback; // Store the callback in UserData2
+        huart->RxEventCallback = async_rx_unknown_callback;
+        if(HAL_UARTEx_ReceiveToIdle_DMA(huart, rx_data, size) != HAL_OK) return HAL_ERROR;
         return HAL_OK;
     }
 public: 
@@ -262,6 +295,7 @@ public:
      */
     HAL_StatusTypeDef await_tx_rx_dma(uint8_t *tx_data, size_t tx_size, uint8_t *rx_data, size_t rx_size, size_t timeout = 100)
     {
+        if(huart->RxCpltCallback != HAL_UART_RxCpltCallback) return HAL_BUSY;
         // huart->TxCpltCallback = tx_callback;
         huart->RxCpltCallback = rx_callback;
         huart->UserData = (void*)&semaphore;
@@ -270,6 +304,8 @@ public:
         if(tx_semaphore_get(&semaphore, timeout) != 0) 
         { 
             HAL_UART_Abort(huart); 
+            huart->RxCpltCallback = HAL_UART_RxCpltCallback; // Reset the callback to default
+            huart->UserData = nullptr; // Reset UserData
             return HAL_TIMEOUT;
         }
         return HAL_OK;

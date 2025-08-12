@@ -21,6 +21,7 @@ with open(hal_uart_header_path, "r") as f:
 
 # Flag to check if UserData exists
 user_data_exists = False
+user_data2_exists = False
 # Flag to check if we are inside the UART_HandleTypeDef structure
 inside_uart_handle = False
 # Line number where UART_HandleTypeDef starts
@@ -42,18 +43,21 @@ for i, line in enumerate(content):
         if "void* UserData;" in line:
             user_data_exists = True
             break
+        if "void* UserData2;" in line:
+            user_data2_exists = True
+            break
         # Check for the end of the structure
         if "}" in line and not line.strip().startswith("/*"):
             inside_uart_handle = False
 
 # If UserData does not exist, add it
-if not user_data_exists and uart_handle_start != -1:
+if not user_data_exists and not user_data2_exists and uart_handle_start != -1:
     print("UserData not found in UART_HandleTypeDef. Adding it...")
     # Find the line to insert UserData (before the end of the structure)
     for i in range(uart_handle_start, len(content)):
         if "}" in content[i] and not content[i].strip().startswith("/*"):
             # Insert UserData before the closing brace
-            content.insert(i, "  void* UserData;  /* User-defined data */\n")
+            content.insert(i, "  void* UserData;  /* User-defined data */\n  void* UserData2;  /* Additional user-defined data */\n")
             break
 
     # Write the modified content back to the file

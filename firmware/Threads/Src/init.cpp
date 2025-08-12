@@ -21,7 +21,7 @@ static constexpr size_t main_thread_pool_size { 4096U };
 uint8_t main_thread_pool[main_thread_pool_size];
 
 TX_THREAD usb_com_thread;
-static constexpr size_t usb_com_thread_pool_size { 4096U };
+static constexpr size_t usb_com_thread_pool_size { 12 * 1024U };
 uint8_t usb_com_thread_pool[usb_com_thread_pool_size];
 
 // TX_THREAD usb_tx_thread;
@@ -60,7 +60,7 @@ VOID init()
     // tx_thread_create(&usb_tx_thread, (CHAR*)"USB TX thread", usb_tx_thread_entry, 0U, usb_tx_thread_pool, usb_tx_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
     // tx_thread_create(&usb_rx_thread, (CHAR*)"USB RX thread", usb_rx_thread_entry, 0U, usb_rx_thread_pool, usb_rx_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
     tx_thread_create(&car_can_thread, (CHAR*)"Other COM thread", car_can_thread_entry, 0U, car_can_thread_pool, car_can_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
-    tx_thread_create(&charger_can_thread, (CHAR*)"Charger COM thread", charger_can_thread_entry, 0U, charger_can_thread_pool, charger_can_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
+    tx_thread_create(&charger_can_thread, (CHAR*)"Charger COM thread", charger_thread_entry, 0U, charger_can_thread_pool, charger_can_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
 
     tx_semaphore_create(&data_semaphore, (CHAR*)"Data semaphore", 0U);
     

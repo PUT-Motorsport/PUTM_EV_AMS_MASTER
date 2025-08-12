@@ -12,6 +12,7 @@ set(TASK_LIBRARY_SRC
     ${CMAKE_CURRENT_SOURCE_DIR}/Src/main_thread.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Src/com/charger_state_machine.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/Src/com_thread.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/Src/charger_thread.cpp
 )
 
 add_library(TASK_LIBRARY INTERFACE)

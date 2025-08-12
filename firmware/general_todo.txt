@@ -1,0 +1,3 @@
+TODO: use string views, 
+TODO: ? use mutexes ( well in an rtos a racing condition is rare but gotta do it properly )
+TODO: for parsing in the future try using strings with custom allocator for azure

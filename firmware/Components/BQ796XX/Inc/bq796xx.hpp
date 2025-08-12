@@ -2,6 +2,7 @@
 
 #include "array"
 
+#include "stm32h5xx_hal_def.h"
 #include "tx_api.h"
 #include "main.h"
 #include "usart.h"
@@ -51,7 +52,7 @@ namespace PUTM
                 Broadcast = 0b01000000
             };
         private:
-            template<CommunicationMode COMMUNICATION_TYPE, size_t DATA_COUNT> 
+            template<CommunicationMode COMMUNICATION_TYPE, size_t DATA_COUNT> requires (DATA_COUNT <= 8 and DATA_COUNT >= 1)
             HAL_StatusTypeDef write(uint8_t (&data)[DATA_COUNT], uint16_t reg_address, uint8_t dev_address = 1)
             {
                 using enum CommunicationMode;
@@ -149,7 +150,7 @@ namespace PUTM
                 
                 if(wake_up() != HAL_OK) return HAL_ERROR;  
                 
-                tx_thread_sleep(5);
+                tx_thread_sleep(10);
 
                 /* cmd wake up slaves */
                 write<Single>(Utils::convert_to<uint8_t>((Control1){ .send_wake = true }), 
@@ -157,13 +158,13 @@ namespace PUTM
                               0);
 
                 /* wait ~15ms */
-                tx_thread_sleep(20);
+                tx_thread_sleep(30);
 
                 /* reset all devices */
                 write<Stack>(Utils::convert_to<uint8_t>((Control1){ .soft_reset = true }), 
                              Utils::address_of<Control1>());
 
-                tx_thread_sleep(10);
+                tx_thread_sleep(30);
 
                 /* dummy write 0x00, sync internal dlls */
                 for(size_t step = 0; step < 8; step++)
@@ -193,21 +194,21 @@ namespace PUTM
                     read<Stack>(buffer, 0x343 + step);
                 }
 
-                // FIXME: no receive verification
                 /* verify */
                 {
                     [[maybe_unused]] uint8_t buffer[Config::STACK_SIZE][1] { 0 };
                     read<Stack>(buffer, 0x306);  
                 }
 
-
                 /* init tsref first to allow it to settle */
                 write<Stack>(convert_to<uint8_t>((Control2){ .tsref_en = true }), 
                              address_of<Control2>());
 
-                /* TODO: do it properly >.>, for now set all on*/
                 /* init voltage measurement, set active cells in series */
-                write<Stack>(0xa, 0x0003);
+                {
+                    uint8_t actice_cells = (uint8_t)(Config::CELL_COUNT_PER_DEVICE - 6);
+                    write<Stack>(actice_cells, 0x0003);
+                }
 
                 /* init gpio adc measurement, set all channels to adc mode */
                 {
@@ -222,33 +223,62 @@ namespace PUTM
                     write<Stack>(data, address_of<GPIOConf1>());
                 }
 
+                /* set default cell balancing voltage to 4V */
+                // write<Stack>(0x3f, 0x032A);
+
+                /* set up auto balancing */
+                {
+                    BalCtrl2 bal_ctrl_2 = 
+                    {
+                        .auto_bal = true,
+                    };
+                    write<Stack>(convert_to<uint8_t>(bal_ctrl_2), address_of<BalCtrl2>());
+                }
+
+                /* set balancing duty */
+                // write<Stack>(0x2, 0x032e);
+
                 /* init ovuv */
                 {
                     uint32_t undervoltage = std::clamp(Config::CELL_UV, 1200ul, 3100ul);
-                    // FIXME: fuuuuuck
+                    // TODO: fuuuuuck
                     /* this one is complicated... for now leave it like that */
                     uint32_t overvoltage = std::clamp(Config::CELL_OV, 4175ul, 4475ul);
                     
                     uint8_t data1[2]
                     {
-                        (uint8_t)(((undervoltage - 1200) / 50) & 0x3f),
-                        (uint8_t)((((overvoltage - 4175) / 25) + 0x22) & 0x3f)
+                        // (uint8_t)(((undervoltage - 1200) / 50) & 0x3f),
+                        // (uint8_t)((((overvoltage - 4175) / 25) + 0x22) & 0x3f)
+                        0x24,
+                        0x23
                     };
 
                     /* write to ov uv threshold registers */
                     write<Stack>(data1, 0x0009);
+                    
+                    /* disable unused channels */
+                    uint8_t data2[2] = { 0 };
+                    for(size_t i = Config::CELL_COUNT_PER_DEVICE; i < 16; i++)
+                    {
+                        size_t index = i / 8;
+                        uint8_t bit = (uint8_t)(i % 8);
+                        data2[index] |= (uint8_t)(1 << bit);
+                    }
+                    
+                    std::swap(data2[0], data2[1]);
+
+                    write<Stack>(data2, 0x000C);
 
                     /* enable ovuv */
-                    uint8_t data2 = convert_to<uint8_t>((OVUVCtrl){ .ovuv_mode = ScanMode::RoundRobin, .ovuv_go = true });
+                    uint8_t data3 = convert_to<uint8_t>((OVUVCtrl){ .ovuv_mode = ScanMode::RoundRobin, .ovuv_go = true });
                     
                     /* send twice, bq requires another 'go' cmd when setting are changed */
-                    write<Stack>(data2, address_of<OVUVCtrl>());
-                    write<Stack>(data2, address_of<OVUVCtrl>());
+                    write<Stack>(data3, address_of<OVUVCtrl>());
+                    write<Stack>(data3, address_of<OVUVCtrl>());
                 }
 
                 /* init otut */
                 {
-                    // FIXME: maybe change it in the future to be more reliant on the config?
                     uint8_t undertemperature = 70ui8; // default 70%
                     uint8_t overtemperature = 30ui8; // default 30%
                     undertemperature = std::clamp(undertemperature, 66ui8, 80ui8);
@@ -407,6 +437,228 @@ namespace PUTM
                     int16_t volt = ((uint16_t)(buffer_t[0][igio * 2]) << 8 | (uint16_t)(buffer_t[0][igio * 2 + 1]));
                     
                     temperatures_arr[igio] = -(~volt + 1) * Config::V_LSB_ADC_GPIO;
+                }
+
+                return HAL_OK;
+            }
+        public:
+            /**
+             *  @brief 	Balance cells, this function will set balancing time to 0 and start balancing
+             *          for the given cells, it will also set balancing time to 60s
+             *  @param  balance_arr array of balancing cells, 0 = do not balance, 1 = balance
+             *  @param  device device address, 0 = comm device, 1 = first device, 2 = second device, etc.
+             *  @retval	HAL_OK when done, HAL_BUSY when balancing in progress, HAL_ERROR on fail
+             */
+            HAL_StatusTypeDef start_manual_balancing(bool (&balance_arr)[Config::CELL_COUNT_PER_DEVICE], 
+                                                     uint8_t device)
+            {
+                using enum CommunicationMode;
+
+                using namespace Utils;
+                using namespace Regs;
+                using namespace Types;
+                
+                if(device >= Config::STACK_SIZE) return HAL_ERROR;
+                if(device == 0) return HAL_ERROR;
+
+                if(balance_arr == nullptr) return HAL_ERROR;
+
+                /* return error if more than two consecutive cells are being balance at the same time */
+                size_t consecutive_cells = 0;
+                for(size_t i = 0; i < Config::CELL_COUNT_PER_DEVICE; i++)
+                {
+                    if(balance_arr[i])
+                    {
+                        consecutive_cells++;
+                        if(consecutive_cells > 2) return HAL_ERROR; // more than two consecutive cells
+                    }
+                    else
+                    {
+                        consecutive_cells = 0;
+                    }
+                }
+                /* return error if more than 8 cells are being balance at the same time */
+                size_t balancing_cells = 0;
+                for(size_t i = 0; i < Config::CELL_COUNT_PER_DEVICE; i++)
+                {
+                    if(balance_arr[i])
+                    {
+                        balancing_cells++;
+                        if(balancing_cells > 8) return HAL_ERROR; // more than 8 cells
+                    }
+                }
+                if(balancing_cells == 0) return HAL_ERROR; // no cells to balance
+                
+                // if(Config::CELL_COUNT_PER_DEVICE > 0)
+                /* set balancing time to 60s */
+                {
+                    // if(Config::CELL_COUNT_PER_DEVICE > 0)
+                    {
+                        // TODO: for now leave it at 8
+                        constexpr size_t data1_size = 8;
+                        uint8_t data1[data1_size] { };
+                        /* set cells balanced cells to 0x3 (60s) else to 0x0 */
+                        for(size_t i = 0; i < 8; i++)
+                        {
+                            if(balance_arr[i]) data1[i] = 0x3;
+                            else data1[i] = 0x0;
+                        }
+                        write<Single>(data1, 0x0318, device);
+                    }
+                    if(Config::CELL_COUNT_PER_DEVICE > 8)
+                    {
+                        constexpr size_t data2_size = Config::CELL_COUNT_PER_DEVICE % 8;
+                        uint8_t data2[data2_size] { };
+                        /* set cells balanced cells to 0x3 (60s) else to 0x0 */
+                        for(size_t i = 0; i < data2_size; i++)
+                        {
+                            if(balance_arr[i]) data2[i] = 0x3;
+                            else data2[i] = 0x0;
+                        }
+                        write<Single>(data2, 0x0318 + 8, device);
+                    }
+                }
+                /* "restart" balancing - when balance time is NOT 0 it will start and balance for the set time */
+                {
+                    BalCtrl2 bal_ctrl_2
+                    {
+                        .auto_bal = true,
+                        .bal_go = true
+                    };
+                    // write<Stack>(0x03, address_of<BalCtrl2>());
+                    write<Single>(convert_to<uint8_t>(bal_ctrl_2), address_of<BalCtrl2>(), device);
+                    write<Single>(convert_to<uint8_t>(bal_ctrl_2), address_of<BalCtrl2>(), device);
+                }
+
+                return HAL_OK;
+            }
+        public:
+            HAL_StatusTypeDef read_balancing_status(uint8_t &status,
+                                                    uint8_t device)
+            {
+                using enum CommunicationMode;
+
+                using namespace Utils;
+                using namespace Regs;
+                using namespace Types;
+
+                if(device >= Config::STACK_SIZE) return HAL_ERROR;
+                if(device == 0) return HAL_ERROR;
+
+                /* read balancing status */
+                uint8_t data[1][1] { 0 };
+                read<Single>(data, 0x052B, device);
+                status = data[0][0];
+
+                return HAL_OK;
+            }
+        public:
+            HAL_StatusTypeDef start_auto_balancing()
+            {
+                using enum CommunicationMode;
+
+                using namespace Utils;
+                using namespace Regs;
+                using namespace Types;
+
+                /* set balancing time to max */
+                {
+                    // if(Config::CELL_COUNT_PER_DEVICE > 0)
+                    {
+                        // TODO: for now leave it at 8
+                        constexpr size_t data1_size = 8;
+                        uint8_t data1[data1_size] { };
+                        std::fill(data1, data1 + data1_size, Config::MAX_BALANCING_TIME);
+                        write<Stack>(data1, 0x0318);
+                    }
+                    if(Config::CELL_COUNT_PER_DEVICE > 8)
+                    {
+                        constexpr size_t data2_size = Config::CELL_COUNT_PER_DEVICE % 8;
+                        uint8_t data2[data2_size] { };
+                        std::fill(data2, data2 + data2_size, Config::MAX_BALANCING_TIME);
+                        write<Stack>(data2, 0x0318 + 8);
+                    }
+                }
+                /* "restart" balancing - when balance time is NOT 0 it will start and balance for the set time */
+                {
+                    BalCtrl2 bal_ctrl_2
+                    {
+                        .auto_bal = true,
+                        .bal_go = true
+                    };
+                    // write<Stack>(0x03, address_of<BalCtrl2>());
+                    write<Stack>(convert_to<uint8_t>(bal_ctrl_2), address_of<BalCtrl2>());
+                    write<Stack>(convert_to<uint8_t>(bal_ctrl_2), address_of<BalCtrl2>());
+                }
+
+                return HAL_OK;
+            }
+        public:
+            HAL_StatusTypeDef stop_balancing()
+            {
+                using enum CommunicationMode;
+
+                using namespace Utils;
+                using namespace Regs;
+                using namespace Types;
+
+                /* set balancing time to 0 */
+                // if(Config::CELL_COUNT_PER_DEVICE > 0)
+                {
+                    // TODO: for now leave it at 8
+                    constexpr size_t data1_size = 8;
+                    uint8_t data1[data1_size] { };
+                    std::fill(data1, data1 + data1_size, 0);
+                    write<Stack>(data1, 0x0318);
+                }
+                if(Config::CELL_COUNT_PER_DEVICE > 8)
+                {
+                    constexpr size_t data2_size = Config::CELL_COUNT_PER_DEVICE % 8;
+                    uint8_t data2[data2_size] { };
+                    std::fill(data2, data2 + data2_size, 0);
+                    write<Stack>(data2, 0x0318 + 8);
+                }
+                /* "restart" balancing - when balance time is 0 it will stop */
+                {
+                    BalCtrl2 bal_ctrl_2
+                    {
+                        .auto_bal = true,
+                        .bal_go = true
+                    };
+                    write<Stack>(convert_to<uint8_t>(bal_ctrl_2), address_of<BalCtrl2>());
+                    write<Stack>(convert_to<uint8_t>(bal_ctrl_2), address_of<BalCtrl2>());
+                }
+
+                return HAL_OK;
+            }
+        public:
+            /**
+             *  @brief eebbe
+             *  @param voltage in mV
+             *  @return ebebeb
+             */
+            HAL_StatusTypeDef set_balancing_voltage(uint32_t voltage)
+            {
+                using enum CommunicationMode;
+
+                using namespace Utils;
+                using namespace Regs;
+                using namespace Types;
+
+                /* set voltage */
+                {
+                    uint32_t vcb_done_thresh = std::clamp(2450ui32, voltage, 4000ui32);
+                    uint8_t regval = (uint8_t)(((vcb_done_thresh - 2450) / 25 + 1) & 0x3f);
+
+                    write<Stack>(regval, 0x032A);   
+                }
+                /* restart ovuv */
+                {
+                    uint8_t data = convert_to<uint8_t>((OVUVCtrl){ .ovuv_mode = ScanMode::RoundRobin, .ovuv_go = true });
+                    
+                    /* after init should re quire this only once */
+                    write<Stack>(data, address_of<OVUVCtrl>());
+                    write<Stack>(data, address_of<OVUVCtrl>());
                 }
 
                 return HAL_OK;

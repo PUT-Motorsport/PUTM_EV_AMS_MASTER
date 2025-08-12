@@ -290,6 +290,7 @@ typedef struct __UART_HandleTypeDef
 #endif  /* USE_HAL_UART_REGISTER_CALLBACKS */
 
   void* UserData;  /* User-defined data */
+  void* UserData2;  /* Additional user-defined data */
 } UART_HandleTypeDef;
 
 #if (USE_HAL_UART_REGISTER_CALLBACKS == 1)

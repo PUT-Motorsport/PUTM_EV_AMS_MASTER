@@ -34,6 +34,17 @@ namespace PUTM
 
         namespace Regs
         {
+            struct __packed BalCtrl2 : public Utils::IReg<0x032F>
+            {
+                bool auto_bal : 1 { false };
+                bool bal_go : 1 { false };
+                uint8_t bal_act : 2 { 0b00 };
+                bool otcb_en : 1 { false };
+                bool fltstop_en : 1 { false };
+                bool cb_pause : 1 { false };
+                 uint8_t rsvd : 1 { 0b0 };
+            };
+             
             struct __packed Control1 : public Utils::IReg<0x0309>
             {
                 bool addr_wr : 1 { false };

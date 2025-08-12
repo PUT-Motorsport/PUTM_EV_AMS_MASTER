@@ -1,5 +1,7 @@
 #pragma once
 
+#include "string_view"
+
 #include "main.h"
 
 namespace PUTM
@@ -43,8 +45,11 @@ namespace PUTM
     
     class StateMachine
     {
-    public:
+    private:
         State* current_state { nullptr };
+        /* first/last edge that is generic used for ANY to X state */
+        StateEdge* first_generic_edge { nullptr };
+        StateEdge* last_generic_edge { nullptr };
     public:
         /**
          *  @brief  Udate state machine, call on_update fun
@@ -68,6 +73,12 @@ namespace PUTM
          *  @return Pointer to the current state of the state machine
          */
         State* get_current_state() const;
+    public:
+        /**
+         *  @brief  Get the current state name of the state machine
+         *  @return Current state name
+         */
+        std::string_view get_current_state_name() const;
     private:
         /**
          *  @brief  Add edges helper function
@@ -86,5 +97,17 @@ namespace PUTM
         {
             (add_edges_helper(&edges), ...);
         }
+    public:
+        /**
+         *  @brief  A Any state template can be used for defining and adge from any state to the next state,
+         *          if used as a "next_state" parameter, it will be ignored
+         */
+        static inline State any_state 
+        {
+            .name = "any state",
+            // .on_enter = []() { },
+            // .on_update = []() { },
+            // .on_exit = [](){ }
+        };
     };
 }

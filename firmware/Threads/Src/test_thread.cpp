@@ -218,3 +218,54 @@ VOID test_thread_entry(__unused ULONG thread_input)
     }
 }
 #endif /* TEST_MODE_1 */
+
+#ifndef DEBUG_TEST_MODE_1
+#include "threads.hpp"
+#include "data.hpp"
+#include "config.hpp"
+#include "state_machine.hpp"
+#include "error_checker.hpp"    
+#include "stm32h5xx.h"
+#include "stm32h5xx_hal.h"
+#include "cmath"
+
+// VOID test_thread_entry(__unused ULONG thread_input)
+// {
+//     while(true)
+//     {
+//         tx_thread_sleep(100);
+
+//         if (data.f____me)
+//         {
+//             static constexpr uint32_t SYSMEM_START = 0x0BF97000;
+
+//             __disable_irq();
+
+//             // Stop SysTick
+//             SysTick->CTRL = 0;
+//             // SysTick->LOAD = 0;
+//             // SysTick->VAL  = 0;
+
+//             // Deinit what you used (clocks, peripherals)
+//             // HAL_DeInit();
+//             HAL_RCC_DeInit();
+
+//             // Optional but good hygiene: clear pending NVIC interrupts
+//             for (uint32_t i = 0; i < 8; i++) 
+//             {
+//                 NVIC->ICER[i] = 0xFFFFFFFF;
+//                 NVIC->ICPR[i] = 0xFFFFFFFF;
+//             }
+//             __enable_irq();
+//             // Set MSP from the ROM vector table, then jump to its Reset handler
+//             void (*boot)(void)  = (void (*)(void)) (*((uint32_t *) ((SYSMEM_START + 4))));
+//             __set_MSP(*(uint32_t *)SYSMEM_START);
+
+//             // __DSB(); __ISB();
+//             boot(); // never returns
+
+//             while(true) { }
+//         }
+//     }
+// }
+#endif /* DEBUG_TEST_MODE_1 */

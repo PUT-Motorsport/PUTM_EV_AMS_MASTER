@@ -46,7 +46,11 @@ add_subdirectory(DSP)
 target_link_libraries(${CMAKE_PROJECT_NAME} DSP_LIBRARY)
 message("DSP included in the project")
 
+add_subdirectory(Logger)
+target_link_libraries(${CMAKE_PROJECT_NAME} LOGGER_LIBRARY)
+message("Logger included in the project")
+
 # ArduinoJson
 add_subdirectory(ArduinoJson)
 target_link_libraries(${CMAKE_PROJECT_NAME} ArduinoJson)
-message("Utils included in the project")
+message("ArduinoJson included in the project")

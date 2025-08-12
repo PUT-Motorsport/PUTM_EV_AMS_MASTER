@@ -59,7 +59,7 @@ VOID car_can_thread_entry(ULONG thread_input);
 /**
  *  @brief  Charger can thread, it is used to send data to charger
  */
-VOID charger_can_thread_entry(ULONG thread_input);
+VOID charger_thread_entry(ULONG thread_input);
 
 #ifdef __cplusplus
 }

@@ -48,15 +48,40 @@ constexpr auto r_u_lambda = [](float voltage) -> float
 
 ChargerCanRxController charger_rx;
 
-Uart debug_uart(&huart4);
-
 extern StateMachine air_state_machine;
 extern StateMachine charger_state_machine;  
 
 extern ErrorChecker error_checker;
 
+/**
+ * @brief Entry point for the main thread of the system.
+ *
+ * This function initializes hardware interfaces, resets status LEDs and signals,
+ * and waits for the completion of ADS and BQ device initialization. Once initialization
+ * is complete, it sets up the state of charge (SoC) for each cell, marks the system as
+ * initialized, and enters the main loop.
+ *
+ * In the main loop, the following operations are performed periodically:
+ * - Toggles the "OK" LED to indicate the thread is alive.
+ * - Reads GPIO inputs for TSMS and charger detection.
+ * - Updates the SoC for each cell based on voltage, current, and charger status.
+ * - Calculates the average SoC across all cells.
+ * - Updates cell temperatures using voltage readings and a polynomial evaluation.
+ * - Computes min, max, and average values for cell voltages and temperatures, ignoring
+ *   values outside configured over/under thresholds.
+ * - Updates the AIR state machine.
+ * - Checks for system errors and logs unique errors if detected.
+ * - Toggles the warning LED if a warning is present.
+ * - Updates the main thread's update rate statistics.
+ * - Sleeps for a configured period before repeating.
+ *
+ * @param thread_input Unused thread input parameter.
+ */
 VOID main_thread_entry(__unused ULONG thread_input)
 {
+    static Uart debug_uart(&huart4);
+    static UpdatesCounter updates;
+
     led_wrn.reset();
     led_ok.reset();
     led_err.reset();
@@ -66,6 +91,7 @@ VOID main_thread_entry(__unused ULONG thread_input)
     sig_air_m.set();
 
     init_air_state_machine(&air_state_machine);
+
     init_error_checker(&error_checker);
 
     while(not (data.ads_init_done and data.bq_init_done))
@@ -74,7 +100,7 @@ VOID main_thread_entry(__unused ULONG thread_input)
     }
 
     // init socs
-    for(size_t i = 0; i < Config::STACK_SIZE; i++)
+    for(size_t i = 0; i < Config::STACK_SIZE; i++)  
     {
         for(size_t j = 0; j < Config::CELL_COUNT_PER_DEVICE; j++)
         {
@@ -115,7 +141,7 @@ VOID main_thread_entry(__unused ULONG thread_input)
         /* update true temps */
         for(size_t i = 0; i < Config::STACK_SIZE; i++)
         {
-            for(size_t j = 0; j < Config::CELL_COUNT_PER_DEVICE; j++)
+            for(size_t j = 0; j < Config::TEMPERATURES_COUNT_PER_DEVICE; j++)
             {
                 auto r = r_u_lambda(data.gpio_voltages[i][j]);
                 data.cell_temperatures[i][j] = t_r_poly.evaluate(r) - 273.f;
@@ -124,43 +150,57 @@ VOID main_thread_entry(__unused ULONG thread_input)
 
         /* update min max */
         float max_voltage = 0.0f;
-        float min_voltage = 10.f;
+        float min_voltage = 100.f;
         float max_temperature = 0.0f;
-        float min_temperature = 10.0f;
+        float min_temperature = 100.0f;
+        float accumulator_voltage = 0.0f;
+        float accumulator_temperature = 0.0f;
         for(size_t i = 0; i < Config::STACK_SIZE; i++)
         {
             for(size_t j = 0; j < Config::CELL_COUNT_PER_DEVICE; j++)
             {
                 if(data.cell_voltages[i][j] > max_voltage) max_voltage = data.cell_voltages[i][j];
                 if(data.cell_voltages[i][j] < min_voltage) min_voltage = data.cell_voltages[i][j];
+                if(data.cell_voltages[i][j] > Config::CELL_OV_FLOAT or data.cell_voltages[i][j] < Config::CELL_UV_FLOAT) continue;
+                accumulator_voltage += data.cell_voltages[i][j];
+            }
+            for(size_t j = 0; j < Config::TEMPERATURES_COUNT_PER_DEVICE; j++)
+            {
                 if(data.cell_temperatures[i][j] > max_temperature) max_temperature = data.cell_temperatures[i][j];
                 if(data.cell_temperatures[i][j] < min_temperature) min_temperature = data.cell_temperatures[i][j];
+                if(data.cell_temperatures[i][j] > Config::CELL_OT_FLOAT or data.cell_temperatures[i][j] < Config::CELL_UT_FLOAT) continue;
+                accumulator_temperature += data.cell_temperatures[i][j];
             }
         }
         data.cell_max_temperature = max_temperature;
         data.cell_max_voltage = max_voltage;
         data.cell_min_temperature = min_temperature;
         data.cell_min_voltage = min_voltage;
+        data.cell_avg_voltage = accumulator_voltage / (Config::STACK_SIZE * Config::CELL_COUNT_PER_DEVICE);
+        data.cell_avg_temperature = accumulator_temperature / (Config::STACK_SIZE * Config::TEMPERATURES_COUNT_PER_DEVICE);
 
         /* AIR state machine */
         air_state_machine.update();
 
         /* Error checker */
-        if(error_checker.check_errors(tx_time_get()))
+        if constexpr (Config::TURN_OFF_ERRORS)
         {
-            Error *error = error_checker.get_next_error();
-            while(error != nullptr)
+            data.error = false;
+        }
+        else /* constexpr */
+        {
+            if(error_checker.check_errors(tx_time_get()))
             {
-                error = error_checker.get_next_error();
+                data.error = true;
             }
-            data.error = true;
         }
 
         /* handle warning */
-        if(data.warning)
-        {
-            led_wrn.toggle();
-        }
+        if(data.warning) led_wrn.toggle();
+        if(data.error) led_err.toggle();
+
+        data.update_times.main_updates_per_sec = updates.update(tx_time_get());
+
         tx_thread_sleep(50);
     }
 }

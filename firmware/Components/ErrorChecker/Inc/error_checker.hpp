@@ -1,8 +1,12 @@
 #pragma once
 
 #include "main.h"
+#include "tx_api.h"
+
 #include "limits"
-#include <cstddef>
+#include "cstddef"
+#include "string_view"
+#include "expected"
 
 // TODO: change parse ptr to accept a string buffer and write to it instead of returning a string
 
@@ -18,10 +22,8 @@ namespace PUTM
         friend struct ErrorChecker;
         /* Next error in the list */
         Error *next_error { nullptr };
-        /* Next raised error in the list */
-        Error *next_raised_error { nullptr };
         /* Error added to raised list */
-        bool added_to_raised_list { false };
+        bool raised { false };
         /* Last time stamp at which the error was detected */
         uint32_t timestamp { 0 };
         /* Time accumulator in [ms], its used to abstract the error timeout */
@@ -53,31 +55,16 @@ namespace PUTM
          *          type.
          */
         uint32_t (*condition)(void) { nullptr };
-        /**
-         *  @brief  Pointer to a function which should parse the error code and return a 
-         *          string with the error message.
-         *  @note   This function is optional, it should be used to parse the error code and 
-         *          return a string with the error message. It is advised to use unique error 
-         *          codes for each error sub type.
-         *  @param  code Error code to be parsed
-         *  @return Static string with the error message, it should be a static string.
-         */
-        const char* (*parse)(uint32_t) { nullptr };
-        /**
-         *  @brief  Pointer to a function which will serialize the code with some more information
-         *          
-         */
-        // void (*serialize)(uint32_t, char*, size_t) { nullptr };
 
-        const char* get_error_message()
-        {
-            /* Check if error is valid */
-            if(this->last_code == 0) return "No error???";
-            /* Check if error is valid */
-            if(this->parse == nullptr) return "No parser???";
-            /* Parse the error code and return the error message */
-            return this->parse(this->last_code);
-        }
+        /**
+         *  @brief  Pointer to a function which should be called when the error is raised
+         *  @note   This function is called when the error is raised, it can be used to log the
+         *          error or take some action
+         *  @param  code Error code that was returned by the condition function
+         */
+        void (*callback)(Error* error, uint32_t code) { nullptr };
+
+        void reset();
     };
 
     /**
@@ -116,15 +103,24 @@ namespace PUTM
          */
         bool check_errors(uint32_t tick);
     public:
-        /**
-         *  @brief  If an error was raised, this function will return the next error in the list
-         *  @note   This function should be called when `check_errors` returns true. It will return 
-         *          the next error in the list which was raised. If no error was raised, it will return 
-         *          nullptr.
-         *  @return Pointer to the local copy of next error in the list which was raised, or nullptr 
-         *          if no more errors were detected.
-         */
-        Error* get_next_error();
+        // add iterator support
+        class Iterator
+        {
+        private:
+            Error *current { nullptr };
+        public:
+            Iterator(Error *error) : current(error) { }
+        public:
+            Iterator& operator++();
+        public:
+            bool operator!=(const Iterator& other) const;
+        public:
+            bool operator==(const Iterator& other) const;
+        public:
+            Error& operator*() const;
+        };
+        Iterator begin();
+        Iterator end();
     public:
 #ifdef DEBUG_TEST_MODE_1
     public:
@@ -157,11 +153,5 @@ namespace PUTM
         Error *next_error { nullptr };
         /* Last added error */
         Error *last_error { nullptr };
-        /* Next raised error */
-        Error *next_raised_error { nullptr };
-        /* Last raised error */
-        Error *last_raised_error { nullptr };
-        /* Error local copy */
-        Error raised_error_copy { };
     };
 }

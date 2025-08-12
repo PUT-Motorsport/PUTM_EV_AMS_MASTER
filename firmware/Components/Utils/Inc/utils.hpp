@@ -1,8 +1,10 @@
 #pragma once
 
 #include "cstring"
+#include "string_view"
 
 #include "main.h"
+#include "stm32h5xx_hal_def.h"
 
 namespace Utils
 {
@@ -15,6 +17,37 @@ namespace Utils
     {
         return static_cast<uint8_t>(value);
     }
+
+    /**
+     *  @brief  This function is used to convert an integer to a uint32_t
+     *  @param  `value` integer value to convert
+     *  @return `value` casted to uint8_t 
+     */
+    uint32_t consteval operator ""ui32 (unsigned long long int value)
+    {
+        return static_cast<uint32_t>(value);
+    }
+
+    /**
+     *  @brief  This function is used to convert an time in min value to a uint32_t, ratio for min is 1:60 sec
+     *  @param  `value` integer value to convert
+     *  @return `value` casted to uint8_t 
+     */
+    uint32_t consteval operator ""min (unsigned long long int value)
+    {
+        return static_cast<uint32_t>(value * 60);
+    }
+
+    /**
+     *  @brief  This function is used to convert an time in sec value to a uint32_t, ratio for sec is 1:1 sec
+     *  @param  `value` integer value to convert
+     *  @return `value` casted to uint8_t 
+     */
+    uint32_t consteval operator ""sec (unsigned long long int value)
+    {
+        return static_cast<uint32_t>(value);
+    }
+
 
     /**
      *  @brief  This function is used to convert an integer representing seconds to a used time
@@ -114,4 +147,18 @@ namespace Utils
             static_for<BEGIN + 1, END>(f);
         }
     }
+
+    /**
+     *  @brief  Count updates per second
+     */
+    struct UpdatesCounter
+    {
+        static constexpr size_t HISTORY_COUNT { 4 };
+        uint32_t last_update { 0 };
+        uint32_t last_values[HISTORY_COUNT] { 0 };
+        
+        float update(uint32_t tick);
+    };
+
+    std::string_view get_error_name(HAL_StatusTypeDef error_code);
 }

@@ -30,5 +30,8 @@ namespace PUTM
         constexpr static inline double V_LSB_ADC_CELL = 190.73e-6;
         /* uV per bit */
         constexpr static inline double V_LSB_ADC_GPIO = 152.59e-6;
+        // TODO: ?
+        /* Max balancing time as a raw value */
+        constexpr static inline uint8_t MAX_BALANCING_TIME = 0x1f;
     }
 }

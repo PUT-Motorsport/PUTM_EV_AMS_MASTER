@@ -28,7 +28,7 @@ namespace PUTM
         // using VectorCol = Matrix<3, 1, float>;
         // using VectorRow = Matrix<1, 3, float>;
     private:
-        // FIXME?: last row looks sus
+        // TODO?: last row looks sus
         // TODO: parametrize this shit
         static inline constexpr Matrix A {{{ 1.00000000f, 0.00000000f,  0.00000000f }, 
                                            { 0.00000000f, 1.98899788f, -0.98900757f }, 
@@ -37,12 +37,13 @@ namespace PUTM
                                            { 1.00000000f },
                                            { 0.00000000f }}};
         static inline constexpr Matrix C {{{ 0.00000000f, 2.33058931e-05f, -2.32660122e-05f }}};
-        static inline constexpr float D { 0.00698732f };
+        // static inline constexpr float D { 0.00698732f };
+        static inline constexpr float D { Config::CELL_INTERNAL_RESISTANCE }; 
         static inline constexpr Matrix Q {{{ 0.00020000f, 0.00000000f, 0.00000000f },
                                            { 0.00000000f, 0.02000000f, 0.00000000f },
                                            { 0.00000000f, 0.00000000f, 0.02000000f }}};
         static inline constexpr float R { 2500000.0f };
-        //FIXME: was + but * ?
+        // was + but * ?
         static inline constexpr float R_charging { R * 99.f };
         static inline constexpr Polynomial ocv { Config::POLYNOMIAL_OCV };
         static inline constexpr Polynomial docv = ocv.derivative();
@@ -94,7 +95,7 @@ namespace PUTM
         {
             predict(current);
             correct(voltage, current, charging);
-            x.at(0) = std::clamp(x.at(0), 0.0f, 1.0f);
+            x.at(0) = std::clamp(x.at(0), 0.0f, 1.0f);  
         }
         /**
          *  @brief  Set the state of charge.

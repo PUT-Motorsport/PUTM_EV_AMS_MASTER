@@ -51,7 +51,36 @@ void hv_on()
 
 /* HV on state machine */
 
-/* When state machine has entered the precharge state */
+/* When state machine has entered the off state*/
+/**
+ *  @brief  Off state
+ *  @note   In this state the system is off, no relays are activated and
+ *          no commands are executed, the system is waiting for charger to be plugged if
+ *          the charger is not plugged into charge for some time the system 
+ *          will enter idle state
+ */
+uint32_t off_enter_tick;
+State off
+{
+    .name = "off",
+    .on_enter = []() 
+    {
+        hv_off();
+        off_enter_tick = tx_time_get();
+        data.cmd_hv = false;
+        data.precharge = false;
+        data.hv_on = false;
+    },
+    .on_update = []()
+    {
+        data.cmd_hv = false;
+        data.precharge = false;
+        data.hv_on = false;
+    },
+    // .on_exit = []() { },
+};
+
+/* When state machine has entered the idle state */
 uint32_t idle_enter_tick;
 /**
  *  @brief  Idle state
@@ -70,7 +99,6 @@ State idle
     {
         if(not data.tsms)
         {
-            //TODO edge detection
             data.cmd_hv = false;
         }
     },
@@ -137,7 +165,7 @@ State error
     .on_update = []()
     { 
         // Flash error state
-        led_err.toggle();
+        // led_err.toggle();
         data.precharge = false;
         data.cmd_hv = false;
         // Error_Handler();
@@ -146,14 +174,49 @@ State error
     // .on_exit = [](){ }
 };
 
-StateEdge idle_to_precharge
+// StateEdge any_to_error
+// {
+//     .name = "any -> error",
+//     .condition = []() -> bool
+//     {
+//         return data.error;
+//     },
+//     .prev_state = &StateMachine::any_state,
+//     .next_state = &error
+// };
+
+StateEdge off_to_idle
 {
+    .name = "off -> idle",
+    .condition = []() -> bool
+    {
+        uint32_t time = tx_time_get() - off_enter_tick;
+        return (not data.on_charger and time > Config::STATE_MACHINE_OFF_TO_IDLE_WAIT);
+    },
+    .prev_state = &off,
+    .next_state = &idle,
+};
+
+StateEdge idle_to_off
+{
+    .name = "idle -> off",
+    .condition = []() -> bool
+    {
+        return (data.on_charger);
+    },
+    .prev_state = &idle,
+    .next_state = &off,
+};
+
+StateEdge idle_to_precharge
+{ 
     .name = "idle -> precharge",
     .condition = []() -> bool
     { 
         uint32_t time = tx_time_get() - idle_enter_tick;
+        // use the error?
         return (data.car_voltage <= Config::MIN_HV_THRESH and 
-                data.tsms and data.cmd_hv and time > 1000); 
+                data.tsms and data.cmd_hv and time > Config::STATE_MACHINE_IDLE_TO_PRECHARGE_WAIT); 
     },
     .prev_state = &idle,
     .next_state = &precharge,
@@ -189,7 +252,7 @@ static StateEdge precharge_to_idle
     .condition = []() -> bool
     {
         uint32_t time = tx_time_get() - precharge_enter_tick;
-        return ((data.cmd_hv and time > 1000) or not data.tsms);// or not data.cmd_hv
+        return ((data.cmd_hv and time > Config::STATE_MACHINE_IDLE_TO_PRECHARGE_WAIT) or not data.tsms);// or not data.cmd_hv
     },
     .prev_state = &precharge,
     .next_state = &idle,
@@ -200,7 +263,6 @@ StateEdge precharge_to_error
     .name = "precharge -> error",
     .condition = []() -> bool
     { 
-        //FIXME: add a manual error rise for the cases when this condition is true
         // float car_thresh = data.acu_voltage * Config::CAR_CHARGE_THRESH;
         uint32_t time = tx_time_get() - precharge_enter_tick;
 
@@ -220,13 +282,13 @@ StateEdge on_to_idle
     .name = "on -> idle",
     .condition = []() -> bool
     {
-        return (data.cmd_hv or not data.tsms);
+        return (data.tsms);
     },
     .prev_state = &on,
     .next_state = &idle,
 };
 
-//FIXME: add discharge state
+//TODO: add discharge state
 // StateEdge on_to_discharge
 // {
 //     .name = "on -> discharge",
@@ -254,6 +316,8 @@ StateMachine air_state_machine;
 void init_air_state_machine(StateMachine *sm)
 {
     sm->add_edges(
+        off_to_idle,
+        idle_to_off,
         idle_to_precharge, 
         idle_to_error, 
         precharge_to_on, 
@@ -264,5 +328,5 @@ void init_air_state_machine(StateMachine *sm)
 #ifdef TEST_MODE_1
     sm->add_edges(reset);
 #endif /* TEST_MODE_1 */
-    sm->start(&idle);
+    sm->start(&off);
 }
