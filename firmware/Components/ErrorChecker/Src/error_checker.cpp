@@ -3,8 +3,8 @@
 #include "cstdio"
 #include "usart.h"
 
-
 #include "error_checker.hpp"
+#include "utils.hpp"
 
 using namespace PUTM;
 
@@ -51,6 +51,14 @@ bool ErrorChecker::check_errors(uint32_t tick)
 
         /* *Time accumulator* */
         uint32_t time = tick - error->timestamp;
+        if(error->timestamp == 0)
+        {
+            error->timestamp = tick;
+            error->accumulator = 0;
+            error->last_code = 0;
+            error->raised = false;
+            continue;
+        };
         if(code != 0)
         {
             error->accumulator += time;

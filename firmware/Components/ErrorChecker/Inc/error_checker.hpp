@@ -7,6 +7,7 @@
 #include "cstddef"
 #include "string_view"
 #include "expected"
+#include "threads.hpp"
 
 // TODO: change parse ptr to accept a string buffer and write to it instead of returning a string
 
@@ -18,7 +19,7 @@ namespace PUTM
      */
     struct ErrorInfo
     {
-    protected:
+    public:
         friend struct ErrorChecker;
         /* Next error in the list */
         Error *next_error { nullptr };
@@ -106,6 +107,8 @@ namespace PUTM
         // add iterator support
         class Iterator
         {
+        protected:
+            friend void test_thread_entry(__unused ULONG thread_input);
         private:
             Error *current { nullptr };
         public:
@@ -122,8 +125,6 @@ namespace PUTM
         Iterator begin();
         Iterator end();
     public:
-#ifdef DEBUG_TEST_MODE_1
-    public:
         /**
          *  @brief  Function which resets the error checker
          *  @note   This function should be called when the error checker is reset. It will reset
@@ -131,24 +132,11 @@ namespace PUTM
         void reset(void)
         {
             /* Reset the error checker */
-            next_raised_error = nullptr;
-            last_raised_error = nullptr;
-            raised_error_copy = { };
             /* Iterate over all added erros */
-            Error *error = next_error;
-            while(error != nullptr)
-            {
-                /* Reset the error */
-                error->added_to_raised_list = false;
-                error->next_raised_error = nullptr;
-                error->last_code = 0;
-                error->accumulator = 0;
-                error->timestamp = 0;
-                error = error->next_error;
-            }
+            next_error = nullptr;
+            last_error = nullptr;
         }
-#endif
-    private:
+    public:
         /* Added errors behave like list Error checker remembers the first one */
         Error *next_error { nullptr };
         /* Last added error */

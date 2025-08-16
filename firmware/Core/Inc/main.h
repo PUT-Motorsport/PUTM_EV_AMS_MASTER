@@ -57,6 +57,8 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define USB_RESET_Pin GPIO_PIN_13
+#define USB_RESET_GPIO_Port GPIOC
 #define DET_AIR_P_Pin GPIO_PIN_15
 #define DET_AIR_P_GPIO_Port GPIOC
 #define DET_AIR_PRE_Pin GPIO_PIN_0

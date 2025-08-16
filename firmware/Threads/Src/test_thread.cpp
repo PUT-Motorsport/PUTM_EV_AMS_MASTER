@@ -25,7 +25,7 @@ extern State precharge;
 extern State on;
 extern State discharge;
 
-extern ErrorChecker error_checker
+extern ErrorChecker error_checker;
 
 
 /**
@@ -229,43 +229,98 @@ VOID test_thread_entry(__unused ULONG thread_input)
 #include "stm32h5xx_hal.h"
 #include "cmath"
 
-// VOID test_thread_entry(__unused ULONG thread_input)
-// {
-//     while(true)
-//     {
-//         tx_thread_sleep(100);
+extern PUTM::ErrorChecker error_checker;
 
-//         if (data.f____me)
-//         {
-//             static constexpr uint32_t SYSMEM_START = 0x0BF97000;
+#define BOOT_ADDR	0x0BF97000	// my MCU boot code base address
+#define	MCU_IRQS	70u	// no. of NVIC IRQ inputs
 
-//             __disable_irq();
+struct boot_vectable_ {
+    uint32_t Initial_SP;
+    void (*Reset_Handler)(void);
+};
 
-//             // Stop SysTick
-//             SysTick->CTRL = 0;
-//             // SysTick->LOAD = 0;
-//             // SysTick->VAL  = 0;
+#define BOOTVTAB	((struct boot_vectable_ *)BOOT_ADDR)
 
-//             // Deinit what you used (clocks, peripherals)
-//             // HAL_DeInit();
-//             HAL_RCC_DeInit();
+void dark_magic(void)
+{
+	/* Disable all interrupts */
+	__disable_irq();
 
-//             // Optional but good hygiene: clear pending NVIC interrupts
-//             for (uint32_t i = 0; i < 8; i++) 
-//             {
-//                 NVIC->ICER[i] = 0xFFFFFFFF;
-//                 NVIC->ICPR[i] = 0xFFFFFFFF;
-//             }
-//             __enable_irq();
-//             // Set MSP from the ROM vector table, then jump to its Reset handler
-//             void (*boot)(void)  = (void (*)(void)) (*((uint32_t *) ((SYSMEM_START + 4))));
-//             __set_MSP(*(uint32_t *)SYSMEM_START);
+	/* Disable Systick timer */
+	SysTick->CTRL = 0;
 
-//             // __DSB(); __ISB();
-//             boot(); // never returns
+	/* Set the clock to the default state */
+	HAL_RCC_DeInit();
 
-//             while(true) { }
-//         }
-//     }
-// }
+	/* Clear Interrupt Enable Register & Interrupt Pending Register */
+	for (uint8_t i = 0; i < (MCU_IRQS + 31u) / 32; i++)
+	{
+		NVIC->ICER[i]=0xFFFFFFFF;
+		NVIC->ICPR[i]=0xFFFFFFFF;
+	}
+
+	/* Re-enable all interrupts */
+	__enable_irq();
+
+	// Set the MSP
+	__set_MSP(BOOTVTAB->Initial_SP);
+
+	// Jump to app firmware
+	BOOTVTAB->Reset_Handler();
+}
+
+static bool longer_erros_enabled { true };
+static uint32_t w_pizde_dlugi_error { 1000 }; //ms
+
+VOID test_thread_entry(__unused ULONG thread_input)
+{
+    static std::string_view last_command { };
+    /* f*** me */
+    static bool f____me  { false };
+    /* just to suffer */
+    static bool just_to_suffer { false };
+    static bool auto_mode_on { false };
+    
+    while(not data.system_init_done) tx_thread_sleep(10);
+
+    while(true)
+    {
+        tx_thread_sleep(100);
+
+        if(not data.on_charger and not auto_mode_on)
+        {
+            PUTM::Error* error = error_checker.next_error;
+            while(error != nullptr)
+            {
+                error->timeout = w_pizde_dlugi_error;
+                error = error->next_error;
+            }
+            auto_mode_on = true;
+        }
+
+        if(data.last_command != last_command)
+        {
+            last_command = data.last_command;
+
+            if(last_command == "f***_you")
+            {
+                f____me = true;
+            }
+            else if(last_command == "why_are_we_still_here")
+            {
+                just_to_suffer = true;
+            }
+
+            if (f____me)
+            {
+                dark_magic();
+            }
+            if(just_to_suffer)
+            {
+                error_checker.reset();
+            }
+        }
+    }
+}
+
 #endif /* DEBUG_TEST_MODE_1 */

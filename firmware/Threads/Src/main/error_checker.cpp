@@ -32,7 +32,6 @@ ErrorChecker error_checker;
 
 Logger<1024 * 2> error_logger;
 
-
 static uint32_t encode_error(uint8_t dev, uint8_t unit, uint8_t error)
 {
     return ((uint32_t)(dev) * 10'000) + ((uint32_t)(unit) * 100) + (uint32_t)(error);

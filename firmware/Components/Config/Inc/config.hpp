@@ -108,7 +108,7 @@ namespace PUTM
         static constexpr float ACU_VOLTAGE_GAIN { 1000.f / 2 };
         static constexpr float CURRENT_OFFSET { 371.25 };
         /* Current measurement gain * 3 is for the resistor divider on the input */
-        static constexpr float CURRENT_GAIN { 1.f / (2.f / 300.f) * 3.f };
+        static constexpr float CURRENT_GAIN { -1.f / (2.f / 300.f) * 3.f };
 
         /* Cell nominal capacity in Ah */
         static constexpr float CELL_NOMINAL_CAPACITY { 13.0f };
@@ -123,6 +123,9 @@ namespace PUTM
         static constexpr uint32_t RX_JSON_BUFFER_SIZE { 1024U };
         static constexpr uint32_t RX_UART_BUFFER_SIZE { 128U };
 
+        /* VUSB Treshold */
+        static constexpr uint16_t USB_VBUS_THRESH { 500 };
+
         // static constexpr float POLYNOMIAL_OCV[] { 2034.7852020f, -9878.314180f, 20304.286795f, -22998.124140f, 15652.018744f, -6548.995145f, 1657.8141810f, -240.64692800f, 18.231580000f,  3.143621f };
         static constexpr float POLYNOMIAL_OCV[] { -3.157435e+02, 1.313878e+03, -2.245027e+03, 2.032497e+03, -1.052418e+03, 3.165986e+02, -5.425675e+01, 5.359099e+00, 3.369238e+00 };
         // static constexpr float POLYNOMIAL_T_R[] { 2.828902e+02, 2.818811e-02, -1.131373e-05, 3.281373e-09, -6.383295e-13, 8.324239e-17, -7.271016e-21, 4.187227e-25, -1.522588e-29, 3.163823e-34, -2.860511e-39 };
@@ -133,7 +136,6 @@ namespace PUTM
         static constexpr float NOMINAL_NTC_RESISTANCE { 10 };
         // nominal voltage accross the resistor divider network for bq series its 5V
         static constexpr float NOMINAL_TSREF { 5 };
-
      }
 }
 

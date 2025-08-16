@@ -282,7 +282,18 @@ StateEdge on_to_idle
     .name = "on -> idle",
     .condition = []() -> bool
     {
-        return (data.tsms);
+        static bool samples[16] { 0 };
+        static size_t sample_index { 0 };
+        samples[sample_index++] = data.tsms;
+        if (sample_index >= 16) sample_index = 0;
+        for (size_t i = 0; i < 16; i++)
+        {
+            if (samples[i])
+            {
+                return false;
+            }
+        }
+        return true;
     },
     .prev_state = &on,
     .next_state = &idle,

@@ -1,4 +1,5 @@
 #include "error_checker.hpp"
+#include "stm32h5xx_ll_adc.h"
 #include <cstddef>
 extern "C"
 {
@@ -9,6 +10,7 @@ extern "C"
 #include "usart.h"
 #include "algorithm"
 #include "fdcan.h"
+#include "adc.h"
 
 #include "ArduinoJson.h"
 #include "can_interface.hpp"
@@ -24,6 +26,7 @@ extern "C"
 #include "com/charger_state_machine.hpp"
 #include "logger.hpp"
 #include "string_view"
+#include "wrapper/gpio.hpp"
 
 using namespace PUTM;
 using namespace PUTM::Config;
@@ -43,8 +46,8 @@ VOID car_can_thread_entry(__unused ULONG thread_input)
         {
             .voltage_sum = (uint16_t)(data.acu_voltage * 10.f),
             .current = (int16_t)(data.current * 10.f),
-            .temp_max = (uint8_t)(data.cell_max_temperature * 10.f), //(uint8_t)(data.cell_max_temperature * 10.f),
-            .temp_avg = (uint8_t)(data.cell_avg_temperature * 10.f), //(uint8_t)(data.cell_avg_temperature * 10.f),
+            .temp_max = (uint8_t)(data.cell_max_temperature), //(uint8_t)(data.cell_max_temperature * 10.f),
+            .temp_avg = (uint8_t)(data.cell_avg_temperature), //(uint8_t)(data.cell_avg_temperature * 10.f),
             .soc = (uint16_t)(data.soc * 1000.f),
             .ok = not data.error,
             .precharge = data.precharge
@@ -73,6 +76,8 @@ extern StateMachine air_state_machine;
 extern StateMachine charger_state_machine;
 
 extern ErrorChecker error_checker;
+
+extern Gpio usb_reset;
 
 // extern TX_MUTEX tx_buffer_mutex;
 // extern TX_MUTEX rx_buffer_mutex;
@@ -129,11 +134,15 @@ static std::function<void(size_t)> usb_rx_callback = [](size_t size)
         {
             data.service_mode = false;
         }
-        else if(command == "f***_you")
+        else if(command == "even_moar_data_on")
         {
-            data.f____me = true;
+            data.even_moar_data = true;
         }
-        
+        else if(command == "even_moar_data_off")
+        {
+            data.even_moar_data = false;
+        }
+        data.last_command = command;
     }
 
     uart.async_rx_unknown_dma(rx_char_buffer, RX_UART_BUFFER_SIZE, &usb_rx_callback);
@@ -145,21 +154,41 @@ static std::function<void(size_t)> usb_rx_callback = [](size_t size)
  */
 VOID usb_com_thread_entry(__unused ULONG thread_input)
 {
+    static bool first_run { true };
+
     // uart.init();
-    uart.set_baudrate(500000);
+    uart.set_baudrate(250000);
     // uart.set_rx_timeout(10);
     uart.async_rx_unknown_dma(rx_char_buffer, RX_UART_BUFFER_SIZE, &usb_rx_callback);
 
     while(true)
     {
-        if(true) //if(data.usb_connected)
+        if(not data.usb_connected) first_run = true;
+        if(data.usb_connected) //if()
         {
+            if(first_run)
+            {
+                first_run = false;
+                usb_reset.set();
+                continue;
+            }
+            else 
+            {
+                usb_reset.reset();
+            }
+
             tx_json.clear();
             tx_json["timestamp"] = tx_time_get();
             tx_json["current"] = data.current;
             tx_json["acc_voltage"] = data.acu_voltage;
             tx_json["car_voltage"] = data.car_voltage;
             tx_json["soc"] = data.soc;
+            tx_json["cell_max_voltage"] = data.cell_max_voltage;
+            tx_json["cell_avg_voltage"] = data.cell_avg_voltage;
+            tx_json["cell_min_voltage"] = data.cell_min_voltage;
+            tx_json["cell_max_temperature"] = data.cell_max_temperature;
+            tx_json["cell_avg_temperature"] = data.cell_avg_temperature;
+            tx_json["cell_min_temperature"] = data.cell_min_temperature;
             tx_json["set_charging_current"] = data.charging_current;
             for(size_t i = 0; i < Config::TOTAL_CELL_COUNT; i++)
             {
@@ -186,9 +215,6 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
                 tx_json["cmd_charger"] = data.cmd_charger;
                 tx_json["cmd_balancing_on"] = data.cmd_balancing_on;
                 tx_json["cmd_balancing_off"] = data.cmd_balancing_off;
-                tx_json["bq_init_done"] = data.bq_init_done;
-                tx_json["ads_init_done"] = data.ads_init_done;
-                tx_json["system_init_done"] = data.system_init_done;
                 tx_json["bq_init_status"] = get_error_name(data.bq_init_status);
                 tx_json["error"] = data.error;
                 tx_json["warning"] = data.warning;
@@ -196,12 +222,6 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
                 tx_json["tsms"] = data.tsms;
                 tx_json["precharge"] = data.precharge;
                 tx_json["hv_on"] = data.hv_on;
-                tx_json["cell_max_voltage"] = data.cell_max_voltage;
-                tx_json["cell_avg_voltage"] = data.cell_avg_voltage;
-                tx_json["cell_min_voltage"] = data.cell_min_voltage;
-                tx_json["cell_max_temperature"] = data.cell_max_temperature;
-                tx_json["cell_avg_temperature"] = data.cell_avg_temperature;
-                tx_json["cell_min_temperature"] = data.cell_min_temperature;
                 for(size_t i = 0; i < Config::TOTAL_CELL_COUNT; i++)
                 {
                     size_t idev = i / Config::CELL_COUNT_PER_DEVICE;
@@ -227,6 +247,11 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
                 for(auto log : error_logger)
                 {
                     tx_json["logs"].add(log);
+                }
+                if(data.even_moar_data)
+                {
+                    tx_json["vusb"] = data.vusb;
+                    tx_json["usb_connected"] = data.usb_connected;
                 }
             }
 

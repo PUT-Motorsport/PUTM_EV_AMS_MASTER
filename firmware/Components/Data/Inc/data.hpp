@@ -9,6 +9,7 @@
 
 #include "atomic"
 #include "array"
+#include "string_view"
 
 namespace PUTM
 {
@@ -67,10 +68,14 @@ namespace PUTM
         bool system_init_done { false };
         /* service mode */
         bool service_mode { false };
-        /* f*** me */
-        bool f____me  { false };
+        /* even moar data */
+        bool even_moar_data { false };
+        /* last command received */
+        std::string_view last_command { };
         /* Precharge error */
         uint32_t precharge_error { 0 };
+        /* VUSB */
+        uint16_t vusb { 0 };
         /* bq init status */
         HAL_StatusTypeDef bq_init_status { HAL_OK };
         /* bq read data status */

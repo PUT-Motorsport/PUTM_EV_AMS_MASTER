@@ -2,6 +2,7 @@
 #include "tx_api.h"
 #include "cstdio"
 #include "usart.h"
+#include "adc.h"
 #include "array"
 
 #include "threads.hpp"
@@ -37,6 +38,7 @@ Gpio det_air_p(DET_AIR_P_GPIO_Port, DET_AIR_P_Pin, false);
 Gpio det_air_m(DET_AIR_M_GPIO_Port, DET_AIR_M_Pin, false);
 Gpio det_tsms(DET_TSMS_GPIO_Port, DET_TSMS_Pin, false);
 Gpio det_charger(DET_CHARGER_GPIO_Port, DET_CHARGER_Pin, false);
+Gpio usb_reset(USB_RESET_GPIO_Port, USB_RESET_Pin, true);
 // Gpio adc_dry(ADC_NDRY_GPIO_Port, ADC_NDRY_Pin, true);
 // Gpio bq_flt(NFLT_GPIO_Port, NFLT_Pin, true);
 
@@ -108,6 +110,13 @@ VOID main_thread_entry(__unused ULONG thread_input)
         }
     }
 
+    HAL_ADC_Start(&hadc1);
+
+    data.tsms = det_tsms.read();
+    data.on_charger = det_charger.read();
+
+    usb_reset.reset();
+
     data.system_init_done = true;
 
     while(true)
@@ -178,6 +187,9 @@ VOID main_thread_entry(__unused ULONG thread_input)
         data.cell_min_voltage = min_voltage;
         data.cell_avg_voltage = accumulator_voltage / (Config::STACK_SIZE * Config::CELL_COUNT_PER_DEVICE);
         data.cell_avg_temperature = accumulator_temperature / (Config::STACK_SIZE * Config::TEMPERATURES_COUNT_PER_DEVICE);
+
+        data.vusb = HAL_ADC_GetValue(&hadc1);
+        data.usb_connected = data.vusb > Config::USB_VBUS_THRESH;
 
         /* AIR state machine */
         air_state_machine.update();
