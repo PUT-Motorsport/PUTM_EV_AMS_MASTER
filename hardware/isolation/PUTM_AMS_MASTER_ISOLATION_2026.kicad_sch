@@ -1,0 +1,2833 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "9b254bae-97c6-45e7-8618-9f461c55b31a")
+	(paper "A2")
+	(lib_symbols
+		(symbol "+5V_2"
+			(power)
+			(pin_names
+				(offset 0)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "#PWR"
+				(at 0 -3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Value" "+5V"
+				(at 0 3.556 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Power symbol creates a global label with name \"+5V\""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "power-flag"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "+5V_2_0_1"
+				(polyline
+					(pts
+						(xy -0.762 1.27) (xy 0 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 2.54) (xy 0.762 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 0) (xy 0 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "+5V_2_1_1"
+				(pin power_in line
+					(at 0 0 90)
+					(length 0)
+					(hide yes)
+					(name "+5V"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Device:C_Small"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0.254)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "C"
+				(at 0.254 1.778 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "C_Small"
+				(at 0.254 -2.032 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Unpolarized capacitor, small symbol"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "capacitor cap"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "C_*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "C_Small_0_1"
+				(polyline
+					(pts
+						(xy -1.524 0.508) (xy 1.524 0.508)
+					)
+					(stroke
+						(width 0.3048)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -1.524 -0.508) (xy 1.524 -0.508)
+					)
+					(stroke
+						(width 0.3302)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "C_Small_1_1"
+				(pin passive line
+					(at 0 2.54 270)
+					(length 2.032)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -2.54 90)
+					(length 2.032)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Device:D_Zener_Small"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0.254)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "D"
+				(at 0 2.286 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "D_Zener_Small"
+				(at 0 -2.286 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 90)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 90)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Zener diode, small symbol"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "diode"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "TO-???* *_Diode_* *SingleDiode* D_*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "D_Zener_Small_0_1"
+				(polyline
+					(pts
+						(xy -0.254 1.016) (xy -0.762 1.016) (xy -0.762 -1.016)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 1.016) (xy -0.762 0) (xy 0.762 -1.016) (xy 0.762 1.016)
+					)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 0) (xy -0.762 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "D_Zener_Small_1_1"
+				(pin passive line
+					(at -2.54 0 0)
+					(length 1.778)
+					(name "K"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 2.54 0 180)
+					(length 1.778)
+					(name "A"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Device:L"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "L"
+				(at -1.27 0 90)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "L"
+				(at 1.905 0 90)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Inductor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "inductor choke coil reactor magnetic"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "Choke_* *Coil* Inductor_* L_*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "L_0_1"
+				(arc
+					(start 0 2.54)
+					(mid 0.6323 1.905)
+					(end 0 1.27)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start 0 1.27)
+					(mid 0.6323 0.635)
+					(end 0 0)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start 0 0)
+					(mid 0.6323 -0.635)
+					(end 0 -1.27)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start 0 -1.27)
+					(mid 0.6323 -1.905)
+					(end 0 -2.54)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "L_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 1.27)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 1.27)
+					(name "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Device:R_Small"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0.254)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "R"
+				(at 0.762 0.508 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "R_Small"
+				(at 0.762 -1.016 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Resistor, small symbol"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "R resistor"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "R_*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "R_Small_0_1"
+				(rectangle
+					(start -0.762 1.778)
+					(end 0.762 -1.778)
+					(stroke
+						(width 0.2032)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "R_Small_1_1"
+				(pin passive line
+					(at 0 2.54 270)
+					(length 0.762)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -2.54 90)
+					(length 0.762)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "Samacsys_kicad_sym:TLV61046ADBVT"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "IC"
+				(at -7.62 12.7 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+				)
+			)
+			(property "Value" "TLV61046ADBVT"
+				(at -7.62 10.16 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+				)
+			)
+			(property "Footprint" "Package_TO_SOT_SMD:SOT-23-6"
+				(at 24.13 -94.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "http://www.ti.com/lit/gpn/tlv61046a"
+				(at 24.13 -194.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "Description" "28-V Output Voltage Boost Converter with Power Diode and Isolation Switch"
+				(at -11.43 -2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Height" "1.45"
+				(at 24.13 -394.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "Mouser Part Number" "595-TLV61046ADBVT"
+				(at 24.13 -494.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Texas-Instruments/TLV61046ADBVT?qs=5aG0NVq1C4xlXM1oLPvQCQ%3D%3D"
+				(at 24.13 -594.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "Manufacturer_Name" "Texas Instruments"
+				(at 24.13 -694.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(property "Manufacturer_Part_Number" "TLV61046ADBVT"
+				(at 24.13 -794.92 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left top)
+					(hide yes)
+				)
+			)
+			(symbol "TLV61046ADBVT_1_1"
+				(rectangle
+					(start -8.89 7.62)
+					(end 8.89 -5.08)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(pin passive line
+					(at -12.7 5.08 0)
+					(length 3.81)
+					(name "VIN"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -12.7 2.54 0)
+					(length 3.81)
+					(name "EN"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -8.89 90)
+					(length 3.81)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 12.7 5.08 180)
+					(length 3.81)
+					(name "SW"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 12.7 2.54 180)
+					(length 3.81)
+					(name "VOUT"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 12.7 -2.54 180)
+					(length 3.81)
+					(name "FB"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "power:+8V"
+			(power)
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "#PWR"
+				(at 0 -3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Value" "+8V"
+				(at 0 3.556 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Power symbol creates a global label with name \"+8V\""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "global power"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "+8V_0_1"
+				(polyline
+					(pts
+						(xy -0.762 1.27) (xy 0 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 2.54) (xy 0.762 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 0) (xy 0 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "+8V_1_1"
+				(pin power_in line
+					(at 0 0 90)
+					(length 0)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "power:GND"
+			(power)
+			(pin_names
+				(offset 0)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "#PWR"
+				(at 0 -6.35 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Value" "GND"
+				(at 0 -3.81 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "power-flag"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "GND_0_1"
+				(polyline
+					(pts
+						(xy 0 0) (xy 0 -1.27) (xy 1.27 -1.27) (xy 0 -2.54) (xy -1.27 -1.27) (xy 0 -1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "GND_1_1"
+				(pin power_in line
+					(at 0 0 270)
+					(length 0)
+					(hide yes)
+					(name "GND"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+	)
+	(text "https://www.mouser.pl/ProductDetail/Murata-Power-Solutions/MTC2S2412MC-R7?qs=mQP6vorrPAdLKyJ%252BjYwifA%3D%3D"
+		(exclude_from_sim no)
+		(at 316.23 196.85 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "5750c23c-edaa-43e9-96a3-e39a4cab30cb")
+	)
+	(text "https://www.ti.com/product/UCC33020-Q1"
+		(exclude_from_sim no)
+		(at 323.85 165.1 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "887fd797-1eec-45a1-bb69-177ceaf35f78")
+	)
+	(junction
+		(at 389.89 134.62)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "02bc65d1-cbc1-443d-8bb4-1aede3bb0c11")
+	)
+	(junction
+		(at 359.41 119.38)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "1a6cfb32-4ac2-416f-8fe5-a52b3754ce6a")
+	)
+	(junction
+		(at 389.89 124.46)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "44981255-bbe0-491c-b839-1a48d0063fa2")
+	)
+	(junction
+		(at 416.56 119.38)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "8173e8ac-661f-47c7-bc7a-77b12b6cedd3")
+	)
+	(junction
+		(at 405.13 134.62)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "836de247-2788-43c5-a474-f8ce01aa0737")
+	)
+	(junction
+		(at 401.32 119.38)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "93e98f62-4bee-4854-ac15-e4805d2b78bb")
+	)
+	(junction
+		(at 359.41 105.41)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "a0f68c2b-a76b-447c-84fb-4e296e409312")
+	)
+	(junction
+		(at 359.41 116.84)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "b4b9a1bd-a3f7-4a3c-829b-b6e24b1bc091")
+	)
+	(junction
+		(at 405.13 119.38)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "ef3d5941-b6c8-40d7-8e09-8b16a2290f54")
+	)
+	(junction
+		(at 374.65 134.62)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "f4a6fe90-d829-4806-b901-bf5a1df5b399")
+	)
+	(wire
+		(pts
+			(xy 359.41 105.41) (xy 370.84 105.41)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0041ed00-43c7-4290-9ad2-af6a1b57d774")
+	)
+	(wire
+		(pts
+			(xy 405.13 119.38) (xy 405.13 124.46)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "02507a4d-506f-4b22-84a1-e7fb3f8d7bfe")
+	)
+	(wire
+		(pts
+			(xy 359.41 105.41) (xy 359.41 116.84)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "21e8aee7-7fcc-4ae0-9169-735a77a20ea1")
+	)
+	(wire
+		(pts
+			(xy 389.89 124.46) (xy 389.89 127)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "24563761-0364-428c-8f58-e7ba6ce48af1")
+	)
+	(wire
+		(pts
+			(xy 387.35 119.38) (xy 401.32 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "270c72f7-c0ce-405f-bd1f-211b53b3b74b")
+	)
+	(wire
+		(pts
+			(xy 374.65 134.62) (xy 389.89 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "27ae66b8-1808-49de-ab13-576544a44b69")
+	)
+	(wire
+		(pts
+			(xy 389.89 124.46) (xy 392.43 124.46)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3218be3b-bc18-4c88-b1f1-9d6f1e250db4")
+	)
+	(wire
+		(pts
+			(xy 359.41 102.87) (xy 359.41 105.41)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "362edcde-29a2-433a-9585-9f1e08c0bd26")
+	)
+	(wire
+		(pts
+			(xy 389.89 134.62) (xy 405.13 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "37abd815-0ce4-4c71-a4df-3dbab950aa15")
+	)
+	(wire
+		(pts
+			(xy 359.41 134.62) (xy 374.65 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "39836e1f-f23d-4917-b7ba-55e495f2b72b")
+	)
+	(wire
+		(pts
+			(xy 378.46 105.41) (xy 389.89 105.41)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "42c14b16-853e-4c06-b05b-c70dabbafb01")
+	)
+	(wire
+		(pts
+			(xy 416.56 134.62) (xy 405.13 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4926315e-e9e7-49e4-aa6e-44e79fae2c10")
+	)
+	(wire
+		(pts
+			(xy 374.65 130.81) (xy 374.65 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4ebface0-7b7c-424e-8773-c8c3964f0cc6")
+	)
+	(wire
+		(pts
+			(xy 374.65 134.62) (xy 374.65 137.16)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5e491806-9187-41d2-bc0a-4ba6cdd7b2bd")
+	)
+	(wire
+		(pts
+			(xy 401.32 119.38) (xy 401.32 124.46)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6580e7b9-444e-42c1-addf-a8626e2eff57")
+	)
+	(wire
+		(pts
+			(xy 416.56 129.54) (xy 416.56 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "73c87877-3077-45be-9cee-343e19262eb6")
+	)
+	(wire
+		(pts
+			(xy 401.32 119.38) (xy 405.13 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "78252578-5f0f-45fd-af0a-4826a3fb6ec2")
+	)
+	(wire
+		(pts
+			(xy 416.56 116.84) (xy 416.56 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "aa34fbba-a31c-4244-867f-11297d8a9208")
+	)
+	(wire
+		(pts
+			(xy 416.56 119.38) (xy 416.56 124.46)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "aa5588e1-5998-4c15-995e-fd911497e74d")
+	)
+	(wire
+		(pts
+			(xy 389.89 105.41) (xy 389.89 116.84)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b3924944-7952-4766-80d6-e94b778efee8")
+	)
+	(wire
+		(pts
+			(xy 416.56 119.38) (xy 405.13 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b8e91afc-ac3e-4a59-a0b1-540b69446c1e")
+	)
+	(wire
+		(pts
+			(xy 359.41 116.84) (xy 361.95 116.84)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ba44d5b9-62d2-486a-86bd-9fab53223cbd")
+	)
+	(wire
+		(pts
+			(xy 405.13 129.54) (xy 405.13 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c0c5e5e9-67ab-476c-873a-0e0008ba8953")
+	)
+	(wire
+		(pts
+			(xy 387.35 116.84) (xy 389.89 116.84)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c501a9ac-fc9b-469e-a1dd-61afe4998ebd")
+	)
+	(wire
+		(pts
+			(xy 359.41 119.38) (xy 359.41 124.46)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d44cc7ab-a7a3-4477-bd1a-95c921b12b5c")
+	)
+	(wire
+		(pts
+			(xy 359.41 129.54) (xy 359.41 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e1620771-b6db-4148-972b-1ec8b658fa18")
+	)
+	(wire
+		(pts
+			(xy 389.89 132.08) (xy 389.89 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ed74660c-2be1-4d6e-8dc7-7a6ae54e7812")
+	)
+	(wire
+		(pts
+			(xy 359.41 119.38) (xy 361.95 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ef9c45e7-28df-4727-980c-24138ecdd6c0")
+	)
+	(wire
+		(pts
+			(xy 387.35 124.46) (xy 389.89 124.46)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f86ae33c-73bd-4067-aafa-c5821d399c7b")
+	)
+	(wire
+		(pts
+			(xy 397.51 124.46) (xy 401.32 124.46)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fbf85a25-2630-46c7-b1c5-8b38430a5fa7")
+	)
+	(wire
+		(pts
+			(xy 359.41 116.84) (xy 359.41 119.38)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fec56477-ce0d-4648-8dec-e7711b812fc1")
+	)
+	(symbol
+		(lib_id "Device:C_Small")
+		(at 359.41 127 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "047aab98-ffae-4bcd-9e21-a3a64678b07e")
+		(property "Reference" "C30"
+			(at 356.87 125.9586 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "22uF"
+			(at 356.87 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 359.41 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 359.41 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 359.41 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Name" "MCASH21GCC7684MTCA1J"
+			(at 359.41 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Part_Number" "CL21A107MQYNNWE"
+			(at 359.41 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "In Order" ""
+			(at 359.41 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" "810-C2012X5R1V226MAC"
+			(at 359.41 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Mouser Price/Stock" ""
+			(at 359.41 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Arrow Part Number" ""
+			(at 359.41 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Arrow Price/Stock" ""
+			(at 359.41 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "DigiKey Part Number" ""
+			(at 359.41 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "dd014829-f512-4284-b660-9da2d3c4b9bd")
+		)
+		(pin "2"
+			(uuid "5ad09a08-1247-4c82-b6ad-980beb2971d7")
+		)
+		(instances
+			(project "PUTM_AMS_MASTER_ISOLATION_2026"
+				(path "/9b254bae-97c6-45e7-8618-9f461c55b31a"
+					(reference "C30")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C_Small")
+		(at 405.13 127 0)
+		(mirror x)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "3098ec24-48d0-423e-a25f-bb34bc199fb1")
+		(property "Reference" "C31"
+			(at 407.67 125.9586 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "22uF"
+			(at 407.67 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 405.13 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 405.13 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 405.13 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Name" "MCASH21GCC7684MTCA1J"
+			(at 405.13 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Part_Number" "CL21A107MQYNNWE"
+			(at 405.13 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "In Order" ""
+			(at 405.13 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" "810-C2012X5R1V226MAC"
+			(at 405.13 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Mouser Price/Stock" ""
+			(at 405.13 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Arrow Part Number" ""
+			(at 405.13 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Arrow Price/Stock" ""
+			(at 405.13 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "DigiKey Part Number" ""
+			(at 405.13 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "882f51da-3353-4c41-8eb9-133b899882c6")
+		)
+		(pin "2"
+			(uuid "9964d4ca-b656-41fb-93d3-cd256e1289b7")
+		)
+		(instances
+			(project "PUTM_AMS_MASTER_ISOLATION_2026"
+				(path "/9b254bae-97c6-45e7-8618-9f461c55b31a"
+					(reference "C31")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R_Small")
+		(at 389.89 129.54 0)
+		(mirror x)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "3ce178d1-1f69-4476-b968-36339181109e")
+		(property "Reference" "R62"
+			(at 386.08 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "71.5k"
+			(at 386.08 130.81 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 389.89 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 389.89 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 389.89 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Name" "--"
+			(at 389.89 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Part_Number" ""
+			(at 389.89 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "In Order" ""
+			(at 389.89 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" "CRCW0603649KFKEA"
+			(at 389.89 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Mouser Price/Stock" ""
+			(at 389.89 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Arrow Part Number" ""
+			(at 389.89 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Arrow Price/Stock" ""
+			(at 389.89 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "DigiKey Part Number" ""
+			(at 389.89 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "eb634513-960b-43e5-82ec-e0fe36f6a273")
+		)
+		(pin "2"
+			(uuid "7c995910-32a6-4636-b9ca-5b67df9cecc8")
+		)
+		(instances
+			(project "PUTM_AMS_MASTER_ISOLATION_2026"
+				(path "/9b254bae-97c6-45e7-8618-9f461c55b31a"
+					(reference "R62")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Samacsys_kicad_sym:TLV61046ADBVT")
+		(at 374.65 121.92 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "43fa9c77-64a1-49b4-b98f-434d6c949253")
+		(property "Reference" "IC4"
+			(at 374.65 109.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "TLV61046ADBVT"
+			(at 374.65 111.76 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_SMD:SOT-23-6"
+			(at 398.78 216.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "http://www.ti.com/lit/gpn/tlv61046a"
+			(at 398.78 316.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Description" "28-V Output Voltage Boost Converter with Power Diode and Isolation Switch"
+			(at 363.22 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Height" "1.45"
+			(at 398.78 516.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" "595-TLV61046ADBVT"
+			(at 398.78 616.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Mouser Price/Stock" "https://www.mouser.co.uk/ProductDetail/Texas-Instruments/TLV61046ADBVT?qs=5aG0NVq1C4xlXM1oLPvQCQ%3D%3D"
+			(at 398.78 716.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Name" "Texas Instruments"
+			(at 398.78 816.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Part_Number" "TLV61046ADBVT"
+			(at 398.78 916.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(pin "5"
+			(uuid "fe47bc3c-f4c3-4c88-9585-d4162b773e4a")
+		)
+		(pin "3"
+			(uuid "1cdefda1-56a6-49d4-b304-4217f265d969")
+		)
+		(pin "1"
+			(uuid "253a56da-b52d-4f1e-8db3-b7bdab19ce6c")
+		)
+		(pin "6"
+			(uuid "9a18bfbb-bb16-457f-b7a5-f822bd2a7216")
+		)
+		(pin "4"
+			(uuid "b5b852bb-ad95-4dca-8a2f-be05c2ded479")
+		)
+		(pin "2"
+			(uuid "54c77850-58c9-41e0-8afb-35c8108ef47d")
+		)
+		(instances
+			(project "PUTM_AMS_MASTER_ISOLATION_2026"
+				(path "/9b254bae-97c6-45e7-8618-9f461c55b31a"
+					(reference "IC4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 374.65 137.16 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "a6853ab1-884e-4cb8-8b94-c54a9f43fee7")
+		(property "Reference" "#PWR097"
+			(at 374.65 143.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 374.65 140.97 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 374.65 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 374.65 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 374.65 137.16 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "f3d4f8f9-9d17-46fc-a8e2-53a22e76b57f")
+		)
+		(instances
+			(project "PUTM_AMS_MASTER_ISOLATION_2026"
+				(path "/9b254bae-97c6-45e7-8618-9f461c55b31a"
+					(reference "#PWR097")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_name "+5V_2")
+		(lib_id "power:+5V")
+		(at 359.41 102.87 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "b8ef2f17-5569-4680-8eb4-e1cd0d8eea68")
+		(property "Reference" "#PWR093"
+			(at 359.41 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+5VIO"
+			(at 359.41 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 359.41 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 359.41 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 359.41 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "86e337df-9776-4a23-b1ae-e17691d8b6f4")
+		)
+		(instances
+			(project "PUTM_AMS_MASTER_ISOLATION_2026"
+				(path "/9b254bae-97c6-45e7-8618-9f461c55b31a"
+					(reference "#PWR093")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+8V")
+		(at 416.56 116.84 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "bba7c380-2399-4c9a-8c3e-2b0ed34194b9")
+		(property "Reference" "#PWR011"
+			(at 416.56 120.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+8V"
+			(at 416.56 113.03 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 416.56 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 416.56 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+8V\""
+			(at 416.56 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "c4a30230-b86c-4268-bd11-48bfc965601c")
+		)
+		(instances
+			(project "PUTM_AMS_MASTER_ISOLATION_2026"
+				(path "/9b254bae-97c6-45e7-8618-9f461c55b31a"
+					(reference "#PWR011")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:L")
+		(at 374.65 105.41 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "ec4ad95a-c557-4a1a-97f7-680ec9cdb881")
+		(property "Reference" "L1"
+			(at 374.65 100.33 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "10uH"
+			(at 374.65 102.87 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Inductor_SMD:L_1008_2520Metric"
+			(at 374.65 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 374.65 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Inductor"
+			(at 374.65 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" "963-CBC2518T100M"
+			(at 374.65 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "565390f1-adf9-4ddb-9e17-022b25c119cc")
+		)
+		(pin "1"
+			(uuid "01fafcdc-00d9-4e46-a3e0-f375aca5c602")
+		)
+		(instances
+			(project "PUTM_AMS_MASTER_ISOLATION_2026"
+				(path "/9b254bae-97c6-45e7-8618-9f461c55b31a"
+					(reference "L1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:D_Zener_Small")
+		(at 416.56 127 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "ed1139ec-b965-466b-bbe2-6805c62a6d09")
+		(property "Reference" "D20"
+			(at 418.338 125.73 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "8V"
+			(at 418.338 127.762 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Diode_SMD:D_SOD-123"
+			(at 416.56 127 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 416.56 127 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 416.56 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Mouser Price/Stock" ""
+			(at 416.56 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 416.56 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 416.56 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Author" ""
+			(at 416.56 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "License" ""
+			(at 416.56 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "MPN" ""
+			(at 416.56 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer" ""
+			(at 416.56 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 416.56 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "DigiKey Part Number" ""
+			(at 416.56 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" "SMF4L8.0A"
+			(at 416.56 127 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "6d0fa143-5309-4c74-8ffa-a30c34c3c848")
+		)
+		(pin "2"
+			(uuid "0591da60-b9b7-44bf-86cc-c1a0a49a6644")
+		)
+		(instances
+			(project "PUTM_AMS_MASTER_ISOLATION_2026"
+				(path "/9b254bae-97c6-45e7-8618-9f461c55b31a"
+					(reference "D20")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R_Small")
+		(at 394.97 124.46 270)
+		(mirror x)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "f9060736-76d4-4f0c-80aa-c9ed11066a8f")
+		(property "Reference" "R55"
+			(at 394.97 127 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "649k"
+			(at 394.97 129.54 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
+			(at 394.97 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 394.97 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" ""
+			(at 394.97 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Name" "--"
+			(at 394.97 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Manufacturer_Part_Number" ""
+			(at 394.97 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "In Order" ""
+			(at 394.97 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" "CRCW0603649KFKEA"
+			(at 394.97 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Mouser Price/Stock" ""
+			(at 394.97 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Arrow Part Number" ""
+			(at 394.97 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Arrow Price/Stock" ""
+			(at 394.97 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "DigiKey Part Number" ""
+			(at 394.97 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "d88a28c3-bfcf-480b-bdf4-84b1ac816602")
+		)
+		(pin "2"
+			(uuid "b8cbdbbc-2d81-4f9a-88d6-34f881b49a2a")
+		)
+		(instances
+			(project "PUTM_AMS_MASTER_ISOLATION_2026"
+				(path "/9b254bae-97c6-45e7-8618-9f461c55b31a"
+					(reference "R55")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+	(embedded_files
+		(file
+			(name "putm_frame.kicad_wks")
+			(type worksheet)
+			(data |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
+				ov/y9Jcf|
+			)
+			(checksum "345AC100A5F8B0E8F1A25EA026E53557")
+		)
+	)
+)

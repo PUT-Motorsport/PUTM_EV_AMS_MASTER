@@ -867,7 +867,7 @@
           "show": false
         }
       ],
-      "filter_string": "R55",
+      "filter_string": "",
       "group_symbols": true,
       "include_excluded_from_bom": false,
       "name": "",

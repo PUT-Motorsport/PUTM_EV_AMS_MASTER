@@ -2593,6 +2593,10 @@
 		(uuid "94467527-a47a-41cd-bbc0-7e6d80c5f709")
 	)
 	(no_connect
+		(at 74.93 120.65)
+		(uuid "9ee78238-add0-47a2-b252-12dc5346e84d")
+	)
+	(no_connect
 		(at 74.93 105.41)
 		(uuid "bdea542f-1a58-4c24-995f-e60c347383d7")
 	)
@@ -3406,6 +3410,16 @@
 	)
 	(wire
 		(pts
+			(xy 72.39 118.11) (xy 74.93 118.11)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e9d27813-8dfb-4048-b7ce-4acd65e122b7")
+	)
+	(wire
+		(pts
 			(xy 92.71 52.07) (xy 92.71 54.61)
 		)
 		(stroke
@@ -3688,6 +3702,17 @@
 			(justify right)
 		)
 		(uuid "72a9218e-dc18-4932-acf2-b32103d5d111")
+	)
+	(hierarchical_label "~{FTDI_RST}"
+		(shape output)
+		(at 72.39 118.11 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "7c02f4f8-2ca6-457e-9de6-750654d1ff26")
 	)
 	(hierarchical_label "DETECT_USB"
 		(shape input)
