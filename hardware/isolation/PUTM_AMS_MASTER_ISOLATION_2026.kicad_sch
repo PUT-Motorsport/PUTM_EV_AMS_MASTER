@@ -1155,8 +1155,8 @@
 		)
 	)
 	(rectangle
-		(start 370.84 158.75)
-		(end 438.15 167.64)
+		(start 363.22 147.32)
+		(end 401.32 156.21)
 		(stroke
 			(width 0)
 			(type dash)
@@ -1166,6 +1166,16 @@
 			(type none)
 		)
 		(uuid e6dacfc0-8e41-4365-b530-1e176e6f8f59)
+	)
+	(text "200-PTT10801SD"
+		(exclude_from_sim no)
+		(at 414.02 225.806 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "0fbf14a5-ae28-4dc2-9373-8b9a53838bc1")
 	)
 	(text "595-ISOUSB111DWXR "
 		(exclude_from_sim no)
@@ -1187,6 +1197,16 @@
 		)
 		(uuid "3404c717-bf0d-4319-89bc-7d7433f1913e")
 	)
+	(text "200-PTT10601SD"
+		(exclude_from_sim no)
+		(at 411.988 244.602 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "4af5143e-a5e5-463c-8cce-b4404a17d451")
+	)
 	(text "967-CCG152412D"
 		(exclude_from_sim no)
 		(at 325.628 202.438 0)
@@ -1196,6 +1216,46 @@
 			)
 		)
 		(uuid "5c69779f-8292-4fa6-b771-f94f7c6304c3")
+	)
+	(text "200-PTT12001SD "
+		(exclude_from_sim no)
+		(at 415.544 216.916 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "87c79cfc-ef6e-4198-ace3-415eaf3f1659")
+	)
+	(text "200-PTF10801LD"
+		(exclude_from_sim no)
+		(at 413.512 230.378 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "a489417d-2f3c-4c50-a382-bd3c366ffe6e")
+	)
+	(text "200-PTF10601LD"
+		(exclude_from_sim no)
+		(at 412.75 249.682 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "dea53fb9-f756-42c7-9f3d-dca064cb8dcc")
+	)
+	(text "200-PTF12001LD "
+		(exclude_from_sim no)
+		(at 415.544 210.82 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "e8648796-3ff0-4c38-8e03-6bc729214302")
 	)
 	(text "595-ISOW1044BDFMR "
 		(exclude_from_sim no)
@@ -1239,8 +1299,8 @@
 	)
 	(text_box "WebenchSchematic8V.svg"
 		(exclude_from_sim yes)
-		(at 389.89 161.29 0)
-		(size 34.29 3.81)
+		(at 372.11 149.86 0)
+		(size 26.67 3.81)
 		(margins 0.9525 0.9525 0.9525 0.9525)
 		(stroke
 			(width -0.0001)
@@ -1261,8 +1321,8 @@
 	)
 	(text_box "8V:"
 		(exclude_from_sim no)
-		(at 373.38 161.29 0)
-		(size 16.51 3.81)
+		(at 365.76 149.86 0)
+		(size 5.08 3.81)
 		(margins 0.9525 0.9525 0.9525 0.9525)
 		(stroke
 			(width -0.0001)
