@@ -891,7 +891,6 @@
 							)
 						)
 					)
-					(alternate "" input line)
 					(alternate "DCMI_D8" bidirectional line)
 					(alternate "ETH_TXD0" bidirectional line)
 					(alternate "I2S3_CK" bidirectional line)
@@ -920,7 +919,6 @@
 							)
 						)
 					)
-					(alternate "" input line)
 					(alternate "ADC1_EXTI11" bidirectional line)
 					(alternate "ADC2_EXTI11" bidirectional line)
 					(alternate "DCMI_D4" bidirectional line)
@@ -950,7 +948,6 @@
 							)
 						)
 					)
-					(alternate "" input line)
 					(alternate "DCMI_D9" bidirectional line)
 					(alternate "DEBUG_TRACED3" bidirectional line)
 					(alternate "I2S3_SDO" bidirectional line)
@@ -1713,7 +1710,6 @@
 							)
 						)
 					)
-					(alternate "" input line)
 					(alternate "ADC1_EXTI15" bidirectional line)
 					(alternate "ADC2_EXTI15" bidirectional line)
 					(alternate "CEC" bidirectional line)
@@ -4101,14 +4097,12 @@
 		)
 		(pin "52"
 			(uuid "0bc5ff28-7011-4568-89dc-f666189f124d")
-			(alternate "PC11")
 		)
 		(pin "28"
 			(uuid "53c7e92d-d226-4211-be31-1dd2c7eeedfc")
 		)
 		(pin "53"
 			(uuid "94eefff0-a382-4043-8132-ed51dedc98f8")
-			(alternate "PC12")
 		)
 		(pin "54"
 			(uuid "c8f5afac-6456-4d73-9b0b-c421875d449b")
@@ -4149,7 +4143,6 @@
 		)
 		(pin "50"
 			(uuid "601fa53c-f1da-4d0a-93e8-ab6bc0de57d2")
-			(alternate "PA15(JTDI)")
 		)
 		(pin "17"
 			(uuid "3452883d-bab1-43d6-92b3-f55f8703399a")
@@ -4221,7 +4214,6 @@
 		)
 		(pin "51"
 			(uuid "e9a5232a-7ea0-4705-b3e5-087c991c91c2")
-			(alternate "PC10")
 		)
 		(pin "2"
 			(uuid "3075ccf8-7a9a-4594-afe1-c9c55c5c66e5")

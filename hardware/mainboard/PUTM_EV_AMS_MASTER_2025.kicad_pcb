@@ -125,7 +125,6 @@
 			(psnegative no)
 			(psa4output no)
 			(plot_black_and_white yes)
-			(plotinvisibletext no)
 			(sketchpadsonfab no)
 			(plotpadnumbers no)
 			(hidednponfab no)
@@ -352,7 +351,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -430,18 +429,6 @@
 			(fill no)
 			(layer "F.CrtYd")
 			(uuid "ef6591e6-9f91-4700-aafe-7f3d9c67c3d5")
-		)
-		(fp_text user "${REFERENCE}"
-			(at 0 -1.45 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "93f1d54f-2342-4d09-866d-499c9b6aab74")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
 		)
 		(pad "1" thru_hole circle
 			(at 0 0 180)
@@ -795,7 +782,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -1004,18 +991,6 @@
 			(layer "F.Fab")
 			(uuid "d967be5d-e56a-464b-83d0-b4fb7893eebf")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "9be8b1b1-e188-4c1d-8ceb-f86e74f1838f")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0 180)
 			(size 0.9 0.95)
@@ -1077,7 +1052,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -1312,18 +1287,6 @@
 			(layer "F.Fab")
 			(uuid "8b0fc9e1-0202-4092-be16-8537ed78b42b")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "259adf08-512f-431b-a159-2c8d261f78d9")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 90)
 			(size 0.8 0.95)
@@ -1385,7 +1348,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -1594,18 +1557,6 @@
 			(layer "F.Fab")
 			(uuid "8bc13668-3034-438f-92e7-d6241089ea87")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "25ab8dca-6052-480d-b39c-77da20151834")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 90)
 			(size 0.8 0.95)
@@ -1667,7 +1618,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -1948,7 +1899,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -2157,18 +2108,6 @@
 			(layer "F.Fab")
 			(uuid "07faa233-9a12-4c78-9aec-71540ab39093")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "aadff10c-7487-49c8-a3a1-df3d4c7b280c")
-			(effects
-				(font
-					(size 0.5 0.5)
-					(thickness 0.08)
-				)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.9375 0 180)
 			(size 0.975 1.4)
@@ -2230,7 +2169,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -2700,18 +2639,6 @@
 			(layer "F.Fab")
 			(uuid "469f537e-8aaf-4bbb-9144-62b1d4898243")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "8fb6a0bd-4241-4c56-a27f-e9608b13df07")
-			(effects
-				(font
-					(size 1.27 1.27)
-					(thickness 0.254)
-				)
-			)
-		)
 		(pad "1" smd rect
 			(at -1.038 1.375)
 			(size 0.42 0.55)
@@ -2820,7 +2747,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -3114,7 +3041,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -3402,18 +3329,6 @@
 			)
 			(layer "F.Fab")
 			(uuid "da683be2-d537-4015-8dd7-01e86a198f6f")
-		)
-		(fp_text user "${REFERENCE}"
-			(at 0 -2 90)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "7fd3da1d-a292-4221-9878-e8948e705c76")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
 		)
 		(pad "1" smd roundrect
 			(at -1.65 0 270)
@@ -3766,18 +3681,6 @@
 			)
 			(layer "F.Fab")
 			(uuid "36dffd8d-1a93-4eda-9478-b9926ce1c00a")
-		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "28e19c3d-a6af-4724-874a-2c8dd94d95e2")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-			)
 		)
 		(pad "1" smd roundrect
 			(at -1.1375 -0.95)
@@ -5161,18 +5064,6 @@
 			(layer "F.Fab")
 			(uuid "83e02787-e53d-40e9-aabb-f551bc229928")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "8f77fb8e-77b1-465e-8672-bb53f5124308")
-			(effects
-				(font
-					(size 1.27 1.27)
-					(thickness 0.254)
-				)
-			)
-		)
 		(pad "1" thru_hole circle
 			(at -3.81 0.635 90)
 			(size 1.1 1.1)
@@ -6018,18 +5909,6 @@
 			(layer "F.Fab")
 			(uuid "6f7cee5c-1c1d-4ed0-8e07-d3e4c996b14a")
 		)
-		(fp_text user "${REFERENCE}"
-			(at -1 1 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "72d565b8-a224-4e97-916e-552383aa545a")
-			(effects
-				(font
-					(size 1.27 1.27)
-					(thickness 0.254)
-				)
-			)
-		)
 		(pad "" np_thru_hole circle
 			(at -4.5 0)
 			(size 2.2 2.2)
@@ -6402,18 +6281,6 @@
 			)
 			(layer "F.Fab")
 			(uuid "7853ed4b-2545-4106-ab1f-9254328017b5")
-		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0.375 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "a38490cb-ca5b-4a05-bb34-85ae73259a7f")
-			(effects
-				(font
-					(size 1.27 1.27)
-					(thickness 0.254)
-				)
-			)
 		)
 		(pad "1" thru_hole rect
 			(at 3 0 180)
@@ -7118,7 +6985,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -7347,18 +7214,6 @@
 			(layer "F.Fab")
 			(uuid "39aa770c-158a-40ae-87a8-1b6d047cfdcc")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "93f8b526-eb72-48db-860e-339723a18a98")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.7875 0 180)
 			(size 0.875 0.95)
@@ -7422,7 +7277,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -7500,18 +7355,6 @@
 			(fill no)
 			(layer "F.CrtYd")
 			(uuid "2796a10e-c6a2-45fd-bd45-e8afec4f906b")
-		)
-		(fp_text user "${REFERENCE}"
-			(at 0 -1.45 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "fffc8c5f-7aac-4044-b7ca-cb772101ae3c")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
 		)
 		(pad "1" thru_hole circle
 			(at 0 0)
@@ -7865,7 +7708,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -8159,7 +8002,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -8440,7 +8283,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -8972,18 +8815,6 @@
 			(layer "F.Fab")
 			(uuid "8cb22f1b-910c-4b9a-a593-8cc694fc366b")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "208e0152-19cf-42de-8f25-10883ce30166")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -1.1375 -0.95 270)
 			(size 1.325 0.6)
@@ -9417,18 +9248,6 @@
 			(layer "F.CrtYd")
 			(uuid "ef21e0db-4b2b-4523-ad00-29150a78635d")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "915018b1-9d9a-431c-9220-0bb0fdf0f328")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
 		(pad "" np_thru_hole circle
 			(at 0 0)
 			(size 3.2 3.2)
@@ -9468,7 +9287,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -9545,6 +9364,120 @@
 		)
 		(embedded_fonts no)
 	)
+	(footprint "MountingHole:MountingHole_3.2mm_M3"
+		(layer "F.Cu")
+		(uuid "58fb45a3-c649-481a-aca8-1065f8975304")
+		(at 158.5 144.5)
+		(descr "Mounting Hole 3.2mm, no annular, M3")
+		(tags "mounting hole 3.2mm no annular m3")
+		(property "Reference" "H3"
+			(at 0 0 0)
+			(layer "F.SilkS")
+			(hide yes)
+			(uuid "375438f7-324f-41d7-a955-356195a3cca7")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "M3"
+			(at 0 4.2 0)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "3ca81968-391f-423e-837d-860acd21c684")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "cf55df0c-58da-4980-9cdc-d0fe9bd3c4c4")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "66a9a28d-244f-4d7b-ac3b-10f526ad69e5")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Manufacturer_Name" "--"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "b1994c10-48ef-43b0-8f32-440c4444c57a")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Manufacturer_Part_Number" "--"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "022919f3-4120-40f2-815f-82f677647071")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(attr board_only exclude_from_pos_files)
+		(fp_circle
+			(center 0 0)
+			(end 3.2 0)
+			(stroke
+				(width 0.15)
+				(type solid)
+			)
+			(fill no)
+			(layer "Cmts.User")
+			(uuid "6583340a-953f-423e-ab83-34051ec36a95")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 3.45 0)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.CrtYd")
+			(uuid "f18e3efa-1f63-48a5-9bf6-32ead784875a")
+		)
+		(pad "" np_thru_hole circle
+			(at 0 0)
+			(size 3.2 3.2)
+			(drill 3.2)
+			(layers "*.Cu" "*.Mask")
+			(uuid "54fa70e3-7b04-4b05-8a5e-7ffe2fa39838")
+		)
+		(embedded_fonts no)
+	)
 	(footprint "LED_SMD:LED_0603_1608Metric"
 		(layer "F.Cu")
 		(uuid "5a7014db-6892-4b2f-a01a-7b4a7d3d5bd7")
@@ -9575,7 +9508,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -9804,18 +9737,6 @@
 			(layer "F.Fab")
 			(uuid "db3e1e2d-217b-4a96-8dcf-cef18db051e7")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "28a4a34e-66a3-425f-a131-0bd2a571919f")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.7875 0 180)
 			(size 0.875 0.95)
@@ -9879,7 +9800,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -10470,18 +10391,6 @@
 			(layer "F.Fab")
 			(uuid "0c2836e4-f415-46d2-8ec6-7451a6abfae6")
 		)
-		(fp_text user "${REFERENCE}"
-			(at -2 1 90)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "d26a7458-7f26-4636-a53a-66f15fb6b8b4")
-			(effects
-				(font
-					(size 1.27 1.27)
-					(thickness 0.254)
-				)
-			)
-		)
 		(pad "" np_thru_hole circle
 			(at -5.5 0 90)
 			(size 2.2 2.2)
@@ -10692,18 +10601,6 @@
 			(layer "F.CrtYd")
 			(uuid "e4ee2c46-f398-4e28-8d1d-72639c8ebb96")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "0f2d394f-792b-4781-b57d-0dfbadf4f1fc")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
 		(pad "" np_thru_hole circle
 			(at 0 0)
 			(size 3.2 3.2)
@@ -10743,7 +10640,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -10952,18 +10849,6 @@
 			(layer "F.Fab")
 			(uuid "58683555-4426-446c-8a9d-85b1be549d02")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "bf9fa97d-b20f-40ae-9a19-5581384c398b")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 270)
 			(size 0.8 0.95)
@@ -11025,7 +10910,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -11234,18 +11119,6 @@
 			(layer "F.Fab")
 			(uuid "18cf96dd-d9fa-4b0f-9b40-e2891f5b83a4")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "f699e0fa-92dd-4701-a7b3-16a67b69bfd2")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0)
 			(size 0.9 0.95)
@@ -11307,7 +11180,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -11588,7 +11461,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -12401,18 +12274,6 @@
 			(layer "F.Fab")
 			(uuid "ccc806e9-7971-4af7-a088-80ca8b649e24")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "c79494ae-53e4-4f01-8c6e-3a9d8e062b58")
-			(effects
-				(font
-					(size 0.32 0.32)
-					(thickness 0.05)
-				)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.9375 -0.95 90)
 			(size 1.475 0.6)
@@ -12988,7 +12849,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -13389,18 +13250,6 @@
 			(layer "F.Fab")
 			(uuid "793b1091-9cb4-437d-93e0-8d47e9d2b940")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "df21ea38-83b2-48b9-981e-c3ef0aa8371d")
-			(effects
-				(font
-					(size 0.8 0.8)
-					(thickness 0.12)
-				)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -1.8 0)
 			(size 2.6 1.6)
@@ -13686,18 +13535,6 @@
 			)
 			(layer "F.Fab")
 			(uuid "f1725654-67d9-4755-acc7-813c73fd4827")
-		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "16e515ad-9be2-4bbc-a356-6544b3d3aa68")
-			(effects
-				(font
-					(size 0.32 0.32)
-					(thickness 0.05)
-				)
-			)
 		)
 		(pad "1" smd roundrect
 			(at -0.9375 -0.95 90)
@@ -14373,18 +14210,6 @@
 			)
 			(layer "F.Fab")
 			(uuid "73eaf265-6f85-4ca7-ab38-568fe9757bc9")
-		)
-		(fp_text user "${REFERENCE}"
-			(at -1 1 90)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "dd59f966-a3dc-47df-bdb6-f74241650f13")
-			(effects
-				(font
-					(size 1.27 1.27)
-					(thickness 0.254)
-				)
-			)
 		)
 		(pad "" np_thru_hole circle
 			(at -4.5 0 270)
@@ -15281,19 +15106,6 @@
 			(layer "F.Fab")
 			(uuid "e45ba2ab-0de0-4b59-aae8-a1bb3fca3667")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 270)
-			(unlocked yes)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "c80189ca-cdec-400d-8d51-5495df931cbb")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -2.1 0 180)
 			(size 1.9 5.1)
@@ -15366,7 +15178,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -15574,18 +15386,6 @@
 			)
 			(layer "F.Fab")
 			(uuid "0c0090b4-bc7e-4626-9476-e15d30714850")
-		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "38ad9952-958f-4025-81c5-870367450901")
-			(effects
-				(font
-					(size 0.5 0.5)
-					(thickness 0.08)
-				)
-			)
 		)
 		(pad "1" smd roundrect
 			(at -0.9375 0 90)
@@ -16086,18 +15886,6 @@
 			)
 			(layer "F.Fab")
 			(uuid "65e2f0cc-c2f2-41d4-83bf-45805fc3f135")
-		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "916f4005-3b11-4a1b-987a-9c3212803903")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
 		)
 		(pad "1" smd roundrect
 			(at -5.675 -3.75 270)
@@ -17046,18 +16834,6 @@
 			(layer "F.Fab")
 			(uuid "c3257fdc-b085-4702-b285-497221878a5f")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0.375 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "b50e902b-debd-448a-aad5-e1e6a7372273")
-			(effects
-				(font
-					(size 1.27 1.27)
-					(thickness 0.254)
-				)
-			)
-		)
 		(pad "1" thru_hole rect
 			(at 3 0 180)
 			(size 2.025 2.025)
@@ -17130,7 +16906,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -17411,7 +17187,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -17640,7 +17416,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -18591,7 +18367,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -18992,18 +18768,6 @@
 			(layer "F.Fab")
 			(uuid "5765a4c8-b247-49a1-bbdc-2550cd0ed1bf")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "fb6b1605-510b-453d-80b5-f3c7ecc6ea30")
-			(effects
-				(font
-					(size 0.8 0.8)
-					(thickness 0.12)
-				)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -1.8 0 90)
 			(size 2.6 1.6)
@@ -19065,7 +18829,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -19417,7 +19181,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -19711,7 +19475,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -20255,18 +20019,6 @@
 			(layer "F.Fab")
 			(uuid "59f2d609-e3f9-4226-8cfc-10118679ed34")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "cfd75150-4aef-45c2-a904-1901dfd290bd")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -2.8625 -2.275 90)
 			(size 1.475 0.4)
@@ -20658,18 +20410,6 @@
 			)
 			(layer "F.Fab")
 			(uuid "18aec23f-5184-4a9b-8b61-459937452ab4")
-		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "2c16b5a1-c091-442a-98a2-1d06d392fd75")
-			(effects
-				(font
-					(size 1.27 1.27)
-					(thickness 0.254)
-				)
-			)
 		)
 		(pad "1" smd rect
 			(at -1.038 1.375)
@@ -21520,7 +21260,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -21814,7 +21554,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -22043,18 +21783,6 @@
 			(layer "F.Fab")
 			(uuid "b80de3ca-aa5d-4d84-91e2-14763ad9b0e4")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "994cfc86-4f33-480a-a21f-fde35f248db3")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.7875 0 180)
 			(size 0.875 0.95)
@@ -22118,7 +21846,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -22901,7 +22629,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -23189,18 +22917,6 @@
 			)
 			(layer "F.Fab")
 			(uuid "2d82d287-b0dd-48af-b949-5dafda3df116")
-		)
-		(fp_text user "${REFERENCE}"
-			(at 0 -2 90)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "2595efbb-58b6-4e4b-9f96-d02b6600b3ad")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
 		)
 		(pad "1" smd roundrect
 			(at -1.65 0 270)
@@ -23598,254 +23314,6 @@
 				(xyz 0 0 0)
 			)
 		)
-	)
-	(footprint "MountingHole:MountingHole_3.2mm_M3_Pad_Via"
-		(layer "F.Cu")
-		(uuid "c103d5f3-419f-46de-ae16-8458843aa179")
-		(at 158.5 144.5)
-		(descr "Mounting Hole 3.2mm, M3")
-		(tags "mounting hole 3.2mm m3")
-		(property "Reference" "TP2"
-			(at 0 -4.2 0)
-			(layer "F.SilkS")
-			(hide yes)
-			(uuid "686d7dba-6fa3-43aa-8342-815a86f45970")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "Value" "TestPoint_Small"
-			(at 0 4.2 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "d3c992d7-cf83-4ea4-9749-f264c3c0e706")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 0 0 0)
-			(unlocked yes)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "0921a377-bdfc-4f7d-b0b6-1d04da9850b4")
-			(effects
-				(font
-					(size 1.27 1.27)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "Description" "test point"
-			(at 0 0 0)
-			(unlocked yes)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "a97bcc33-1037-4aa8-ba9e-5fc35f8eb666")
-			(effects
-				(font
-					(size 1.27 1.27)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "Mouser Part Number" "--"
-			(at 0 0 0)
-			(unlocked yes)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "8987caf6-ff11-493a-bb4b-1a9c0ce29852")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property "DigiKey Part Number" ""
-			(at 0 0 0)
-			(unlocked yes)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "812b184c-3f3d-439b-8f00-bcb25e2a43a7")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(property ki_fp_filters "Pin* Test*")
-		(path "/fddfd40b-128d-4439-b7b1-2bfdbdc0083e/6e1aeeff-01d9-4419-919d-0aadb90b49b4")
-		(sheetname "/Power/")
-		(sheetfile "Power.kicad_sch")
-		(attr exclude_from_pos_files)
-		(fp_circle
-			(center 0 0)
-			(end 3.2 0)
-			(stroke
-				(width 0.15)
-				(type solid)
-			)
-			(fill no)
-			(layer "Cmts.User")
-			(uuid "8a30a427-7c63-46e3-894d-083ce9b19c88")
-		)
-		(fp_circle
-			(center 0 0)
-			(end 3.45 0)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(fill no)
-			(layer "F.CrtYd")
-			(uuid "75fc0197-b5d3-4a23-952e-a42e778d55aa")
-		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "2a3a4a20-198c-4da4-972e-898f27091b88")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
-		(pad "1" thru_hole circle
-			(at -2.4 0)
-			(size 0.8 0.8)
-			(drill 0.5)
-			(layers "*.Cu" "*.Mask")
-			(remove_unused_layers yes)
-			(keep_end_layers yes)
-			(zone_layer_connections "In1.Cu" "In2.Cu")
-			(net 1 "GND")
-			(pinfunction "1")
-			(pintype "passive")
-			(zone_connect 2)
-			(uuid "7d501577-7743-4731-918b-7b52a7b91028")
-		)
-		(pad "1" thru_hole circle
-			(at -1.697056 -1.697056)
-			(size 0.8 0.8)
-			(drill 0.5)
-			(layers "*.Cu" "*.Mask")
-			(remove_unused_layers yes)
-			(keep_end_layers yes)
-			(zone_layer_connections "In1.Cu" "In2.Cu")
-			(net 1 "GND")
-			(pinfunction "1")
-			(pintype "passive")
-			(zone_connect 2)
-			(uuid "0f6d0f4b-9ab2-4c64-a9a8-9e10ed1d10b8")
-		)
-		(pad "1" thru_hole circle
-			(at -1.697056 1.697056)
-			(size 0.8 0.8)
-			(drill 0.5)
-			(layers "*.Cu" "*.Mask")
-			(remove_unused_layers yes)
-			(keep_end_layers yes)
-			(zone_layer_connections "In2.Cu")
-			(net 1 "GND")
-			(pinfunction "1")
-			(pintype "passive")
-			(zone_connect 2)
-			(uuid "a81a2b02-20f5-418e-8bf3-64833002efd3")
-		)
-		(pad "1" thru_hole circle
-			(at 0 -2.4)
-			(size 0.8 0.8)
-			(drill 0.5)
-			(layers "*.Cu" "*.Mask")
-			(remove_unused_layers yes)
-			(keep_end_layers yes)
-			(zone_layer_connections "In1.Cu" "In2.Cu")
-			(net 1 "GND")
-			(pinfunction "1")
-			(pintype "passive")
-			(zone_connect 2)
-			(uuid "f036e426-767b-4519-845d-66a5357e3daa")
-		)
-		(pad "1" thru_hole circle
-			(at 0 0)
-			(size 6.4 6.4)
-			(drill 3.2)
-			(layers "*.Cu" "*.Mask")
-			(remove_unused_layers yes)
-			(keep_end_layers yes)
-			(zone_layer_connections "In1.Cu" "In2.Cu")
-			(net 1 "GND")
-			(pinfunction "1")
-			(pintype "passive")
-			(uuid "67644f77-36c7-4588-858c-25754a14d2d4")
-		)
-		(pad "1" thru_hole circle
-			(at 0 2.4)
-			(size 0.8 0.8)
-			(drill 0.5)
-			(layers "*.Cu" "*.Mask")
-			(remove_unused_layers yes)
-			(keep_end_layers yes)
-			(zone_layer_connections "In2.Cu")
-			(net 1 "GND")
-			(pinfunction "1")
-			(pintype "passive")
-			(zone_connect 2)
-			(uuid "666bca06-8cdf-4472-9740-5b2de86c03f6")
-		)
-		(pad "1" thru_hole circle
-			(at 1.697056 -1.697056)
-			(size 0.8 0.8)
-			(drill 0.5)
-			(layers "*.Cu" "*.Mask")
-			(remove_unused_layers yes)
-			(keep_end_layers yes)
-			(zone_layer_connections "In1.Cu" "In2.Cu")
-			(net 1 "GND")
-			(pinfunction "1")
-			(pintype "passive")
-			(zone_connect 2)
-			(uuid "ccb2fd51-7b0d-4602-8cb3-5bb8cc65cf5d")
-		)
-		(pad "1" thru_hole circle
-			(at 1.697056 1.697056)
-			(size 0.8 0.8)
-			(drill 0.5)
-			(layers "*.Cu" "*.Mask")
-			(remove_unused_layers yes)
-			(keep_end_layers yes)
-			(zone_layer_connections "In2.Cu")
-			(net 1 "GND")
-			(pinfunction "1")
-			(pintype "passive")
-			(zone_connect 2)
-			(uuid "94ef6e4e-42fe-454a-acd5-1291a3bc3f62")
-		)
-		(pad "1" thru_hole circle
-			(at 2.4 0)
-			(size 0.8 0.8)
-			(drill 0.5)
-			(layers "*.Cu" "*.Mask")
-			(remove_unused_layers yes)
-			(keep_end_layers yes)
-			(zone_layer_connections "In1.Cu" "In2.Cu")
-			(net 1 "GND")
-			(pinfunction "1")
-			(pintype "passive")
-			(zone_connect 2)
-			(uuid "a32bd7f4-945f-49bb-b63a-e9d8af8f37a4")
-		)
-		(embedded_fonts no)
 	)
 	(footprint "Package_TO_SOT_SMD:SOT-23-3"
 		(layer "F.Cu")
@@ -24334,18 +23802,6 @@
 			(layer "F.Fab")
 			(uuid "e8d1dda5-6c5a-4b71-aa7b-e4ef93d524f0")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "49027705-8d79-4f1a-bc6b-2123c635d33b")
-			(effects
-				(font
-					(size 1.27 1.27)
-					(thickness 0.254)
-				)
-			)
-		)
 		(pad "1" smd rect
 			(at -1.038 1.375)
 			(size 0.42 0.55)
@@ -24454,7 +23910,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -24960,18 +24416,6 @@
 			(layer "F.Fab")
 			(uuid "9e6f9b3c-d851-44d3-b5a4-69b999188c46")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "bcf01652-7628-4766-8eca-edbdef72041b")
-			(effects
-				(font
-					(size 0.32 0.32)
-					(thickness 0.05)
-				)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.9375 -0.95 90)
 			(size 1.475 0.6)
@@ -25045,7 +24489,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -25254,18 +24698,6 @@
 			(layer "F.Fab")
 			(uuid "4e51927c-b0ed-4bb0-b6e7-45e99aa989ed")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "3679463d-11f1-431f-be17-63ab556228a1")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 180)
 			(size 0.8 0.95)
@@ -25327,7 +24759,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -25536,18 +24968,6 @@
 			(layer "F.Fab")
 			(uuid "d958814e-fb06-4e71-b571-f9934c00ea2b")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "dcbade72-0828-4a82-8472-3e638c48d93b")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 270)
 			(size 0.8 0.95)
@@ -25609,7 +25029,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -26477,18 +25897,6 @@
 			(layer "F.Fab")
 			(uuid "e56df4d3-ab65-46e4-984e-c7826c6617c5")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "5becc81a-f1de-45fc-a405-98fb9867cd4c")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -1.1375 -0.95 90)
 			(size 1.325 0.6)
@@ -26582,7 +25990,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -26791,18 +26199,6 @@
 			(layer "F.Fab")
 			(uuid "a1bf84c0-89d4-47a2-9e93-0a01443d824a")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "9896e8b1-c941-453b-b388-b305d5cbd454")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 270)
 			(size 0.8 0.95)
@@ -26864,7 +26260,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -26971,7 +26367,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -27372,18 +26768,6 @@
 			(layer "F.Fab")
 			(uuid "12a94e39-9d10-4d68-a1d2-9e9bb6ab3090")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "742b4e0e-b4d3-40cc-8b10-517a3606bcc2")
-			(effects
-				(font
-					(size 0.8 0.8)
-					(thickness 0.12)
-				)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -1.8 0 90)
 			(size 2.6 1.6)
@@ -27445,7 +26829,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -27726,7 +27110,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -28209,18 +27593,6 @@
 			(layer "F.Fab")
 			(uuid "a98a5881-0c70-4cfe-a5dd-f8bb03612c35")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "c4e73036-f46c-432f-ba7e-eb34becb30f2")
-			(effects
-				(font
-					(size 1.27 1.27)
-					(thickness 0.254)
-				)
-			)
-		)
 		(pad "1" smd rect
 			(at -1.038 1.375)
 			(size 0.42 0.55)
@@ -28329,7 +27701,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -28563,18 +27935,6 @@
 			)
 			(layer "F.Fab")
 			(uuid "d71386df-169d-479a-8665-f8944c607577")
-		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "136cc3d6-a43d-47fb-97c3-05bf76f10866")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-			)
 		)
 		(pad "1" smd roundrect
 			(at -0.825 0 90)
@@ -29520,18 +28880,6 @@
 			(layer "F.CrtYd")
 			(uuid "00b9a1a7-d8b2-4bae-a9ef-758aba7a23a4")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "d8efdbb6-f393-4f81-aba7-bd93dfad7c71")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-			)
-		)
 		(pad "" np_thru_hole circle
 			(at 0 0)
 			(size 3.2 3.2)
@@ -29953,7 +29301,7 @@
 				)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -30182,18 +29530,6 @@
 			(layer "F.Fab")
 			(uuid "90ef07b0-99b3-4d27-8af3-c7a1c8377244")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "F.Fab")
-			(hide yes)
-			(uuid "0cf70500-8800-4d53-8dd0-e8efd1716a20")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.7875 0 180)
 			(size 0.875 0.95)
@@ -30259,7 +29595,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -30476,19 +29812,6 @@
 			(layer "B.Fab")
 			(uuid "b5ef3ab0-7ea6-4ccc-9897-b456f05dae4b")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "754ac608-ba33-4849-b81e-5b273284d4f5")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 270)
 			(size 0.8 0.95)
@@ -30552,7 +29875,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -30914,7 +30237,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -31145,19 +30468,6 @@
 			(layer "B.Fab")
 			(uuid "494313cf-cbe7-4988-8175-5b4b594ebd77")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "46378ebd-0fa0-4784-bb2e-77f4155bc2b4")
-			(effects
-				(font
-					(size 0.5 0.5)
-					(thickness 0.08)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.95 0 90)
 			(size 1 1.45)
@@ -31221,7 +30531,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -31438,19 +30748,6 @@
 			(layer "B.Fab")
 			(uuid "e79b1bcd-9ec7-40d7-b0a3-fc7080e3598b")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "956734d7-b93e-4dd3-b91b-304a5739b13d")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 90)
 			(size 0.8 0.95)
@@ -31514,7 +30811,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -31811,19 +31108,6 @@
 			(layer "B.Fab")
 			(uuid "aef90523-9039-48a9-9a19-67c17f7b42fe")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 2 90)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "55de4793-826c-4bce-b595-f06d3671e313")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -1.65 0 270)
 			(size 0.9 1.2)
@@ -31889,7 +31173,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -32134,19 +31418,6 @@
 			(layer "B.Fab")
 			(uuid "4c532969-19e4-4c9c-89d1-9d38ac75a762")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "d2127e12-be82-4fc2-817a-97ab23a15f9b")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 90)
 			(size 0.8 0.95)
@@ -32210,7 +31481,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -32455,19 +31726,6 @@
 			(layer "B.Fab")
 			(uuid "788b9e8d-c8f0-4d5b-a064-f395ef29b3b0")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "9bddb13c-f50c-4a30-8ea9-bd13142eb29d")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0)
 			(size 0.9 0.95)
@@ -32531,7 +31789,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -32762,19 +32020,6 @@
 			(layer "B.Fab")
 			(uuid "35aa210c-1fb1-466c-adf6-9cd65f5c6739")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "495be76c-c6c4-4604-ab95-619e503a6e9a")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 90)
 			(size 0.8 0.95)
@@ -32838,7 +32083,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -33055,19 +32300,6 @@
 			(layer "B.Fab")
 			(uuid "30ddf9ba-ebee-4f7b-bdb1-57010ed149e3")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "319c902d-d234-42e3-813a-fa44b5e1cb43")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 180)
 			(size 0.8 0.95)
@@ -33131,7 +32363,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -33376,19 +32608,6 @@
 			(layer "B.Fab")
 			(uuid "5c90b698-8d10-4d21-8fa7-2c26d2c91243")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "27782c79-7e41-4f4e-a67e-1d0ee275f306")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 180)
 			(size 0.8 0.95)
@@ -33452,7 +32671,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -33758,7 +32977,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -33989,19 +33208,6 @@
 			(layer "B.Fab")
 			(uuid "de4a2690-da32-4845-985a-c616c1ea7884")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "7096d4af-a6df-4a39-be66-d53cca33de2e")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0 270)
 			(size 0.9 0.95)
@@ -34065,7 +33271,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -34296,19 +33502,6 @@
 			(layer "B.Fab")
 			(uuid "bc10147d-57ea-4fed-b595-2d91989f0728")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "1b57f8ce-b075-4f0a-a1f7-1b4128abb01b")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0 180)
 			(size 0.9 0.95)
@@ -34372,7 +33565,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -34664,7 +33857,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -34909,19 +34102,6 @@
 			(layer "B.Fab")
 			(uuid "e34e4ee3-92ef-49d0-94ce-a25b8470132e")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "4ae16f54-c360-4f3a-b192-e0b5b2b23bb4")
-			(effects
-				(font
-					(size 0.5 0.5)
-					(thickness 0.08)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.95 0)
 			(size 1 1.45)
@@ -34985,7 +34165,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -35216,19 +34396,6 @@
 			(layer "B.Fab")
 			(uuid "2c5c27b3-2a21-4613-9493-6b1ed8b90ddd")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "81b92b41-de1f-47b4-82da-659057dd1863")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0 180)
 			(size 0.9 0.95)
@@ -35292,7 +34459,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -35509,19 +34676,6 @@
 			(layer "B.Fab")
 			(uuid "bb75525d-4039-4800-9376-30be210b38c8")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "52ff6ebb-eebe-44b4-920b-99fd2a45d010")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 180)
 			(size 0.8 0.95)
@@ -35585,7 +34739,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -35877,7 +35031,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -36108,19 +35262,6 @@
 			(layer "B.Fab")
 			(uuid "da693498-608c-465e-b26d-5faaa0ad3699")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "7667b830-36d7-4e8b-8124-7b5c21e00192")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0 270)
 			(size 0.9 0.95)
@@ -36184,7 +35325,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -36476,7 +35617,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -36693,19 +35834,6 @@
 			(layer "B.Fab")
 			(uuid "54f1ea9e-d8c6-410f-bb66-4478d6a8ffe5")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "1cc3259d-b584-47bb-b785-b28f139e9ef5")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0)
 			(size 0.8 0.95)
@@ -36769,7 +35897,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -36986,19 +36114,6 @@
 			(layer "B.Fab")
 			(uuid "0759748a-7deb-479f-95a1-3bbc7aa3bb3e")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "561c78bc-4448-4ed5-a3da-cc57ebb7a033")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 180)
 			(size 0.8 0.95)
@@ -37062,7 +36177,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -37307,19 +36422,6 @@
 			(layer "B.Fab")
 			(uuid "6003c25d-0681-41b7-882c-300ccfec6e45")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0.05 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "4a23bea1-a208-4c43-b9d5-c8429a39096f")
-			(effects
-				(font
-					(size 0.5 0.5)
-					(thickness 0.08)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.95 0 180)
 			(size 1 1.45)
@@ -37383,7 +36485,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -37614,19 +36716,6 @@
 			(layer "B.Fab")
 			(uuid "ca94eeb7-b07c-4f05-bcfe-eebc6777821c")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "8b89f3f9-1bda-44b4-ba2a-ac81a5556ffa")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0)
 			(size 0.9 0.95)
@@ -37690,7 +36779,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -37921,19 +37010,6 @@
 			(layer "B.Fab")
 			(uuid "81a8ba48-9ddb-4157-b230-6e211206ddcb")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "cfba9ac9-c67b-44fa-81af-ebff0594c6e8")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0 90)
 			(size 0.9 0.95)
@@ -37997,7 +37073,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -38214,19 +37290,6 @@
 			(layer "B.Fab")
 			(uuid "3134917e-34de-4f41-8cf0-d05b63a80d64")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "92d81cd5-62b9-4d36-8fab-23aacf14aa74")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0)
 			(size 0.9 0.95)
@@ -38290,7 +37353,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -38521,19 +37584,6 @@
 			(layer "B.Fab")
 			(uuid "c824265e-5e97-4972-95d2-eb5709d5cb03")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "e3af23c8-ead8-4b72-be8d-25adfb3c973b")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0 180)
 			(size 0.9 0.95)
@@ -38597,7 +37647,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -38814,19 +37864,6 @@
 			(layer "B.Fab")
 			(uuid "7c51769d-6325-4b6a-b72e-28b529b0acb8")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "d2fea113-70ec-4315-b310-7744ba015228")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 90)
 			(size 0.8 0.95)
@@ -38890,7 +37927,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -39121,19 +38158,6 @@
 			(layer "B.Fab")
 			(uuid "02236e06-2c19-46c8-931a-29400d79c938")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "b36d20ea-6709-43b1-974a-84467bdca927")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 90)
 			(size 0.8 0.95)
@@ -39197,7 +38221,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -39503,7 +38527,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -39748,19 +38772,6 @@
 			(layer "B.Fab")
 			(uuid "8a7e9886-7705-44a6-8660-5188efa946fe")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "657011a8-1c95-4802-a9e6-e74c2ce7b18a")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0)
 			(size 0.9 0.95)
@@ -39824,7 +38835,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -40130,7 +39141,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -40436,7 +39447,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -40667,19 +39678,6 @@
 			(layer "B.Fab")
 			(uuid "51fd1dfe-d9bf-4fe0-b207-078665ea8671")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "57078cad-7a37-4354-9432-970d2fbef74f")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0)
 			(size 0.9 0.95)
@@ -40743,7 +39741,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -40988,19 +39986,6 @@
 			(layer "B.Fab")
 			(uuid "b9ff2dc8-b974-4612-83ab-e41647586869")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "bc5aa700-82c9-4cc9-8710-032df103b779")
-			(effects
-				(font
-					(size 0.5 0.5)
-					(thickness 0.08)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.95 0)
 			(size 1 1.45)
@@ -41064,7 +40049,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -41281,19 +40266,6 @@
 			(layer "B.Fab")
 			(uuid "0bb8a68f-ee01-46b5-b744-6cd4e8ffa69b")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "a65a6fd1-4aa0-4ad9-b48d-2138bb686804")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 270)
 			(size 0.8 0.95)
@@ -41357,7 +40329,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -41574,19 +40546,6 @@
 			(layer "B.Fab")
 			(uuid "d6ad0f62-f3bc-4098-97d2-1be4d0263171")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "92007964-4226-474e-9f6b-9ce195d33b02")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 180)
 			(size 0.8 0.95)
@@ -41650,7 +40609,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -41867,19 +40826,6 @@
 			(layer "B.Fab")
 			(uuid "ff4f9e72-2966-4ef1-a360-657110538100")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "508df1b4-d3de-4170-b694-0d1f55313db5")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 180)
 			(size 0.8 0.95)
@@ -41943,7 +40889,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -42174,19 +41120,6 @@
 			(layer "B.Fab")
 			(uuid "d3c6e621-3f3a-4592-a1f0-55e19a642df8")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "afa5f9f9-305f-40cc-9af3-ae9784c01ee9")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0)
 			(size 0.8 0.95)
@@ -42250,7 +41183,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -42556,7 +41489,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -42862,7 +41795,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -43093,19 +42026,6 @@
 			(layer "B.Fab")
 			(uuid "39fbe213-b9c9-4a56-988c-b68b2dc24e97")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "f80bb183-592f-40fb-a123-74aac39ffb62")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0 270)
 			(size 0.9 0.95)
@@ -43169,7 +42089,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -43466,19 +42386,6 @@
 			(layer "B.Fab")
 			(uuid "dad6a01f-0256-4c20-8403-8c7d9c260030")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 2 90)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "82d2ca07-f261-4841-9fdd-244c37567f2c")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -1.65 0 270)
 			(size 0.9 1.2)
@@ -43544,7 +42451,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -43775,19 +42682,6 @@
 			(layer "B.Fab")
 			(uuid "ecb5ef33-5762-4663-81be-7f887b792d40")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "dae51925-58ee-436c-8ecc-75c304b1b2c4")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0)
 			(size 0.9 0.95)
@@ -43851,7 +42745,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -44096,19 +42990,6 @@
 			(layer "B.Fab")
 			(uuid "164b16dc-6d5b-47d2-8edd-1ba5713c121c")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "81647d75-eb21-45ab-999e-96918a332071")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0 270)
 			(size 0.9 0.95)
@@ -44172,7 +43053,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -44389,19 +43270,6 @@
 			(layer "B.Fab")
 			(uuid "223da4aa-fc3a-48cd-b14b-5a3df223ae1d")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "44f66fa4-5836-4606-9b7a-4a837f1d6852")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 180)
 			(size 0.8 0.95)
@@ -44465,7 +43333,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -44696,19 +43564,6 @@
 			(layer "B.Fab")
 			(uuid "d24bf0f3-900c-47cb-a148-8a9b7d5769b3")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "90242747-4613-49ef-beae-02c9058e99c6")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0 180)
 			(size 0.9 0.95)
@@ -44772,7 +43627,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -44989,19 +43844,6 @@
 			(layer "B.Fab")
 			(uuid "b811091a-3baa-4384-890d-87bb25f8bf45")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "74290461-5ff1-467d-96b0-88618ee34dea")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 180)
 			(size 0.8 0.95)
@@ -45065,7 +43907,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -45296,19 +44138,6 @@
 			(layer "B.Fab")
 			(uuid "4e55ec17-7542-48fa-901b-7552a626bf4c")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "69874afb-57a8-456f-b065-3558ba03f623")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0)
 			(size 0.8 0.95)
@@ -45372,7 +44201,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -45589,19 +44418,6 @@
 			(layer "B.Fab")
 			(uuid "991008c8-5275-4d15-9e15-d392350e69f4")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "8ca853d4-9505-4bbe-b027-f8fcec9df358")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0)
 			(size 0.9 0.95)
@@ -45665,7 +44481,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -45973,7 +44789,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -46204,19 +45020,6 @@
 			(layer "B.Fab")
 			(uuid "875a03fb-8105-4218-934f-1bac228cdaa7")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "f114345b-e72b-45fb-af5e-a97ed9da28d9")
-			(effects
-				(font
-					(size 0.5 0.5)
-					(thickness 0.08)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.95 0 90)
 			(size 1 1.45)
@@ -46280,7 +45083,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -46572,7 +45375,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -46817,19 +45620,6 @@
 			(layer "B.Fab")
 			(uuid "cfa80ce5-f72e-4103-88c7-67679df3a0af")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "ae249534-66e0-4d8f-b209-1b11f68ec48d")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0 180)
 			(size 0.9 0.95)
@@ -46893,7 +45683,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -47138,19 +45928,6 @@
 			(layer "B.Fab")
 			(uuid "a1669a23-3914-47ef-a3f5-35a83ed4fd17")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "3c080bfd-30ad-4df7-9d20-0962427933f9")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0 180)
 			(size 0.9 0.95)
@@ -47214,7 +45991,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -47431,19 +46208,6 @@
 			(layer "B.Fab")
 			(uuid "a9038e7e-cae6-4ed5-8a9f-9022a62d30cf")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "b43d21f9-eeb5-4725-9bf1-f7f958b8d8d7")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0)
 			(size 0.9 0.95)
@@ -47507,7 +46271,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -47724,19 +46488,6 @@
 			(layer "B.Fab")
 			(uuid "2a11ae95-f65d-45ac-8a7e-99dca7cec839")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "22657342-8c16-4383-a2aa-71fa15b024c1")
-			(effects
-				(font
-					(size 0.5 0.5)
-					(thickness 0.08)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.9375 0 180)
 			(size 0.975 1.4)
@@ -47800,7 +46551,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -48041,19 +46792,6 @@
 			(layer "B.Fab")
 			(uuid "776b72c5-bbd6-4883-ae46-af92e8c211e4")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 2 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "e1d5696d-d8b0-4cd8-8aa1-b466d87a829b")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -1.65 0)
 			(size 0.9 1.2)
@@ -48119,7 +46857,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -48336,19 +47074,6 @@
 			(layer "B.Fab")
 			(uuid "ce2ce506-cf51-4af3-9d11-68f6fa73a742")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "f6a8374b-b920-4c03-b421-b5ab8ac28a9b")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0)
 			(size 0.8 0.95)
@@ -48412,7 +47137,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -48657,19 +47382,6 @@
 			(layer "B.Fab")
 			(uuid "905a700c-628e-47ef-a49b-124c03a0f1ee")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "538970c9-8eeb-4958-88cd-5288967f3ad7")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0)
 			(size 0.9 0.95)
@@ -48733,7 +47445,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -48964,19 +47676,6 @@
 			(layer "B.Fab")
 			(uuid "5fa8a596-a855-48e6-b5e0-28fefb365f2c")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "63851b21-1f15-4a5c-bfcb-82516e6c5165")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0 90)
 			(size 0.9 0.95)
@@ -49040,7 +47739,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -49257,19 +47956,6 @@
 			(layer "B.Fab")
 			(uuid "cdbfd9a5-0c60-4faa-a1ac-033b572130b7")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "70a59caf-40eb-4e52-82d9-b6f5f638249d")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0 180)
 			(size 0.9 0.95)
@@ -49333,7 +48019,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -49578,19 +48264,6 @@
 			(layer "B.Fab")
 			(uuid "22ecd639-0077-478b-91f2-3a448db2aac9")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "6b021b7f-099d-4d43-8200-8749baadb595")
-			(effects
-				(font
-					(size 0.5 0.5)
-					(thickness 0.08)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.95 0)
 			(size 1 1.45)
@@ -49654,7 +48327,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -49884,19 +48557,6 @@
 			)
 			(layer "B.Fab")
 			(uuid "5fab9a84-71c5-4587-a35a-db658781aab4")
-		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "420a2de2-a824-47a7-9128-675770707d5b")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
 		)
 		(pad "1" smd roundrect
 			(at -0.775 0 180)
@@ -50141,7 +48801,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -50358,19 +49018,6 @@
 			(layer "B.Fab")
 			(uuid "a4d429b5-09a2-449b-bba3-5a7bcd4868ce")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "7ff576ca-eac5-487b-ae20-3542b9c24360")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 90)
 			(size 0.8 0.95)
@@ -50434,7 +49081,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -50651,19 +49298,6 @@
 			(layer "B.Fab")
 			(uuid "0d596363-c465-4669-921a-ea4b05a25414")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "ee984217-5e82-44be-a6ff-8895ad84413d")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 90)
 			(size 0.8 0.95)
@@ -50727,7 +49361,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -51033,7 +49667,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -51339,7 +49973,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -51584,19 +50218,6 @@
 			(layer "B.Fab")
 			(uuid "70c0737e-24ee-4673-94b6-4c028f0c7256")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "c1eb558a-b3c9-4a16-a9bc-05e75a2a1b29")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 90)
 			(size 0.8 0.95)
@@ -51660,7 +50281,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -51891,19 +50512,6 @@
 			(layer "B.Fab")
 			(uuid "30e94408-c2c8-46dc-942c-cf4eec05fdf8")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "3fd4a474-702a-4c50-a7c9-f732d0243ed8")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0 270)
 			(size 0.9 0.95)
@@ -51967,7 +50575,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -52198,19 +50806,6 @@
 			(layer "B.Fab")
 			(uuid "a44c2ac1-f07c-43fb-ac44-ba338405915a")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "280b9b87-cd56-464a-bc15-e01a6040a081")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 270)
 			(size 0.8 0.95)
@@ -52274,7 +50869,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -52519,19 +51114,6 @@
 			(layer "B.Fab")
 			(uuid "9004f58f-e745-4d7a-b628-5e0b26bcf3ca")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "62020914-fbfa-4665-ab23-b15c8532eb52")
-			(effects
-				(font
-					(size 0.5 0.5)
-					(thickness 0.08)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.95 0)
 			(size 1 1.45)
@@ -52595,7 +51177,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -52901,7 +51483,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -53207,7 +51789,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -53513,7 +52095,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -53744,19 +52326,6 @@
 			(layer "B.Fab")
 			(uuid "ac714af5-750c-47d5-b020-3149f61980e5")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "a874faab-46e0-454f-8077-1296c7a18f76")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0 90)
 			(size 0.9 0.95)
@@ -53820,7 +52389,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -54051,19 +52620,6 @@
 			(layer "B.Fab")
 			(uuid "bf2b2815-5972-4806-81e0-6c162ea9ea0b")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "dd353819-4af2-4b37-8435-842281783256")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 270)
 			(size 0.8 0.95)
@@ -54127,7 +52683,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -54358,19 +52914,6 @@
 			(layer "B.Fab")
 			(uuid "3619da23-677c-4cce-a752-7da13a9dae99")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "18d979a4-bfdc-4070-84e6-47ae6bd2a1a8")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0 90)
 			(size 0.9 0.95)
@@ -54434,7 +52977,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -54665,19 +53208,6 @@
 			(layer "B.Fab")
 			(uuid "b8fc8416-023b-4908-b388-2f1ee6db92aa")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "c060da5b-a2d8-4f60-b8f7-83b187b9e46a")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0 90)
 			(size 0.9 0.95)
@@ -54741,7 +53271,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -54972,19 +53502,6 @@
 			(layer "B.Fab")
 			(uuid "d29a269d-7b6c-4436-a3c9-1c9381c26f7a")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "4ca4577a-4d16-4cda-820f-907d216a047d")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 270)
 			(size 0.8 0.95)
@@ -55048,7 +53565,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -55278,19 +53795,6 @@
 			)
 			(layer "B.Fab")
 			(uuid "3c71bb78-d493-45ca-80d4-08ce846f1f91")
-		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "7f7ffe60-82d1-432d-acec-b30b742000b1")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
 		)
 		(pad "1" smd roundrect
 			(at -0.825 0)
@@ -55689,7 +54193,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -55920,19 +54424,6 @@
 			(layer "B.Fab")
 			(uuid "c88f2737-c6cd-4e40-8109-343c2370cc9d")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "5cabed10-fd33-459a-9e1b-963e179b114f")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0)
 			(size 0.9 0.95)
@@ -55996,7 +54487,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -56288,7 +54779,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -56519,19 +55010,6 @@
 			(layer "B.Fab")
 			(uuid "c7678de3-ab6c-483d-af9a-9fd531537954")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "a181d762-2572-49d1-b991-75cb0ba3a32a")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 90)
 			(size 0.8 0.95)
@@ -56595,7 +55073,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -56901,7 +55379,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -57132,19 +55610,6 @@
 			(layer "B.Fab")
 			(uuid "66b7c731-3b43-4608-9cd7-a70a6d195279")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "bd1a3561-eaaa-456e-a33d-310653189082")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0)
 			(size 0.9 0.95)
@@ -57208,7 +55673,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -57848,7 +56313,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -58065,19 +56530,6 @@
 			(layer "B.Fab")
 			(uuid "66548223-8b72-4c74-b63d-ff26288f4e58")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "84c55d03-cc5a-4ee3-8b22-b4e551c0deb6")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0)
 			(size 0.9 0.95)
@@ -58141,7 +56593,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -58461,7 +56913,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -58706,19 +57158,6 @@
 			(layer "B.Fab")
 			(uuid "5233cbaa-46d6-433a-a186-ff29a18c0232")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "0e0f8ae4-a889-4117-bbda-063853511487")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 180)
 			(size 0.8 0.95)
@@ -58782,7 +57221,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -59013,19 +57452,6 @@
 			(layer "B.Fab")
 			(uuid "d358744b-15e6-4e8a-8d7e-12f52bb890b5")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "b52c0d85-5fbf-4348-8323-78472102f3ad")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0)
 			(size 0.9 0.95)
@@ -59089,7 +57515,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -59395,7 +57821,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -59612,19 +58038,6 @@
 			(layer "B.Fab")
 			(uuid "dbd9dcfe-18ce-4fdc-be85-dee8c30cdbe5")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "47e73060-f043-431b-a6c7-94ec50b6a0ce")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 90)
 			(size 0.8 0.95)
@@ -59688,7 +58101,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -59905,19 +58318,6 @@
 			(layer "B.Fab")
 			(uuid "e79e01be-edad-4e30-bae5-198417a86040")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "0a3ada07-e52c-4363-81b4-02e88ff86652")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0)
 			(size 0.8 0.95)
@@ -59981,7 +58381,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -60212,19 +58612,6 @@
 			(layer "B.Fab")
 			(uuid "bf71f97f-37ce-4c71-89ed-03bf3b47fc0c")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "2184a218-d11d-4ad4-8a48-f75ff9317c8d")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 270)
 			(size 0.8 0.95)
@@ -60288,7 +58675,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -60533,19 +58920,6 @@
 			(layer "B.Fab")
 			(uuid "f33d1024-3db8-41ca-a298-0a17aacb16b5")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "6422949d-8b61-4e1d-aef4-15c62305e516")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 180)
 			(size 0.8 0.95)
@@ -60609,7 +58983,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -60901,7 +59275,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -61146,19 +59520,6 @@
 			(layer "B.Fab")
 			(uuid "c3dba3d7-c71a-416a-95e2-9b6d99858fbd")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "df1cf54f-2295-456a-a4ab-db24f826ef14")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0 180)
 			(size 0.9 0.95)
@@ -61222,7 +59583,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -61514,7 +59875,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -61745,19 +60106,6 @@
 			(layer "B.Fab")
 			(uuid "b608d43e-1722-4667-9f69-c9c2a5962e65")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "b1795cc8-4b5f-4826-95ab-ebfd5332a75b")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 90)
 			(size 0.8 0.95)
@@ -61821,7 +60169,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -62038,19 +60386,6 @@
 			(layer "B.Fab")
 			(uuid "6b0e23e1-ba82-4a29-8851-2b6de61f9d38")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "62cedc6d-45e2-4a99-aa35-02397904f46f")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 180)
 			(size 0.8 0.95)
@@ -62114,7 +60449,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -62345,19 +60680,6 @@
 			(layer "B.Fab")
 			(uuid "d9025d5f-fcbd-4897-b8c9-b0017ac09546")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "9718053b-ce53-4b1c-bb54-db5db530ee3d")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0 180)
 			(size 0.9 0.95)
@@ -62421,7 +60743,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -62652,19 +60974,6 @@
 			(layer "B.Fab")
 			(uuid "0b4fc974-1eb0-403c-aff1-043ad6c3d68d")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "4466b9de-ac3e-48b7-a7c0-05ad555406ca")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0)
 			(size 0.8 0.95)
@@ -62728,7 +61037,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 270)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -62945,19 +61254,6 @@
 			(layer "B.Fab")
 			(uuid "3c3fd033-89cc-45f4-af14-5e1c71ee3e63")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "7ce73e06-d57f-4df7-923d-e24e28c9c166")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 90)
 			(size 0.8 0.95)
@@ -63021,7 +61317,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -63238,19 +61534,6 @@
 			(layer "B.Fab")
 			(uuid "79ebadbd-da3b-4f54-a067-f153205bec6f")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "def614bd-a3c1-4b7c-bd97-20be6ec39f09")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 270)
 			(size 0.8 0.95)
@@ -63314,7 +61597,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -63545,19 +61828,6 @@
 			(layer "B.Fab")
 			(uuid "d09e07f7-490a-4b0a-947c-9c80158dc27a")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "043da436-aac3-4f31-8a10-ddfd7849cfe3")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0 180)
 			(size 0.9 0.95)
@@ -63621,7 +61891,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -63866,19 +62136,6 @@
 			(layer "B.Fab")
 			(uuid "85479ee7-cf27-476a-b0cc-efebbc1a63b0")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "e4098bd4-11ad-433a-be42-f2c43d7afcb3")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.775 0)
 			(size 0.9 0.95)
@@ -63942,7 +62199,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -64234,7 +62491,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -64465,19 +62722,6 @@
 			(layer "B.Fab")
 			(uuid "da8588e3-ad1c-40c3-9136-77c6c4f7cff3")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 90)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "bb13df79-0e5f-48bf-be80-7166326ed44e")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 270)
 			(size 0.8 0.95)
@@ -64541,7 +62785,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -64833,7 +63077,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 0)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -65050,19 +63294,6 @@
 			(layer "B.Fab")
 			(uuid "204beb5a-5ae3-424d-833a-c3b3138da4e3")
 		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "837d82fb-efbd-4f1b-b6f4-768412f778e0")
-			(effects
-				(font
-					(size 0.4 0.4)
-					(thickness 0.06)
-				)
-				(justify mirror)
-			)
-		)
 		(pad "1" smd roundrect
 			(at -0.825 0 180)
 			(size 0.8 0.95)
@@ -65126,7 +63357,7 @@
 				(justify mirror)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "~"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "B.Fab")
@@ -67641,7 +65872,7 @@
 			(type solid)
 		)
 	)
-	(gr_text_box "3.3.0"
+	(gr_text_box "4.0.0"
 		(start 147.5 97)
 		(end 154 99.5)
 		(margins 0.85 0.85 0.85 0.85)
@@ -77002,17 +75233,6 @@
 		(uuid "3ead36e3-ece3-47dc-8b70-5a2c160dd13c")
 	)
 	(via
-		(at 128.4 102.3)
-		(size 0.45)
-		(drill 0.2)
-		(layers "F.Cu" "B.Cu")
-		(remove_unused_layers yes)
-		(keep_end_layers yes)
-		(zone_layer_connections "In2.Cu")
-		(net 92)
-		(uuid "6d6b0538-f805-4359-96cf-2d5394e1027f")
-	)
-	(via
 		(at 140.15 117.25)
 		(size 0.45)
 		(drill 0.2)
@@ -77188,22 +75408,6 @@
 		(layer "B.Cu")
 		(net 92)
 		(uuid "6d352632-4560-45c9-bb62-13b2a7119270")
-	)
-	(segment
-		(start 127.55 102.325)
-		(end 128.375 102.325)
-		(width 0.3)
-		(layer "B.Cu")
-		(net 92)
-		(uuid "8acec005-0341-4ca0-bce6-0f04bbdc914c")
-	)
-	(segment
-		(start 128.375 102.325)
-		(end 128.4 102.3)
-		(width 0.3)
-		(layer "B.Cu")
-		(net 92)
-		(uuid "a456d9d4-327c-46e0-8e14-bbf85f21ff82")
 	)
 	(segment
 		(start 127.25 87.25)
@@ -81110,6 +79314,33 @@
 		(layer "F.Cu")
 		(net 180)
 		(uuid "c0593ec9-17c2-4b01-89da-f269b8429691")
+	)
+	(via
+		(at 128.4 102.3)
+		(size 0.45)
+		(drill 0.2)
+		(layers "F.Cu" "B.Cu")
+		(remove_unused_layers yes)
+		(keep_end_layers yes)
+		(zone_layer_connections "In2.Cu")
+		(net 180)
+		(uuid "6d6b0538-f805-4359-96cf-2d5394e1027f")
+	)
+	(segment
+		(start 127.55 102.325)
+		(end 128.375 102.325)
+		(width 0.3)
+		(layer "B.Cu")
+		(net 180)
+		(uuid "8acec005-0341-4ca0-bce6-0f04bbdc914c")
+	)
+	(segment
+		(start 128.375 102.325)
+		(end 128.4 102.3)
+		(width 0.3)
+		(layer "B.Cu")
+		(net 180)
+		(uuid "a456d9d4-327c-46e0-8e14-bbf85f21ff82")
 	)
 	(zone
 		(net 0)

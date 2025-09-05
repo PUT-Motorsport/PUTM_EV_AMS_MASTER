@@ -2941,6 +2941,19 @@
 		(uuid 58652797-77ac-430e-9f63-0aac3f58a060)
 	)
 	(rectangle
+		(start 194.31 109.22)
+		(end 280.67 119.38)
+		(stroke
+			(width 0)
+			(type dash)
+			(color 132 132 132 1)
+		)
+		(fill
+			(type none)
+		)
+		(uuid 70bd9ffd-15e9-4ad8-bcee-cde1381f2d74)
+	)
+	(rectangle
 		(start 20.32 60.96)
 		(end 105.41 106.68)
 		(stroke
@@ -2965,19 +2978,6 @@
 			(type none)
 		)
 		(uuid 8c1b2e8d-5f98-4a05-a4b7-58a0010fa3d5)
-	)
-	(rectangle
-		(start 107.95 176.53)
-		(end 175.26 184.15)
-		(stroke
-			(width 0)
-			(type dash)
-			(color 132 132 132 1)
-		)
-		(fill
-			(type none)
-		)
-		(uuid a7d9b422-0864-49f3-95a2-52579fa4919d)
 	)
 	(rectangle
 		(start 107.95 60.96)
@@ -3089,32 +3089,10 @@
 		)
 		(uuid "de59bd77-51a0-4fe9-aa71-e66ee0b30d60")
 	)
-	(text_box "WebenchSchematic8V.svg"
-		(exclude_from_sim yes)
-		(at 127 179.07 0)
-		(size 34.29 3.81)
-		(margins 0.9525 0.9525 0.9525 0.9525)
-		(stroke
-			(width -0.0001)
-			(type solid)
-		)
-		(fill
-			(type none)
-		)
-		(effects
-			(font
-				(size 1.27 1.27)
-				(color 0 0 194 1)
-			)
-			(justify left top)
-			(href "file://${KIPRJMOD}/images/WebenchSchematic8V.svg")
-		)
-		(uuid "1ba4b8bb-9c39-4356-a722-72e1034be650")
-	)
-	(text_box "8V:"
+	(text_box "2*"
 		(exclude_from_sim no)
-		(at 110.49 179.07 0)
-		(size 16.51 3.81)
+		(at 227.33 49.53 0)
+		(size 3.81 3.81)
 		(margins 0.9525 0.9525 0.9525 0.9525)
 		(stroke
 			(width -0.0001)
@@ -3130,7 +3108,7 @@
 			)
 			(justify left top)
 		)
-		(uuid "83b4cc3a-496f-494d-94ec-81965a635d8c")
+		(uuid "3a52a86c-9972-4b07-ac42-cdb6001ef648")
 	)
 	(text_box "Analog power:"
 		(exclude_from_sim no)
@@ -3152,6 +3130,48 @@
 			(justify left top)
 		)
 		(uuid "929ef63d-5cc8-4531-921f-388421bcdd5e")
+	)
+	(text_box "1*"
+		(exclude_from_sim no)
+		(at 255.27 71.12 0)
+		(size 3.81 3.81)
+		(margins 0.9525 0.9525 0.9525 0.9525)
+		(stroke
+			(width -0.0001)
+			(type solid)
+		)
+		(fill
+			(type none)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(color 132 0 132 1)
+			)
+			(justify left top)
+		)
+		(uuid "9e379d81-81ee-42f7-984e-ecd302908f01")
+	)
+	(text_box "1: ILIM bypass 400 coresponds to 6.25A\n2: TPS2113 prioritises built in 5V, switches to USB when not powered from car"
+		(exclude_from_sim no)
+		(at 196.85 111.76 0)
+		(size 81.28 6.35)
+		(margins 0.9525 0.9525 0.9525 0.9525)
+		(stroke
+			(width -0.0001)
+			(type solid)
+		)
+		(fill
+			(type none)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(color 132 0 132 1)
+			)
+			(justify left top)
+		)
+		(uuid "a211f06c-e80f-4b31-95e9-09f51e484b95")
 	)
 	(text_box "DifferentialModeInsertionLoss.png"
 		(exclude_from_sim yes)

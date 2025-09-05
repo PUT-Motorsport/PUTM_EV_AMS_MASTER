@@ -1154,25 +1154,131 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "https://www.mouser.pl/ProductDetail/Murata-Power-Solutions/MTC2S2412MC-R7?qs=mQP6vorrPAdLKyJ%252BjYwifA%3D%3D"
-		(exclude_from_sim no)
-		(at 316.23 196.85 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
+	(rectangle
+		(start 370.84 158.75)
+		(end 438.15 167.64)
+		(stroke
+			(width 0)
+			(type dash)
+			(color 132 132 132 1)
 		)
-		(uuid "5750c23c-edaa-43e9-96a3-e39a4cab30cb")
+		(fill
+			(type none)
+		)
+		(uuid e6dacfc0-8e41-4365-b530-1e176e6f8f59)
 	)
-	(text "https://www.ti.com/product/UCC33020-Q1"
+	(text "595-ISOUSB111DWXR "
 		(exclude_from_sim no)
-		(at 323.85 165.1 0)
+		(at 351.282 202.438 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 		)
-		(uuid "887fd797-1eec-45a1-bb69-177ceaf35f78")
+		(uuid "1f3fc416-8e80-4f03-ace7-e7d984f26330")
+	)
+	(text "move 5A transisors to the isolated side, fuck it "
+		(exclude_from_sim no)
+		(at 474.98 141.224 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "3404c717-bf0d-4319-89bc-7d7433f1913e")
+	)
+	(text "967-CCG152412D"
+		(exclude_from_sim no)
+		(at 325.628 202.438 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "5c69779f-8292-4fa6-b771-f94f7c6304c3")
+	)
+	(text "595-ISOW1044BDFMR "
+		(exclude_from_sim no)
+		(at 351.79 192.532 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "e8aab9e0-b789-478a-a0f4-a7b3be77510e")
+	)
+	(text "595-ISO6740FDWR"
+		(exclude_from_sim no)
+		(at 423.164 182.372 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "e981956a-e268-4c0e-b533-1b20677a3239")
+	)
+	(text "919-REC5A-0505SW/H2 "
+		(exclude_from_sim no)
+		(at 326.39 192.786 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "f27fcbd2-d94d-4a7c-81d8-8954c03d5a4b")
+	)
+	(text "add filtration"
+		(exclude_from_sim no)
+		(at 425.196 186.944 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "f8c062dc-3007-4fd6-ac1d-edc62f152576")
+	)
+	(text_box "WebenchSchematic8V.svg"
+		(exclude_from_sim yes)
+		(at 389.89 161.29 0)
+		(size 34.29 3.81)
+		(margins 0.9525 0.9525 0.9525 0.9525)
+		(stroke
+			(width -0.0001)
+			(type solid)
+		)
+		(fill
+			(type none)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(color 0 0 194 1)
+			)
+			(justify left top)
+			(href "file://${KIPRJMOD}/images/WebenchSchematic8V.svg")
+		)
+		(uuid "db2cdd67-9ef9-48ff-88f8-baa6222d0796")
+	)
+	(text_box "8V:"
+		(exclude_from_sim no)
+		(at 373.38 161.29 0)
+		(size 16.51 3.81)
+		(margins 0.9525 0.9525 0.9525 0.9525)
+		(stroke
+			(width -0.0001)
+			(type solid)
+		)
+		(fill
+			(type none)
+		)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(color 132 0 132 1)
+			)
+			(justify left top)
+		)
+		(uuid "f407c393-e60d-445b-931e-5e5703fb948e")
 	)
 	(junction
 		(at 389.89 134.62)
