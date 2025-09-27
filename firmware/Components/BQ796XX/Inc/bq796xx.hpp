@@ -300,6 +300,24 @@ namespace PUTM
                     write<Stack>(data2, 0x032C);
                 }
 
+                /* init auto shutdown mode */
+                {
+                    PwrTransitConf pwr_transit_conf
+                    {
+                        .slp_time = SlpTime::_5s,
+                        .twarn_thr = TwarnThr::_85degC
+                    };
+                    write<Stack>(convert_to<uint8_t>(pwr_transit_conf), address_of<PwrTransitConf>());
+
+                    CommTimeoutConf comm_timeout_conf
+                    {
+                        .ctl_time = CltTime::Disable,
+                        .ctl_act = CtlAct::GoToShutdown,
+                        .cst_time = CstTime::_2s
+                    };
+                    write<Stack>(convert_to<uint8_t>(comm_timeout_conf), address_of<CommTimeoutConf>());
+                }
+
                 /* start measurement */
                 {
                     uint8_t data[1] { 0 };

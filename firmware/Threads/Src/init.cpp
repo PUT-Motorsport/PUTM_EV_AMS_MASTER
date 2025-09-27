@@ -42,6 +42,8 @@ uint8_t charger_can_thread_pool[charger_can_thread_pool_size];
 
 TX_SEMAPHORE data_semaphore;
 
+TX_TIMER soc_update_timer;
+
 VOID init()
 {
 // #ifdef DEBUG_TEST_MODE_1
@@ -63,6 +65,8 @@ VOID init()
     tx_thread_create(&charger_can_thread, (CHAR*)"Charger COM thread", charger_thread_entry, 0U, charger_can_thread_pool, charger_can_thread_pool_size, 10, 10, TX_NO_TIME_SLICE, TX_AUTO_START);
 
     tx_semaphore_create(&data_semaphore, (CHAR*)"Data semaphore", 0U);
+
+    tx_timer_create(&soc_update_timer, (CHAR*)"SOC update timer", soc_update_timer_callback, 0U, 1000U, 1000U, TX_NO_ACTIVATE);
     
     //tx_thread_suspend(&charger_can_thread);
 }

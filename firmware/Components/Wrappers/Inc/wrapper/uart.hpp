@@ -2,6 +2,7 @@
 
 #include "main.h"
 #include "stm32h5xx_hal_def.h"
+#include "stm32h5xx_hal_uart.h"
 #include "usart.h"
 #include "tx_api.h"
 #include "cstdio"
@@ -172,6 +173,16 @@ public:
     HAL_StatusTypeDef abort()
     {
         return HAL_UART_Abort(huart);
+    }
+public:
+    HAL_StatusTypeDef init()
+    {
+        return HAL_UART_Init(this->huart);
+    }
+public:
+    HAL_StatusTypeDef deinit()
+    {
+        return HAL_UART_DeInit(this->huart);
     }
 public:
     /**

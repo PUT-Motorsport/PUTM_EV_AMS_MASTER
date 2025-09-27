@@ -16,8 +16,6 @@
 using namespace PUTM;
 using namespace Utils;
 
-
-
 VOID bq796xx_thread_entry(__unused ULONG thread_input)
 {
     static Uart uart3(&huart3);
@@ -43,6 +41,7 @@ VOID bq796xx_thread_entry(__unused ULONG thread_input)
     tx_thread_sleep(10);
 
     data.bq_init_done = true;
+
 
     uint32_t last_time = tx_time_get();
 
@@ -72,7 +71,11 @@ VOID bq796xx_thread_entry(__unused ULONG thread_input)
         data.bq_read_data_status[device_address - 1] =  bq.read_single_data(data.cell_voltages[device_address - 1],
                                                         data.gpio_voltages[device_address - 1],
                                                         device_address);
-        
+        if(device_address == 6)
+        {
+            data.cell_voltages[device_address - 1][12] = data.cell_voltages[device_address - 1][0];
+            data.cell_voltages[device_address - 1][13] = data.cell_voltages[device_address - 1][1];
+        }
         device_address++;
         if(device_address > Config::STACK_SIZE) device_address = 1; 
         data.update_times.bq_updates_per_sec = updates.update(tx_time_get());

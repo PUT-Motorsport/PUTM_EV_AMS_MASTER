@@ -61,6 +61,12 @@ VOID car_can_thread_entry(ULONG thread_input);
  */
 VOID charger_thread_entry(ULONG thread_input);
 
+/**
+ *  @brief  SOC update timer callback, it is used to update SOC every 50 ms
+ *  @note   Definition in main_thread.cpp
+ */
+VOID soc_update_timer_callback(ULONG arg);
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

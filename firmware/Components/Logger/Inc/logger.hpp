@@ -83,7 +83,7 @@ namespace PUTM
         */
         std::pair<MSG_I_TYPE, MSG_I_TYPE> get_range(size_t message_index) const
         {
-            MSG_I_TYPE *__ptr_begin { nullptr };
+            // MSG_I_TYPE *__ptr_begin { nullptr };
             MSG_I_TYPE *__ptr_end { nullptr };
             size_t __begin { 0 };
             size_t __end { 0 };

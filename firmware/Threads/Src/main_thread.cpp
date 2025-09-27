@@ -55,6 +55,8 @@ extern StateMachine charger_state_machine;
 
 extern ErrorChecker error_checker;
 
+extern TX_TIMER soc_update_timer;
+
 /**
  * @brief Entry point for the main thread of the system.
  *
@@ -110,6 +112,8 @@ VOID main_thread_entry(__unused ULONG thread_input)
         }
     }
 
+    tx_timer_activate(&soc_update_timer);
+
     HAL_ADC_Start(&hadc1);
 
     data.tsms = det_tsms.read();
@@ -129,13 +133,13 @@ VOID main_thread_entry(__unused ULONG thread_input)
         data.on_charger = det_charger.read();
 
         /* Update SoC */
-        for(size_t i = 0; i < Config::STACK_SIZE; i++)
-        {
-            for(size_t j = 0; j < Config::CELL_COUNT_PER_DEVICE; j++)
-            {
-                data.cell_socs[i][j].update(data.cell_voltages[i][j], data.current, data.on_charger);
-            }
-        }
+        // for(size_t i = 0; i < Config::STACK_SIZE; i++)
+        // {
+        //     for(size_t j = 0; j < Config::CELL_COUNT_PER_DEVICE; j++)
+        //     {
+        //         data.cell_socs[i][j].update(data.cell_voltages[i][j], data.current, data.on_charger);
+        //     }
+        // }
         float soc_avg = 0.0f;
         for(size_t i = 0; i < Config::STACK_SIZE; i++)
         {
@@ -214,5 +218,35 @@ VOID main_thread_entry(__unused ULONG thread_input)
         data.update_times.main_updates_per_sec = updates.update(tx_time_get());
 
         tx_thread_sleep(50);
+    }
+}
+
+// TODO:
+/**
+ *  @brief  SOC update timer callback, it is used to update SOC every 50 ms
+ *  @note   Definition in threads.hpp, time constant wasn't optimized properly 
+ */
+void soc_update_timer_callback(__unused ULONG arg)
+{
+    /* current low pass second order */
+    constexpr float rc = 0.005f; // time constant
+    constexpr float dt = 0.05f; // time step
+    constexpr float alpha = dt / (rc + dt);
+    
+    /* memory */
+    static float i_lp_1 = 0.0f;
+    static float i_lp_2 = 0.0f;
+
+    i_lp_1 = i_lp_1 + alpha * (data.current - i_lp_1);
+    i_lp_2 = i_lp_2 + alpha * (i_lp_1 - i_lp_2);
+
+    float current_lp = i_lp_2;
+    /* Update SoC */
+    for(size_t i = 0; i < Config::STACK_SIZE; i++)
+    {
+        for(size_t j = 0; j < Config::CELL_COUNT_PER_DEVICE; j++)
+        {
+            data.cell_socs[i][j].update(data.cell_voltages[i][j], current_lp, data.on_charger);
+        }
     }
 }

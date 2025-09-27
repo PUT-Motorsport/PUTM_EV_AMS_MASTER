@@ -47,7 +47,7 @@ VOID car_can_thread_entry(__unused ULONG thread_input)
             .voltage_sum = (uint16_t)(data.acu_voltage * 10.f),
             .current = (int16_t)(data.current * 10.f),
             .temp_max = (uint8_t)(data.cell_max_temperature), //(uint8_t)(data.cell_max_temperature * 10.f),
-            .temp_avg = (uint8_t)(data.cell_avg_temperature), //(uint8_t)(data.cell_avg_temperature * 10.f),
+            .temp_avg = (uint8_t)(data.cell_min_voltage), //(uint8_t)(data.cell_avg_temperature * 10.f),
             .soc = (uint16_t)(data.soc * 1000.f),
             .ok = not data.error,
             .precharge = data.precharge
@@ -169,12 +169,18 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
             if(first_run)
             {
                 first_run = false;
+
                 usb_reset.set();
-                continue;
-            }
-            else 
-            {
+                tx_thread_sleep(10);
                 usb_reset.reset();
+
+                // uart.deinit();
+                // uart.init();
+                // uart.set_baudrate(250000);
+                // uart.set_rx_timeout(10);
+                // uart.async_rx_unknown_dma(rx_char_buffer, RX_UART_BUFFER_SIZE, &usb_rx_callback);
+
+                continue;
             }
 
             tx_json.clear();
@@ -186,10 +192,11 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
             tx_json["cell_max_voltage"] = data.cell_max_voltage;
             tx_json["cell_avg_voltage"] = data.cell_avg_voltage;
             tx_json["cell_min_voltage"] = data.cell_min_voltage;
+            tx_json["cell_balance"] = (data.cell_max_voltage - data.cell_min_voltage);
             tx_json["cell_max_temperature"] = data.cell_max_temperature;
             tx_json["cell_avg_temperature"] = data.cell_avg_temperature;
             tx_json["cell_min_temperature"] = data.cell_min_temperature;
-            tx_json["set_charging_current"] = data.charging_current;
+            tx_json["charging_current"] = data.charging_current;
             for(size_t i = 0; i < Config::TOTAL_CELL_COUNT; i++)
             {
                 size_t idev = i / Config::CELL_COUNT_PER_DEVICE;
@@ -208,7 +215,7 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
                 tx_json["errors"].add(error.name);
             }
             tx_json["service_mode"] = data.service_mode;
-            if(data.service_mode)
+            //if(data.service_mode)
             {
                 tx_json["usb_connected"] = data.usb_connected;
                 tx_json["cmd_hv"] = data.cmd_hv;
@@ -248,10 +255,11 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
                 {
                     tx_json["logs"].add(log);
                 }
-                if(data.even_moar_data)
+                //if(data.even_moar_data)
                 {
                     tx_json["vusb"] = data.vusb;
                     tx_json["usb_connected"] = data.usb_connected;
+                    tx_json["last_command"] = data.last_command;
                 }
             }
 

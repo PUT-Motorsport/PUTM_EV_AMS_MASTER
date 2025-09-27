@@ -88,7 +88,7 @@ HAL_StatusTypeDef Device::com(ICmd *cmd)
 
     if(notify_received != 0) return HAL_ERROR;
 
-    tx_thread_sleep(10);
+    tx_thread_sleep(5);
 
     if(HAL_SPI_TransmitReceive_DMA(hspi, (uint8_t*)out.begin() , (uint8_t*)in.begin(), out.size()) != HAL_OK) Error_Handler();
     notify_received = tx_semaphore_get(&semaphore, 10);

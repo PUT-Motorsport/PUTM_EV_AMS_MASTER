@@ -13,7 +13,7 @@ namespace PUTM
     class SoC
     {
     private:
-        static constexpr float Ts = 0.1f; // Sampling time in seconds
+        // static constexpr float Ts = 0.1f; // Sampling time in seconds
     public:
         SoC() = default;
         ~SoC() = default;
@@ -31,14 +31,14 @@ namespace PUTM
         // TODO?: last row looks sus
         // TODO: parametrize this shit
         static inline constexpr Matrix A {{{ 1.00000000f, 0.00000000f,  0.00000000f }, 
-                                           { 0.00000000f, 1.98899788f, -0.98900757f }, 
+                                           { 0.00000000f, Config::A1, Config::A2 }, 
                                            { 0.00000000f, 1.00000000f,  0.00000000f }}};
-        static inline constexpr Matrix B {{{ -Ts / Config::CELL_NOMINAL_CAPACITY / 60.0f / 60.0f },
+        static inline constexpr Matrix B {{{ -Config::DT / Config::CELL_NOMINAL_CAPACITY / 60.0f / 60.0f },
                                            { 1.00000000f },
                                            { 0.00000000f }}};
-        static inline constexpr Matrix C {{{ 0.00000000f, 2.33058931e-05f, -2.32660122e-05f }}};
+        static inline constexpr Matrix C {{{ 0.00000000f, Config::C1, Config::C2 }}};
         // static inline constexpr float D { 0.00698732f };
-        static inline constexpr float D { Config::CELL_INTERNAL_RESISTANCE }; 
+        static inline constexpr float D { Config::D1 }; 
         static inline constexpr Matrix Q {{{ 0.00020000f, 0.00000000f, 0.00000000f },
                                            { 0.00000000f, 0.02000000f, 0.00000000f },
                                            { 0.00000000f, 0.00000000f, 0.02000000f }}};

@@ -3,6 +3,7 @@
 #include "main.h"
 
 #include "utils.hpp"
+#include <cstdint>
 
 namespace PUTM
 {
@@ -30,6 +31,46 @@ namespace PUTM
                 HighZ,
                 AdcOtut
             };
+
+            enum struct TwarnThr : uint8_t
+            {
+                _85degC,
+                _95degC,
+                _105degC,
+                _115degC
+            };
+
+            enum struct SlpTime : uint8_t
+            {
+                Disable,
+                _5s,
+                _10s,
+                _1min,
+                _10min,
+                _30min,
+                _1h,
+                _2h
+            };
+
+            enum struct CtlAct : uint8_t
+            {
+                GoToSleep,
+                GoToShutdown
+            };
+
+            enum struct CltTime : uint8_t 
+            {
+                Disable,
+                _100ms,
+                _2s,
+                _10s,
+                _1min, // default
+                _10min,
+                _30min,
+                _1h
+            };
+
+            typedef CltTime CstTime;
         }
 
         namespace Regs
@@ -121,9 +162,24 @@ namespace PUTM
             {
                 Types::ScanMode otut_mode : 2 { Types::ScanMode::Stop };
                 bool otut_go : 1 { false };
-                uint8_t otut_lock : 3 { 0 };
-                uint8_t vcbdone_thr_lock : 1 { 0 };
-                uint8_t reserved : 1 { 0 };
+                uint8_t otut_lock : 3 { 0b000 };
+                uint8_t vcbdone_thr_lock : 1 { 0b0 };
+                uint8_t reserved : 1 { 0b0 };
+            };
+
+            struct __packed PwrTransitConf : public Utils::IReg<0x0331>
+            {
+                Types::SlpTime slp_time : 3 { Types::SlpTime::Disable };
+                Types::TwarnThr twarn_thr : 2 { Types::TwarnThr::_85degC };
+                uint8_t spare : 3 { 0b000 };
+            };
+
+            struct __packed CommTimeoutConf : public Utils::IReg<0x0332>
+            {
+                Types::CltTime ctl_time : 3 { Types::CltTime::Disable };
+                Types::CtlAct ctl_act : 1 { Types::CtlAct::GoToSleep };
+                Types::CstTime cst_time : 3 { Types::CstTime::Disable };
+                uint8_t spare : 1 { 0b0 };
             };
         }
     }
