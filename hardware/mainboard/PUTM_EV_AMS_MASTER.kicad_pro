@@ -109,6 +109,7 @@
         "solder_mask_bridge": "error",
         "starved_thermal": "error",
         "text_height": "warning",
+        "text_on_edge_cuts": "error",
         "text_thickness": "warning",
         "through_hole_pad_without_hole": "error",
         "too_many_vias": "error",
@@ -498,7 +499,7 @@
     ]
   },
   "meta": {
-    "filename": "PUTM_EV_AMS_MASTER_2025.kicad_pro",
+    "filename": "PUTM_EV_AMS_MASTER.kicad_pro",
     "version": 3
   },
   "net_settings": {
@@ -948,10 +949,6 @@
       "ADC"
     ],
     [
-      "ce12d4e7-22c6-44b1-ad25-5b799a9893d1",
-      "Fan Control"
-    ],
-    [
       "6b45fd0b-238d-49b3-829e-372c6baba47f",
       "Isolated SPI"
     ],
@@ -966,10 +963,6 @@
     [
       "7084a49d-455d-4cdd-914a-a6fa8e6c3cf4",
       "MCU"
-    ],
-    [
-      "084f6cc5-ae27-4f1e-aa54-14c8f7f394d3",
-      "AIR Control"
     ]
   ],
   "text_variables": {}

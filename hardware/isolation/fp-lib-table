@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "Samacsys")(type "KiCad")(uri "${KIPRJMOD}/footprint/Samacsys.pretty")(options "")(descr ""))
+)
