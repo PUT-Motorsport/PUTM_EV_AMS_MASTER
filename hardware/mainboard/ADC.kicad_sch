@@ -2468,6 +2468,16 @@
 		)
 		(uuid "4e1fb7cb-3bd5-4720-88a3-f6774147174b")
 	)
+	(label "+5VA_MEAS"
+		(at 148.59 83.82 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "4f10118c-21a1-452c-bfb6-5890577a0895")
+	)
 	(label "CAR+"
 		(at 148.59 106.68 180)
 		(effects
