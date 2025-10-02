@@ -1,0 +1,182 @@
+(footprint "CAS21C"
+	(version 20241229)
+	(generator "pcbnew")
+	(generator_version "9.0")
+	(layer "F.Cu")
+	(descr "CAS21C")
+	(tags "Capacitor")
+	(property "Reference" "C**"
+		(at 0 0 0)
+		(layer "F.SilkS")
+		(uuid "5e15c382-46c1-4c84-a09a-f0ef47e36224")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+			)
+		)
+	)
+	(property "Value" "CAS21C"
+		(at 0 0 0)
+		(layer "F.SilkS")
+		(hide yes)
+		(uuid "3b325559-1c85-4d9a-8728-e508783c446c")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "833c73b9-d44f-4c82-a0ea-1c3d629a09cc")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "8163c92a-923f-4f83-b5fe-c3e1b2850fd7")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr smd)
+	(fp_circle
+		(center -3.9 0)
+		(end -3.9 0.05)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.SilkS")
+		(uuid "030559c6-2ff3-49e6-a8c3-b5fc6192af5e")
+	)
+	(fp_line
+		(start -4.2 -3.5)
+		(end 4.2 -3.5)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "f3c9d2c9-fa2d-43c0-9bb2-3a6240a8c035")
+	)
+	(fp_line
+		(start -4.2 3.5)
+		(end -4.2 -3.5)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "66435199-4313-46df-ad57-002a3615b990")
+	)
+	(fp_line
+		(start 4.2 -3.5)
+		(end 4.2 3.5)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "20e2f9f2-e7f5-4ded-b95b-a89fda48c6f7")
+	)
+	(fp_line
+		(start 4.2 3.5)
+		(end -4.2 3.5)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(layer "F.CrtYd")
+		(uuid "bde0b456-3e98-43f6-9435-b0449ac9b62b")
+	)
+	(fp_line
+		(start -2.85 -2.5)
+		(end 2.85 -2.5)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "e7a18a1c-ddef-448f-acce-2b92c3e7a808")
+	)
+	(fp_line
+		(start -2.85 2.5)
+		(end -2.85 -2.5)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "7098ce31-3afc-4d21-9af3-6ae158010895")
+	)
+	(fp_line
+		(start 2.85 -2.5)
+		(end 2.85 2.5)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "c33cb0ad-1aca-417c-826c-fb4c00e6eaef")
+	)
+	(fp_line
+		(start 2.85 2.5)
+		(end -2.85 2.5)
+		(stroke
+			(width 0.2)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "3953ef40-7cd2-44b5-8f5a-c36f3051d242")
+	)
+	(fp_text user "${REFERENCE}"
+		(at 0 0 0)
+		(layer "F.Fab")
+		(uuid "ea1d5442-59dc-44d7-87da-fa02c730457d")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+			)
+		)
+	)
+	(pad "1" smd rect
+		(at -2.65 0)
+		(size 1.5 5.4)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "fd43039b-711c-407d-a410-f2457e5f3b9d")
+	)
+	(pad "2" smd rect
+		(at 2.65 0)
+		(size 1.5 5.4)
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(uuid "b8d24d11-5dc9-406f-ab62-3ac36248a93d")
+	)
+	(embedded_fonts no)
+	(model "${KICAD_3RD_PARTY}/Samacsys.3dshapes/CAS21C222KARFC.stp"
+		(offset
+			(xyz -3.049999907 -2.700000007 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz -90 0 0)
+		)
+	)
+)
