@@ -4340,7 +4340,7 @@
 	(footprint "Samacsys:FTSH-107-XX-YYY-D-K"
 		(layer "F.Cu")
 		(uuid "349d1e87-b17c-4743-86f8-cca5a3c00837")
-		(at 105.5 95 90)
+		(at 105.5 91.43 90)
 		(descr "FTSH-107-XX-YYY-D-K")
 		(tags "Connector")
 		(property "Reference" "J4"
@@ -12215,7 +12215,7 @@
 	(footprint "Samacsys:M80-51004YY"
 		(layer "F.Cu")
 		(uuid "74bf5359-db97-4bb3-a85f-f9f289e58a9f")
-		(at 158.5 89 -90)
+		(at 158.5 83.3 -90)
 		(descr "M80-51004YY")
 		(tags "Connector")
 		(property "Reference" "J8"

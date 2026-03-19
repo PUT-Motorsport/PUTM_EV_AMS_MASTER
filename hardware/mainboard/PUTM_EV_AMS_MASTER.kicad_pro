@@ -484,6 +484,7 @@
       "single_global_label": "ignore",
       "unannotated": "error",
       "unconnected_wire_endpoint": "warning",
+      "undefined_netclass": "error",
       "unit_value_mismatch": "error",
       "unresolved_variable": "error",
       "wire_dangling": "error"
@@ -935,10 +936,6 @@
     [
       "b456cffc-d9d7-4c91-91f2-36ec9a65dd1b",
       "Root"
-    ],
-    [
-      "fddfd40b-128d-4439-b7b1-2bfdbdc0083e",
-      "Power"
     ],
     [
       "6eb4a2b1-8e5b-451b-b593-8aaaa3a4213e",
