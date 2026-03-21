@@ -1653,8 +1653,8 @@
 		(uuid 6bdfe01b-0f91-43c7-b9e4-3b9fcf75e375)
 	)
 	(rectangle
-		(start 15.24 15.24)
-		(end 173.99 99.06)
+		(start 15.24 53.975)
+		(end 86.36 99.06)
 		(stroke
 			(width 0)
 			(type dash)
@@ -1768,7 +1768,7 @@
 	)
 	(text "SAFETY"
 		(exclude_from_sim no)
-		(at 172.72 97.79 0)
+		(at 85.09 97.79 0)
 		(effects
 			(font
 				(size 2.032 2.032)
@@ -1867,7 +1867,7 @@
 		(uuid "2bedf6d5-dd7e-4c67-a444-0b8a0fbaebf5")
 	)
 	(junction
-		(at 83.82 67.31)
+		(at 52.07 68.58)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "334b25c0-5a01-4115-b1c4-671ba7ebb9e5")
@@ -1891,7 +1891,7 @@
 		(uuid "c9b17984-2b9b-4324-87c2-faade67591da")
 	)
 	(junction
-		(at 83.82 72.39)
+		(at 52.07 73.66)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "f32545f1-ca18-4278-b8d8-242b31497514")
@@ -2026,7 +2026,7 @@
 	)
 	(wire
 		(pts
-			(xy 96.52 67.31) (xy 99.06 67.31)
+			(xy 64.77 68.58) (xy 67.31 68.58)
 		)
 		(stroke
 			(width 0)
@@ -2090,7 +2090,7 @@
 	)
 	(wire
 		(pts
-			(xy 176.53 133.35) (xy 176.53 82.55)
+			(xy 176.53 133.35) (xy 176.53 83.82)
 		)
 		(stroke
 			(width 0)
@@ -2121,7 +2121,7 @@
 	)
 	(wire
 		(pts
-			(xy 83.82 72.39) (xy 86.36 72.39)
+			(xy 52.07 73.66) (xy 54.61 73.66)
 		)
 		(stroke
 			(width 0)
@@ -2131,7 +2131,7 @@
 	)
 	(wire
 		(pts
-			(xy 73.66 72.39) (xy 73.66 74.93)
+			(xy 41.91 73.66) (xy 41.91 76.2)
 		)
 		(stroke
 			(width 0)
@@ -2172,7 +2172,7 @@
 	)
 	(wire
 		(pts
-			(xy 91.44 82.55) (xy 176.53 82.55)
+			(xy 59.69 83.82) (xy 176.53 83.82)
 		)
 		(stroke
 			(width 0)
@@ -2214,7 +2214,7 @@
 	)
 	(wire
 		(pts
-			(xy 83.82 87.63) (xy 83.82 90.17)
+			(xy 52.07 88.9) (xy 52.07 91.44)
 		)
 		(stroke
 			(width 0)
@@ -2224,7 +2224,7 @@
 	)
 	(wire
 		(pts
-			(xy 83.82 67.31) (xy 91.44 67.31)
+			(xy 52.07 68.58) (xy 59.69 68.58)
 		)
 		(stroke
 			(width 0)
@@ -2254,7 +2254,7 @@
 	)
 	(wire
 		(pts
-			(xy 68.58 59.69) (xy 73.66 59.69)
+			(xy 36.83 60.96) (xy 41.91 60.96)
 		)
 		(stroke
 			(width 0)
@@ -2274,7 +2274,7 @@
 	)
 	(wire
 		(pts
-			(xy 83.82 67.31) (xy 83.82 72.39)
+			(xy 52.07 68.58) (xy 52.07 73.66)
 		)
 		(stroke
 			(width 0)
@@ -2471,7 +2471,7 @@
 	)
 	(wire
 		(pts
-			(xy 83.82 72.39) (xy 83.82 77.47)
+			(xy 52.07 73.66) (xy 52.07 78.74)
 		)
 		(stroke
 			(width 0)
@@ -2492,7 +2492,7 @@
 	)
 	(wire
 		(pts
-			(xy 73.66 62.23) (xy 73.66 59.69)
+			(xy 41.91 63.5) (xy 41.91 60.96)
 		)
 		(stroke
 			(width 0)
@@ -2512,7 +2512,7 @@
 	)
 	(wire
 		(pts
-			(xy 83.82 67.31) (xy 81.28 67.31)
+			(xy 52.07 68.58) (xy 49.53 68.58)
 		)
 		(stroke
 			(width 0)
@@ -2551,7 +2551,7 @@
 		(uuid "45bdd1b0-3acc-428a-a950-419aad5f5efe")
 	)
 	(label "AMS_OK"
-		(at 86.36 67.31 0)
+		(at 54.61 68.58 0)
 		(effects
 			(font
 				(size 0.508 0.508)
@@ -2583,7 +2583,7 @@
 	)
 	(hierarchical_label "WTDG_ERROR"
 		(shape output)
-		(at 86.36 72.39 0)
+		(at 54.61 73.66 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2594,7 +2594,7 @@
 	)
 	(hierarchical_label "ERROR_RELAY-"
 		(shape output)
-		(at 68.58 59.69 180)
+		(at 36.83 60.96 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2866,7 +2866,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 73.66 74.93 0)
+		(at 41.91 76.2 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2874,7 +2874,7 @@
 		(dnp no)
 		(uuid "2f70acc0-1207-4afe-899e-4f5eff94919d")
 		(property "Reference" "#PWR043"
-			(at 73.66 81.28 0)
+			(at 41.91 82.55 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2883,7 +2883,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 73.787 79.3242 0)
+			(at 42.037 80.5942 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2891,7 +2891,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 73.66 74.93 0)
+			(at 41.91 76.2 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2900,7 +2900,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 73.66 74.93 0)
+			(at 41.91 76.2 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2909,7 +2909,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 73.66 74.93 0)
+			(at 41.91 76.2 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2932,7 +2932,7 @@
 	(symbol
 		(lib_name "+5V_2")
 		(lib_id "power:+5V")
-		(at 99.06 67.31 270)
+		(at 67.31 68.58 270)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2940,7 +2940,7 @@
 		(dnp no)
 		(uuid "31490412-abcf-4140-a32b-746e1cfdc01f")
 		(property "Reference" "#PWR0119"
-			(at 95.25 67.31 0)
+			(at 63.5 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2949,7 +2949,7 @@
 			)
 		)
 		(property "Value" "+5VIO"
-			(at 105.41 67.31 90)
+			(at 73.66 68.58 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2957,7 +2957,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 99.06 67.31 0)
+			(at 67.31 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2966,7 +2966,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 99.06 67.31 0)
+			(at 67.31 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2975,7 +2975,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 99.06 67.31 0)
+			(at 67.31 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2998,7 +2998,7 @@
 	(symbol
 		(lib_name "GND_5")
 		(lib_id "power:GND")
-		(at 83.82 90.17 0)
+		(at 52.07 91.44 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -3006,7 +3006,7 @@
 		(dnp no)
 		(uuid "4a491721-6842-4dce-bade-c659e88e6809")
 		(property "Reference" "#PWR046"
-			(at 83.82 96.52 0)
+			(at 52.07 97.79 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3015,7 +3015,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 83.947 94.5642 0)
+			(at 52.197 95.8342 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3023,7 +3023,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 83.82 90.17 0)
+			(at 52.07 91.44 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3032,7 +3032,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 83.82 90.17 0)
+			(at 52.07 91.44 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3041,7 +3041,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 83.82 90.17 0)
+			(at 52.07 91.44 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3063,7 +3063,7 @@
 	)
 	(symbol
 		(lib_id "Transistor_FET:2N7002")
-		(at 86.36 82.55 0)
+		(at 54.61 83.82 0)
 		(mirror y)
 		(unit 1)
 		(exclude_from_sim no)
@@ -3072,7 +3072,7 @@
 		(dnp no)
 		(uuid "4aa8f5a1-dad3-4a16-80e3-e4045755ac04")
 		(property "Reference" "Q8"
-			(at 81.1784 81.3816 0)
+			(at 49.4284 82.6516 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3081,7 +3081,7 @@
 			)
 		)
 		(property "Value" "2N7002"
-			(at 81.1784 83.693 0)
+			(at 49.4284 84.963 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3090,7 +3090,7 @@
 			)
 		)
 		(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
-			(at 81.28 84.455 0)
+			(at 49.53 85.725 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3101,7 +3101,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF"
-			(at 86.36 82.55 0)
+			(at 54.61 83.82 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3111,7 +3111,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 86.36 82.55 0)
+			(at 54.61 83.82 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3120,7 +3120,7 @@
 			)
 		)
 		(property "Manufacturer_Name" "--"
-			(at 86.36 82.55 0)
+			(at 54.61 83.82 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3129,7 +3129,7 @@
 			)
 		)
 		(property "Manufacturer_Part_Number" "--"
-			(at 86.36 82.55 0)
+			(at 54.61 83.82 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3138,7 +3138,7 @@
 			)
 		)
 		(property "Mouser Part Number" "621-DMN65D8L-7"
-			(at 86.36 82.55 0)
+			(at 54.61 83.82 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3147,7 +3147,7 @@
 			)
 		)
 		(property "DigiKey Part Number" ""
-			(at 86.36 82.55 0)
+			(at 54.61 83.82 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3381,7 +3381,7 @@
 	)
 	(symbol
 		(lib_id "Transistor_FET:2N7002")
-		(at 76.2 67.31 0)
+		(at 44.45 68.58 0)
 		(mirror y)
 		(unit 1)
 		(exclude_from_sim no)
@@ -3390,7 +3390,7 @@
 		(dnp no)
 		(uuid "5c2a0737-3484-4f82-a87c-4ed9c5efeba3")
 		(property "Reference" "Q9"
-			(at 71.0184 66.1416 0)
+			(at 39.2684 67.4116 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3399,7 +3399,7 @@
 			)
 		)
 		(property "Value" "2N7002"
-			(at 71.0184 68.453 0)
+			(at 39.2684 69.723 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3408,7 +3408,7 @@
 			)
 		)
 		(property "Footprint" "Package_TO_SOT_SMD:SOT-23"
-			(at 71.12 69.215 0)
+			(at 39.37 70.485 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3419,7 +3419,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.onsemi.com/pub/Collateral/NDS7002A-D.PDF"
-			(at 76.2 67.31 0)
+			(at 44.45 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3429,7 +3429,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 76.2 67.31 0)
+			(at 44.45 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3438,7 +3438,7 @@
 			)
 		)
 		(property "Manufacturer_Name" "--"
-			(at 76.2 67.31 0)
+			(at 44.45 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3447,7 +3447,7 @@
 			)
 		)
 		(property "Manufacturer_Part_Number" "--"
-			(at 76.2 67.31 0)
+			(at 44.45 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3456,7 +3456,7 @@
 			)
 		)
 		(property "Mouser Part Number" "621-DMN65D8L-7"
-			(at 76.2 67.31 0)
+			(at 44.45 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3465,7 +3465,7 @@
 			)
 		)
 		(property "DigiKey Part Number" ""
-			(at 76.2 67.31 0)
+			(at 44.45 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4225,7 +4225,7 @@
 	)
 	(symbol
 		(lib_id "Device:R_Small")
-		(at 93.98 67.31 90)
+		(at 62.23 68.58 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -4233,7 +4233,7 @@
 		(dnp no)
 		(uuid "e8611ae0-02da-462e-b4ee-6d2431e95b15")
 		(property "Reference" "R13"
-			(at 93.98 62.865 90)
+			(at 62.23 64.135 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4241,7 +4241,7 @@
 			)
 		)
 		(property "Value" "10k"
-			(at 93.98 64.77 90)
+			(at 62.23 66.04 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4249,7 +4249,7 @@
 			)
 		)
 		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 93.98 67.31 0)
+			(at 62.23 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4258,7 +4258,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 93.98 67.31 0)
+			(at 62.23 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4267,7 +4267,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 93.98 67.31 0)
+			(at 62.23 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4276,7 +4276,7 @@
 			)
 		)
 		(property "Manufacturer_Name" "--"
-			(at 93.98 67.31 0)
+			(at 62.23 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4285,7 +4285,7 @@
 			)
 		)
 		(property "Manufacturer_Part_Number" "--"
-			(at 93.98 67.31 0)
+			(at 62.23 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4294,7 +4294,7 @@
 			)
 		)
 		(property "Arrow Part Number" ""
-			(at 93.98 67.31 0)
+			(at 62.23 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4303,7 +4303,7 @@
 			)
 		)
 		(property "Arrow Price/Stock" ""
-			(at 93.98 67.31 0)
+			(at 62.23 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4312,7 +4312,7 @@
 			)
 		)
 		(property "Mouser Price/Stock" ""
-			(at 93.98 67.31 0)
+			(at 62.23 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4321,7 +4321,7 @@
 			)
 		)
 		(property "Mouser Part Number" "--"
-			(at 93.98 67.31 0)
+			(at 62.23 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4330,7 +4330,7 @@
 			)
 		)
 		(property "DigiKey Part Number" ""
-			(at 93.98 67.31 0)
+			(at 62.23 68.58 0)
 			(effects
 				(font
 					(size 1.27 1.27)

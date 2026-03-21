@@ -1061,6 +1061,400 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Power_Protection:ESDS304"
+			(pin_names
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "D"
+				(at 7.62 2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "ESDS304"
+				(at 7.62 0.635 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" "Package_TO_SOT_SMD:SOT-23-5"
+				(at -13.97 -17.78 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "https://www.ti.com/lit/ds/symlink/esds304.pdf"
+				(at 0 -12.7 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "4-channel 1Gbps TVS Diode Array, 2.3pF, 4.5V breakdown, 30kV contact & air gap, SOT-23-5"
+				(at 1.27 -15.24 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "usb ethernet esd protection suppression transient transient-voltage low-capacitance texas"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "SOT?23*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "ESDS304_0_0"
+				(pin passive line
+					(at 0 -5.08 90)
+					(length 2.54)
+					(name "A"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(symbol "ESDS304_0_1"
+				(rectangle
+					(start -4.445 2.54)
+					(end 6.985 -2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(polyline
+					(pts
+						(xy -3.302 1.016) (xy -3.302 1.27) (xy -1.778 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.54 2.54) (xy -2.54 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.54 1.27) (xy -2.54 -1.27) (xy 2.54 -1.27) (xy 2.54 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.54 1.27) (xy -1.905 0) (xy -3.175 0) (xy -2.54 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 2.54) (xy 0 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 -1.27) (xy 0 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 -1.27) (xy 0 -2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 0 -1.27)
+					(radius 0.254)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.635 0) (xy -0.635 0) (xy 0 1.27) (xy 0.635 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.762 1.27) (xy -0.762 1.27) (xy -0.762 1.016)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.778 1.016) (xy 1.778 1.27) (xy 3.175 1.27) (xy 3.302 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.54 2.54) (xy 2.54 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.54 1.27) (xy 1.905 0) (xy 3.175 0) (xy 2.54 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 2.54 -1.27)
+					(radius 0.254)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy 4.318 1.016) (xy 4.318 1.27) (xy 5.715 1.27) (xy 5.842 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 5.08 2.54) (xy 5.08 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 5.08 1.27) (xy 5.08 -1.27) (xy 2.54 -1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 5.08 1.27) (xy 4.445 0) (xy 5.715 0) (xy 5.08 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "ESDS304_1_1"
+				(pin passive line
+					(at -2.54 5.08 270)
+					(length 2.54)
+					(name "K"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 5.08 270)
+					(length 2.54)
+					(name "K"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 2.54 5.08 270)
+					(length 2.54)
+					(name "K"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 5.08 5.08 270)
+					(length 2.54)
+					(name "K"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 	)
 	(rectangle
 		(start 69.85 59.69)
@@ -1201,12 +1595,6 @@
 		(uuid "2a817e09-1ec1-4683-8ead-7f01d80f3495")
 	)
 	(junction
-		(at 308.61 85.09)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "526382b1-58a7-4d87-8dc8-a93d29f37ff6")
-	)
-	(junction
 		(at 149.86 100.33)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1225,6 +1613,12 @@
 		(uuid "6859b5d9-2752-41f0-842f-a1511ffd0bad")
 	)
 	(junction
+		(at 306.07 85.09)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "7144d75c-c1b3-4190-818f-250f47da5386")
+	)
+	(junction
 		(at 119.38 170.18)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1241,6 +1635,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "978bbe85-c6d2-4a00-bcc7-e884f9da02d2")
+	)
+	(junction
+		(at 308.61 82.55)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "996a8539-a539-4d3f-afc0-a2da67c5adb3")
 	)
 	(junction
 		(at 121.92 201.93)
@@ -1269,6 +1669,10 @@
 	(no_connect
 		(at 124.46 204.47)
 		(uuid "0f795754-3bb5-4586-94be-b998910002d6")
+	)
+	(no_connect
+		(at 311.15 90.17)
+		(uuid "9b1b67ae-9973-46a4-8420-53e0776055c5")
 	)
 	(no_connect
 		(at 121.92 102.87)
@@ -1360,6 +1764,16 @@
 	)
 	(wire
 		(pts
+			(xy 308.61 82.55) (xy 327.66 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "12ab65fc-a3e5-41d5-bafe-2601b086c8ef")
+	)
+	(wire
+		(pts
 			(xy 251.46 144.78) (xy 254 144.78)
 		)
 		(stroke
@@ -1380,6 +1794,16 @@
 	)
 	(wire
 		(pts
+			(xy 306.07 85.09) (xy 327.66 85.09)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2566b039-adfb-46f9-9f53-d6fd4b45961b")
+	)
+	(wire
+		(pts
 			(xy 149.86 201.93) (xy 149.86 204.47)
 		)
 		(stroke
@@ -1387,6 +1811,16 @@
 			(type default)
 		)
 		(uuid "28c21e6a-dd70-46d4-8b3d-d10711e053ee")
+	)
+	(wire
+		(pts
+			(xy 300.99 82.55) (xy 308.61 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "290844d2-b53b-45ed-9fa9-16312f71e877")
 	)
 	(wire
 		(pts
@@ -1437,16 +1871,6 @@
 			(type default)
 		)
 		(uuid "33978393-2f1a-4f4e-a8e6-fa26304cd25e")
-	)
-	(wire
-		(pts
-			(xy 308.61 85.09) (xy 308.61 90.17)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "3d26a9d7-cc67-43c5-8653-22c9305463b2")
 	)
 	(wire
 		(pts
@@ -1600,13 +2024,13 @@
 	)
 	(wire
 		(pts
-			(xy 300.99 85.09) (xy 308.61 85.09)
+			(xy 308.61 90.17) (xy 308.61 82.55)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "69c95940-b3cc-41fe-81e9-77ed3e343acd")
+		(uuid "6a839454-80f1-42b9-818a-e3d27d161cb1")
 	)
 	(wire
 		(pts
@@ -1670,16 +2094,6 @@
 	)
 	(wire
 		(pts
-			(xy 325.12 87.63) (xy 327.66 87.63)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "84e28024-8629-410e-848f-e47d6e97f7f8")
-	)
-	(wire
-		(pts
 			(xy 116.84 73.66) (xy 116.84 102.87)
 		)
 		(stroke
@@ -1740,6 +2154,16 @@
 	)
 	(wire
 		(pts
+			(xy 306.07 85.09) (xy 306.07 90.17)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a0ee2f94-e38c-4d01-b3be-ecc0c113636d")
+	)
+	(wire
+		(pts
 			(xy 149.86 143.51) (xy 149.86 146.05)
 		)
 		(stroke
@@ -1780,7 +2204,7 @@
 	)
 	(wire
 		(pts
-			(xy 303.53 87.63) (xy 320.04 87.63)
+			(xy 303.53 87.63) (xy 327.66 87.63)
 		)
 		(stroke
 			(width 0)
@@ -1820,16 +2244,6 @@
 	)
 	(wire
 		(pts
-			(xy 325.12 85.09) (xy 327.66 85.09)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "db75a75f-0a33-43e3-a3c7-19124ee4368c")
-	)
-	(wire
-		(pts
 			(xy 119.38 170.18) (xy 149.86 170.18)
 		)
 		(stroke
@@ -1860,7 +2274,7 @@
 	)
 	(wire
 		(pts
-			(xy 308.61 85.09) (xy 320.04 85.09)
+			(xy 300.99 85.09) (xy 306.07 85.09)
 		)
 		(stroke
 			(width 0)
@@ -1929,8 +2343,8 @@
 		)
 		(uuid "0353224f-b649-4359-8bd9-946b49bbe241")
 	)
-	(hierarchical_label "FTDI_RX"
-		(shape input)
+	(hierarchical_label "UART_RX"
+		(shape output)
 		(at 300.99 87.63 180)
 		(effects
 			(font
@@ -1961,6 +2375,17 @@
 			(justify right)
 		)
 		(uuid "6d9005a2-4b37-4696-bf4a-79a9739f50ea")
+	)
+	(hierarchical_label "EX_UART_RST"
+		(shape input)
+		(at 327.66 82.55 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "7812c301-a4d2-4200-925c-76218e59170b")
 	)
 	(hierarchical_label "UC_AIR_AUX_P"
 		(shape output)
@@ -1995,8 +2420,8 @@
 		)
 		(uuid "887711d7-24f9-48d9-b952-6d3e8ec597d5")
 	)
-	(hierarchical_label "EX_FTDI_D-"
-		(shape bidirectional)
+	(hierarchical_label "EX_UART_TX"
+		(shape output)
 		(at 327.66 85.09 0)
 		(effects
 			(font
@@ -2017,8 +2442,8 @@
 		)
 		(uuid "9666cd8a-379a-4c2f-ba5d-ea688aeaad97")
 	)
-	(hierarchical_label "FTDI_TX"
-		(shape output)
+	(hierarchical_label "UART_TX"
+		(shape input)
 		(at 300.99 85.09 180)
 		(effects
 			(font
@@ -2028,8 +2453,8 @@
 		)
 		(uuid "a42166ac-0d68-484e-a835-aa25ae40f4c6")
 	)
-	(hierarchical_label "EX_FTDI_D+"
-		(shape bidirectional)
+	(hierarchical_label "EX_UART_RX"
+		(shape input)
 		(at 327.66 87.63 0)
 		(effects
 			(font
@@ -2160,126 +2585,16 @@
 		)
 		(uuid "edaa8a34-31ae-4d1e-90b9-58f0a01dc2b6")
 	)
-	(symbol
-		(lib_id "Device:R_Small")
-		(at 322.58 85.09 90)
-		(mirror x)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "050682b3-34f6-49c9-a578-2f17acad2424")
-		(property "Reference" "R8"
-			(at 322.58 80.01 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
+	(hierarchical_label "UART_RST"
+		(shape input)
+		(at 300.99 82.55 180)
+		(effects
+			(font
+				(size 1.27 1.27)
 			)
+			(justify right)
 		)
-		(property "Value" "27"
-			(at 322.58 82.55 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 322.58 85.09 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 322.58 85.09 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 322.58 85.09 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer_Name" "--"
-			(at 322.58 85.09 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer_Part_Number" "--"
-			(at 322.58 85.09 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Arrow Part Number" ""
-			(at 322.58 85.09 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Arrow Price/Stock" ""
-			(at 322.58 85.09 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Mouser Part Number" "71-CRCW060333R0FKEC"
-			(at 322.58 85.09 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "DigiKey Part Number" ""
-			(at 322.58 85.09 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "747dc889-fee0-43bb-994e-8cc95f275db8")
-		)
-		(pin "2"
-			(uuid "4db0769c-958e-4366-9520-b88bfa35c40b")
-		)
-		(instances
-			(project "PUTM_EV_BMS_HV_MASTER_2023"
-				(path "/b456cffc-d9d7-4c91-91f2-36ec9a65dd1b/c7d64097-44d3-49d9-9a80-8f2f4ff55e04"
-					(reference "R8")
-					(unit 1)
-				)
-			)
-		)
+		(uuid "f7c8b7d0-3664-4ef6-99c2-be1c2ff8f51d")
 	)
 	(symbol
 		(lib_name "GND_7")
@@ -3060,89 +3375,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Power_Protection:ESDA5V3L")
-		(at 306.07 95.25 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "3ff5b461-067f-4b6e-8648-bd0a5c2d1c48")
-		(property "Reference" "D12"
-			(at 312.42 93.9799 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "5.3V/400W"
-			(at 312.42 96.5199 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Package_TO_SOT_SMD:SOT-23-3"
-			(at 290.83 105.41 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "https://www.st.com/resource/en/datasheet/esdal.pdf"
-			(at 306.07 110.49 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "TVS Diode Array, 5.5V Standoff, 2 Channels, SOT23"
-			(at 306.07 107.95 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Mouser Part Number" "511-ESDA5V3L"
-			(at 306.07 95.25 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "8f7e375b-3ed4-4433-baaa-e1b25bc8d151")
-		)
-		(pin "2"
-			(uuid "d3aeb159-1351-422a-a2cc-677fb772a532")
-		)
-		(pin "3"
-			(uuid "fdce11bc-b224-4775-9f2f-dc6b2712c508")
-		)
-		(instances
-			(project "PUTM_EV_AMS_MASTER_2025"
-				(path "/b456cffc-d9d7-4c91-91f2-36ec9a65dd1b/c7d64097-44d3-49d9-9a80-8f2f4ff55e04"
-					(reference "D12")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:R_Small")
 		(at 154.94 143.51 90)
 		(mirror x)
@@ -3528,6 +3760,95 @@
 			(project "PUTM_EV_AMS_MASTER_2025"
 				(path "/b456cffc-d9d7-4c91-91f2-36ec9a65dd1b/c7d64097-44d3-49d9-9a80-8f2f4ff55e04"
 					(reference "D11")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Power_Protection:ESDS304")
+		(at 306.07 95.25 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "7632cea4-5c2c-490f-957d-5ccdbc51ed14")
+		(property "Reference" "D5"
+			(at 314.96 93.9799 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "ESDS304"
+			(at 314.96 96.5199 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_SMD:SOT-23-5_HandSoldering"
+			(at 292.1 113.03 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/esds304.pdf"
+			(at 306.07 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "4-channel 1Gbps TVS Diode Array, 2.3pF, 4.5V breakdown, 30kV contact & air gap, SOT-23-5"
+			(at 307.34 110.49 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Mouser Part Number" " 595-ESDS304DBVR "
+			(at 306.07 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "52853e48-8ff8-4f3d-9816-cc9f991843be")
+		)
+		(pin "5"
+			(uuid "95b68558-0cab-4f17-a503-a0a5950b337e")
+		)
+		(pin "4"
+			(uuid "d14641f1-7866-4c70-8ccf-bd80d4aafaee")
+		)
+		(pin "1"
+			(uuid "9dede876-906c-4c15-987b-e44de6d8c1af")
+		)
+		(pin "3"
+			(uuid "80d810e7-b8b1-414e-b46c-122c436c23ac")
+		)
+		(instances
+			(project ""
+				(path "/b456cffc-d9d7-4c91-91f2-36ec9a65dd1b/c7d64097-44d3-49d9-9a80-8f2f4ff55e04"
+					(reference "D5")
 					(unit 1)
 				)
 			)
@@ -4626,127 +4947,6 @@
 			(project "PUTM_EV_AMS_MASTER_2025"
 				(path "/b456cffc-d9d7-4c91-91f2-36ec9a65dd1b/c7d64097-44d3-49d9-9a80-8f2f4ff55e04"
 					(reference "D4")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:R_Small")
-		(at 322.58 87.63 270)
-		(mirror x)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "c43fda33-524e-4976-bcdb-01f8ddbba44d")
-		(property "Reference" "R7"
-			(at 322.58 92.71 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "27"
-			(at 322.58 90.17 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
-			(at 322.58 87.63 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 322.58 87.63 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" ""
-			(at 322.58 87.63 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer_Name" "--"
-			(at 322.58 87.63 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Manufacturer_Part_Number" "--"
-			(at 322.58 87.63 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Arrow Part Number" ""
-			(at 322.58 87.63 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Arrow Price/Stock" ""
-			(at 322.58 87.63 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Mouser Part Number" "71-CRCW060333R0FKEC"
-			(at 322.58 87.63 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "DigiKey Part Number" ""
-			(at 322.58 87.63 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "d47758f9-da7c-4d5f-84fe-0c830d90dace")
-		)
-		(pin "2"
-			(uuid "897408d2-efa5-4c24-adf6-f058d1edbd4f")
-		)
-		(instances
-			(project "PUTM_EV_BMS_HV_MASTER_2023"
-				(path "/b456cffc-d9d7-4c91-91f2-36ec9a65dd1b/c7d64097-44d3-49d9-9a80-8f2f4ff55e04"
-					(reference "R7")
 					(unit 1)
 				)
 			)
