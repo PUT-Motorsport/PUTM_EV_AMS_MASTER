@@ -39,9 +39,9 @@
         "other_text_thickness": 0.15,
         "other_text_upright": false,
         "pads": {
-          "drill": 0.8,
-          "height": 1.7,
-          "width": 1.2
+          "drill": 0.0,
+          "height": 0.95,
+          "width": 0.9
         },
         "silk_line_width": 0.12,
         "silk_text_italic": false,
@@ -155,11 +155,11 @@
       },
       "teardrop_options": [
         {
-          "td_onpthpad": true,
+          "td_onpthpad": false,
           "td_onroundshapesonly": false,
-          "td_onsmdpad": true,
+          "td_onsmdpad": false,
           "td_ontrackend": true,
-          "td_onvia": true
+          "td_onvia": false
         }
       ],
       "teardrop_parameters": [
@@ -267,7 +267,7 @@
       "internal_id": "",
       "mfg": "",
       "mpn": "",
-      "sch_revision": ""
+      "sch_revision": "1.0"
     },
     "layer_pairs": [],
     "layer_presets": [],
@@ -978,16 +978,16 @@
       {
         "filename": "PUTM_EV_AMS_MASTER.kicad_sch",
         "name": "PUTM_EV_AMS_MASTER",
-        "uuid": "00000000-0000-0000-0000-000000000000"
+        "uuid": "b456cffc-d9d7-4c91-91f2-36ec9a65dd1b"
       }
     ],
-    "used_designators": "",
+    "used_designators": "#PWR61",
     "variants": []
   },
   "sheets": [
     [
       "b456cffc-d9d7-4c91-91f2-36ec9a65dd1b",
-      "Root"
+      "PUTM_EV_AMS_MASTER"
     ],
     [
       "6eb4a2b1-8e5b-451b-b593-8aaaa3a4213e",
