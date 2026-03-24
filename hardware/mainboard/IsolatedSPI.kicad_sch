@@ -2320,7 +2320,7 @@
 		(dnp no)
 		(uuid "336fab2b-8546-4558-8129-ce5bb29ce8f4")
 		(property "Reference" "TP17"
-			(at 161.544 88.392 0)
+			(at 167.894 88.138 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -2330,8 +2330,8 @@
 				(justify left)
 			)
 		)
-		(property "Value" "TestPoint_Small"
-			(at 161.544 90.932 0)
+		(property "Value" "COMHP"
+			(at 167.894 90.678 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4291,7 +4291,7 @@
 		(dnp no)
 		(uuid "e81001ca-4f79-4b4e-972f-643a67eae6e8")
 		(property "Reference" "TP18"
-			(at 172.974 105.156 0)
+			(at 173.736 105.156 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4301,8 +4301,8 @@
 				(justify left)
 			)
 		)
-		(property "Value" "TestPoint_Small"
-			(at 183.642 102.87 0)
+		(property "Value" "COMHN"
+			(at 174.498 102.616 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects

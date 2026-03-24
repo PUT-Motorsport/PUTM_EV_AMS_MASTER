@@ -1588,12 +1588,6 @@
 		(uuid "2d143e8f-c472-48f4-a604-ae90cbf4e8aa")
 	)
 	(junction
-		(at 113.03 55.88)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "30cd22c4-a90c-4827-9766-61247da77d86")
-	)
-	(junction
 		(at 77.47 49.53)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1624,12 +1618,6 @@
 		(uuid "46289721-b751-4834-8499-c07436a0d973")
 	)
 	(junction
-		(at 110.49 88.9)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "53067720-4f04-4119-bbaf-9a90b4430a08")
-	)
-	(junction
 		(at 191.77 78.74)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1658,12 +1646,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "6da45734-5dcc-4d9d-a93c-830805ff25aa")
-	)
-	(junction
-		(at 107.95 88.9)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "73dc8561-5770-4f00-aee7-8d842b4131dc")
 	)
 	(junction
 		(at 148.59 78.74)
@@ -1787,16 +1769,6 @@
 	)
 	(wire
 		(pts
-			(xy 110.49 88.9) (xy 110.49 91.44)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "14e7caf8-b69e-47f0-b249-81b433d4ff75")
-	)
-	(wire
-		(pts
 			(xy 148.59 60.96) (xy 148.59 68.58)
 		)
 		(stroke
@@ -1807,7 +1779,7 @@
 	)
 	(wire
 		(pts
-			(xy 110.49 67.31) (xy 110.49 88.9)
+			(xy 110.49 67.31) (xy 110.49 91.44)
 		)
 		(stroke
 			(width 0)
@@ -2077,7 +2049,7 @@
 	)
 	(wire
 		(pts
-			(xy 107.95 88.9) (xy 107.95 93.98)
+			(xy 107.95 77.47) (xy 107.95 93.98)
 		)
 		(stroke
 			(width 0)
@@ -2164,16 +2136,6 @@
 			(type default)
 		)
 		(uuid "7ad02c2d-d18e-4fcf-9eb7-551516d2c832")
-	)
-	(wire
-		(pts
-			(xy 107.95 77.47) (xy 107.95 88.9)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "7c967082-adf1-479e-92a7-54da3fcef09e")
 	)
 	(wire
 		(pts
@@ -2287,16 +2249,6 @@
 	)
 	(wire
 		(pts
-			(xy 111.76 55.88) (xy 113.03 55.88)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8f4ea75c-311e-4dfa-8107-9c786f6d6126")
-	)
-	(wire
-		(pts
 			(xy 179.07 83.82) (xy 184.15 83.82)
 		)
 		(stroke
@@ -2347,16 +2299,6 @@
 	)
 	(wire
 		(pts
-			(xy 113.03 49.53) (xy 113.03 55.88)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9a6b9f39-be46-400b-9fbf-1d4d55eff8e9")
-	)
-	(wire
-		(pts
 			(xy 151.13 78.74) (xy 148.59 78.74)
 		)
 		(stroke
@@ -2377,7 +2319,7 @@
 	)
 	(wire
 		(pts
-			(xy 113.03 55.88) (xy 113.03 86.36)
+			(xy 113.03 49.53) (xy 113.03 86.36)
 		)
 		(stroke
 			(width 0)
@@ -2754,26 +2696,6 @@
 			(type default)
 		)
 		(uuid "def72323-03f6-466c-b301-5e8d8332b0ce")
-	)
-	(wire
-		(pts
-			(xy 106.68 88.9) (xy 107.95 88.9)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e0b3179a-b930-42a6-8401-9bed3c196503")
-	)
-	(wire
-		(pts
-			(xy 110.49 88.9) (xy 111.76 88.9)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "e1dabcff-04b7-471c-aeb4-45f14fa1bd1e")
 	)
 	(wire
 		(pts
@@ -3498,8 +3420,8 @@
 				(justify right)
 			)
 		)
-		(property "Value" "TestPoint_Small"
-			(at 79.756 93.218 0)
+		(property "Value" "ACU_V+"
+			(at 82.55 93.218 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3861,84 +3783,6 @@
 			(project "PUTM_EV_AMS_MASTER"
 				(path "/b456cffc-d9d7-4c91-91f2-36ec9a65dd1b/6dd12385-8249-456a-9bdd-ab767e747ed7"
 					(reference "R50")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint_Small")
-		(at 111.76 55.88 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "2616a8ae-781e-422b-83e9-3e0d7394b85a")
-		(property "Reference" "TP9"
-			(at 106.426 54.102 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "TestPoint_Small"
-			(at 94.996 56.642 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
-			(at 111.76 60.96 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 111.76 60.96 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "test point"
-			(at 111.76 55.88 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "80d6c654-9fb9-4a37-a557-636c9c59f69d")
-		)
-		(instances
-			(project "PUTM_EV_AMS_MASTER"
-				(path "/b456cffc-d9d7-4c91-91f2-36ec9a65dd1b/6dd12385-8249-456a-9bdd-ab767e747ed7"
-					(reference "TP9")
 					(unit 1)
 				)
 			)
@@ -4355,7 +4199,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "TestPoint_Small"
+		(property "Value" "ACU_V-"
 			(at 84.582 109.982 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5606,7 +5450,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "TestPoint_Small"
+		(property "Value" "+5VA_MEAS"
 			(at 118.11 57.1499 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5970,85 +5814,6 @@
 			(project "PUTM_EV_AMS_MASTER"
 				(path "/b456cffc-d9d7-4c91-91f2-36ec9a65dd1b/6dd12385-8249-456a-9bdd-ab767e747ed7"
 					(reference "C52")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector:TestPoint_Small")
-		(at 111.76 88.9 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "9f8cf397-ce18-432f-a82b-9f0be0479bb7")
-		(property "Reference" "TP11"
-			(at 113.03 87.6299 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "TestPoint_Small"
-			(at 113.03 90.1699 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
-			(at 116.84 88.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 116.84 88.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "test point"
-			(at 111.76 88.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "c81f96fd-de8d-44e0-9ac9-5c9c7c04166c")
-		)
-		(instances
-			(project "PUTM_EV_AMS_MASTER"
-				(path "/b456cffc-d9d7-4c91-91f2-36ec9a65dd1b/6dd12385-8249-456a-9bdd-ab767e747ed7"
-					(reference "TP11")
 					(unit 1)
 				)
 			)
@@ -7563,84 +7328,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector:TestPoint_Small")
-		(at 106.68 88.9 270)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "d90211c6-f0d9-4a70-9d26-9800bfbb869a")
-		(property "Reference" "TP10"
-			(at 101.346 87.122 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "TestPoint_Small"
-			(at 89.916 89.662 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
-			(at 106.68 93.98 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 106.68 93.98 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "test point"
-			(at 106.68 88.9 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "a1493e6d-f9a2-47a3-b9b2-d015acbc8457")
-		)
-		(instances
-			(project "PUTM_EV_AMS_MASTER"
-				(path "/b456cffc-d9d7-4c91-91f2-36ec9a65dd1b/6dd12385-8249-456a-9bdd-ab767e747ed7"
-					(reference "TP10")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:C_Small")
 		(at 186.69 83.82 270)
 		(unit 1)
@@ -7808,7 +7495,7 @@
 				)
 			)
 		)
-		(property "Value" "TestPoint_Small"
+		(property "Value" "4MHz"
 			(at 223.52 83.82 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7885,8 +7572,8 @@
 				(justify left)
 			)
 		)
-		(property "Value" "TestPoint_Small"
-			(at 89.916 117.602 90)
+		(property "Value" "CAR_V+"
+			(at 97.79 117.094 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8198,7 +7885,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "TestPoint_Small"
+		(property "Value" "CAR_V-"
 			(at 113.03 118.1099 0)
 			(show_name no)
 			(do_not_autoplace no)

@@ -1145,416 +1145,6 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Power_Protection:ESDS304"
-			(pin_names
-				(hide yes)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(in_pos_files yes)
-			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "D"
-				(at 7.62 2.54 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left)
-				)
-			)
-			(property "Value" "ESDS304"
-				(at 7.62 0.635 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left)
-				)
-			)
-			(property "Footprint" "Package_TO_SOT_SMD:SOT-23-5"
-				(at -13.97 -17.78 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(justify left)
-				)
-			)
-			(property "Datasheet" "https://www.ti.com/lit/ds/symlink/esds304.pdf"
-				(at 0 -12.7 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Description" "4-channel 1Gbps TVS Diode Array, 2.3pF, 4.5V breakdown, 30kV contact & air gap, SOT-23-5"
-				(at 1.27 -15.24 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_keywords" "usb ethernet esd protection suppression transient transient-voltage low-capacitance texas"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "ki_fp_filters" "SOT?23*"
-				(at 0 0 0)
-				(show_name no)
-				(do_not_autoplace no)
-				(hide yes)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(symbol "ESDS304_0_0"
-				(pin passive line
-					(at 0 -5.08 90)
-					(length 2.54)
-					(name "A"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "2"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(symbol "ESDS304_0_1"
-				(rectangle
-					(start -4.445 2.54)
-					(end 6.985 -2.54)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type background)
-					)
-				)
-				(polyline
-					(pts
-						(xy -3.302 1.016) (xy -3.302 1.27) (xy -1.778 1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -2.54 2.54) (xy -2.54 1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -2.54 1.27) (xy -2.54 -1.27) (xy 2.54 -1.27) (xy 2.54 1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -2.54 1.27) (xy -1.905 0) (xy -3.175 0) (xy -2.54 1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 2.54) (xy 0 1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 -1.27) (xy 0 1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 -1.27) (xy 0 -2.54)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 0 -1.27)
-					(radius 0.254)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0.635 0) (xy -0.635 0) (xy 0 1.27) (xy 0.635 0)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0.762 1.27) (xy -0.762 1.27) (xy -0.762 1.016)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.778 1.016) (xy 1.778 1.27) (xy 3.175 1.27) (xy 3.302 1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 2.54 2.54) (xy 2.54 1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 2.54 1.27) (xy 1.905 0) (xy 3.175 0) (xy 2.54 1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(circle
-					(center 2.54 -1.27)
-					(radius 0.254)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(polyline
-					(pts
-						(xy 4.318 1.016) (xy 4.318 1.27) (xy 5.715 1.27) (xy 5.842 1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 5.08 2.54) (xy 5.08 1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 5.08 1.27) (xy 5.08 -1.27) (xy 2.54 -1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 5.08 1.27) (xy 4.445 0) (xy 5.715 0) (xy 5.08 1.27)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-			)
-			(symbol "ESDS304_1_1"
-				(pin passive line
-					(at -2.54 5.08 270)
-					(length 2.54)
-					(name "K"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 0 5.08 270)
-					(length 2.54)
-					(name "K"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "3"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 2.54 5.08 270)
-					(length 2.54)
-					(name "K"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "4"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-				(pin passive line
-					(at 5.08 5.08 270)
-					(length 2.54)
-					(name "K"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "5"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 	)
 	(rectangle
 		(start 69.85 59.69)
@@ -1695,6 +1285,18 @@
 		(uuid "2a817e09-1ec1-4683-8ead-7f01d80f3495")
 	)
 	(junction
+		(at 303.53 85.09)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "424b833c-57b4-4fab-a9b2-9cc0a081e911")
+	)
+	(junction
+		(at 306.07 87.63)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "52fd1b2a-1f9c-44ce-a9b3-1e0ea308694e")
+	)
+	(junction
 		(at 149.86 100.33)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1711,12 +1313,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "6859b5d9-2752-41f0-842f-a1511ffd0bad")
-	)
-	(junction
-		(at 306.07 85.09)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "7144d75c-c1b3-4190-818f-250f47da5386")
 	)
 	(junction
 		(at 119.38 170.18)
@@ -1759,12 +1355,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "d34fce84-62de-4fc8-92f4-d8a2e3c47754")
-	)
-	(junction
-		(at 303.53 87.63)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "e664ec32-e7d1-4be0-bea2-67d2871c50b3")
 	)
 	(no_connect
 		(at 124.46 204.47)
@@ -1894,16 +1484,6 @@
 	)
 	(wire
 		(pts
-			(xy 306.07 85.09) (xy 327.66 85.09)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "2566b039-adfb-46f9-9f53-d6fd4b45961b")
-	)
-	(wire
-		(pts
 			(xy 149.86 201.93) (xy 149.86 204.47)
 		)
 		(stroke
@@ -1924,7 +1504,7 @@
 	)
 	(wire
 		(pts
-			(xy 300.99 87.63) (xy 303.53 87.63)
+			(xy 300.99 87.63) (xy 306.07 87.63)
 		)
 		(stroke
 			(width 0)
@@ -1951,6 +1531,16 @@
 			(type default)
 		)
 		(uuid "305a3fa0-1f08-47a2-a2ed-28d9ea5524fa")
+	)
+	(wire
+		(pts
+			(xy 303.53 85.09) (xy 303.53 90.17)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3126e15b-f78d-4be8-9a22-8b82cef7d494")
 	)
 	(wire
 		(pts
@@ -2051,6 +1641,16 @@
 			(type default)
 		)
 		(uuid "57fd2ead-de4a-40c3-af54-535305d33e8c")
+	)
+	(wire
+		(pts
+			(xy 303.53 85.09) (xy 327.66 85.09)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "58d92ecc-9893-4736-a13a-22993554346a")
 	)
 	(wire
 		(pts
@@ -2184,6 +1784,16 @@
 	)
 	(wire
 		(pts
+			(xy 306.07 87.63) (xy 327.66 87.63)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "801f25aa-a196-4562-8df0-dfe2fd15789b")
+	)
+	(wire
+		(pts
 			(xy 157.48 100.33) (xy 160.02 100.33)
 		)
 		(stroke
@@ -2201,16 +1811,6 @@
 			(type default)
 		)
 		(uuid "85a6ab92-679c-4ad7-8286-bab84fa96f3e")
-	)
-	(wire
-		(pts
-			(xy 303.53 87.63) (xy 303.53 90.17)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "87852ce5-c4fa-4c01-bd41-cf064603573e")
 	)
 	(wire
 		(pts
@@ -2244,6 +1844,16 @@
 	)
 	(wire
 		(pts
+			(xy 306.07 87.63) (xy 306.07 90.17)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "96fa2b30-ab64-4642-8d21-63cbb5034812")
+	)
+	(wire
+		(pts
 			(xy 238.76 144.78) (xy 238.76 147.32)
 		)
 		(stroke
@@ -2251,16 +1861,6 @@
 			(type default)
 		)
 		(uuid "9f019f82-bac8-4a83-9301-17023e1713d9")
-	)
-	(wire
-		(pts
-			(xy 306.07 85.09) (xy 306.07 90.17)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "a0ee2f94-e38c-4d01-b3be-ecc0c113636d")
 	)
 	(wire
 		(pts
@@ -2301,16 +1901,6 @@
 			(type default)
 		)
 		(uuid "ac79cbec-e2bc-4be7-81c1-edc079a9c21c")
-	)
-	(wire
-		(pts
-			(xy 303.53 87.63) (xy 327.66 87.63)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "ad64d3fe-9e9f-4c5d-a365-2ddbc490bf55")
 	)
 	(wire
 		(pts
@@ -2374,7 +1964,7 @@
 	)
 	(wire
 		(pts
-			(xy 300.99 85.09) (xy 306.07 85.09)
+			(xy 300.99 85.09) (xy 303.53 85.09)
 		)
 		(stroke
 			(width 0)
@@ -4090,109 +3680,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Power_Protection:ESDS304")
-		(at 306.07 95.25 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "7632cea4-5c2c-490f-957d-5ccdbc51ed14")
-		(property "Reference" "D5"
-			(at 314.96 93.9799 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "ESDS304"
-			(at 314.96 96.5199 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Package_TO_SOT_SMD:SOT-23-5_HandSoldering"
-			(at 292.1 113.03 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/esds304.pdf"
-			(at 306.07 107.95 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "4-channel 1Gbps TVS Diode Array, 2.3pF, 4.5V breakdown, 30kV contact & air gap, SOT-23-5"
-			(at 307.34 110.49 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Mouser Part Number" " 595-ESDS304DBVR "
-			(at 306.07 95.25 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "52853e48-8ff8-4f3d-9816-cc9f991843be")
-		)
-		(pin "5"
-			(uuid "95b68558-0cab-4f17-a503-a0a5950b337e")
-		)
-		(pin "4"
-			(uuid "d14641f1-7866-4c70-8ccf-bd80d4aafaee")
-		)
-		(pin "1"
-			(uuid "9dede876-906c-4c15-987b-e44de6d8c1af")
-		)
-		(pin "3"
-			(uuid "80d810e7-b8b1-414e-b46c-122c436c23ac")
-		)
-		(instances
-			(project "PUTM_EV_AMS_MASTER"
-				(path "/b456cffc-d9d7-4c91-91f2-36ec9a65dd1b/c7d64097-44d3-49d9-9a80-8f2f4ff55e04"
-					(reference "D5")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_name "ESDA5V3SC5_3")
 		(lib_id "Power_Protection:ESDA5V3SC5")
 		(at 119.38 209.55 0)
@@ -5083,6 +4570,166 @@
 			(project "PUTM_EV_AMS_MASTER"
 				(path "/b456cffc-d9d7-4c91-91f2-36ec9a65dd1b/c7d64097-44d3-49d9-9a80-8f2f4ff55e04"
 					(reference "R18")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_name "ESDA5V3SC5_3")
+		(lib_id "Power_Protection:ESDA5V3SC5")
+		(at 306.07 95.25 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "b145d0da-3de1-4377-a601-068d89c16844")
+		(property "Reference" "D29"
+			(at 313.69 96.52 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "3.6V/400W"
+			(at 313.69 93.98 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_SMD:SOT-23-6"
+			(at 313.69 96.52 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Datasheet" "www.ti.com/lit/gpn/esds302"
+			(at 309.245 92.075 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "ESD Protection Diodes / TVS Diodes Quad 2.3-pF 3.6-V +/-30-kV ESD protect"
+			(at 306.07 95.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer_Part_Number" "ESDS304DBVR"
+			(at 306.07 95.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Mouser Part Number" "595-ESDS304DBVR"
+			(at 306.07 95.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Mouser Price/Stock" ""
+			(at 306.07 95.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Arrow Part Number" ""
+			(at 306.07 95.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Arrow Price/Stock" ""
+			(at 306.07 95.25 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "DigiKey Part Number" ""
+			(at 306.07 95.25 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "2"
+			(uuid "f394a38a-4e93-4e09-99a5-39e46f91d2d7")
+		)
+		(pin "3"
+			(uuid "f53c2749-a89a-4b29-988a-0bf034b89985")
+		)
+		(pin "1"
+			(uuid "14953fe4-4f74-442a-a29b-b320cd555bf4")
+		)
+		(pin "4"
+			(uuid "1c501212-ab5c-4cd2-8e74-e3e0c43966ac")
+		)
+		(pin "5"
+			(uuid "ddd24256-ebf3-4852-9571-90dc03f9914b")
+		)
+		(pin "6"
+			(uuid "50972d3b-df82-49c8-9d61-fbc0f7d701c6")
+		)
+		(instances
+			(project "PUTM_EV_AMS_MASTER"
+				(path "/b456cffc-d9d7-4c91-91f2-36ec9a65dd1b/c7d64097-44d3-49d9-9a80-8f2f4ff55e04"
+					(reference "D29")
 					(unit 1)
 				)
 			)

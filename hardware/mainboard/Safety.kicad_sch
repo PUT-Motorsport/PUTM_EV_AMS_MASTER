@@ -2206,16 +2206,6 @@
 	)
 	(wire
 		(pts
-			(xy 33.02 139.7) (xy 40.64 139.7)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "354558ab-4ade-48d1-94f7-353b4c017ff5")
-	)
-	(wire
-		(pts
 			(xy 64.77 68.58) (xy 67.31 68.58)
 		)
 		(stroke
@@ -2410,6 +2400,16 @@
 			(color 132 0 132 1)
 		)
 		(uuid "710788d9-b0b5-49d4-b64a-1a5e592c230d")
+	)
+	(wire
+		(pts
+			(xy 33.02 139.7) (xy 40.64 139.7)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "7296e6cc-b74d-4c42-ba36-9816837b1bc3")
 	)
 	(polyline
 		(pts
@@ -3332,7 +3332,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "TestPoint_Small"
+		(property "Value" "CAP_VOLT"
 			(at 86.36 129.5399 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4154,7 +4154,7 @@
 				)
 			)
 		)
-		(property "Value" "TestPoint_Small"
+		(property "Value" "WTDG_ERROR"
 			(at 52.07 63.5 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4556,7 +4556,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "TestPoint_Small"
+		(property "Value" "LATCHED_ERR"
 			(at 71.12 82.5499 0)
 			(show_name no)
 			(do_not_autoplace no)
