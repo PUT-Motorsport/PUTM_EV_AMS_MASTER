@@ -1,14 +1,14 @@
 (footprint "ACM55V7012PLTL00"
-	(version 20241229)
+	(version 20260206)
 	(generator "pcbnew")
-	(generator_version "9.0")
+	(generator_version "10.0")
 	(layer "F.Cu")
 	(descr "ACM55V-701-2PL-TL00-1")
 	(tags "Filter")
 	(property "Reference" "FL**"
 		(at 0 0 0)
 		(layer "F.SilkS")
-		(uuid "49ed2354-321e-4420-baf2-9020db3baf0a")
+		(uuid "55600652-769a-48d0-b7e3-02f1c5db87af")
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -20,7 +20,7 @@
 		(at 0 0 0)
 		(layer "F.SilkS")
 		(hide yes)
-		(uuid "faaafdf5-5ef2-44be-90a5-0ead3385484b")
+		(uuid "e0b1f5ca-8822-481b-ad64-b1acaffe5535")
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -32,7 +32,7 @@
 		(at 0 0 0)
 		(layer "F.Fab")
 		(hide yes)
-		(uuid "65abf26a-78d4-4c1d-8d94-a80ad23cd3ce")
+		(uuid "1df904c7-c4bb-42ac-99a6-8f91d378d445")
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -44,7 +44,7 @@
 		(at 0 0 0)
 		(layer "F.Fab")
 		(hide yes)
-		(uuid "76985eef-27ce-4fbc-a459-0929d8d3c873")
+		(uuid "c5cbb371-cf73-4626-be06-6bf5e755a4d1")
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -53,26 +53,7 @@
 		)
 	)
 	(attr smd)
-	(fp_line
-		(start -3.8 -1.4)
-		(end -3.8 -1.4)
-		(stroke
-			(width 0.1)
-			(type solid)
-		)
-		(layer "F.SilkS")
-		(uuid "c21a428a-9619-43b8-95fe-0395caa90bef")
-	)
-	(fp_line
-		(start -3.7 -1.4)
-		(end -3.7 -1.4)
-		(stroke
-			(width 0.1)
-			(type solid)
-		)
-		(layer "F.SilkS")
-		(uuid "8ac0796b-403f-4cd7-98af-61bfc0b9b142")
-	)
+	(duplicate_pad_numbers_are_jumpers no)
 	(fp_line
 		(start -2.75 -2.75)
 		(end 2.75 -2.75)
@@ -81,7 +62,7 @@
 			(type solid)
 		)
 		(layer "F.SilkS")
-		(uuid "6283d4f3-dd58-4246-8ded-ad8dd3789b13")
+		(uuid "5e7b0fe0-638b-4aba-b60c-37e48bb6f97e")
 	)
 	(fp_line
 		(start -2.75 -2.2)
@@ -91,7 +72,7 @@
 			(type solid)
 		)
 		(layer "F.SilkS")
-		(uuid "b70e5a8d-26be-48e7-8584-72fc2566d99e")
+		(uuid "ee1bfb43-ff41-46c8-95f9-67273864750d")
 	)
 	(fp_line
 		(start -2.75 -0.6)
@@ -101,7 +82,7 @@
 			(type solid)
 		)
 		(layer "F.SilkS")
-		(uuid "60b6a85c-1a34-4679-9e6a-e64009304fa1")
+		(uuid "8f373f45-e47e-4aab-b112-a715365de04d")
 	)
 	(fp_line
 		(start -2.75 2.2)
@@ -111,7 +92,7 @@
 			(type solid)
 		)
 		(layer "F.SilkS")
-		(uuid "0b943795-62e8-4f4e-90a9-2b8849479281")
+		(uuid "2c5c6cd3-343c-47b3-afbe-3dc47f315a48")
 	)
 	(fp_line
 		(start -2.75 2.75)
@@ -121,7 +102,7 @@
 			(type solid)
 		)
 		(layer "F.SilkS")
-		(uuid "8866cba8-63b3-42f7-b85e-da6f337c104a")
+		(uuid "4097e59f-6207-4695-be1b-d1d8227ef113")
 	)
 	(fp_line
 		(start 2.75 -2.75)
@@ -131,7 +112,7 @@
 			(type solid)
 		)
 		(layer "F.SilkS")
-		(uuid "a801bc62-6908-4298-99fb-a6d1dcd1df45")
+		(uuid "52007fd3-4fe5-4f13-9cae-5fc825555725")
 	)
 	(fp_line
 		(start 2.75 -0.6)
@@ -141,7 +122,7 @@
 			(type solid)
 		)
 		(layer "F.SilkS")
-		(uuid "30b6081b-f8a9-4efe-9bd3-3269396a7327")
+		(uuid "a7bd0207-5ee7-4332-86b4-be060c3f38cc")
 	)
 	(fp_line
 		(start 2.75 2.75)
@@ -151,69 +132,18 @@
 			(type solid)
 		)
 		(layer "F.SilkS")
-		(uuid "042e9c82-5263-4c14-ba5d-7edbca20cd0f")
+		(uuid "15f16311-1e31-4d44-86f8-89b57a0fa76a")
 	)
-	(fp_arc
-		(start -3.8 -1.4)
-		(mid -3.75 -1.45)
-		(end -3.7 -1.4)
+	(fp_rect
+		(start -3.4 -3)
+		(end 3.4 3)
 		(stroke
-			(width 0.1)
-			(type solid)
+			(width 0.05)
+			(type default)
 		)
-		(layer "F.SilkS")
-		(uuid "bcaaa9b1-8dfc-43b5-8a6a-fcfd08b4cbac")
-	)
-	(fp_arc
-		(start -3.7 -1.4)
-		(mid -3.75 -1.35)
-		(end -3.8 -1.4)
-		(stroke
-			(width 0.1)
-			(type solid)
-		)
-		(layer "F.SilkS")
-		(uuid "1e088248-6213-49a6-ac65-c80480d5c1a7")
-	)
-	(fp_line
-		(start -4.25 -3.75)
-		(end 4.25 -3.75)
-		(stroke
-			(width 0.1)
-			(type solid)
-		)
+		(fill no)
 		(layer "F.CrtYd")
-		(uuid "8dc956ec-391c-4100-84a1-e0cc2ca61641")
-	)
-	(fp_line
-		(start -4.25 3.75)
-		(end -4.25 -3.75)
-		(stroke
-			(width 0.1)
-			(type solid)
-		)
-		(layer "F.CrtYd")
-		(uuid "32aae0b3-f027-4f7a-8d0a-81132f680ba5")
-	)
-	(fp_line
-		(start 4.25 -3.75)
-		(end 4.25 3.75)
-		(stroke
-			(width 0.1)
-			(type solid)
-		)
-		(layer "F.CrtYd")
-		(uuid "c159de1b-6e7c-4156-a884-225b0377d1d9")
-	)
-	(fp_line
-		(start 4.25 3.75)
-		(end -4.25 3.75)
-		(stroke
-			(width 0.1)
-			(type solid)
-		)
-		(layer "F.CrtYd")
-		(uuid "a486def8-6827-44aa-a28c-5a8cbccc3f80")
+		(uuid "213dca85-6bd8-49c6-a6c8-e350bb118ab4")
 	)
 	(fp_line
 		(start -2.75 -2.75)
@@ -223,7 +153,7 @@
 			(type solid)
 		)
 		(layer "F.Fab")
-		(uuid "92eb9049-f495-4d10-88a3-d5e3eccab5dd")
+		(uuid "f24fadfc-9f78-4e50-a81f-7f8d9db8e62a")
 	)
 	(fp_line
 		(start -2.75 2.75)
@@ -233,7 +163,7 @@
 			(type solid)
 		)
 		(layer "F.Fab")
-		(uuid "c6513e25-1470-4963-bfb8-3ae9479741dc")
+		(uuid "05030217-525c-46c2-923b-3582a73635f6")
 	)
 	(fp_line
 		(start 2.75 -2.75)
@@ -243,7 +173,7 @@
 			(type solid)
 		)
 		(layer "F.Fab")
-		(uuid "992ca95a-a469-4f80-bfa0-cffc08827ae8")
+		(uuid "46178d9c-69b7-4b4e-9176-a6fdd0d6b92a")
 	)
 	(fp_line
 		(start 2.75 2.75)
@@ -253,12 +183,12 @@
 			(type solid)
 		)
 		(layer "F.Fab")
-		(uuid "3c267b31-19d0-4f18-be0d-cca5c4d1974f")
+		(uuid "39c39ddc-92ec-4b85-9240-4f09a29e4ccb")
 	)
 	(fp_text user "${REFERENCE}"
 		(at 0 0 0)
 		(layer "F.Fab")
-		(uuid "920a8c29-1434-48a2-9abf-77ad560b03b3")
+		(uuid "57ee9f03-9212-4851-ae5f-8f20fbc1ce79")
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -270,25 +200,25 @@
 		(at -2.5 -1.4 90)
 		(size 1 1.5)
 		(layers "F.Cu" "F.Mask" "F.Paste")
-		(uuid "26fdb268-9f08-4bcf-b84e-78b0bdd1af3d")
+		(uuid "c92609ca-444e-44b7-bb91-fbf3afc51deb")
 	)
 	(pad "2" smd rect
 		(at -2.5 1.4 90)
 		(size 1 1.5)
 		(layers "F.Cu" "F.Mask" "F.Paste")
-		(uuid "a6857d65-a9d7-4036-9ee2-7a091a438336")
+		(uuid "5b2dd9b2-8cfd-4d07-bd4b-8c99511e1d79")
 	)
 	(pad "3" smd rect
 		(at 2.5 1.4 90)
 		(size 1 1.5)
 		(layers "F.Cu" "F.Mask" "F.Paste")
-		(uuid "8efdb6c0-26eb-4090-bcc1-7920ff883abe")
+		(uuid "90a6e1c9-6fd9-4c71-97f2-f7d3dece2904")
 	)
 	(pad "4" smd rect
 		(at 2.5 -1.4 90)
 		(size 1 1.5)
 		(layers "F.Cu" "F.Mask" "F.Paste")
-		(uuid "a8adcc61-a39f-4cde-82ca-af9f70952fa4")
+		(uuid "d4f64a63-c2b3-44f4-a06e-721a92932034")
 	)
 	(embedded_fonts no)
 	(model "ACM55V-701-2PL-TL00.stp"
