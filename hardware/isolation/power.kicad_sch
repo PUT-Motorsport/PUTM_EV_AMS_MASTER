@@ -6773,6 +6773,26 @@
 		)
 		(uuid "ff5f7f13-6954-4084-9f64-be2abb523625")
 	)
+	(label "PS_+24V"
+		(at 196.85 53.34 180)
+		(effects
+			(font
+				(size 0.5 0.5)
+			)
+			(justify right bottom)
+		)
+		(uuid "038a234a-8e73-4385-8fae-3eaf55aa7ba6")
+	)
+	(label "PS_GND"
+		(at 196.85 63.5 180)
+		(effects
+			(font
+				(size 0.5 0.5)
+			)
+			(justify right bottom)
+		)
+		(uuid "2458586a-5e64-42e4-89b8-a818f4247ba6")
+	)
 	(label "F_24V"
 		(at 53.34 55.88 180)
 		(effects
