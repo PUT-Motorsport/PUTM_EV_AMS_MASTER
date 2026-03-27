@@ -981,7 +981,7 @@
         "uuid": "b456cffc-d9d7-4c91-91f2-36ec9a65dd1b"
       }
     ],
-    "used_designators": "SWDIO1,UC_CANFD2_RX1,UC_CANFD1_TX1-2,UC_CANFD1_RX1,UC_AIR_AUX_PRE1,UC_AIR_AUX_M1,D24,D28-29,#PWR4,UC_AIR_AUX_P1,CAR_I1,TP2-3,TP5-45,ACU_OUT\\-1,ISO_SPI_OUT+1,CAR_OUT+1,ACU_OUT+1,CAR_OUT\\-1,ISO_SPI_OUT\\-1,RX1,TX1,UART_RST1",
+    "used_designators": "",
     "variants": []
   },
   "sheets": [
