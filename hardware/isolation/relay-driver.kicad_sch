@@ -2072,16 +2072,6 @@
 		)
 		(uuid "fe479196-0ffd-437b-9b37-903a26511eca")
 	)
-	(wire
-		(pts
-			(xy 168.91 133.35) (xy 168.91 130.81)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "fe743cc7-77b0-489f-9e75-6b18370e1121")
-	)
 	(hierarchical_label "EN"
 		(shape input)
 		(at 125.73 138.43 180)
@@ -2092,6 +2082,17 @@
 			(justify right)
 		)
 		(uuid "0b498c10-f896-4168-9fb8-4bd785dc6170")
+	)
+	(hierarchical_label "VDDSDC"
+		(shape output)
+		(at 168.91 133.35 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "605c39b2-8f17-49c0-986e-c3558911b85b")
 	)
 	(hierarchical_label "VDDSDC"
 		(shape output)
@@ -2360,92 +2361,6 @@
 				)
 				(path "/9b254bae-97c6-45e7-8618-9f461c55b31a/52eeafc6-1d9f-461b-ab5d-05873b4b2dbb"
 					(reference "#PWR037")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+24V")
-		(at 168.91 130.81 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "41bd22f5-69f9-4327-b3cd-13ff9ed344a4")
-		(property "Reference" "#PWR011"
-			(at 168.91 134.62 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "+24V"
-			(at 168.91 125.73 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" ""
-			(at 168.91 130.81 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 168.91 130.81 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+24V\""
-			(at 168.91 130.81 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "829a53c9-bdc9-497b-a9f6-496940c2f431")
-		)
-		(instances
-			(project "PUTM_AMS_MASTER_ISOLATION"
-				(path "/9b254bae-97c6-45e7-8618-9f461c55b31a/27672bac-fee4-4e98-a9bd-03760133f34d"
-					(reference "#PWR069")
-					(unit 1)
-				)
-				(path "/9b254bae-97c6-45e7-8618-9f461c55b31a/51b19b7d-5029-4e68-a889-ab95c2ea105b"
-					(reference "#PWR011")
-					(unit 1)
-				)
-				(path "/9b254bae-97c6-45e7-8618-9f461c55b31a/52eeafc6-1d9f-461b-ab5d-05873b4b2dbb"
-					(reference "#PWR056")
 					(unit 1)
 				)
 			)

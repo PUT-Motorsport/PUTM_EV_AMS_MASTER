@@ -50,7 +50,7 @@
         "silk_text_thickness": 0.1,
         "silk_text_upright": false,
         "zones": {
-          "min_clearance": 0.5
+          "min_clearance": 0.0
         }
       },
       "diff_pair_dimensions": [
@@ -196,6 +196,7 @@
       "track_widths": [
         0.0,
         0.2,
+        0.3,
         0.5
       ],
       "tuning_pattern_settings": {
@@ -779,7 +780,7 @@
         "uuid": "9b254bae-97c6-45e7-8618-9f461c55b31a"
       }
     ],
-    "used_designators": "Q8-10",
+    "used_designators": "Q8-10,D17,#PWR15,#PWR89,#PWR96,#PWR108,C40,C51,C66-69",
     "variants": []
   },
   "sheets": [
