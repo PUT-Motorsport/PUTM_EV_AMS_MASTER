@@ -60,7 +60,16 @@
           "width": 0.0
         }
       ],
-      "drc_exclusions": [],
+      "drc_exclusions": [
+        [
+          "starved_thermal|126675000|103300000|53ec68c6-d4f2-46f3-aea8-a0b70ae0af41|d5c2f75d-bb3e-4d89-8449-0bfaceb73033|F.Cu",
+          "Caused by a connected trace, can be ignored safely"
+        ],
+        [
+          "starved_thermal|129100000|94375000|53ec68c6-d4f2-46f3-aea8-a0b70ae0af41|07d9c59c-2933-44a5-b2ed-8fc1c01679a9|F.Cu",
+          "Caused by a connected trace, can be ignored safely"
+        ]
+      ],
       "meta": {
         "filename": "board_design_settings.json",
         "version": 2
