@@ -154,7 +154,7 @@
           "td_onpthpad": true,
           "td_onroundshapesonly": false,
           "td_onsmdpad": true,
-          "td_ontrackend": false,
+          "td_ontrackend": true,
           "td_onvia": true
         }
       ],
@@ -785,7 +785,7 @@
         "uuid": "9b254bae-97c6-45e7-8618-9f461c55b31a"
       }
     ],
-    "used_designators": "D19-20,#PWR11,#PWR69,#PWR93,#PWR108,J5",
+    "used_designators": "",
     "variants": []
   },
   "sheets": [

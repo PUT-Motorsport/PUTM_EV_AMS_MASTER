@@ -1,1 +1,4 @@
 (version 1)
+(rule Minimum_drill_size_1
+	(constraint hole_size (min 0.2mm))
+)
