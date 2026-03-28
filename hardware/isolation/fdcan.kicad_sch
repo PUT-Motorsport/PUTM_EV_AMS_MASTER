@@ -1249,6 +1249,273 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Power_Protection:ESDA5V3L"
+			(pin_names
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "D"
+				(at 5.715 2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "ESDA5V3L"
+				(at 5.715 0.635 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Footprint" "Package_TO_SOT_SMD:SOT-23-3"
+				(at -15.24 -10.16 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Datasheet" "https://www.st.com/resource/en/datasheet/esdal.pdf"
+				(at 0 -15.24 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "TVS Diode Array, 5.5V Standoff, 2 Channels, SOT23"
+				(at 0 -12.7 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "usb esd protection suppression transient"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "SOT?23*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "ESDA5V3L_0_0"
+				(pin passive line
+					(at 0 -5.08 90)
+					(length 2.54)
+					(name "A"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(symbol "ESDA5V3L_0_1"
+				(rectangle
+					(start -4.445 2.54)
+					(end 4.445 -2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(polyline
+					(pts
+						(xy -3.302 1.016) (xy -3.302 1.27) (xy -1.905 1.27) (xy -1.778 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.54 2.54) (xy -2.54 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.54 1.27) (xy -2.54 -1.27) (xy 2.54 -1.27) (xy 2.54 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.54 1.27) (xy -1.905 0) (xy -3.175 0) (xy -2.54 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 -1.27) (xy 0 -2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 0 -1.27)
+					(radius 0.254)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.778 1.016) (xy 1.778 1.27) (xy 3.175 1.27) (xy 3.302 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.54 2.54) (xy 2.54 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.54 1.27) (xy 1.905 0) (xy 3.175 0) (xy 2.54 1.27)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "ESDA5V3L_1_1"
+				(pin passive line
+					(at -2.54 5.08 270)
+					(length 2.54)
+					(name "K"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 2.54 5.08 270)
+					(length 2.54)
+					(name "K"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "power:+3.3V"
 			(power global)
 			(pin_names
@@ -1816,10 +2083,16 @@
 		(uuid "38acf0e3-a785-4cc0-9146-1374ccb55987")
 	)
 	(junction
+		(at 78.74 101.6)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "3cc329a2-0674-42c7-9a1e-8cc70250cd86")
+	)
+	(junction
 		(at 231.14 91.44)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "5266f155-596c-435e-9378-11daf1b13ecf")
+		(uuid "4b1ec26c-9d2c-4db3-8ed3-a8030a083d88")
 	)
 	(junction
 		(at 231.14 76.2)
@@ -1840,12 +2113,6 @@
 		(uuid "7a62f31c-7576-4a39-b975-6325a8cf7b59")
 	)
 	(junction
-		(at 195.58 91.44)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "7d7d16f0-4475-4282-95a4-9bd9c9e88572")
-	)
-	(junction
 		(at 125.73 127)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1856,6 +2123,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "8943277e-dcbe-40e6-bc05-23bf64aab53c")
+	)
+	(junction
+		(at 195.58 91.44)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "8c4adfb9-5c1b-410f-be32-7112e1c36da9")
 	)
 	(junction
 		(at 104.14 114.3)
@@ -1882,6 +2155,12 @@
 		(uuid "d8ba3c1a-245e-4c6f-b098-ca679d6f2ab9")
 	)
 	(junction
+		(at 73.66 99.06)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "ddc53923-209a-4995-b6a2-70d1f4e379ef")
+	)
+	(junction
 		(at 175.26 91.44)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1900,6 +2179,20 @@
 	(no_connect
 		(at 167.64 127)
 		(uuid "b86e0c8f-5b45-41be-9b30-a43d66376148")
+	)
+	(no_connect
+		(at 76.2 114.3)
+		(uuid "d1e9cc8c-d658-47db-b8c7-e3fa8ee80973")
+	)
+	(wire
+		(pts
+			(xy 78.74 101.6) (xy 135.89 101.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0c6a10bf-885b-48d0-b913-aa763502ff7d")
 	)
 	(wire
 		(pts
@@ -1952,6 +2245,16 @@
 			(type default)
 		)
 		(uuid "13c38d76-399a-45f5-a3a8-224a774ca1de")
+	)
+	(wire
+		(pts
+			(xy 167.64 101.6) (xy 170.18 101.6)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "14aaf498-0b4b-4305-befe-311439d4a7da")
 	)
 	(wire
 		(pts
@@ -2222,16 +2525,6 @@
 	)
 	(wire
 		(pts
-			(xy 167.64 101.6) (xy 170.18 101.6)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "626673bb-8e8f-4ba7-b043-c7e3ec596046")
-	)
-	(wire
-		(pts
 			(xy 104.14 114.3) (xy 104.14 118.11)
 		)
 		(stroke
@@ -2249,6 +2542,16 @@
 			(type default)
 		)
 		(uuid "6bcee5ca-1574-4a04-9e51-eb623775faad")
+	)
+	(wire
+		(pts
+			(xy 167.64 99.06) (xy 170.18 99.06)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6e82a60e-2a44-469d-858f-294d4885d598")
 	)
 	(wire
 		(pts
@@ -2280,6 +2583,16 @@
 			(color 132 0 0 1)
 		)
 		(uuid "74489fb9-eb9e-46df-9431-d1766f602070")
+	)
+	(wire
+		(pts
+			(xy 78.74 101.6) (xy 78.74 104.14)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "75036980-fccc-4cc0-9c22-4f41e583f112")
 	)
 	(polyline
 		(pts
@@ -2345,6 +2658,16 @@
 	)
 	(wire
 		(pts
+			(xy 73.66 99.06) (xy 73.66 104.14)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "85a4615a-881d-425d-95f0-b5edf7c1c07f")
+	)
+	(wire
+		(pts
 			(xy 113.03 76.2) (xy 118.11 76.2)
 		)
 		(stroke
@@ -2366,7 +2689,7 @@
 	)
 	(wire
 		(pts
-			(xy 133.35 101.6) (xy 135.89 101.6)
+			(xy 63.5 101.6) (xy 78.74 101.6)
 		)
 		(stroke
 			(width 0)
@@ -2456,7 +2779,7 @@
 	)
 	(wire
 		(pts
-			(xy 133.35 99.06) (xy 135.89 99.06)
+			(xy 63.5 99.06) (xy 73.66 99.06)
 		)
 		(stroke
 			(width 0)
@@ -2527,7 +2850,7 @@
 	)
 	(wire
 		(pts
-			(xy 231.14 91.44) (xy 231.14 93.98)
+			(xy 231.14 91.44) (xy 231.14 92.71)
 		)
 		(stroke
 			(width 0)
@@ -2588,16 +2911,6 @@
 		)
 		(uuid "c040e96a-22ec-4475-b208-d678237d1f26")
 	)
-	(wire
-		(pts
-			(xy 167.64 99.06) (xy 170.18 99.06)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "c9f5f33a-81d0-4c5c-a79c-cb99c1bce876")
-	)
 	(polyline
 		(pts
 			(xy 152.4 165.1) (xy 157.48 165.1)
@@ -2642,7 +2955,7 @@
 	)
 	(wire
 		(pts
-			(xy 195.58 91.44) (xy 195.58 93.98)
+			(xy 195.58 91.44) (xy 195.58 92.71)
 		)
 		(stroke
 			(width 0)
@@ -2709,6 +3022,16 @@
 			(type default)
 		)
 		(uuid "f523d5ae-dd6c-44b1-b90d-259d65a81c4e")
+	)
+	(wire
+		(pts
+			(xy 73.66 99.06) (xy 135.89 99.06)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f6ade9aa-7aa9-4184-ba05-93f0a8709cbd")
 	)
 	(wire
 		(pts
@@ -2876,7 +3199,7 @@
 	)
 	(hierarchical_label "CANH"
 		(shape bidirectional)
-		(at 133.35 99.06 180)
+		(at 63.5 99.06 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2887,7 +3210,7 @@
 	)
 	(hierarchical_label "CANL"
 		(shape bidirectional)
-		(at 133.35 101.6 180)
+		(at 63.5 101.6 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3369,7 +3692,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 231.14 93.98 0)
+		(at 231.14 92.71 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -3379,7 +3702,7 @@
 		(dnp no)
 		(uuid "54eb19d1-1390-4045-a11f-d2424332365a")
 		(property "Reference" "#PWR051"
-			(at 231.14 100.33 0)
+			(at 231.14 99.06 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3390,7 +3713,7 @@
 			)
 		)
 		(property "Value" "GNDISO"
-			(at 231.14 97.79 0)
+			(at 231.14 96.52 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3400,7 +3723,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 231.14 93.98 0)
+			(at 231.14 92.71 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3411,7 +3734,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 231.14 93.98 0)
+			(at 231.14 92.71 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3422,7 +3745,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 231.14 93.98 0)
+			(at 231.14 92.71 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3576,7 +3899,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 115.57 120.65 0)
 			(hide yes)
 			(show_name no)
@@ -3920,7 +4243,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 104.14 120.65 0)
 			(hide yes)
 			(show_name no)
@@ -4260,8 +4583,108 @@
 		)
 	)
 	(symbol
+		(lib_id "Power_Protection:ESDA5V3L")
+		(at 76.2 109.22 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "c88be79b-e7a0-43a6-8739-56145f7054df")
+		(property "Reference" "D19"
+			(at 69.85 107.95 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Value" "5.3V/400W"
+			(at 69.85 110.49 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" "Package_TO_SOT_SMD:SOT-23-3"
+			(at 60.96 119.38 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Datasheet" "https://www.st.com/resource/en/datasheet/esdal.pdf"
+			(at 76.2 124.46 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "TVS Diode Array, 5.5V Standoff, 2 Channels, SOT23"
+			(at 76.2 121.92 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Mouser Part Number" "511-ESDA5V3L"
+			(at 76.2 109.22 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "23525010-c9e4-4e6f-91f2-6aa8c532218f")
+		)
+		(pin "2"
+			(uuid "f1082f69-0958-4c72-9580-dec1bee7bf7e")
+		)
+		(pin "3"
+			(uuid "7bbaa387-9831-4add-bf28-87f40cf97d49")
+		)
+		(instances
+			(project "PUTM_AMS_MASTER_ISOLATION"
+				(path "/9b254bae-97c6-45e7-8618-9f461c55b31a/bb7c4aa8-5d23-481b-8672-1d87fa8c6d83"
+					(reference "D19")
+					(unit 1)
+				)
+				(path "/9b254bae-97c6-45e7-8618-9f461c55b31a/c0d62127-a5e4-40e6-9bd1-c5a7f1ecee97"
+					(reference "D20")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
-		(at 195.58 93.98 0)
+		(at 195.58 92.71 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -4271,7 +4694,7 @@
 		(dnp no)
 		(uuid "cd1fb33f-b4ac-4425-9a63-623255a4f162")
 		(property "Reference" "#PWR027"
-			(at 195.58 100.33 0)
+			(at 195.58 99.06 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4282,7 +4705,7 @@
 			)
 		)
 		(property "Value" "GNDISO"
-			(at 195.58 97.79 0)
+			(at 195.58 96.52 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4292,7 +4715,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 195.58 93.98 0)
+			(at 195.58 92.71 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4303,7 +4726,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 195.58 93.98 0)
+			(at 195.58 92.71 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4314,7 +4737,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 195.58 93.98 0)
+			(at 195.58 92.71 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4537,7 +4960,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric"
 			(at 128.27 83.82 0)
 			(hide yes)
 			(show_name no)
@@ -4991,7 +5414,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric"
 			(at 130.81 121.92 0)
 			(hide yes)
 			(show_name no)

@@ -1990,7 +1990,7 @@
 				)
 			)
 		)
-		(property "Value" "+5VIO"
+		(property "Value" "+5VIOISO"
 			(at 163.83 107.95 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2070,7 +2070,7 @@
 				)
 			)
 		)
-		(property "Value" "GND"
+		(property "Value" "GNDISO"
 			(at 163.83 90.17 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2150,7 +2150,7 @@
 				)
 			)
 		)
-		(property "Value" "GND"
+		(property "Value" "GNDISO"
 			(at 142.24 80.01 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2362,7 +2362,7 @@
 				)
 			)
 		)
-		(property "Value" "GND"
+		(property "Value" "GNDISO"
 			(at 160.02 119.38 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2539,7 +2539,7 @@
 				)
 			)
 		)
-		(property "Value" "+5VA"
+		(property "Value" "+5VAISO"
 			(at 138.43 107.95 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2617,7 +2617,7 @@
 				)
 			)
 		)
-		(property "Value" "+3.3VIO"
+		(property "Value" "+3.3VIOISO"
 			(at 163.83 105.41 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2696,7 +2696,7 @@
 				)
 			)
 		)
-		(property "Value" "+3.3VA"
+		(property "Value" "+3.3VAISO"
 			(at 138.43 113.03 90)
 			(show_name no)
 			(do_not_autoplace no)

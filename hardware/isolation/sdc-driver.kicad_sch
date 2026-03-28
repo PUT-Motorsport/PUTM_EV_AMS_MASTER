@@ -1730,7 +1730,6 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "5293487d-a432-4959-b19d-f9a3e4f4cfbc")
 		(property "Reference" "#PWR05"
 			(at 140.97 86.36 0)
@@ -1743,8 +1742,8 @@
 				)
 			)
 		)
-		(property "Value" "+24ISO"
-			(at 140.97 77.47 0)
+		(property "Value" "+24VISO"
+			(at 140.97 78.74 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects

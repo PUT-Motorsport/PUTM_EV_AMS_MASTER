@@ -562,6 +562,76 @@
 		)
 		(uuid "f7faa63d-c003-40dd-b213-61da83b6e18a")
 	)
+	(label "FDCAN2-"
+		(at 223.52 238.76 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "1ac53403-4eef-488b-b8b7-7ed8b39a0061")
+	)
+	(label "FDCAN1-"
+		(at 223.52 213.36 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "22386416-0f38-42bd-89e9-16c7e6b20d24")
+	)
+	(label "CHARGER_DETECTION"
+		(at 125.73 184.15 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "275f6a34-4b59-4bfd-b496-fa95d3b58e3d")
+	)
+	(label "CHARGER"
+		(at 224.79 184.15 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "65df5b0f-9b92-497e-be80-88556759fd6f")
+	)
+	(label "FDCAN1+"
+		(at 223.52 205.74 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "66d61c4a-5a43-4262-8d13-2ea1cc177a62")
+	)
+	(label "TSMS_DETECTION"
+		(at 125.73 158.75 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "c63b651a-d4b9-4b20-bc9e-c2cead58384a")
+	)
+	(label "FDCAN2+"
+		(at 223.52 231.14 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "de9f6859-d8c0-404e-803b-6c2c5718e430")
+	)
 	(hierarchical_label "{CAN1_MCU}"
 		(shape bidirectional)
 		(at 759.46 101.6 0)
@@ -967,7 +1037,7 @@
 				(justify left)
 			)
 		)
-		(pin "CANFD1+" bidirectional
+		(pin "FDCAN1+" bidirectional
 			(at 241.3 205.74 180)
 			(uuid "3614fed1-449f-4741-bcf1-08c37b7b614f")
 			(effects
@@ -977,7 +1047,7 @@
 				(justify left)
 			)
 		)
-		(pin "CANFD1-" bidirectional
+		(pin "FDCAN1-" bidirectional
 			(at 241.3 213.36 180)
 			(uuid "b587687b-142c-447e-8a26-e0b7197192cb")
 			(effects
@@ -987,7 +1057,7 @@
 				(justify left)
 			)
 		)
-		(pin "CANFD2+" bidirectional
+		(pin "FDCAN2+" bidirectional
 			(at 241.3 231.14 180)
 			(uuid "1327dfcc-fdc7-4037-80af-99713582944d")
 			(effects
@@ -997,7 +1067,7 @@
 				(justify left)
 			)
 		)
-		(pin "CANFD2-" bidirectional
+		(pin "FDCAN2-" bidirectional
 			(at 241.3 238.76 180)
 			(uuid "5768aef5-9217-4f6b-9092-b98a3b60a591")
 			(effects
