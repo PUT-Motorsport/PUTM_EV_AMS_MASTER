@@ -9958,7 +9958,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "ISO6542DBQR"
+		(property "Value" "ISO6542FDBQR"
 			(at 60.96 116.84 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9981,7 +9981,7 @@
 				(justify left top)
 			)
 		)
-		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/iso6542.pdf?ts=1774362260370&ref_url=https%253A%252F%252Fwww.mouser.es%252F"
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/iso6542.pdf?ts=1777813802072&ref_url=https%253A%252F%252Fwww.mouser.pl%252F"
 			(at 105.41 327 0)
 			(hide yes)
 			(show_name no)
@@ -10016,7 +10016,7 @@
 				(justify left top)
 			)
 		)
-		(property "Mouser Part Number" "595-ISO6542DBQR"
+		(property "Mouser Part Number" "595-ISO6542FDBQR"
 			(at 105.41 627 0)
 			(hide yes)
 			(show_name no)
@@ -10028,7 +10028,7 @@
 				(justify left top)
 			)
 		)
-		(property "Mouser Price/Stock" "https://www.mouser.pl/ProductDetail/Texas-Instruments/ISO6542DBQR?qs=2FehpBK1j961cqatM6gsZg%3D%3D"
+		(property "Mouser Price/Stock" "https://www.mouser.pl/ProductDetail/Texas-Instruments/ISO6542FDBQR?qs=2FehpBK1j95VNOtIBfXh0A%3D%3D"
 			(at 105.41 727 0)
 			(hide yes)
 			(show_name no)
@@ -10052,7 +10052,7 @@
 				(justify left top)
 			)
 		)
-		(property "Manufacturer_Part_Number" "ISO6542DBQR"
+		(property "Manufacturer_Part_Number" "ISO6542FDBQR "
 			(at 105.41 927 0)
 			(hide yes)
 			(show_name no)
