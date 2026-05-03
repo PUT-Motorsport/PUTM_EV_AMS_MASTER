@@ -4458,7 +4458,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "80-CAS21C222KARFC "
+		(property "Mouser Part Number" "80-CAS26C182KARFC"
 			(at 165.1 137.16 0)
 			(hide yes)
 			(show_name no)
@@ -5272,7 +5272,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "80-CAS21C222KARFC "
+		(property "Mouser Part Number" "80-CAS26C182KARFC"
 			(at 137.16 137.16 0)
 			(hide yes)
 			(show_name no)
