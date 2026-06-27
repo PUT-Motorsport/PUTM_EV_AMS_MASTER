@@ -91,8 +91,6 @@ static Uart uart(&huart1);
 
 static std::function<void(size_t)> usb_rx_callback = [](size_t size)
 {
-    if(size == 0) return; // No data received
-
     DeserializationError error = deserializeJson(rx_json, rx_char_buffer, RX_UART_BUFFER_SIZE);
 
     if(error)
@@ -161,31 +159,33 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
     // uart.set_rx_timeout(10);
     uart.async_rx_unknown_dma(rx_char_buffer, RX_UART_BUFFER_SIZE, &usb_rx_callback);
 
+
     while(true)
     {
         if(not data.usb_connected) first_run = true;
         if(data.usb_connected) //if()
         {
-            if(first_run)
-            {
-                first_run = false;
+            // if(first_run)
+            // {
+            //     first_run = false;
 
-                usb_reset.set();
-                tx_thread_sleep(10);
-                usb_reset.reset();
+            //     usb_reset.set();
+            //     tx_thread_sleep(10);
+            //     usb_reset.reset();
 
-                // uart.deinit();
-                // uart.init();
-                // uart.set_baudrate(250000);
-                // uart.set_rx_timeout(10);
-                // uart.async_rx_unknown_dma(rx_char_buffer, RX_UART_BUFFER_SIZE, &usb_rx_callback);
+            //     // uart.deinit();
+            //     // uart.init();
+            //     // uart.set_baudrate(250000);
+            //     // uart.set_rx_timeout(10);
+            //     // uart.async_rx_unknown_dma(rx_char_buffer, RX_UART_BUFFER_SIZE, &usb_rx_callback);
 
-                continue;
-            }
+            //     continue;
+            // }
 
             tx_json.clear();
             tx_json["timestamp"] = tx_time_get();
             tx_json["current"] = data.current;
+            tx_json["current_reference"] = data.current_reference;
             tx_json["acc_voltage"] = data.acu_voltage;
             tx_json["car_voltage"] = data.car_voltage;
             tx_json["soc"] = data.soc;
@@ -197,23 +197,38 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
             tx_json["cell_avg_temperature"] = data.cell_avg_temperature;
             tx_json["cell_min_temperature"] = data.cell_min_temperature;
             tx_json["charging_current"] = data.charging_current;
+            tx_thread_sleep(10);
             for(size_t i = 0; i < Config::TOTAL_CELL_COUNT; i++)
             {
                 size_t idev = i / Config::CELL_COUNT_PER_DEVICE;
                 size_t icell = i % Config::CELL_COUNT_PER_DEVICE;
                 tx_json["cell_voltages"][idev][icell] = data.cell_voltages[idev][icell];
+                tx_thread_sleep(1);
             }
+            tx_thread_sleep(10);
+            for(size_t i = 0; i < Config::TOTAL_CELL_COUNT; i++)
+            {
+                size_t idev = i / Config::CELL_COUNT_PER_DEVICE;
+                size_t icell = i % Config::CELL_COUNT_PER_DEVICE;
+                tx_json["cell_balancing"][idev][icell] = data.cell_balancing[idev][icell];
+                tx_thread_sleep(1);
+            }
+            tx_thread_sleep(10);
             for(size_t i = 0; i < Config::TOTAL_TEMPERATURES_COUNT; i++)
             {
                 size_t idev = i / Config::TEMPERATURES_COUNT_PER_DEVICE;
                 size_t icell = i % Config::TEMPERATURES_COUNT_PER_DEVICE;
                 tx_json["cell_temperatures"][idev][icell] = data.cell_temperatures[idev][icell];
+                tx_thread_sleep(1);
             }
+            tx_thread_sleep(10);
             tx_json["errors"] = JsonArray();
             for(auto error : error_checker)
             {
                 tx_json["errors"].add(error.name);
+                tx_thread_sleep(1);
             }
+            tx_thread_sleep(10);
             tx_json["service_mode"] = data.service_mode;
             //if(data.service_mode)
             {
@@ -234,17 +249,23 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
                     size_t idev = i / Config::CELL_COUNT_PER_DEVICE;
                     size_t icell = i % Config::CELL_COUNT_PER_DEVICE;
                     tx_json["cell_socs"][idev][icell] = data.cell_socs[idev][icell].get();
+                    tx_thread_sleep(1);
                 }
+                tx_thread_sleep(10);
                 for(size_t i = 0; i < Config::STACK_SIZE; i++)
                 {
                     tx_json["bq_com_status"][i] = get_error_name(data.bq_read_data_status[i]);
+                    tx_thread_sleep(1);
                 }
+                tx_thread_sleep(10);
                 for(size_t i = 0; i < Config::TOTAL_TEMPERATURES_COUNT; i++)
                 {
                     size_t idev = i / Config::TEMPERATURES_COUNT_PER_DEVICE;
                     size_t icell = i % Config::TEMPERATURES_COUNT_PER_DEVICE;
                     tx_json["gpio_voltages"][idev][icell] = data.gpio_voltages[idev][icell];
+                    tx_thread_sleep(1);
                 }
+                tx_thread_sleep(10);
                 tx_json["sm_air_state"] = air_state_machine.get_current_state_name();
                 tx_json["sm_charger_state"] = charger_state_machine.get_current_state_name();
                 tx_json["bq_updates_per_sec"] = data.update_times.bq_updates_per_sec;
@@ -254,7 +275,9 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
                 for(auto log : error_logger)
                 {
                     tx_json["logs"].add(log);
+                    tx_thread_sleep(1);
                 }
+                tx_thread_sleep(10);
                 //if(data.even_moar_data)
                 {
                     tx_json["vusb"] = data.vusb;
@@ -274,6 +297,6 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
                 data.warning = true;
             }
         }
-        tx_thread_sleep(200);
+        tx_thread_sleep(10);
     }
 }

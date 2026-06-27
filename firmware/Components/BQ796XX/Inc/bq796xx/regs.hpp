@@ -58,7 +58,7 @@ namespace PUTM
                 GoToShutdown
             };
 
-            enum struct CltTime : uint8_t 
+            enum struct CtlTime : uint8_t 
             {
                 Disable,
                 _100ms,
@@ -70,7 +70,7 @@ namespace PUTM
                 _1h
             };
 
-            typedef CltTime CstTime;
+            typedef CtlTime CtsTime;
         }
 
         namespace Regs
@@ -83,7 +83,7 @@ namespace PUTM
                 bool otcb_en : 1 { false };
                 bool fltstop_en : 1 { false };
                 bool cb_pause : 1 { false };
-                 uint8_t rsvd : 1 { 0b0 };
+                uint8_t rsvd : 1 { 0b0 };
             };
              
             struct __packed Control1 : public Utils::IReg<0x0309>
@@ -167,18 +167,18 @@ namespace PUTM
                 uint8_t reserved : 1 { 0b0 };
             };
 
-            struct __packed PwrTransitConf : public Utils::IReg<0x0331>
+            struct __packed PwrTransitConf : public Utils::IReg<0x0018>
             {
                 Types::SlpTime slp_time : 3 { Types::SlpTime::Disable };
                 Types::TwarnThr twarn_thr : 2 { Types::TwarnThr::_85degC };
                 uint8_t spare : 3 { 0b000 };
             };
 
-            struct __packed CommTimeoutConf : public Utils::IReg<0x0332>
+            struct __packed CommTimeoutConf : public Utils::IReg<0x0019>
             {
-                Types::CltTime ctl_time : 3 { Types::CltTime::Disable };
+                Types::CtlTime ctl_time : 3 { Types::CtlTime::Disable };
                 Types::CtlAct ctl_act : 1 { Types::CtlAct::GoToSleep };
-                Types::CstTime cst_time : 3 { Types::CstTime::Disable };
+                Types::CtsTime cts_time : 3 { Types::CtsTime::Disable };
                 uint8_t spare : 1 { 0b0 };
             };
         }

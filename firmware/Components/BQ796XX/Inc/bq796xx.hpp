@@ -217,7 +217,7 @@ namespace PUTM
                         convert_to<uint8_t>((GPIOConf1){ .gpio1 = GpioMode::AdcOtut, .gpio2 = GpioMode::AdcOtut }),
                         convert_to<uint8_t>((GPIOConf2){ .gpio3 = GpioMode::AdcOtut, .gpio4 = GpioMode::AdcOtut }),
                         convert_to<uint8_t>((GPIOConf3){ .gpio5 = GpioMode::AdcOtut, .gpio6 = GpioMode::AdcOtut }),
-                        convert_to<uint8_t>((GPIOConf4){ .gpio7 = GpioMode::AdcOtut, .gpio8 = GpioMode::HighZ })
+                        convert_to<uint8_t>((GPIOConf4){ .gpio7 = GpioMode::AdcOtut, .gpio8 = GpioMode::AdcOtut })
                     };
 
                     write<Stack>(data, address_of<GPIOConf1>());
@@ -311,9 +311,9 @@ namespace PUTM
 
                     CommTimeoutConf comm_timeout_conf
                     {
-                        .ctl_time = CltTime::Disable,
+                        .ctl_time = CtlTime::_10s,
                         .ctl_act = CtlAct::GoToShutdown,
-                        .cst_time = CstTime::_2s
+                        .cts_time = CtsTime::_2s
                     };
                     write<Stack>(convert_to<uint8_t>(comm_timeout_conf), address_of<CommTimeoutConf>());
                 }
@@ -461,13 +461,102 @@ namespace PUTM
             }
         public:
             /**
+             *  @brief 	Pause balancing for the given device
+             */
+            HAL_StatusTypeDef pause_balancing(uint8_t device)
+            {
+                using enum CommunicationMode;
+
+                using namespace Utils;
+                using namespace Regs;
+                using namespace Types;
+
+                if(device >= Config::STACK_SIZE) return HAL_ERROR;
+                if(device == 0) return HAL_ERROR;
+
+                BalCtrl2 bal_ctrl_2
+                {
+                    
+                    .auto_bal = true,
+                    .bal_go = true,
+                    .cb_pause = true
+                };
+                write<Single>(convert_to<uint8_t>(bal_ctrl_2), address_of<BalCtrl2>(), device);
+
+                return HAL_OK;
+            }
+            /**
+             *  @brief 	Resume balancing for the given device
+             */
+            HAL_StatusTypeDef resume_balancing(uint8_t device)
+            {
+                using enum CommunicationMode;
+
+                using namespace Utils;
+                using namespace Regs;
+                using namespace Types;
+
+                if(device >= Config::STACK_SIZE) return HAL_ERROR;
+                if(device == 0) return HAL_ERROR;
+
+                {
+                    BalCtrl2 bal_ctrl_2
+                    {
+                        .auto_bal = false,
+                        .bal_go = true,
+                        .cb_pause = false
+                    };
+                    // write<Stack>(0x03, address_of<BalCtrl2>());
+                    write<Single>(convert_to<uint8_t>(bal_ctrl_2), address_of<BalCtrl2>(), device);
+                }
+
+                return HAL_OK;
+            }
+            HAL_StatusTypeDef start_balancing()
+            {
+                using enum CommunicationMode;
+
+                using namespace Utils;
+                using namespace Regs;
+                using namespace Types;
+
+                BalCtrl2 bal_ctrl_2
+                {
+                    .auto_bal = false,
+                    .bal_go = true
+                };
+                write<Stack>(convert_to<uint8_t>(bal_ctrl_2), address_of<BalCtrl2>());
+                write<Stack>(convert_to<uint8_t>(bal_ctrl_2), address_of<BalCtrl2>());
+
+                return HAL_OK;
+            }
+            HAL_StatusTypeDef start_balancing(uint8_t device)
+            {
+                using enum CommunicationMode;
+
+                using namespace Utils;
+                using namespace Regs;
+                using namespace Types;
+
+                BalCtrl2 bal_ctrl_2
+                {
+                    .auto_bal = false,
+                    .bal_go = true
+                };
+                write<Single>(convert_to<uint8_t>(bal_ctrl_2), address_of<BalCtrl2>(), device);
+                write<Single>(convert_to<uint8_t>(bal_ctrl_2), address_of<BalCtrl2>(), device);
+
+                return HAL_OK;
+            }
+        public:
+            /**
              *  @brief 	Balance cells, this function will set balancing time to 0 and start balancing
              *          for the given cells, it will also set balancing time to 60s
              *  @param  balance_arr array of balancing cells, 0 = do not balance, 1 = balance
              *  @param  device device address, 0 = comm device, 1 = first device, 2 = second device, etc.
              *  @retval	HAL_OK when done, HAL_BUSY when balancing in progress, HAL_ERROR on fail
              */
-            HAL_StatusTypeDef start_manual_balancing(bool (&balance_arr)[Config::CELL_COUNT_PER_DEVICE], 
+            HAL_StatusTypeDef set_balancing(bool (&balance_arr)[Config::CELL_COUNT_PER_DEVICE], 
                                                      uint8_t device)
             {
                 using enum CommunicationMode;
@@ -476,7 +565,7 @@ namespace PUTM
                 using namespace Regs;
                 using namespace Types;
                 
-                if(device >= Config::STACK_SIZE) return HAL_ERROR;
+                if(device > Config::STACK_SIZE) return HAL_ERROR;
                 if(device == 0) return HAL_ERROR;
 
                 if(balance_arr == nullptr) return HAL_ERROR;
@@ -508,44 +597,24 @@ namespace PUTM
                 if(balancing_cells == 0) return HAL_ERROR; // no cells to balance
                 
                 // if(Config::CELL_COUNT_PER_DEVICE > 0)
-                /* set balancing time to 60s */
+                /* set balancing time to 10s */
                 {
-                    // if(Config::CELL_COUNT_PER_DEVICE > 0)
+                    uint8_t data[8] { };
+                    for(size_t i = 0; i < 8; i++)
                     {
-                        // TODO: for now leave it at 8
-                        constexpr size_t data1_size = 8;
-                        uint8_t data1[data1_size] { };
-                        /* set cells balanced cells to 0x3 (60s) else to 0x0 */
-                        for(size_t i = 0; i < 8; i++)
-                        {
-                            if(balance_arr[i]) data1[i] = 0x3;
-                            else data1[i] = 0x0;
-                        }
-                        write<Single>(data1, 0x0318, device);
+                        size_t cell_index = 8 - 1 - i;
+                        data[i] = uint8_t(balance_arr[cell_index]) * 0x1;
                     }
-                    if(Config::CELL_COUNT_PER_DEVICE > 8)
-                    {
-                        constexpr size_t data2_size = Config::CELL_COUNT_PER_DEVICE % 8;
-                        uint8_t data2[data2_size] { };
-                        /* set cells balanced cells to 0x3 (60s) else to 0x0 */
-                        for(size_t i = 0; i < data2_size; i++)
-                        {
-                            if(balance_arr[i]) data2[i] = 0x3;
-                            else data2[i] = 0x0;
-                        }
-                        write<Single>(data2, 0x0318 + 8, device);
-                    }
+                    write<Single>(data, 0x0318 + 0x0008, device);
                 }
-                /* "restart" balancing - when balance time is NOT 0 it will start and balance for the set time */
                 {
-                    BalCtrl2 bal_ctrl_2
+                    uint8_t data[Config::CELL_COUNT_PER_DEVICE - 8] { };
+                    for(size_t i = 0; i < Config::CELL_COUNT_PER_DEVICE - 8; i++)
                     {
-                        .auto_bal = true,
-                        .bal_go = true
-                    };
-                    // write<Stack>(0x03, address_of<BalCtrl2>());
-                    write<Single>(convert_to<uint8_t>(bal_ctrl_2), address_of<BalCtrl2>(), device);
-                    write<Single>(convert_to<uint8_t>(bal_ctrl_2), address_of<BalCtrl2>(), device);
+                        size_t cell_index = Config::CELL_COUNT_PER_DEVICE - 1 - i;
+                        data[i] = uint8_t(balance_arr[cell_index]) * 0x1; 
+                    }
+                    write<Single>(data, 0x0318 + Config::CELL_COUNT_PER_DEVICE - 0x0008, device);
                 }
 
                 return HAL_OK;
@@ -619,29 +688,11 @@ namespace PUTM
                 using namespace Utils;
                 using namespace Regs;
                 using namespace Types;
-
-                /* set balancing time to 0 */
-                // if(Config::CELL_COUNT_PER_DEVICE > 0)
-                {
-                    // TODO: for now leave it at 8
-                    constexpr size_t data1_size = 8;
-                    uint8_t data1[data1_size] { };
-                    std::fill(data1, data1 + data1_size, 0);
-                    write<Stack>(data1, 0x0318);
-                }
-                if(Config::CELL_COUNT_PER_DEVICE > 8)
-                {
-                    constexpr size_t data2_size = Config::CELL_COUNT_PER_DEVICE % 8;
-                    uint8_t data2[data2_size] { };
-                    std::fill(data2, data2 + data2_size, 0);
-                    write<Stack>(data2, 0x0318 + 8);
-                }
-                /* "restart" balancing - when balance time is 0 it will stop */
                 {
                     BalCtrl2 bal_ctrl_2
                     {
-                        .auto_bal = true,
-                        .bal_go = true
+                        .auto_bal = false,
+                        .bal_go = false
                     };
                     write<Stack>(convert_to<uint8_t>(bal_ctrl_2), address_of<BalCtrl2>());
                     write<Stack>(convert_to<uint8_t>(bal_ctrl_2), address_of<BalCtrl2>());

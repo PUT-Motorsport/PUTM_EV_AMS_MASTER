@@ -17,6 +17,26 @@ Device::Device(SPI_HandleTypeDef *hspi) : hspi(hspi) { }
 void Device::init()
 {
     tx_semaphore_create(&semaphore, "semaphore", 0);
+
+    {
+        auto cmd = Cmd::CmdReset();
+        com(&cmd);
+    }
+    {
+        auto cmd = Cmd::CmdWReg<Regs::Cfg>();
+        cmd.set_data((Regs::Cfg){ .gc_en = true, .gc_dly = GcDly::_16384 });
+        com(&cmd);
+    }
+    // {
+    //     auto cmd = Cmd::CmdWReg<Regs::ThrshldLsb>();
+    //     cmd.set_data((Regs::ThrshldLsb){ .dc_block = DcBlock::_1_4, .cd_th_lsb = 0x00 });
+    //     com(&cmd);
+    // }
+    {
+        auto cmd = Cmd::CmdWReg<Regs::Clock>();
+        cmd.set_data((Regs::Clock){ .pwr = Pwr::HighRes, .osr = Osr::_16256, .tbm = false, .ch0_en = true, .ch1_en = true, .ch2_en = true, .ch3_en = true });
+        com(&cmd);
+    }
 }
 
 void Device::update()
@@ -88,7 +108,7 @@ HAL_StatusTypeDef Device::com(ICmd *cmd)
 
     if(notify_received != 0) return HAL_ERROR;
 
-    tx_thread_sleep(5);
+    //tx_thread_sleep(5);
 
     if(HAL_SPI_TransmitReceive_DMA(hspi, (uint8_t*)out.begin() , (uint8_t*)in.begin(), out.size()) != HAL_OK) Error_Handler();
     notify_received = tx_semaphore_get(&semaphore, 10);

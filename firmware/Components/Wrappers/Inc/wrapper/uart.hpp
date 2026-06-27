@@ -109,7 +109,7 @@ private:
     {
         if(huart->UserData2 == nullptr) Error_Handler();
         std::function<void(size_t)> *callback = (std::function<void(size_t)>*)huart->UserData2;
-        huart->RxEventCallback = HAL_UARTEx_ReceiveToIdle_DMA;
+        huart->RxEventCallback = HAL_UARTEx_RxEventCallback;
         huart->UserData2 = nullptr; 
         callback->operator()(pos); // Call the callback function
     };
@@ -291,6 +291,7 @@ public:
         if(huart->UserData2 != nullptr) return HAL_BUSY; // If UserData2 is already set, return error
         huart->UserData2 = (void*)callback; // Store the callback in UserData2
         huart->RxEventCallback = async_rx_unknown_callback;
+        // huart->RxCpltCallback = async_rx_unknown_callback;
         if(HAL_UARTEx_ReceiveToIdle_DMA(huart, rx_data, size) != HAL_OK) return HAL_ERROR;
         return HAL_OK;
     }

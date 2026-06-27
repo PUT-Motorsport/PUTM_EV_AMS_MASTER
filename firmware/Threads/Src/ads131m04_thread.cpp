@@ -6,31 +6,82 @@
 #include "ads131m04.hpp"
 #include "tx_api.h"
 #include "utils.hpp"
+#include "fir.hpp"
+#include "moving_average.hpp"
 
 using namespace PUTM;
 using namespace Utils;
 
+Fir car_voltage_filter { Config::_50HZ_RECT_FIR_COEFFS };
+Fir acu_voltage_filter { Config::_50HZ_RECT_FIR_COEFFS };
+Fir current_filter { Config::_50HZ_RECT_FIR_COEFFS };
+Fir current_ref_filter { Config::_2HZ_HAMMING_FIR_COEFFS };
+// MovingAverage<256> current_ref_filter { };
+MovingAverage<2048> offset_calibration;
 
+float current_voltage_to_current(float voltage, float reference_voltage)
+{
+    /* rationometric sensor - 10% to 90% is the output range, the range is +- 300A */
+    /* gain [A/V] */
+    // float gain = 0.8f * 600.f / reference_voltage; 
+    float gain = 1.f / (0.4f * reference_voltage / 300.f); // 0.8 because of the 10% to 90% output range
+    float offset = 0.5f * reference_voltage;
+    float voltage_diff = (voltage - offset);
+    float current = voltage_diff * gain;
+
+    return current;
+}
 
 VOID ads131m04_thread_entry(__unused ULONG thread_input)
 {
     static Ads131m04::Device adc(&hspi1);
     static UpdatesCounter updates;
+    float car_voltage { 0.f };
+    float acu_voltage { 0.f };
+    float current_ref_voltage { 0.f };
+    float current_voltage { 0.f };
+    float current { 0.f };
+    float current_offset { Config::CURRENT_OFFSET };
 
     adc.init();
-    adc.reset();
-    tx_thread_sleep(20);
+    // add self calibrate
+    offset_calibration.fill_buffer(Config::CURRENT_OFFSET);
+    tx_thread_sleep(200);
 
     data.ads_init_done = true;
     
     while(true)
     {
         adc.update();
-        data.acu_voltage = adc.adc[Config::ACU_VOLTAGE_CHANNEL] * Config::ACU_VOLTAGE_GAIN;
-        data.car_voltage = adc.adc[Config::CAR_VOLTAGE_CHANNEL] * Config::CAR_VOLTAGE_GAIN;
-        data.current = adc.adc[Config::CURRENT_CHANNEL] * Config::CURRENT_GAIN - Config::CURRENT_OFFSET;
+        acu_voltage = adc.adc[Config::ACU_VOLTAGE_CHANNEL];
+        car_voltage = adc.adc[Config::CAR_VOLTAGE_CHANNEL];
+        current_ref_voltage = adc.adc[Config::CURRENT_REF_CHANNEL]; // * Config::CURRENT_REF_GAIN;
+        current_voltage = adc.adc[Config::CURRENT_CHANNEL]; // * Config::CURRENT_GAIN - Config::CURRENT_OFFSET;
         
+        acu_voltage = acu_voltage * Config::ACU_VOLTAGE_GAIN;
+        car_voltage = car_voltage * Config::CAR_VOLTAGE_GAIN;
+        current_voltage = current_voltage * Config::CURRENT_GAIN_NETWORK * -1.f;
+        current_ref_voltage = current_ref_voltage * Config::CURRENT_REF_GAIN_NETWORK;
+
+        acu_voltage = acu_voltage_filter.update(acu_voltage);
+        car_voltage = car_voltage_filter.update(car_voltage);
+        current_voltage = current_filter.update(current_voltage);
+        current_ref_voltage = current_ref_filter.update(current_ref_voltage);
+        
+        current = current_voltage_to_current(current_voltage, current_ref_voltage);
+
+        if(current < 0.5f and current > -0.5f)
+        {
+            current_offset = offset_calibration.update(current);
+        }
+
+        data.acu_voltage = acu_voltage;
+        data.car_voltage = car_voltage;
+        data.current_reference = current_ref_voltage;
+        /* times -1.f must be due to hardware error because it reports negative voltage despite the positive voltage on the terminal */
+        data.current = current - current_offset;
+
         data.update_times.ads_updates_per_sec = updates.update(tx_time_get());
-        tx_thread_sleep(10);
+        tx_thread_sleep(5);
     }
 }

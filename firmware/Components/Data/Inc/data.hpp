@@ -16,6 +16,7 @@ namespace PUTM
     struct Data
     {
         float current { 0.f };
+        float current_reference { 0.f };
         float acu_voltage { 0.f };
         float car_voltage { 0.f };
         float soc { 0.f };
@@ -23,6 +24,8 @@ namespace PUTM
         float gpio_voltages[Config::STACK_SIZE][Config::TEMPERATURES_COUNT_PER_DEVICE] { 0.f };
         float cell_temperatures[Config::STACK_SIZE][Config::TEMPERATURES_COUNT_PER_DEVICE] { 0.f };
         SoC cell_socs[Config::STACK_SIZE][Config::CELL_COUNT_PER_DEVICE] { };
+
+        bool cell_balancing[Config::STACK_SIZE][Config::CELL_COUNT_PER_DEVICE] { false };
         // bool cell_balancing[Config::STACK_SIZE][Config::CELL_COUNT_PER_DEVICE] { false };
         // bool cell_ovuv[Config::STACK_SIZE][Config::CELL_COUNT_PER_DEVICE] { false };
         // bool cell_otut[Config::STACK_SIZE][Config::TEMPERATURES_COUNT_PER_DEVICE] { false };

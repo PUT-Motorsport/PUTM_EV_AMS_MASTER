@@ -25,7 +25,6 @@ using namespace PUTM;
 using namespace Utils;
 
 /* Wrappers */
-
 Gpio led_err(LED_ERROR_GPIO_Port, LED_ERROR_Pin, true);
 Gpio led_wrn(LED_WARNING_GPIO_Port, LED_WARNING_Pin, true);
 Gpio led_ok(LED_OK_GPIO_Port, LED_OK_Pin, true);
@@ -36,8 +35,8 @@ Gpio sig_air_m(SIG_AIR_M_GPIO_Port, SIG_AIR_M_Pin, false);
 Gpio det_air_pre(DET_AIR_PRE_GPIO_Port, DET_AIR_PRE_Pin, false);
 Gpio det_air_p(DET_AIR_P_GPIO_Port, DET_AIR_P_Pin, false);
 Gpio det_air_m(DET_AIR_M_GPIO_Port, DET_AIR_M_Pin, false);
-Gpio det_tsms(DET_TSMS_GPIO_Port, DET_TSMS_Pin, false);
-Gpio det_charger(DET_CHARGER_GPIO_Port, DET_CHARGER_Pin, false);
+Gpio det_tsms(DET_TSMS_GPIO_Port, DET_TSMS_Pin, true);
+Gpio det_charger(DET_CHARGER_GPIO_Port, DET_CHARGER_Pin, true);
 Gpio usb_reset(USB_RESET_GPIO_Port, USB_RESET_Pin, true);
 // Gpio adc_dry(ADC_NDRY_GPIO_Port, ADC_NDRY_Pin, true);
 // Gpio bq_flt(NFLT_GPIO_Port, NFLT_Pin, true);

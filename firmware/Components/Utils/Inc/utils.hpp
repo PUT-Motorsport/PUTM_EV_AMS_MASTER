@@ -5,6 +5,9 @@
 
 #include "main.h"
 #include "stm32h5xx_hal_def.h"
+#include <array>
+#include <functional>
+#include <queue>
 
 namespace Utils
 {
