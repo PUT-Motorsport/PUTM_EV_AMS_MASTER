@@ -1342,12 +1342,6 @@
 		(uuid "2f33de5f-fc82-41b1-912c-41d897de35de")
 	)
 	(junction
-		(at 162.56 45.72)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "31eb7b21-7118-4e28-9bb8-d97135768c50")
-	)
-	(junction
 		(at 162.56 113.03)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1657,7 +1651,7 @@
 	)
 	(wire
 		(pts
-			(xy 162.56 68.58) (xy 182.88 68.58)
+			(xy 162.56 68.58) (xy 185.42 68.58)
 		)
 		(stroke
 			(width 0)
@@ -2121,16 +2115,6 @@
 	)
 	(wire
 		(pts
-			(xy 187.96 68.58) (xy 190.5 68.58)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "58dc9c9a-8011-48bd-bf92-2ead7d99c476")
-	)
-	(wire
-		(pts
 			(xy 109.22 154.94) (xy 109.22 157.48)
 		)
 		(stroke
@@ -2272,16 +2256,6 @@
 	)
 	(wire
 		(pts
-			(xy 187.96 60.96) (xy 190.5 60.96)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "760cc3db-b5e9-48ec-8fa0-28ce2e2630e9")
-	)
-	(wire
-		(pts
 			(xy 76.2 147.32) (xy 109.22 147.32)
 		)
 		(stroke
@@ -2393,16 +2367,6 @@
 	)
 	(wire
 		(pts
-			(xy 187.96 156.21) (xy 190.5 156.21)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "7f747eb6-a6f9-4e8f-8ff9-0732bab89871")
-	)
-	(wire
-		(pts
 			(xy 120.65 130.81) (xy 109.22 130.81)
 		)
 		(stroke
@@ -2503,16 +2467,6 @@
 	)
 	(wire
 		(pts
-			(xy 187.96 148.59) (xy 190.5 148.59)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9370e70d-09db-456f-9602-6eedc165b342")
-	)
-	(wire
-		(pts
 			(xy 50.8 67.31) (xy 50.8 69.85)
 		)
 		(stroke
@@ -2533,7 +2487,7 @@
 	)
 	(wire
 		(pts
-			(xy 182.88 156.21) (xy 162.56 156.21)
+			(xy 162.56 156.21) (xy 185.42 156.21)
 		)
 		(stroke
 			(width 0)
@@ -2560,16 +2514,6 @@
 			(type default)
 		)
 		(uuid "9bc705ba-9341-4466-ba61-d4db22b86d6c")
-	)
-	(wire
-		(pts
-			(xy 162.56 43.18) (xy 162.56 45.72)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9e841d98-cec5-45c0-b8f4-790ef58540ea")
 	)
 	(wire
 		(pts
@@ -2694,7 +2638,7 @@
 	)
 	(wire
 		(pts
-			(xy 162.56 60.96) (xy 182.88 60.96)
+			(xy 162.56 60.96) (xy 185.42 60.96)
 		)
 		(stroke
 			(width 0)
@@ -2704,7 +2648,7 @@
 	)
 	(wire
 		(pts
-			(xy 162.56 45.72) (xy 160.02 45.72)
+			(xy 180.34 45.72) (xy 160.02 45.72)
 		)
 		(stroke
 			(width 0)
@@ -2955,7 +2899,7 @@
 	)
 	(wire
 		(pts
-			(xy 162.56 45.72) (xy 162.56 48.26)
+			(xy 180.34 45.72) (xy 180.34 48.26)
 		)
 		(stroke
 			(width 0)
@@ -3056,7 +3000,7 @@
 	)
 	(wire
 		(pts
-			(xy 162.56 148.59) (xy 182.88 148.59)
+			(xy 162.56 148.59) (xy 185.42 148.59)
 		)
 		(stroke
 			(width 0)
@@ -3217,7 +3161,7 @@
 	)
 	(hierarchical_label "ACU_OUT-"
 		(shape input)
-		(at 190.5 68.58 0)
+		(at 185.42 68.58 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3228,7 +3172,7 @@
 	)
 	(hierarchical_label "ACU_OUT+"
 		(shape input)
-		(at 190.5 60.96 0)
+		(at 185.42 60.96 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3250,7 +3194,7 @@
 	)
 	(hierarchical_label "CAR_OUT-"
 		(shape input)
-		(at 190.5 156.21 0)
+		(at 185.42 156.21 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3272,7 +3216,7 @@
 	)
 	(hierarchical_label "CAR_OUT+"
 		(shape input)
-		(at 190.5 148.59 0)
+		(at 185.42 148.59 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -3302,184 +3246,6 @@
 			(justify right)
 		)
 		(uuid "dddbbfe9-b0d1-4f7c-979b-6606cd2d90ce")
-	)
-	(symbol
-		(lib_id "Device:FerriteBead_Small")
-		(at 185.42 156.21 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "03a64b2a-8ed1-40da-8db4-37e911a5fef8")
-		(property "Reference" "FB10"
-			(at 185.3819 162.56 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "2.7k@100MHz"
-			(at 185.3819 160.02 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Inductor_SMD:L_0805_2012Metric"
-			(at 185.42 157.988 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 185.42 156.21 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Ferrite bead, small symbol"
-			(at 185.42 156.21 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Author" ""
-			(at 185.42 156.21 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "License" ""
-			(at 185.42 156.21 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" ""
-			(at 185.42 156.21 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" ""
-			(at 185.42 156.21 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Mouser" ""
-			(at 185.42 156.21 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Mouser Part Number" "81-BLM21BD272SN1L "
-			(at 185.42 156.21 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Device" ""
-			(at 185.42 156.21 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Pins" ""
-			(at 185.42 156.21 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Type" ""
-			(at 185.42 156.21 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "2528d50e-d43b-4ebf-84f9-28853cc4e300")
-		)
-		(pin "1"
-			(uuid "fef25278-847c-49df-8ebc-ac65faf5b18a")
-		)
-		(instances
-			(project "PUTM_EV_AMS_MASTER"
-				(path "/b456cffc-d9d7-4c91-91f2-36ec9a65dd1b/966640b3-7a11-41e5-818e-eba0d3c90b57"
-					(reference "FB10")
-					(unit 1)
-				)
-			)
-		)
 	)
 	(symbol
 		(lib_id "Device:C_Small")
@@ -5802,185 +5568,6 @@
 			(project "PUTM_EV_AMS_MASTER"
 				(path "/b456cffc-d9d7-4c91-91f2-36ec9a65dd1b/966640b3-7a11-41e5-818e-eba0d3c90b57"
 					(reference "C92")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:FerriteBead_Small")
-		(at 185.42 60.96 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "63d94f54-cbe5-43db-b3fe-666a32413e8e")
-		(property "Reference" "FB7"
-			(at 185.3819 54.61 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "2.7k@100MHz"
-			(at 185.3819 57.15 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Inductor_SMD:L_0805_2012Metric"
-			(at 185.42 62.738 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 185.42 60.96 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Ferrite bead, small symbol"
-			(at 185.42 60.96 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Author" ""
-			(at 185.42 60.96 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "License" ""
-			(at 185.42 60.96 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" ""
-			(at 185.42 60.96 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" ""
-			(at 185.42 60.96 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Mouser" ""
-			(at 185.42 60.96 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Mouser Part Number" "81-BLM21BD272SN1L "
-			(at 185.42 60.96 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Device" ""
-			(at 185.42 60.96 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Pins" ""
-			(at 185.42 60.96 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Type" ""
-			(at 185.42 60.96 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "49651988-cb0d-4379-8308-52b99c8b1c05")
-		)
-		(pin "1"
-			(uuid "97b80871-d66b-4ef5-8621-d7d7824ed45f")
-		)
-		(instances
-			(project "PUTM_EV_AMS_MASTER"
-				(path "/b456cffc-d9d7-4c91-91f2-36ec9a65dd1b/966640b3-7a11-41e5-818e-eba0d3c90b57"
-					(reference "FB7")
 					(unit 1)
 				)
 			)
@@ -10353,7 +9940,7 @@
 	(symbol
 		(lib_name "GND_7")
 		(lib_id "power:GND")
-		(at 162.56 48.26 0)
+		(at 180.34 48.26 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -10363,7 +9950,7 @@
 		(dnp no)
 		(uuid "d83bf630-6bcc-4164-a52c-f6a5d37098dc")
 		(property "Reference" "#PWR0179"
-			(at 162.56 54.61 0)
+			(at 180.34 54.61 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10374,7 +9961,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 162.56 52.07 0)
+			(at 180.34 52.07 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -10384,7 +9971,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 162.56 48.26 0)
+			(at 180.34 48.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10395,7 +9982,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 162.56 48.26 0)
+			(at 180.34 48.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -10406,7 +9993,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 162.56 48.26 0)
+			(at 180.34 48.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -11010,185 +10597,6 @@
 		)
 	)
 	(symbol
-		(lib_id "Device:FerriteBead_Small")
-		(at 185.42 148.59 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "dc92c6d6-b894-408a-9750-ba25238ffb0e")
-		(property "Reference" "FB9"
-			(at 185.3819 142.24 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "2.7k@100MHz"
-			(at 185.3819 144.78 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Inductor_SMD:L_0805_2012Metric"
-			(at 185.42 150.368 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 185.42 148.59 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Ferrite bead, small symbol"
-			(at 185.42 148.59 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Author" ""
-			(at 185.42 148.59 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "License" ""
-			(at 185.42 148.59 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" ""
-			(at 185.42 148.59 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" ""
-			(at 185.42 148.59 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Mouser" ""
-			(at 185.42 148.59 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Mouser Part Number" "81-BLM21BD272SN1L "
-			(at 185.42 148.59 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Device" ""
-			(at 185.42 148.59 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Pins" ""
-			(at 185.42 148.59 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Type" ""
-			(at 185.42 148.59 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "0ca3ac18-8c04-4258-be71-195b93ac6041")
-		)
-		(pin "1"
-			(uuid "e4e56518-5288-4909-97ad-8db071af5ffb")
-		)
-		(instances
-			(project "PUTM_EV_AMS_MASTER"
-				(path "/b456cffc-d9d7-4c91-91f2-36ec9a65dd1b/966640b3-7a11-41e5-818e-eba0d3c90b57"
-					(reference "FB9")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "Device:C_Small")
 		(at 109.22 64.77 180)
 		(unit 1)
@@ -11698,184 +11106,6 @@
 			(project "PUTM_EV_AMS_MASTER"
 				(path "/b456cffc-d9d7-4c91-91f2-36ec9a65dd1b/966640b3-7a11-41e5-818e-eba0d3c90b57"
 					(reference "IC6")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:FerriteBead_Small")
-		(at 185.42 68.58 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(uuid "f8222f0a-ce82-48ce-915c-f7a2273bb46e")
-		(property "Reference" "FB8"
-			(at 185.3819 74.93 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "2.7k@100MHz"
-			(at 185.3819 72.39 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Inductor_SMD:L_0805_2012Metric"
-			(at 185.42 70.358 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 185.42 68.58 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Ferrite bead, small symbol"
-			(at 185.42 68.58 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Author" ""
-			(at 185.42 68.58 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "License" ""
-			(at 185.42 68.58 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "MPN" ""
-			(at 185.42 68.58 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Manufacturer" ""
-			(at 185.42 68.58 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Mouser" ""
-			(at 185.42 68.58 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Mouser Part Number" "81-BLM21BD272SN1L "
-			(at 185.42 68.58 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Device" ""
-			(at 185.42 68.58 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Pins" ""
-			(at 185.42 68.58 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Sim.Type" ""
-			(at 185.42 68.58 90)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "2"
-			(uuid "8217b4da-04af-486b-9b03-647d4b7c136f")
-		)
-		(pin "1"
-			(uuid "a9012284-8666-4340-a0bb-0520478d1861")
-		)
-		(instances
-			(project "PUTM_EV_AMS_MASTER"
-				(path "/b456cffc-d9d7-4c91-91f2-36ec9a65dd1b/966640b3-7a11-41e5-818e-eba0d3c90b57"
-					(reference "FB8")
 					(unit 1)
 				)
 			)
