@@ -1336,6 +1336,12 @@
 		(uuid "280207e3-7e1f-4f3a-b29e-d415b1c82d5b")
 	)
 	(junction
+		(at 162.56 45.72)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "283b0300-9a7b-42f1-96f1-7c5b919e3f51")
+	)
+	(junction
 		(at 120.65 115.57)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2648,7 +2654,7 @@
 	)
 	(wire
 		(pts
-			(xy 180.34 45.72) (xy 160.02 45.72)
+			(xy 162.56 45.72) (xy 160.02 45.72)
 		)
 		(stroke
 			(width 0)
@@ -2899,7 +2905,7 @@
 	)
 	(wire
 		(pts
-			(xy 180.34 45.72) (xy 180.34 48.26)
+			(xy 162.56 45.72) (xy 162.56 48.26)
 		)
 		(stroke
 			(width 0)
@@ -3068,6 +3074,16 @@
 			(type default)
 		)
 		(uuid "f999dc38-e24b-449b-b9ec-1973888af247")
+	)
+	(wire
+		(pts
+			(xy 162.56 43.18) (xy 162.56 45.72)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fce0f205-1220-49a2-9756-bc5158d95aad")
 	)
 	(wire
 		(pts
@@ -9940,7 +9956,7 @@
 	(symbol
 		(lib_name "GND_7")
 		(lib_id "power:GND")
-		(at 180.34 48.26 0)
+		(at 162.56 48.26 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -9950,7 +9966,7 @@
 		(dnp no)
 		(uuid "d83bf630-6bcc-4164-a52c-f6a5d37098dc")
 		(property "Reference" "#PWR0179"
-			(at 180.34 54.61 0)
+			(at 162.56 54.61 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9961,7 +9977,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 180.34 52.07 0)
+			(at 162.56 52.07 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -9971,7 +9987,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 180.34 48.26 0)
+			(at 162.56 48.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9982,7 +9998,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 180.34 48.26 0)
+			(at 162.56 48.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9993,7 +10009,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 180.34 48.26 0)
+			(at 162.56 48.26 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)

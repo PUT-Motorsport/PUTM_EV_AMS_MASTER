@@ -565,24 +565,26 @@
 			(on_board yes)
 			(in_pos_files yes)
 			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "U"
-				(at 0 12.7 0)
+			(property "Reference" "U7"
+				(at -5.08 12.7 0)
 				(show_name no)
 				(do_not_autoplace no)
 				(effects
 					(font
 						(size 1.524 1.524)
 					)
+					(justify right)
 				)
 			)
 			(property "Value" "ISOM8710DFFR"
-				(at 0 10.16 0)
+				(at -5.08 10.16 0)
 				(show_name no)
 				(do_not_autoplace no)
 				(effects
 					(font
 						(size 1.524 1.524)
 					)
+					(justify right)
 				)
 			)
 			(property "Footprint" "Snapeda:DFF0005A-C01-MFG"
@@ -690,7 +692,7 @@
 				)
 				(polyline
 					(pts
-						(xy -5.08 1.27) (xy -5.08 5.08) (xy -7.62 5.08)
+						(xy -5.08 1.016) (xy -5.08 -0.762)
 					)
 					(stroke
 						(width 0.254)
@@ -702,7 +704,7 @@
 				)
 				(polyline
 					(pts
-						(xy -5.08 1.016) (xy -5.08 -0.762)
+						(xy -5.08 0) (xy -5.08 5.08) (xy -7.62 5.08)
 					)
 					(stroke
 						(width 0.254)
@@ -798,7 +800,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 5.08) (xy 0 1.651)
+						(xy 0 1.905) (xy 3.175 0)
 					)
 					(stroke
 						(width 0.254)
@@ -810,7 +812,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0 -5.08) (xy 0 -1.651)
+						(xy 0 -1.905) (xy 0 1.905)
 					)
 					(stroke
 						(width 0.254)
@@ -822,7 +824,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0.1524 -0.889) (xy -0.1016 -0.635) (xy 0.4064 -0.635)
+						(xy 0 -1.905) (xy 3.175 0)
 					)
 					(stroke
 						(width 0.254)
@@ -834,7 +836,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0.9144 0.889) (xy 0.9144 -1.143) (xy -0.8636 -1.143)
+						(xy 1.27 5.08) (xy 1.27 1.27)
 					)
 					(stroke
 						(width 0.254)
@@ -846,7 +848,7 @@
 				)
 				(polyline
 					(pts
-						(xy 0.9144 0.889) (xy 0.6604 0.635) (xy 1.1684 0.635) (xy 0.9144 0.889)
+						(xy 1.27 -5.08) (xy 1.27 -1.27)
 					)
 					(stroke
 						(width 0.254)
@@ -856,34 +858,9 @@
 						(type none)
 					)
 				)
-				(arc
-					(start 1.4224 1.651)
-					(mid 2.5738 1.1514)
-					(end 3.0734 0)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.4224 1.651) (xy -1.6256 1.651) (xy -1.6256 -1.651) (xy 1.4224 -1.651)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(arc
-					(start 3.0734 0)
-					(mid 2.6076 -1.1853)
-					(end 1.4224 -1.651)
+				(circle
+					(center 3.81 0)
+					(radius 0.508)
 					(stroke
 						(width 0.254)
 						(type default)
@@ -894,7 +871,7 @@
 				)
 				(polyline
 					(pts
-						(xy 1.6764 1.143) (xy 0.1524 1.143) (xy 0.1524 -0.889) (xy 0.4064 -0.635)
+						(xy 7.5946 0) (xy 4.318 0)
 					)
 					(stroke
 						(width 0.254)
@@ -906,7 +883,7 @@
 				)
 				(polyline
 					(pts
-						(xy 7.5946 0) (xy 3.0734 0)
+						(xy 7.62 5.08) (xy 1.27 5.08)
 					)
 					(stroke
 						(width 0.254)
@@ -918,19 +895,7 @@
 				)
 				(polyline
 					(pts
-						(xy 7.62 5.08) (xy 0 5.08)
-					)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 7.62 -5.08) (xy 0 -5.08)
+						(xy 7.62 -5.08) (xy 1.27 -5.08)
 					)
 					(stroke
 						(width 0.254)
@@ -1783,6 +1748,10 @@
 		)
 		(instances
 			(project "PUTM_AMS_MASTER_ISOLATION"
+				(path "/9b254bae-97c6-45e7-8618-9f461c55b31a"
+					(reference "U7")
+					(unit 1)
+				)
 				(path "/9b254bae-97c6-45e7-8618-9f461c55b31a/577357ca-978a-4aab-a7a4-e0cbcaa1ed5b"
 					(reference "U7")
 					(unit 1)
