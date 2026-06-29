@@ -1,6 +1,6 @@
-add_subdirectory(PUTM_EV_CAN_LIBRARY_2024)
-target_link_libraries(${CMAKE_PROJECT_NAME} PUTM_EV_CAN_LIBRARY)
-message("PUTM_EV_CAN_LIBRARY version: " ${PUTM_EV_CAN_LIBRARY_VER} " included in the project")
+add_subdirectory(PUTM_EV_CAN_LIBRARY)
+target_link_libraries(${CMAKE_PROJECT_NAME} putm_ev_can)
+message("PUTM_EV_CAN_LIBRARY included in the project")
 
 add_subdirectory(BQ796XX)
 target_link_libraries(${CMAKE_PROJECT_NAME} BQ796XX_LIBRARY)
@@ -16,7 +16,7 @@ message("Utils included in the project")
 
 add_subdirectory(Wrappers)
 target_link_libraries(${CMAKE_PROJECT_NAME} WRAPPER_LIBRARY)
-message("Utils included in the project")
+message("Wrappers included in the project")
 
 add_subdirectory(Data)
 target_link_libraries(${CMAKE_PROJECT_NAME} DATA_LIBRARY)

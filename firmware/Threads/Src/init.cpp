@@ -33,7 +33,7 @@ uint8_t usb_com_thread_pool[usb_com_thread_pool_size];
 // uint8_t usb_rx_thread_pool[usb_rx_thread_pool_size];
 
 TX_THREAD car_can_thread;
-static constexpr size_t car_can_thread_pool_size { 1024U };
+static constexpr size_t car_can_thread_pool_size { 1024U * 2 };
 uint8_t car_can_thread_pool[car_can_thread_pool_size];
 
 TX_THREAD charger_can_thread;

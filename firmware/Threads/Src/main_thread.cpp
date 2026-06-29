@@ -20,6 +20,7 @@
 #include "charger.hpp"
 #include "soc.hpp"
 #include "polynomial.hpp"
+#include <algorithm>
 
 using namespace PUTM;
 using namespace Utils;
@@ -46,6 +47,9 @@ constexpr auto r_u_lambda = [](float voltage) -> float
 {
     return Config::NOMINAL_NTC_RESISTANCE / (Config::NOMINAL_TSREF - voltage) * voltage;
 };
+
+constexpr Polynomial ocv { Config::POLYNOMIAL_OCV };
+constexpr Polynomial docv = ocv.derivative();
 
 ChargerCanRxController charger_rx;
 
@@ -139,16 +143,17 @@ VOID main_thread_entry(__unused ULONG thread_input)
         //         data.cell_socs[i][j].update(data.cell_voltages[i][j], data.current, data.on_charger);
         //     }
         // }
-        float soc_avg = 0.0f;
+        
+        float soc_min = 1.f;
         for(size_t i = 0; i < Config::STACK_SIZE; i++)
         {
             for(size_t j = 0; j < Config::CELL_COUNT_PER_DEVICE; j++)
             {
-                soc_avg += data.cell_socs[i][j].get();
+                if(data.cell_socs[i][j].get() < soc_min) soc_min = data.cell_socs[i][j].get();
             }
         }
-        soc_avg /= Config::STACK_SIZE * Config::CELL_COUNT_PER_DEVICE;
-        data.soc = soc_avg;
+
+        data.soc = soc_min;
 
         /* update true temps */
         for(size_t i = 0; i < Config::STACK_SIZE; i++)
@@ -190,6 +195,8 @@ VOID main_thread_entry(__unused ULONG thread_input)
         data.cell_min_voltage = min_voltage;
         data.cell_avg_voltage = accumulator_voltage / (Config::STACK_SIZE * Config::CELL_COUNT_PER_DEVICE);
         data.cell_avg_temperature = accumulator_temperature / (Config::STACK_SIZE * Config::TEMPERATURES_COUNT_PER_DEVICE);
+        data.cell_voltage_sum = accumulator_voltage;
+
 
         data.vusb = HAL_ADC_GetValue(&hadc1);
         data.usb_connected = data.vusb > Config::USB_VBUS_THRESH;
@@ -216,7 +223,7 @@ VOID main_thread_entry(__unused ULONG thread_input)
 
         data.update_times.main_updates_per_sec = updates.update(tx_time_get());
 
-        tx_thread_sleep(50);
+        tx_thread_sleep(30);
     }
 }
 

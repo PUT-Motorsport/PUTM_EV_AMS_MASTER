@@ -265,6 +265,10 @@ Error v_error
         {
             code = 2;
         }
+        else if(data.cell_voltage_sum > Config::MAX_BAT_VOLTAGE)
+        {
+            code = 3;
+        }
         // else if(data.car_voltage > Config::MAX_BAT_VOLTAGE)
         // {
         //     code = 3;

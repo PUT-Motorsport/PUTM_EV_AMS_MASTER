@@ -25,6 +25,8 @@ namespace PUTM
         float cell_temperatures[Config::STACK_SIZE][Config::TEMPERATURES_COUNT_PER_DEVICE] { 0.f };
         SoC cell_socs[Config::STACK_SIZE][Config::CELL_COUNT_PER_DEVICE] { };
 
+        // float cell_socs[Config::STACK_SIZE][Config::CELL_COUNT_PER_DEVICE] { };
+
         bool cell_balancing[Config::STACK_SIZE][Config::CELL_COUNT_PER_DEVICE] { false };
         // bool cell_balancing[Config::STACK_SIZE][Config::CELL_COUNT_PER_DEVICE] { false };
         // bool cell_ovuv[Config::STACK_SIZE][Config::CELL_COUNT_PER_DEVICE] { false };
@@ -35,6 +37,7 @@ namespace PUTM
         float cell_max_temperature { 0.f };
         float cell_avg_temperature { 0.f };
         float cell_min_temperature { 0.f };
+        float cell_voltage_sum { 0.f };
 
         float charging_current { 0.0f };
 

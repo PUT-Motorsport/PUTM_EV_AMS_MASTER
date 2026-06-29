@@ -7,6 +7,9 @@ HeaderPath=Drivers/STM32H5xx_HAL_Driver/Inc;Drivers/STM32H5xx_HAL_Driver/Inc/Leg
 CDefines=TX_INCLUDE_USER_DEFINE_FILE;TX_SINGLE_MODE_NON_SECURE:1;USE_HAL_DRIVER;STM32H573xx;USE_HAL_DRIVER;USE_HAL_DRIVER;
 ADefines=TX_SINGLE_MODE_NON_SECURE:1;
 
+[]
+SourceFiles=;;
+
 [PreviousGenFiles]
 AdvancedFolderStructure=true
 HeaderFileListSize=15

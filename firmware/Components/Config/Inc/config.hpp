@@ -4,8 +4,8 @@
 
 #include "atomic"
 
-#define DEBUG_IGNORE_CURRENT_ERRORS
-#define DEBUG_IGNORE_BAT_VOLTAGE_ERRORS
+// #define DEBUG_IGNORE_CURRENT_ERRORS
+// #define DEBUG_IGNORE_BAT_VOLTAGE_ERRORS
 
 namespace PUTM
 {
@@ -25,9 +25,9 @@ namespace PUTM
         /* Total temperatures count in stack */
         static constexpr size_t TOTAL_TEMPERATURES_COUNT { STACK_SIZE * TEMPERATURES_COUNT_PER_DEVICE };
         /* Cell max voltage in [mV] */
-        static constexpr uint32_t CELL_MAX_VOLTAGE { 4180 };
+        static constexpr uint32_t CELL_MAX_VOLTAGE { 4200 };
         /* Cell min voltage in [mV] */
-        static constexpr uint32_t CELL_MIN_VOLTAGE { 3000 };
+        static constexpr uint32_t CELL_MIN_VOLTAGE { 2500 };
         /* Cell min balancing voltage [mV] */
         static constexpr uint32_t CELL_MIN_BALANCING_VOLTAGE { 3500 };
         /* Cell overvoltage/undervoltage margin in [mV] */
@@ -66,9 +66,9 @@ namespace PUTM
         static constexpr float MIN_CURRENT_THRESH_SHORT { -50.f };
 #endif /* DEBUG_IGNORE_CURRENT_ERRORS */
         /* Max voltage on battery in [V] */
-        static constexpr float MAX_BAT_VOLTAGE { TOTAL_CELL_COUNT * CELL_MAX_VOLTAGE / 1000.f };
+        static constexpr float MAX_BAT_VOLTAGE { std::min(TOTAL_CELL_COUNT * CELL_MAX_VOLTAGE / 1000.f, 600.f) };
         /* Max charging voltage in [V] */
-        static constexpr float MAX_CHARGING_VOLTAGE { TOTAL_CELL_COUNT * CELL_OV / 1000.f };
+        static constexpr float MAX_CHARGING_VOLTAGE { MAX_BAT_VOLTAGE };
         /*  */
         static constexpr float MAX_CHARGING_CURRENT { 12.f }; // [A] FIXME: change to real value
         /* Min voltage on battery */
@@ -81,13 +81,13 @@ namespace PUTM
         /* Stack COM status poll interval in [ms] */
         // static constexpr uint32_t STACK_COM_STATUS_POLL_INTERVAL { 50 };
         /* Stack COM data poll interval in (data is polled one at a time every interval) [ms] */
-        static constexpr uint32_t STACK_COM_DATA_POLL_INTERVAL { 5 };
+        static constexpr uint32_t STACK_COM_DATA_POLL_INTERVAL { 4 };
 
         /* Stack timeout configuration */
         static constexpr uint32_t STACK_COM_TIMEOUT { 10 }; // [ms]
 
         /* Error check timeout, time after which an persistent error will be considered an true error */
-        static constexpr uint32_t STANDARD_ERROR_TIMEOUT { 200 };
+        static constexpr uint32_t STANDARD_ERROR_TIMEOUT { 150 };
 
         /* Current error timeout, time after which an current error will be considered an true error */
         static constexpr uint32_t CURRENT_ERROR_LONG_TIMEOUT { 2000 };
@@ -147,15 +147,17 @@ namespace PUTM
         static constexpr uint16_t USB_VBUS_THRESH { 500 };
 
         /* Cell nominal capacity in Ah */
-        static constexpr float CELL_NOMINAL_CAPACITY { 13.4f };
+        static constexpr float CELL_NOMINAL_CAPACITY { 4.97f * 3.f };
+        static constexpr float CELL_NOMINAL_INTERNAL_RESISTANCE { 8e-3f / 3.f };
         // static constexpr float CELL_INTERNAL_RESISTANCE { 0.005f };
         static constexpr float A1 { 1.99458f }; 
         static constexpr float A2 { -0.99458f };
         static constexpr float C1 { 9.21999e-06f };
         static constexpr float C2 { -9.21879e-06f }; 
-        static constexpr float D1 { 0.003715f }; // cell internal resistance
+        static constexpr float D1 { CELL_NOMINAL_INTERNAL_RESISTANCE }; // cell internal resistance
         // TODO: make it 'tick' depended in the future in the SoC lib 
         static constexpr float DT { 0.05 }; // Filter udpate time
+
 
         // static constexpr float POLYNOMIAL_OCV[] { 2034.7852020f, -9878.314180f, 20304.286795f, -22998.124140f, 15652.018744f, -6548.995145f, 1657.8141810f, -240.64692800f, 18.231580000f,  3.143621f };
         // static constexpr float POLYNOMIAL_OCV[] { -3.157435e+02, 1.313878e+03, -2.245027e+03, 2.032497e+03, -1.052418e+03, 3.165986e+02, -5.425675e+01, 5.359099e+00, 3.369238e+00 };

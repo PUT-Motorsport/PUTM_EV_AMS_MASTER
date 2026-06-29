@@ -28,7 +28,6 @@ endif()
 # Set the project name
 set(CMAKE_PROJECT_NAME PUTM_EV_AMS_MASTER_2025)
 
-
 # Enable compile command to ease indexing with e.g. clangd
 set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
 
@@ -42,11 +41,18 @@ enable_language(C ASM)
 # Create an executable object type
 add_executable(${CMAKE_PROJECT_NAME})
 
+# Add project symbols (macros)
+add_compile_definitions(
+    # Add user defined symbols
+    PUTM_USE_FDCAN
+    DEBUG_PRINTF_ENABLE
+)
+
 # Add STM32CubeMX generated sources
 add_subdirectory(cmake/stm32cubemx)
 # Add Components
 add_subdirectory(Components)
-# Add Taskss
+# Add Tasks
 add_subdirectory(Threads)
 
 # Link directories setup
@@ -67,13 +73,6 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined include paths
     ${CMAKE_CURRENT_SOURCE_DIR}/Middlewares/ST/usbx/common/usbx_stm32_device_controllers/
-)
-
-# Add project symbols (macros)
-target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
-    # Add user defined symbols
-    PUTM_USE_CAN_FD
-    DEBUG_PRINTF_ENABLE
 )
 
 # Add linked libraries

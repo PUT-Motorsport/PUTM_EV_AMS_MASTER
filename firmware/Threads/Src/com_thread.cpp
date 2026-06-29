@@ -1,5 +1,7 @@
 #include "error_checker.hpp"
+#include "stm32h5xx_hal_fdcan.h"
 #include "stm32h5xx_ll_adc.h"
+#include "tx_api.h"
 #include <cstddef>
 extern "C"
 {
@@ -13,7 +15,8 @@ extern "C"
 #include "adc.h"
 
 #include "ArduinoJson.h"
-#include "can_interface.hpp"
+#include "can_driver.hpp"
+#include "PUTM_CAN_M.h"
 
 #include "utils.hpp"
 #include "threads.hpp"
@@ -34,37 +37,72 @@ using namespace Utils;
 
 using namespace PUTM_CAN;
 
+putm_ev_can::CanDriver can_driver;
+
+Logger<1024 * 2> error_logger_com;
+static char error_write_buffer[128];
+
 /* seperate thread for timing tweeks */
 VOID car_can_thread_entry(__unused ULONG thread_input)
 {
-    start_can(&hfdcan2);
+    {
+        FDCAN_FilterTypeDef filter_config
+        {
+            .IdType = FDCAN_STANDARD_ID,
+            .FilterIndex = 0,
+            .FilterType = FDCAN_FILTER_MASK,
+            .FilterConfig = FDCAN_FILTER_TO_RXFIFO0,
+            .FilterID1 = 0,
+            .FilterID2 = 0
+        };
+
+        HAL_FDCAN_ConfigFilter(&hfdcan2, &filter_config);
+        HAL_FDCAN_ConfigTxDelayCompensation(&hfdcan2, 9, 0);
+        HAL_FDCAN_EnableTxDelayCompensation(&hfdcan2);
+        // HAL_FDCAN_ConfigTimeoutCounter(&hfdcan2, uint32_t TimeoutOperation, uint32_t TimeoutPeriod)
+    }
+
+    /* Send basic battery info on CAN */
+
+    if(!can_driver.Init(&hfdcan2))
+    {
+        data.warning = true;
+        error_logger_com.log_error("CAN init failed");
+        while(true) tx_thread_sleep(1000);
+    }
+
+    can_driver.RegisterCallback<PUTM_CAN_M_dashboard_t>(PUTM_CAN_M_DASHBOARD_FRAME_ID, [](const PUTM_CAN_M_dashboard_t& dashboard)
+    {
+        data.cmd_hv = dashboard.ts_activation_button;
+    });
 
     while(true)
     {
-        /* Send basic battery info on CAN */
-        BMS_HV_main bms_hv_main
+        PUTM_CAN_M_bms_hv_main_t bms_hv_main
         {
             .voltage_sum = (uint16_t)(data.acu_voltage * 10.f),
             .current = (int16_t)(data.current * 10.f),
             .temp_max = (uint8_t)(data.cell_max_temperature), //(uint8_t)(data.cell_max_temperature * 10.f),
-            .temp_avg = (uint8_t)(data.cell_min_voltage), //(uint8_t)(data.cell_avg_temperature * 10.f),
+            .temp_avg = (uint8_t)(data.cell_avg_temperature), //(uint8_t)(data.cell_avg_temperature * 10.f),
             .soc = (uint16_t)(data.soc * 1000.f),
             .ok = not data.error,
             .precharge = data.precharge
         };
 
-        /* Send data to CAN */
-        auto bms_hv_main_frame = PUTM_CAN::Can_tx_message(bms_hv_main, can_tx_header_BMS_HV_MAIN);
-        auto status = bms_hv_main_frame.send(hfdcan2);
-        if(status != HAL_StatusTypeDef::HAL_OK)
+        if(HAL_FDCAN_GetTxFifoFreeLevel(&hfdcan2) == 0)
         {
-            // Error_Handler();
+            uint32_t txFifoRequest = HAL_FDCAN_GetLatestTxFifoQRequestBuffer(&hfdcan2);
+            if (HAL_FDCAN_IsTxBufferMessagePending(&hfdcan2, txFifoRequest))
+            {
+                HAL_FDCAN_AbortTxRequest(&hfdcan2, txFifoRequest);
+            }
         }
 
-        if (PUTM_CAN::can.get_dashboard_new_data() && PUTM_CAN::can.get_dashboard().ts_activation_button)
-		{
-			data.cmd_hv = true;
-		}
+        if(not can_driver.Send(PUTM_CAN_M_BMS_HV_MAIN_FRAME_ID, bms_hv_main))
+        {
+            error_logger_com.log_error("CAN send failed");
+            data.warning = true;
+        }
 
         tx_thread_sleep(20);
     }
@@ -197,38 +235,36 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
             tx_json["cell_avg_temperature"] = data.cell_avg_temperature;
             tx_json["cell_min_temperature"] = data.cell_min_temperature;
             tx_json["charging_current"] = data.charging_current;
-            tx_thread_sleep(10);
+            tx_thread_relinquish();
             for(size_t i = 0; i < Config::TOTAL_CELL_COUNT; i++)
             {
                 size_t idev = i / Config::CELL_COUNT_PER_DEVICE;
                 size_t icell = i % Config::CELL_COUNT_PER_DEVICE;
                 tx_json["cell_voltages"][idev][icell] = data.cell_voltages[idev][icell];
-                tx_thread_sleep(1);
+                
+            tx_thread_relinquish();
             }
-            tx_thread_sleep(10);
             for(size_t i = 0; i < Config::TOTAL_CELL_COUNT; i++)
             {
                 size_t idev = i / Config::CELL_COUNT_PER_DEVICE;
                 size_t icell = i % Config::CELL_COUNT_PER_DEVICE;
                 tx_json["cell_balancing"][idev][icell] = data.cell_balancing[idev][icell];
-                tx_thread_sleep(1);
+                tx_thread_relinquish();
             }
-            tx_thread_sleep(10);
             for(size_t i = 0; i < Config::TOTAL_TEMPERATURES_COUNT; i++)
             {
                 size_t idev = i / Config::TEMPERATURES_COUNT_PER_DEVICE;
                 size_t icell = i % Config::TEMPERATURES_COUNT_PER_DEVICE;
                 tx_json["cell_temperatures"][idev][icell] = data.cell_temperatures[idev][icell];
-                tx_thread_sleep(1);
+                tx_thread_relinquish();
             }
-            tx_thread_sleep(10);
             tx_json["errors"] = JsonArray();
             for(auto error : error_checker)
             {
                 tx_json["errors"].add(error.name);
-                tx_thread_sleep(1);
+                tx_thread_relinquish();
             }
-            tx_thread_sleep(10);
+            tx_thread_relinquish();
             tx_json["service_mode"] = data.service_mode;
             //if(data.service_mode)
             {
@@ -244,46 +280,51 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
                 tx_json["tsms"] = data.tsms;
                 tx_json["precharge"] = data.precharge;
                 tx_json["hv_on"] = data.hv_on;
+                tx_thread_relinquish();
                 for(size_t i = 0; i < Config::TOTAL_CELL_COUNT; i++)
                 {
                     size_t idev = i / Config::CELL_COUNT_PER_DEVICE;
                     size_t icell = i % Config::CELL_COUNT_PER_DEVICE;
                     tx_json["cell_socs"][idev][icell] = data.cell_socs[idev][icell].get();
-                    tx_thread_sleep(1);
+                    tx_thread_relinquish();
                 }
-                tx_thread_sleep(10);
                 for(size_t i = 0; i < Config::STACK_SIZE; i++)
                 {
                     tx_json["bq_com_status"][i] = get_error_name(data.bq_read_data_status[i]);
-                    tx_thread_sleep(1);
+                    tx_thread_relinquish();
                 }
-                tx_thread_sleep(10);
                 for(size_t i = 0; i < Config::TOTAL_TEMPERATURES_COUNT; i++)
                 {
                     size_t idev = i / Config::TEMPERATURES_COUNT_PER_DEVICE;
                     size_t icell = i % Config::TEMPERATURES_COUNT_PER_DEVICE;
                     tx_json["gpio_voltages"][idev][icell] = data.gpio_voltages[idev][icell];
-                    tx_thread_sleep(1);
+                    tx_thread_relinquish();
                 }
-                tx_thread_sleep(10);
                 tx_json["sm_air_state"] = air_state_machine.get_current_state_name();
                 tx_json["sm_charger_state"] = charger_state_machine.get_current_state_name();
                 tx_json["bq_updates_per_sec"] = data.update_times.bq_updates_per_sec;
                 tx_json["ads_updates_per_sec"] = data.update_times.ads_updates_per_sec;
                 tx_json["main_updates_per_sec"] = data.update_times.main_updates_per_sec;
-                tx_json["logs"] = JsonArray();
+                tx_json["checker_errors"] = JsonArray();
+                tx_thread_relinquish();
                 for(auto log : error_logger)
                 {
-                    tx_json["logs"].add(log);
-                    tx_thread_sleep(1);
+                    tx_json["checker_errors"].add(log);
+                    tx_thread_relinquish();
                 }
-                tx_thread_sleep(10);
+                tx_json["com_errors"] = JsonArray();
+                for(auto log : error_logger_com)
+                {
+                    tx_json["com_errors"].add(log);
+                    tx_thread_relinquish();
+                }
                 //if(data.even_moar_data)
                 {
                     tx_json["vusb"] = data.vusb;
                     tx_json["usb_connected"] = data.usb_connected;
                     tx_json["last_command"] = data.last_command;
                 }
+                tx_thread_relinquish();
             }
 
             // serializeJson(json, buffer, JSON_BUFFER_SIZE);
@@ -297,6 +338,6 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
                 data.warning = true;
             }
         }
-        tx_thread_sleep(10);
+        tx_thread_sleep(200);
     }
 }
