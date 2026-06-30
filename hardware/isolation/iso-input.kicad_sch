@@ -1288,7 +1288,7 @@
 				)
 			)
 		)
-		(property "Value" "10k"
+		(property "Value" "4.7k"
 			(at 133.35 97.79 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1748,10 +1748,6 @@
 		)
 		(instances
 			(project "PUTM_AMS_MASTER_ISOLATION"
-				(path "/9b254bae-97c6-45e7-8618-9f461c55b31a"
-					(reference "U7")
-					(unit 1)
-				)
 				(path "/9b254bae-97c6-45e7-8618-9f461c55b31a/577357ca-978a-4aab-a7a4-e0cbcaa1ed5b"
 					(reference "U7")
 					(unit 1)

@@ -9261,7 +9261,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "4.02k/.1%"
+		(property "Value" "2k/.1%"
 			(at 52.07 153.67 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9495,7 +9495,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "4.02k/.1%"
+		(property "Value" "2k/.1%"
 			(at 52.07 66.04 0)
 			(show_name no)
 			(do_not_autoplace no)
