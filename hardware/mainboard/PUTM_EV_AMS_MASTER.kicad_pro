@@ -750,7 +750,7 @@
       "gencad": "",
       "idf": "",
       "netlist": "PUTM_EV_BMS_HV_Master_2021.net",
-      "plot": "",
+      "plot": "production/",
       "pos_files": "",
       "specctra_dsn": "",
       "step": "../../../../../../Downloads/PUTM_EV_AMS_MASTER_2025.step",
