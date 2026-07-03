@@ -1612,16 +1612,16 @@
 		(uuid "46289721-b751-4834-8499-c07436a0d973")
 	)
 	(junction
+		(at 228.6 88.9)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "533f8544-ebe0-4f1c-86dc-58569578f6e6")
+	)
+	(junction
 		(at 191.77 78.74)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "5458ccf1-b7ef-4e25-828d-1649b327a0c4")
-	)
-	(junction
-		(at 223.52 88.9)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "5fe89666-ca9f-4250-87e8-712cb5021960")
 	)
 	(junction
 		(at 96.52 49.53)
@@ -1640,6 +1640,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "7a540256-bc04-4262-b6c6-2ef3abd3b264")
+	)
+	(junction
+		(at 228.6 93.98)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "859d80d3-dc67-4671-8b0c-1acc59c954c6")
 	)
 	(junction
 		(at 96.52 105.41)
@@ -1676,6 +1682,16 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "f5a07901-7faa-495e-afdb-deccf3be27a5")
+	)
+	(wire
+		(pts
+			(xy 228.6 88.9) (xy 231.14 88.9)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "05d64eb5-2113-49c0-8db0-c9a5fe7cfe23")
 	)
 	(wire
 		(pts
@@ -1926,16 +1942,6 @@
 			(type default)
 		)
 		(uuid "4e493593-eed1-473e-9d65-5f43fbd32a2f")
-	)
-	(wire
-		(pts
-			(xy 223.52 86.36) (xy 223.52 88.9)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "503fa81d-8015-4934-b344-8486397357cf")
 	)
 	(wire
 		(pts
@@ -2529,16 +2535,6 @@
 	)
 	(wire
 		(pts
-			(xy 223.52 88.9) (xy 231.14 88.9)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d941fbc8-fc96-4d32-8179-24a7dc380696")
-	)
-	(wire
-		(pts
 			(xy 167.64 116.84) (xy 165.1 116.84)
 		)
 		(stroke
@@ -2559,7 +2555,7 @@
 	)
 	(wire
 		(pts
-			(xy 179.07 88.9) (xy 223.52 88.9)
+			(xy 179.07 88.9) (xy 228.6 88.9)
 		)
 		(stroke
 			(width 0)
@@ -5789,6 +5785,170 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint_Small")
+		(at 228.6 93.98 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "8c9ea82d-e049-47ec-8e74-57ddd5622248")
+		(property "Reference" "TP17"
+			(at 224.79 92.71 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 224.79 95.25 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
+			(at 228.6 88.9 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 228.6 88.9 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 228.6 93.98 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Author" ""
+			(at 228.6 93.98 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "License" ""
+			(at 228.6 93.98 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" ""
+			(at 228.6 93.98 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" ""
+			(at 228.6 93.98 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Mouser" ""
+			(at 228.6 93.98 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 228.6 93.98 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 228.6 93.98 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 228.6 93.98 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "eb885cbf-d554-4498-8eb3-244c3e3b96a0")
+		)
+		(instances
+			(project "PUTM_EV_AMS_MASTER"
+				(path "/b456cffc-d9d7-4c91-91f2-36ec9a65dd1b/6dd12385-8249-456a-9bdd-ab767e747ed7"
+					(reference "TP17")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_name "GND_7")
 		(lib_id "power:GND")
 		(at 167.64 119.38 0)
@@ -8958,7 +9118,7 @@
 	)
 	(symbol
 		(lib_id "Connector:TestPoint_Small")
-		(at 223.52 86.36 90)
+		(at 228.6 88.9 90)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -8969,7 +9129,7 @@
 		(fields_autoplaced yes)
 		(uuid "e612ba94-b4df-45c4-9ad1-81456e255570")
 		(property "Reference" "TP16"
-			(at 223.52 81.28 90)
+			(at 228.6 83.82 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8979,7 +9139,7 @@
 			)
 		)
 		(property "Value" "4MHz"
-			(at 223.52 83.82 90)
+			(at 228.6 86.36 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -8989,7 +9149,7 @@
 			)
 		)
 		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
-			(at 223.52 81.28 0)
+			(at 228.6 83.82 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9000,7 +9160,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 223.52 81.28 0)
+			(at 228.6 83.82 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9011,7 +9171,7 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 223.52 86.36 0)
+			(at 228.6 88.9 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9022,7 +9182,7 @@
 			)
 		)
 		(property "Author" ""
-			(at 223.52 86.36 90)
+			(at 228.6 88.9 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9033,7 +9193,7 @@
 			)
 		)
 		(property "License" ""
-			(at 223.52 86.36 90)
+			(at 228.6 88.9 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9044,7 +9204,7 @@
 			)
 		)
 		(property "MPN" ""
-			(at 223.52 86.36 90)
+			(at 228.6 88.9 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9055,7 +9215,7 @@
 			)
 		)
 		(property "Manufacturer" ""
-			(at 223.52 86.36 90)
+			(at 228.6 88.9 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9066,7 +9226,7 @@
 			)
 		)
 		(property "Mouser" ""
-			(at 223.52 86.36 90)
+			(at 228.6 88.9 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9077,7 +9237,7 @@
 			)
 		)
 		(property "Sim.Device" ""
-			(at 223.52 86.36 90)
+			(at 228.6 88.9 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9088,7 +9248,7 @@
 			)
 		)
 		(property "Sim.Pins" ""
-			(at 223.52 86.36 90)
+			(at 228.6 88.9 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -9099,7 +9259,7 @@
 			)
 		)
 		(property "Sim.Type" ""
-			(at 223.52 86.36 90)
+			(at 228.6 88.9 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)

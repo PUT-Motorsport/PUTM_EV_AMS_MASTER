@@ -1420,12 +1420,6 @@
 		(uuid "a0de64f2-36ef-4bdb-9f82-bc63e196b769")
 	)
 	(junction
-		(at 120.65 153.67)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "a9b24772-9f2f-4d23-9af9-206552b5359f")
-	)
-	(junction
 		(at 171.45 118.11)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1478,12 +1472,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "bf2ae797-f7ef-435b-9aa8-cf9676d95b18")
-	)
-	(junction
-		(at 120.65 133.35)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "c55412e0-1d6b-459c-b14d-ece3a0dee1ba")
 	)
 	(junction
 		(at 120.65 118.11)
@@ -1637,7 +1625,7 @@
 	)
 	(wire
 		(pts
-			(xy 109.22 59.69) (xy 118.11 59.69)
+			(xy 109.22 59.69) (xy 120.65 59.69)
 		)
 		(stroke
 			(width 0)
@@ -2805,7 +2793,7 @@
 	)
 	(wire
 		(pts
-			(xy 118.11 59.69) (xy 118.11 63.5)
+			(xy 120.65 59.69) (xy 120.65 63.5)
 		)
 		(stroke
 			(width 0)
@@ -2855,16 +2843,6 @@
 	)
 	(wire
 		(pts
-			(xy 120.65 133.35) (xy 120.65 153.67)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "dc632228-e44d-420d-a10e-e78d87d928ad")
-	)
-	(wire
-		(pts
 			(xy 123.19 153.67) (xy 120.65 153.67)
 		)
 		(stroke
@@ -2895,7 +2873,7 @@
 	)
 	(wire
 		(pts
-			(xy 118.11 63.5) (xy 123.19 63.5)
+			(xy 120.65 63.5) (xy 123.19 63.5)
 		)
 		(stroke
 			(width 0)
@@ -3095,7 +3073,7 @@
 		)
 		(uuid "fdd3bc72-845f-4229-b404-a910df49ff76")
 	)
-	(label "CAR_GND"
+	(label "CAR-"
 		(at 116.84 157.48 180)
 		(effects
 			(font
@@ -3103,7 +3081,7 @@
 			)
 			(justify right bottom)
 		)
-		(uuid "1688a7bc-00b1-42a2-a28f-5dc3ea6e1942")
+		(uuid "1fb81106-7510-4efc-92bd-0a6301d42cb2")
 	)
 	(label "ACU_LDO"
 		(at 119.38 30.48 180)
@@ -3126,14 +3104,24 @@
 		(uuid "6d053a4a-33cb-46d4-b6ba-605a410a1364")
 	)
 	(label "ACU_GND"
-		(at 116.84 69.85 180)
+		(at 116.84 43.18 180)
 		(effects
 			(font
 				(size 0.508 0.508)
 			)
 			(justify right bottom)
 		)
-		(uuid "b7745cad-6eaf-4308-8381-43336857617d")
+		(uuid "720fdcd6-675f-4baf-b0be-065e747e9185")
+	)
+	(label "CAR_GND"
+		(at 119.38 130.81 180)
+		(effects
+			(font
+				(size 0.508 0.508)
+			)
+			(justify right bottom)
+		)
+		(uuid "c3cbebd8-0d9c-4ca3-9165-0a716799f5a8")
 	)
 	(label "CAR_LDO"
 		(at 119.38 118.11 180)
@@ -3174,6 +3162,16 @@
 			(justify right bottom)
 		)
 		(uuid "ef937d46-762c-439e-bc8b-939eff723e35")
+	)
+	(label "ACU-"
+		(at 116.84 69.85 180)
+		(effects
+			(font
+				(size 0.508 0.508)
+			)
+			(justify right bottom)
+		)
+		(uuid "fb4bda36-3371-4524-b67d-cc88138993c5")
 	)
 	(hierarchical_label "ACU_OUT-"
 		(shape input)

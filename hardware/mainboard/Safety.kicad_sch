@@ -2051,6 +2051,12 @@
 		(uuid "334b25c0-5a01-4115-b1c4-671ba7ebb9e5")
 	)
 	(junction
+		(at 62.23 83.82)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "b05bed77-56cd-43e2-a21d-4694b29ac3f4")
+	)
+	(junction
 		(at 105.41 140.97)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -2063,22 +2069,16 @@
 		(uuid "c6e9a975-c7a2-48ea-9fd7-c495a7baf729")
 	)
 	(junction
-		(at 69.85 83.82)
+		(at 85.09 132.08)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "c9646ac6-b367-4354-8842-9e9bc221644d")
+		(uuid "c9752d14-4406-46a8-9da7-f97f1aa31e28")
 	)
 	(junction
 		(at 60.96 149.86)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "c9b17984-2b9b-4324-87c2-faade67591da")
-	)
-	(junction
-		(at 85.09 132.08)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "ca0cc324-2616-4849-a093-e2a855df2992")
 	)
 	(junction
 		(at 52.07 73.66)
@@ -2235,16 +2235,6 @@
 		)
 		(uuid "3dfe65a5-2027-4ffe-b62e-6f2bbd04bf58")
 	)
-	(wire
-		(pts
-			(xy 52.07 66.04) (xy 52.07 68.58)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "465aad18-2dcf-423b-8d79-6e5e96853679")
-	)
 	(polyline
 		(pts
 			(xy 104.14 123.19) (xy 104.14 118.11)
@@ -2362,23 +2352,13 @@
 	)
 	(wire
 		(pts
-			(xy 59.69 83.82) (xy 69.85 83.82)
+			(xy 59.69 83.82) (xy 62.23 83.82)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "6c387459-b54a-46ae-bb84-f04bf044cb30")
-	)
-	(wire
-		(pts
-			(xy 69.85 83.82) (xy 176.53 83.82)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "6c5a9a38-17e0-402b-be4e-cb16d9520b0f")
 	)
 	(wire
 		(pts
@@ -2444,6 +2424,16 @@
 	)
 	(wire
 		(pts
+			(xy 62.23 83.82) (xy 176.53 83.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8a758c64-82cb-4321-87fa-d385657b199e")
+	)
+	(wire
+		(pts
 			(xy 105.41 140.97) (xy 105.41 143.51)
 		)
 		(stroke
@@ -2491,16 +2481,6 @@
 			(type default)
 		)
 		(uuid "9af388bd-c0fc-4455-9072-b0e113d708dd")
-	)
-	(wire
-		(pts
-			(xy 69.85 81.28) (xy 69.85 83.82)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "9cadaed8-8d48-40e6-bc96-d5decf4e9a88")
 	)
 	(polyline
 		(pts
@@ -2688,16 +2668,6 @@
 			(color 132 0 132 1)
 		)
 		(uuid "d6318c0a-ec33-449a-876b-ac756688dd69")
-	)
-	(wire
-		(pts
-			(xy 85.09 128.27) (xy 85.09 132.08)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "dd117475-5671-47a5-8f3b-d9934c4d3997")
 	)
 	(wire
 		(pts
@@ -3399,7 +3369,7 @@
 	)
 	(symbol
 		(lib_id "Connector:TestPoint_Small")
-		(at 85.09 128.27 0)
+		(at 85.09 132.08 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -3410,7 +3380,7 @@
 		(fields_autoplaced yes)
 		(uuid "354f23df-b07e-4008-bf70-9047b086f6d4")
 		(property "Reference" "TP5"
-			(at 86.36 126.9999 0)
+			(at 86.36 130.8099 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3421,7 +3391,7 @@
 			)
 		)
 		(property "Value" "CAP_VOLT"
-			(at 86.36 129.5399 0)
+			(at 86.36 133.3499 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -3432,7 +3402,7 @@
 			)
 		)
 		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
-			(at 90.17 128.27 0)
+			(at 90.17 132.08 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3443,7 +3413,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 90.17 128.27 0)
+			(at 90.17 132.08 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3454,7 +3424,7 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 85.09 128.27 0)
+			(at 85.09 132.08 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3465,7 +3435,7 @@
 			)
 		)
 		(property "Author" ""
-			(at 85.09 128.27 0)
+			(at 85.09 132.08 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3476,7 +3446,7 @@
 			)
 		)
 		(property "License" ""
-			(at 85.09 128.27 0)
+			(at 85.09 132.08 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3487,7 +3457,7 @@
 			)
 		)
 		(property "MPN" ""
-			(at 85.09 128.27 0)
+			(at 85.09 132.08 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3498,7 +3468,7 @@
 			)
 		)
 		(property "Manufacturer" ""
-			(at 85.09 128.27 0)
+			(at 85.09 132.08 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3509,7 +3479,7 @@
 			)
 		)
 		(property "Mouser" ""
-			(at 85.09 128.27 0)
+			(at 85.09 132.08 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3520,7 +3490,7 @@
 			)
 		)
 		(property "Sim.Device" ""
-			(at 85.09 128.27 0)
+			(at 85.09 132.08 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3531,7 +3501,7 @@
 			)
 		)
 		(property "Sim.Pins" ""
-			(at 85.09 128.27 0)
+			(at 85.09 132.08 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3542,7 +3512,7 @@
 			)
 		)
 		(property "Sim.Type" ""
-			(at 85.09 128.27 0)
+			(at 85.09 132.08 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4750,7 +4720,7 @@
 	)
 	(symbol
 		(lib_id "Connector:TestPoint_Small")
-		(at 52.07 66.04 90)
+		(at 52.07 68.58 90)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -4758,10 +4728,9 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(fields_autoplaced yes)
 		(uuid "73fb3b1e-8aa1-4049-b9d2-dd91135530fb")
 		(property "Reference" "TP7"
-			(at 52.07 60.96 90)
+			(at 52.07 62.23 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4771,7 +4740,7 @@
 			)
 		)
 		(property "Value" "WTDG_ERROR"
-			(at 52.07 63.5 90)
+			(at 52.07 64.77 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -4781,7 +4750,7 @@
 			)
 		)
 		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
-			(at 52.07 60.96 0)
+			(at 52.07 63.5 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4792,7 +4761,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 52.07 60.96 0)
+			(at 52.07 63.5 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4803,7 +4772,7 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 52.07 66.04 0)
+			(at 52.07 68.58 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4814,7 +4783,7 @@
 			)
 		)
 		(property "Author" ""
-			(at 52.07 66.04 90)
+			(at 52.07 68.58 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4825,7 +4794,7 @@
 			)
 		)
 		(property "License" ""
-			(at 52.07 66.04 90)
+			(at 52.07 68.58 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4836,7 +4805,7 @@
 			)
 		)
 		(property "MPN" ""
-			(at 52.07 66.04 90)
+			(at 52.07 68.58 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4847,7 +4816,7 @@
 			)
 		)
 		(property "Manufacturer" ""
-			(at 52.07 66.04 90)
+			(at 52.07 68.58 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4858,7 +4827,7 @@
 			)
 		)
 		(property "Mouser" ""
-			(at 52.07 66.04 90)
+			(at 52.07 68.58 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4869,7 +4838,7 @@
 			)
 		)
 		(property "Sim.Device" ""
-			(at 52.07 66.04 90)
+			(at 52.07 68.58 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4880,7 +4849,7 @@
 			)
 		)
 		(property "Sim.Pins" ""
-			(at 52.07 66.04 90)
+			(at 52.07 68.58 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -4891,7 +4860,7 @@
 			)
 		)
 		(property "Sim.Type" ""
-			(at 52.07 66.04 90)
+			(at 52.07 68.58 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5327,7 +5296,8 @@
 	)
 	(symbol
 		(lib_id "Connector:TestPoint_Small")
-		(at 69.85 81.28 0)
+		(at 74.93 149.86 270)
+		(mirror x)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -5335,32 +5305,29 @@
 		(on_board yes)
 		(in_pos_files yes)
 		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "d0439818-1f58-4fe3-b5cd-9942b9373a40")
-		(property "Reference" "TP6"
-			(at 71.12 80.0099 0)
+		(uuid "b55ee042-8edc-43e6-844b-84417f7c408d")
+		(property "Reference" "TP18"
+			(at 78.74 148.59 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
-		(property "Value" "LATCHED_ERR"
-			(at 71.12 82.5499 0)
+		(property "Value" "GND"
+			(at 78.74 151.13 90)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
-			(at 74.93 81.28 0)
+			(at 74.93 144.78 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5371,7 +5338,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 74.93 81.28 0)
+			(at 74.93 144.78 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5382,7 +5349,7 @@
 			)
 		)
 		(property "Description" "test point"
-			(at 69.85 81.28 0)
+			(at 74.93 149.86 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5393,7 +5360,7 @@
 			)
 		)
 		(property "Author" ""
-			(at 69.85 81.28 0)
+			(at 74.93 149.86 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5404,7 +5371,7 @@
 			)
 		)
 		(property "License" ""
-			(at 69.85 81.28 0)
+			(at 74.93 149.86 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5415,7 +5382,7 @@
 			)
 		)
 		(property "MPN" ""
-			(at 69.85 81.28 0)
+			(at 74.93 149.86 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5426,7 +5393,7 @@
 			)
 		)
 		(property "Manufacturer" ""
-			(at 69.85 81.28 0)
+			(at 74.93 149.86 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5437,7 +5404,7 @@
 			)
 		)
 		(property "Mouser" ""
-			(at 69.85 81.28 0)
+			(at 74.93 149.86 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5448,7 +5415,7 @@
 			)
 		)
 		(property "Sim.Device" ""
-			(at 69.85 81.28 0)
+			(at 74.93 149.86 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5459,7 +5426,7 @@
 			)
 		)
 		(property "Sim.Pins" ""
-			(at 69.85 81.28 0)
+			(at 74.93 149.86 90)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -5470,7 +5437,174 @@
 			)
 		)
 		(property "Sim.Type" ""
-			(at 69.85 81.28 0)
+			(at 74.93 149.86 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "984f96f9-bec4-477b-9c0c-e66a22b7533e")
+		)
+		(instances
+			(project "PUTM_EV_AMS_MASTER"
+				(path "/b456cffc-d9d7-4c91-91f2-36ec9a65dd1b/6eb4a2b1-8e5b-451b-b593-8aaaa3a4213e"
+					(reference "TP18")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint_Small")
+		(at 62.23 83.82 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "d0439818-1f58-4fe3-b5cd-9942b9373a40")
+		(property "Reference" "TP6"
+			(at 63.5 82.5499 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "LATCHED_ERR"
+			(at 63.5 85.0899 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
+			(at 67.31 83.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 67.31 83.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "test point"
+			(at 62.23 83.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Author" ""
+			(at 62.23 83.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "License" ""
+			(at 62.23 83.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" ""
+			(at 62.23 83.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" ""
+			(at 62.23 83.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Mouser" ""
+			(at 62.23 83.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Device" ""
+			(at 62.23 83.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Pins" ""
+			(at 62.23 83.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Sim.Type" ""
+			(at 62.23 83.82 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
