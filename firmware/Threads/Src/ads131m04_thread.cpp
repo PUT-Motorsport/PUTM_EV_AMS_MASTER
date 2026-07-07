@@ -8,6 +8,7 @@
 #include "utils.hpp"
 #include "fir.hpp"
 #include "moving_average.hpp"
+#include <cstddef>
 
 using namespace PUTM;
 using namespace Utils;
@@ -24,7 +25,7 @@ float current_voltage_to_current(float voltage, float reference_voltage)
     /* rationometric sensor - 10% to 90% is the output range, the range is +- 300A */
     /* gain [A/V] */
     // float gain = 0.8f * 600.f / reference_voltage; 
-    float gain = 1.f / (0.4f * reference_voltage / 300.f); // 0.8 because of the 10% to 90% output range
+    float gain = -1.f / (0.4f * reference_voltage / 300.f); // 0.8 because of the 10% to 90% output range
     float offset = 0.5f * reference_voltage;
     float voltage_diff = (voltage - offset);
     float current = voltage_diff * gain;
@@ -46,7 +47,14 @@ VOID ads131m04_thread_entry(__unused ULONG thread_input)
     adc.init();
     // add self calibrate
     offset_calibration.fill_buffer(Config::CURRENT_OFFSET);
-    tx_thread_sleep(200);
+
+    tx_thread_sleep(100);
+
+    for(size_t i = 0; i < 32; i++)
+    {
+        adc.update();
+        tx_thread_sleep(10);
+    }
 
     data.ads_init_done = true;
     

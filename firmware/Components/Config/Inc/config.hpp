@@ -37,7 +37,7 @@ namespace PUTM
         /* Undervoltage trigger in [mV] */
         static constexpr uint32_t CELL_UV { CELL_MIN_VOLTAGE + CELL_OVUV_MARGIN };
         /* Overtemperature trigger in [degC] */
-        static constexpr float CELL_OT_FLOAT { 50.f };
+        static constexpr float CELL_OT_FLOAT { 58.f };
         /* Undertemperature trigger in [degC] */
         static constexpr float CELL_UT_FLOAT { 0.f };
         /* Max cell balancing time */
@@ -124,10 +124,10 @@ namespace PUTM
         static constexpr float CAR_VOLTAGE_GAIN { -1000.f / 2 }; //idk needs more calibration
         static constexpr float ACU_VOLTAGE_OFFSET { 0.f };
         static constexpr float ACU_VOLTAGE_GAIN { -1000.f / 2 };
-        static constexpr float CURRENT_OFFSET { -0.43f };
+        static constexpr float CURRENT_OFFSET { 0.43f };
         /* Current measurement gain * 3 is for the resistor divider on the input */
         static constexpr float CURRENT_GAIN_NETWORK { 3.04744f }; //{ 3.f };
-        static constexpr float CURRENT_GAIN { 1.f / (2.f / 300.f) };
+        // static constexpr float CURRENT_GAIN { 1.f / (2.f / 300.f) };
         static constexpr float CURRENT_REF_OFFSET { 0.f };
         // static constexpr float CURRENT_REF_R1 { 9.98e+3f };
         // static constexpr float CURRENT_REF_R2 { 49.8e+3f };
