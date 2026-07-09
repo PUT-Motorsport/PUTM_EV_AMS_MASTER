@@ -10,6 +10,8 @@
 #include "usart.h"
 #endif /* DEBUG_PRINTF_ENABLE */
 
+#include "data.hpp"
+
 namespace PUTM
 {
     class ChargerCanTxMessage
@@ -18,7 +20,7 @@ namespace PUTM
         // TODO: ADD IT TO CONFIG
         constexpr static FDCAN_HandleTypeDef &hfdcan = hfdcan1;
         constexpr static uint32_t CHARGER_TX_ID = 0x1806E5F4;
-        std::array<uint8_t, 8> data;
+        std::array<uint8_t, 8> __data;
 
         constexpr static FDCAN_TxHeaderTypeDef charger_transmit_header = []
         {
@@ -38,7 +40,7 @@ namespace PUTM
     public:
         constexpr ChargerCanTxMessage(float voltage, float current, bool enable)
         {
-            data = 
+            __data = 
             {
                 (uint8_t)((uint16_t)(voltage * 10) >> 8),
                 (uint8_t)((uint16_t)(voltage * 10)),
@@ -55,7 +57,7 @@ namespace PUTM
         {
             auto status = HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan,
                                                         const_cast<FDCAN_TxHeaderTypeDef *>(&charger_transmit_header),
-                                                        const_cast<uint8_t *>(data.begin()));
+                                                        const_cast<uint8_t *>(__data.begin()));
             return status;
         }
     };
@@ -66,7 +68,7 @@ namespace PUTM
         constexpr static FDCAN_HandleTypeDef &hfdcan = hfdcan1;
         constexpr static uint32_t CHARGER_RX_ID = 0x18ff50e5;
 
-        std::array<uint8_t, 8> data { 0 };
+        std::array<uint8_t, 8> __data { 0 };
         float battery_read_voltage { 0.0f };
         float battery_read_current { 0.0f };
         bool hardware_fail { false };
@@ -85,20 +87,20 @@ namespace PUTM
         void processFrame()
         {
             FDCAN_RxHeaderTypeDef header {};
-            auto status = HAL_FDCAN_GetRxMessage(&hfdcan, FDCAN_RX_FIFO0, &header, data.begin());
+            auto status = HAL_FDCAN_GetRxMessage(&hfdcan, FDCAN_RX_FIFO0, &header, __data.begin());
 
             if (CHARGER_RX_ID == header.Identifier and HAL_OK == status)
             {
-                uint16_t voltage = ((uint16_t)(data[0]) << 8) | ((uint16_t)data[1]);
-                uint16_t current = ((uint16_t)(data[2]) << 8) | ((uint16_t)data[3]);
-                battery_read_voltage = voltage * 0.1f;
-                battery_read_current = current * 0.1f;
-                hardware_fail = data[4] & 0x01;
-                over_temperature = data[4] & 0x02;
-                in_voltage_fail = data[4] & 0x04;
-                starting_state = data[4] & 0x08;
-                communication_state = data[4] & 0x10;
-                last_recive_tick = HAL_GetTick();
+                uint16_t voltage = ((uint16_t)(__data[0]) << 8) | ((uint16_t)__data[1]);
+                uint16_t current = ((uint16_t)(__data[2]) << 8) | ((uint16_t)__data[3]);
+                data.charger.battery_read_voltage = battery_read_voltage = voltage * 0.1f;
+                data.charger.battery_read_current = battery_read_current = current * 0.1f;
+                data.charger.hardware_fail = hardware_fail = __data[4] & 0x01;
+                data.charger.over_temperature = over_temperature = __data[4] & 0x02;
+                data.charger.in_voltage_fail = in_voltage_fail = __data[4] & 0x04;
+                data.charger.starting_state = starting_state = __data[4] & 0x08;
+                data.charger.communication_state = communication_state = __data[4] & 0x10;
+                data.charger.last_recive_tick = last_recive_tick = tx_time_get();
             }
         }
 

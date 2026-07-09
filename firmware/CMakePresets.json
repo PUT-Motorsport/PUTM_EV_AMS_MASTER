@@ -44,8 +44,8 @@
             "inherits": "default",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "fastRel",
-                "CMAKE_C_FLAGS": "-O3 -flto",
-                "CMAKE_CXX_FLAGS": "-O3 -flto"
+                "CMAKE_C_FLAGS": "-O3",
+                "CMAKE_CXX_FLAGS": "-O3"
             }
         }
     ],

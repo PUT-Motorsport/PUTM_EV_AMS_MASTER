@@ -295,6 +295,21 @@ public:
         if(HAL_UARTEx_ReceiveToIdle_DMA(huart, rx_data, size) != HAL_OK) return HAL_ERROR;
         return HAL_OK;
     }
+public:
+    HAL_StatusTypeDef async_rx_busy()
+    {
+        if(huart->RxState == HAL_UART_STATE_BUSY_RX and huart->ReceptionType == HAL_UART_RECEPTION_TOIDLE) return HAL_BUSY;
+        return HAL_OK;
+    }
+public:
+    HAL_StatusTypeDef abort_async_rx_unknown_dma()
+    {
+        // if(huart->RxEventCallback != async_rx_unknown_callback) return HAL_BUSY; // If the callback is not set, return busy
+        huart->RxEventCallback = HAL_UARTEx_RxEventCallback; // Reset the callback to default
+        huart->UserData2 = nullptr; // Reset UserData2
+        if(HAL_UART_AbortReceive(huart) != HAL_OK) return HAL_ERROR;
+        return HAL_OK;
+    }
 public: 
     /**
      * 	@brief 	This function transmits and receives data over UART in DMA mode

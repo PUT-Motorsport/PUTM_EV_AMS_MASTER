@@ -1,3 +1,4 @@
+#include "logger.hpp"
 #include "main.h"
 #include "stm32h573xx.h"
 #include "stm32h5xx_hal_def.h"
@@ -17,6 +18,9 @@ using namespace PUTM;
 using namespace Utils;
 
 static constexpr float CELL_MIN_BALANCING_VOLTAGE_FLOAT { Config::CELL_MIN_BALANCING_VOLTAGE / 1000.f };
+static constexpr float CELL_BALANCE_TARGET_FLOAT { Config::CELL_BALANCE_TARGET / 1000.f };
+
+extern Logger<1024 * 2> event_logger;
 
 VOID bq796xx_thread_entry(__unused ULONG thread_input)
 {
@@ -47,7 +51,7 @@ VOID bq796xx_thread_entry(__unused ULONG thread_input)
     }
 
     tx_thread_sleep(10);
-
+    
     data.bq_init_done = true;
     while(true)
     {
@@ -56,18 +60,27 @@ VOID bq796xx_thread_entry(__unused ULONG thread_input)
             data.cmd_balancing_on = false;
             balancing_on = true;
             balancing_target = data.cell_min_voltage;
+            event_logger.log_event("BAL ON", tx_time_get());
         }
         else if(data.cmd_balancing_off)
         {
             data.cmd_balancing_off = false;
             balancing_on = false;
             bq.stop_balancing();
+            event_logger.log_event("BAL OFF", tx_time_get());
         }
         if(balancing_on and balancing_target < CELL_MIN_BALANCING_VOLTAGE_FLOAT)
         {
             data.warning = true;
             balancing_on = false;
             bq.stop_balancing();
+            event_logger.log_error("BAL ERR 1", tx_time_get());
+        }
+        if(balancing_on and (data.cell_max_voltage - data.cell_min_voltage) < CELL_BALANCE_TARGET_FLOAT)
+        {
+            balancing_on = false;
+            bq.stop_balancing();
+            event_logger.log_event("BAL DONE", tx_time_get());
         }
         // if(balancing_on)
         // {

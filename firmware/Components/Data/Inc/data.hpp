@@ -94,11 +94,25 @@ namespace PUTM
             float main_updates_per_sec { 0.f };
         } update_times;
 
+        struct
+        {
+            float battery_read_voltage { 0 };
+            float battery_read_current { 0 };
+            bool hardware_fail { false };
+            bool over_temperature { false };
+            bool in_voltage_fail { false };
+            bool starting_state { false };
+            bool communication_state { false };
+            uint32_t last_recive_tick { 0 };
+        } charger;
+
 #ifdef TEST_MODE_1
         /* reset state machine */
         bool reset_state_machine { false };
 #endif /* TEST_MODE_1 */
     };
 }
+
+// need to name the data object more appropriately, but for now it is fine or make the data object a singleton, but for now it is fine
 
 extern PUTM::Data data;

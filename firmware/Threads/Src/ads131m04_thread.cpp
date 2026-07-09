@@ -25,7 +25,8 @@ float current_voltage_to_current(float voltage, float reference_voltage)
     /* rationometric sensor - 10% to 90% is the output range, the range is +- 300A */
     /* gain [A/V] */
     // float gain = 0.8f * 600.f / reference_voltage; 
-    float gain = -1.f / (0.4f * reference_voltage / 300.f); // 0.8 because of the 10% to 90% output range
+    // 0.8 because of the 10% to 90% output range
+    float gain = 1.f / (0.4f * reference_voltage / 300.f) * Config::CURRENT_DIRECTION; 
     float offset = 0.5f * reference_voltage;
     float voltage_diff = (voltage - offset);
     float current = voltage_diff * gain;
@@ -68,7 +69,7 @@ VOID ads131m04_thread_entry(__unused ULONG thread_input)
         
         acu_voltage = acu_voltage * Config::ACU_VOLTAGE_GAIN;
         car_voltage = car_voltage * Config::CAR_VOLTAGE_GAIN;
-        current_voltage = current_voltage * Config::CURRENT_GAIN_NETWORK * -1.f;
+        current_voltage = current_voltage * Config::CURRENT_GAIN_NETWORK;
         current_ref_voltage = current_ref_voltage * Config::CURRENT_REF_GAIN_NETWORK;
 
         acu_voltage = acu_voltage_filter.update(acu_voltage);
@@ -78,6 +79,7 @@ VOID ads131m04_thread_entry(__unused ULONG thread_input)
         
         current = current_voltage_to_current(current_voltage, current_ref_voltage);
 
+        //slap on solution
         if(current < 0.5f and current > -0.5f)
         {
             current_offset = offset_calibration.update(current);

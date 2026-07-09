@@ -94,7 +94,7 @@ void log_vcell_error(uint32_t code)
     last_code = code;
     auto [dev, cell, error] = decode_error(code);
     if (error == 0) return;
-    std::format_to_n(error_write_buffer, sizeof(error_write_buffer), "CEEL V: D {}, C {}", dev, cell);
+    std::format_to_n(error_write_buffer, sizeof(error_write_buffer), "CELL V: D {}, C {}", dev, cell);
     error_logger.log_error(error_write_buffer, tx_time_get());
 }
 

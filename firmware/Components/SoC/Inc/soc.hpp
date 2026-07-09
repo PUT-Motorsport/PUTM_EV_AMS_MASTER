@@ -39,10 +39,10 @@ namespace PUTM
         static inline constexpr Matrix C {{{ 0.00000000f, Config::C1, Config::C2 }}};
         // static inline constexpr float D { 0.00698732f };
         static inline constexpr float D { Config::D1 }; 
+        static inline constexpr float R { 2500000.0f };
         static inline constexpr Matrix Q {{{ 0.00020000f, 0.00000000f, 0.00000000f },
                                            { 0.00000000f, 0.02000000f, 0.00000000f },
                                            { 0.00000000f, 0.00000000f, 0.02000000f }}};
-        static inline constexpr float R { 2500000.0f };
         // was + but * ?
         static inline constexpr float R_charging { R * 99.f };
         static inline constexpr Polynomial ocv { Config::POLYNOMIAL_OCV };

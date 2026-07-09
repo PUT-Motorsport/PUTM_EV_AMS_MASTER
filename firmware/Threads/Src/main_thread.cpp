@@ -20,6 +20,7 @@
 #include "charger.hpp"
 #include "soc.hpp"
 #include "polynomial.hpp"
+#include "logger.hpp"
 #include <algorithm>
 
 using namespace PUTM;
@@ -59,6 +60,8 @@ extern StateMachine charger_state_machine;
 extern ErrorChecker error_checker;
 
 extern TX_TIMER soc_update_timer;
+
+Logger<1024 * 2> event_logger;
 
 /**
  * @brief Entry point for the main thread of the system.
@@ -125,6 +128,7 @@ VOID main_thread_entry(__unused ULONG thread_input)
     usb_reset.reset();
 
     data.system_init_done = true;
+    event_logger.log_event("SYS INIT DONE", tx_time_get());
 
     while(true)
     {
@@ -234,25 +238,12 @@ VOID main_thread_entry(__unused ULONG thread_input)
  */
 void soc_update_timer_callback(__unused ULONG arg)
 {
-    /* current low pass second order */
-    constexpr float rc = 0.005f; // time constant
-    constexpr float dt = 0.05f; // time step
-    constexpr float alpha = dt / (rc + dt);
-    
-    /* memory */
-    static float i_lp_1 = 0.0f;
-    static float i_lp_2 = 0.0f;
-
-    i_lp_1 = i_lp_1 + alpha * (data.current - i_lp_1);
-    i_lp_2 = i_lp_2 + alpha * (i_lp_1 - i_lp_2);
-
-    float current_lp = i_lp_2;
     /* Update SoC */
     for(size_t i = 0; i < Config::STACK_SIZE; i++)
     {
         for(size_t j = 0; j < Config::CELL_COUNT_PER_DEVICE; j++)
         {
-            data.cell_socs[i][j].update(data.cell_voltages[i][j], current_lp, data.on_charger);
+            data.cell_socs[i][j].update(data.cell_voltages[i][j], data.current, data.on_charger);
         }
     }
 }

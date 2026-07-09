@@ -9,6 +9,12 @@
 
 namespace PUTM
 {
+    enum class CurrentDirection : int32_t
+    {
+        REVERSED = -1,
+        FORWARD = 1
+    };
+
     namespace Config
     {
         /* DEV CONFIG */
@@ -40,7 +46,10 @@ namespace PUTM
         static constexpr float CELL_OT_FLOAT { 58.f };
         /* Undertemperature trigger in [degC] */
         static constexpr float CELL_UT_FLOAT { 0.f };
-        /* Max cell balancing time */
+        /* [NOT USED] Max cell balancing time [ms] */
+        // static constexpr uint32_t CELL_BALANCING_TIMEOUT { 15000 };Config::CELL_BALANCING_TIMEOUT
+        /* Cell balance target [mV]*/
+        static constexpr uint32_t CELL_BALANCE_TARGET { 5 };
         
         /* Voltage that is considered "High Voltage" according to FSG rules */
         static constexpr float MIN_HV_THRESH { 60.f };
@@ -111,12 +120,13 @@ namespace PUTM
          */
         static constexpr uint32_t STATE_MACHINE_IDLE_TO_PRECHARGE_WAIT { 1000 };
 
-        /* Which channel is used for car voltage measurement from 0 to s3*/
+        /* Which channel is used for car voltage measurement from 0 to 3*/
         static constexpr uint32_t CAR_VOLTAGE_CHANNEL { 3 };
         /* Which channel is used for accumulator voltage measurement from 0 to 3*/
         static constexpr uint32_t ACU_VOLTAGE_CHANNEL { 2 };
         /* Which channel is used to measure current */
         static constexpr uint32_t CURRENT_CHANNEL { 1 };
+        /* Which channel is used to measure current reference */
         static constexpr uint32_t CURRENT_REF_CHANNEL { 0 };
 
         // TODO: topic for much later but maybe do a self offset/gain calibration
@@ -126,7 +136,8 @@ namespace PUTM
         static constexpr float ACU_VOLTAGE_GAIN { -1000.f / 2 };
         static constexpr float CURRENT_OFFSET { 0.43f };
         /* Current measurement gain * 3 is for the resistor divider on the input */
-        static constexpr float CURRENT_GAIN_NETWORK { 3.04744f }; //{ 3.f };
+        static constexpr float CURRENT_GAIN_NETWORK { -3.04744f }; // the inputs + & - are reversed on the hardware
+        static constexpr float CURRENT_DIRECTION { static_cast<float>(CurrentDirection::REVERSED) };
         // static constexpr float CURRENT_GAIN { 1.f / (2.f / 300.f) };
         static constexpr float CURRENT_REF_OFFSET { 0.f };
         // static constexpr float CURRENT_REF_R1 { 9.98e+3f };

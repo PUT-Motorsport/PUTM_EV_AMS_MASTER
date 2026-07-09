@@ -40,6 +40,28 @@ using namespace PUTM_CAN;
 putm_ev_can::CanDriver can_driver;
 
 Logger<1024 * 2> error_logger_com;
+extern Logger<1024 * 2> error_logger;
+extern Logger<1024 * 2> event_logger;
+
+extern StateMachine air_state_machine;
+extern StateMachine charger_state_machine;
+
+extern ErrorChecker error_checker;
+
+extern Gpio usb_reset;
+
+// extern TX_MUTEX tx_buffer_mutex;
+// extern TX_MUTEX rx_buffer_mutex;
+
+static StaticJsonDocument<Config::TX_JSON_BUFFER_SIZE> tx_json;
+static char tx_char_buffer[TX_JSON_BUFFER_SIZE] { }; // TODO: Maybe change to its own buffer size
+static StaticJsonDocument<Config::RX_JSON_BUFFER_SIZE> rx_json;
+static char rx_char_buffer[RX_UART_BUFFER_SIZE] { };
+
+static Uart uart(&huart1);
+
+static std::string_view command;
+
 static char error_write_buffer[128];
 
 /* seperate thread for timing tweeks */
@@ -108,25 +130,6 @@ VOID car_can_thread_entry(__unused ULONG thread_input)
     }
 }
 
-extern Logger<2 * 1024> error_logger;
-
-extern StateMachine air_state_machine;
-extern StateMachine charger_state_machine;
-
-extern ErrorChecker error_checker;
-
-extern Gpio usb_reset;
-
-// extern TX_MUTEX tx_buffer_mutex;
-// extern TX_MUTEX rx_buffer_mutex;
-
-static StaticJsonDocument<Config::TX_JSON_BUFFER_SIZE> tx_json;
-static char tx_char_buffer[TX_JSON_BUFFER_SIZE] { }; // TODO: Maybe change to its own buffer size
-static StaticJsonDocument<Config::RX_JSON_BUFFER_SIZE> rx_json;
-static char rx_char_buffer[RX_UART_BUFFER_SIZE] { };
-
-static Uart uart(&huart1);
-
 static std::function<void(size_t)> usb_rx_callback = [](size_t size)
 {
     DeserializationError error = deserializeJson(rx_json, rx_char_buffer, RX_UART_BUFFER_SIZE);
@@ -138,7 +141,7 @@ static std::function<void(size_t)> usb_rx_callback = [](size_t size)
     }
     else
     {
-        std::string_view command = rx_json["command"];
+        command = rx_json["command"];
         if(command == "charger_on")
         {
             data.cmd_charger = true;
@@ -195,31 +198,25 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
     // uart.init();
     uart.set_baudrate(250000);
     // uart.set_rx_timeout(10);
-    uart.async_rx_unknown_dma(rx_char_buffer, RX_UART_BUFFER_SIZE, &usb_rx_callback);
 
 
     while(true)
     {
-        if(not data.usb_connected) first_run = true;
-        if(data.usb_connected) //if()
+        if(not data.usb_connected)
         {
-            // if(first_run)
-            // {
-            //     first_run = false;
-
-            //     usb_reset.set();
-            //     tx_thread_sleep(10);
-            //     usb_reset.reset();
-
-            //     // uart.deinit();
-            //     // uart.init();
-            //     // uart.set_baudrate(250000);
-            //     // uart.set_rx_timeout(10);
-            //     // uart.async_rx_unknown_dma(rx_char_buffer, RX_UART_BUFFER_SIZE, &usb_rx_callback);
-
-            //     continue;
-            // }
-
+            first_run = true;
+            if(uart.async_rx_busy() == HAL_BUSY)
+            {
+                uart.abort_async_rx_unknown_dma();
+            }
+        }
+        if(data.usb_connected and first_run)
+        {
+            first_run = false;
+            uart.async_rx_unknown_dma(rx_char_buffer, RX_UART_BUFFER_SIZE, &usb_rx_callback);
+        }
+        if(data.usb_connected)
+        {
             tx_json.clear();
             tx_json["timestamp"] = tx_time_get();
             tx_json["current"] = data.current;
@@ -318,11 +315,28 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
                     tx_json["com_errors"].add(log);
                     tx_thread_relinquish();
                 }
+                tx_json["events"] = JsonArray();
+                for(auto log : event_logger)
+                {
+                    tx_json["events"].add(log);
+                    tx_thread_relinquish();
+                }
                 //if(data.even_moar_data)
                 {
                     tx_json["vusb"] = data.vusb;
                     tx_json["usb_connected"] = data.usb_connected;
                     tx_json["last_command"] = data.last_command;
+                }
+                tx_thread_relinquish();
+                {
+                    tx_json["charger_battery_read_voltage"] = data.charger.battery_read_voltage;
+                    tx_json["charger_battery_read_current"] = data.charger.battery_read_current;
+                    tx_json["charger_hardware_fail"] = data.charger.hardware_fail;
+                    tx_json["charger_over_temperature"] = data.charger.over_temperature;
+                    tx_json["charger_in_voltage_fail"] = data.charger.in_voltage_fail;
+                    tx_json["charger_starting_state"] = data.charger.starting_state;
+                    tx_json["charger_communication_state"] = data.charger.communication_state;
+                    tx_json["charger_last_recive_tick"] = data.charger.last_recive_tick;
                 }
                 tx_thread_relinquish();
             }
