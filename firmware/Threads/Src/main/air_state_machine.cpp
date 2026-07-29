@@ -160,7 +160,7 @@ State error
     .on_enter = []()
     { 
        hv_off();
-       sig_err.set();
+       data.error = true;
     },
     .on_update = []()
     { 

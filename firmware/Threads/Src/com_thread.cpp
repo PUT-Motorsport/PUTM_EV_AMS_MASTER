@@ -106,8 +106,8 @@ VOID car_can_thread_entry(__unused ULONG thread_input)
             .current = (int16_t)(data.current * 10.f),
             .temp_max = (uint8_t)(data.cell_max_temperature), //(uint8_t)(data.cell_max_temperature * 10.f),
             .temp_avg = (uint8_t)(data.cell_avg_temperature), //(uint8_t)(data.cell_avg_temperature * 10.f),
-            .soc = (uint16_t)(data.soc * 1000.f),
-            .ok = not data.error,
+            .soc = (uint16_t)(data.current_integral * 10.f),
+            .ok = not data.error, 
             .precharge = data.precharge
         };
 
@@ -122,7 +122,7 @@ VOID car_can_thread_entry(__unused ULONG thread_input)
 
         if(not can_driver.Send(PUTM_CAN_M_BMS_HV_MAIN_FRAME_ID, bms_hv_main))
         {
-            error_logger_com.log_error("CAN send failed");
+            error_logger_com.log_error("CANCAR FAIL");
             data.warning = true;
         }
 
@@ -196,23 +196,20 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
     static bool first_run { true };
 
     // uart.init();
-    uart.set_baudrate(250000);
+    uart.set_baudrate(115200);
     // uart.set_rx_timeout(10);
-
 
     while(true)
     {
         if(not data.usb_connected)
         {
             first_run = true;
-            if(uart.async_rx_busy() == HAL_BUSY)
-            {
-                uart.abort_async_rx_unknown_dma();
-            }
         }
         if(data.usb_connected and first_run)
         {
             first_run = false;
+            event_logger.log_event("USB DET", tx_time_get());
+            uart.abort_async_rx_unknown_dma();
             uart.async_rx_unknown_dma(rx_char_buffer, RX_UART_BUFFER_SIZE, &usb_rx_callback);
         }
         if(data.usb_connected)
@@ -224,6 +221,7 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
             tx_json["acc_voltage"] = data.acu_voltage;
             tx_json["car_voltage"] = data.car_voltage;
             tx_json["soc"] = data.soc;
+            tx_json["current_integral"] = data.current_integral;
             tx_json["cell_max_voltage"] = data.cell_max_voltage;
             tx_json["cell_avg_voltage"] = data.cell_avg_voltage;
             tx_json["cell_min_voltage"] = data.cell_min_voltage;
@@ -347,7 +345,7 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
             //redundant newline at the end
             tx_char_buffer[s] = '\n';
             s += 1;
-            if(uart.await_tx_dma((uint8_t *)tx_char_buffer, s, 500) != HAL_OK)
+            if(uart.await_tx_dma((uint8_t *)tx_char_buffer, s, 2000) != HAL_OK)
             {
                 data.warning = true;
             }

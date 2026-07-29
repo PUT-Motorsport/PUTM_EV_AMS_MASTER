@@ -1,7 +1,6 @@
-[submodule "PUTM_EV_CAN_LIBRARY_2024"]
-	path = firmware/Components/PUTM_EV_CAN_LIBRARY_2024
-	url = git@github.com:PUT-Motorsport/PUTM_EV_CAN_LIBRARY_2024.git
-	branch = main
+[submodule "PUTM_EV_CAN_LIBRARY"]
+	path = firmware/Components/PUTM_EV_CAN_LIBRARY
+	url = git@github.com:PUT-Motorsport/PUTM_EV_CAN_LIBRARY.git
 [submodule "ArduinoJson"]
 	path = firmware/Components/ArduinoJson
 	url = git@github.com:bblanchon/ArduinoJson.git

@@ -149,20 +149,27 @@ Error tcell_error
         uint32_t code = 0;
         for(size_t i = 0; i < Config::STACK_SIZE; i++)
         {
+            size_t errors_per_stack = 0;
             for(size_t j = 0; j < Config::TEMPERATURES_COUNT_PER_DEVICE; j++)
             {
                 if(data.cell_temperatures[i][j] > Config::CELL_OT_FLOAT)
                 {
                     code = encode_error(i + 1, j + 1, 1);
+                    errors_per_stack++;
                 }
                 else if(data.cell_temperatures[i][j] < Config::CELL_UT_FLOAT)
                 {
                     code = encode_error(i + 1, j + 1, 2);
+                    errors_per_stack++;
                 }
+            }
+            if(errors_per_stack > Config::MAX_IGNORABLE_TEMPERATURES)
+            {
+                return code;
             }
         }
 
-        return code;
+        return 0;
     },
     .callback = [](Error* error, uint32_t code)
     {

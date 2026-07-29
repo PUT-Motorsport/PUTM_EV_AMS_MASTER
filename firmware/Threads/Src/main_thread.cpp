@@ -21,7 +21,9 @@
 #include "soc.hpp"
 #include "polynomial.hpp"
 #include "logger.hpp"
+
 #include <algorithm>
+#include <cmath>
 
 using namespace PUTM;
 using namespace Utils;
@@ -168,6 +170,14 @@ VOID main_thread_entry(__unused ULONG thread_input)
                 data.cell_temperatures[i][j] = t_r_poly.evaluate(r) - 273.f;
             }
         }
+        /* IgnoreSelected - ignore selected temps */
+        if(Config::IGNORE_TEMPERATURES_STRATEGY == InvalidTemperaturesStrategy::IgnoreSelected)
+        {
+            for(auto temp_pair : Config::IGNORED_TEMPERATURES_SELECTION)
+            {
+                data.cell_temperatures[temp_pair.first - 1][temp_pair.second - 1] = 0.f;
+            }
+        }
 
         /* update min max */
         float max_voltage = 0.0f;
@@ -180,28 +190,72 @@ VOID main_thread_entry(__unused ULONG thread_input)
         {
             for(size_t j = 0; j < Config::CELL_COUNT_PER_DEVICE; j++)
             {
+                accumulator_voltage += data.cell_voltages[i][j];
+            }
+            for(size_t j = 0; j < Config::TEMPERATURES_COUNT_PER_DEVICE; j++)
+            {
+                accumulator_temperature += data.cell_temperatures[i][j];
+            }
+        }
+
+        data.cell_avg_voltage = accumulator_voltage / (Config::STACK_SIZE * Config::CELL_COUNT_PER_DEVICE);
+        data.cell_avg_temperature = accumulator_temperature / (Config::STACK_SIZE * Config::TEMPERATURES_COUNT_PER_DEVICE);
+        data.cell_voltage_sum = accumulator_voltage;
+
+        /* IgnoreSelected - ignore selected temps */
+        if(Config::IGNORE_TEMPERATURES_STRATEGY == InvalidTemperaturesStrategy::StatisticalImplasubility)
+        {
+            float squared_difference_sum = 0.f;
+
+            for(size_t i = 0; i < Config::STACK_SIZE; i++)
+            {
+                for(size_t j = 0; j < Config::TEMPERATURES_COUNT_PER_DEVICE; j++)
+                {
+                    const float difference = data.cell_temperatures[i][j] - data.cell_avg_temperature;
+                    squared_difference_sum += difference * difference;
+                }
+            }
+
+            const float variance = squared_difference_sum / (Config::STACK_SIZE * Config::TEMPERATURES_COUNT_PER_DEVICE);
+            const float standardDeviation = sqrtf(variance);
+            const float max_temp = data.cell_avg_temperature + standardDeviation;
+            const float min_temp = data.cell_avg_temperature - standardDeviation;
+            
+            for(size_t i = 0; i < Config::STACK_SIZE; i++)
+            {
+                for(size_t j = 0; j < Config::TEMPERATURES_COUNT_PER_DEVICE; j++)
+                {
+                    if(data.cell_temperatures[i][j] > max_temp or 
+                       data.cell_temperatures[i][j] < min_temp)
+                    {
+                        data.cell_temperatures[i][j] = -100.f;
+                    }
+                }
+            }
+        }
+        
+        for(size_t i = 0; i < Config::STACK_SIZE; i++)
+        {
+            for(size_t j = 0; j < Config::CELL_COUNT_PER_DEVICE; j++)
+            {
                 if(data.cell_voltages[i][j] > max_voltage) max_voltage = data.cell_voltages[i][j];
                 if(data.cell_voltages[i][j] < min_voltage) min_voltage = data.cell_voltages[i][j];
                 if(data.cell_voltages[i][j] > Config::CELL_OV_FLOAT or data.cell_voltages[i][j] < Config::CELL_UV_FLOAT) continue;
-                accumulator_voltage += data.cell_voltages[i][j];
             }
             for(size_t j = 0; j < Config::TEMPERATURES_COUNT_PER_DEVICE; j++)
             {
                 if(data.cell_temperatures[i][j] > max_temperature) max_temperature = data.cell_temperatures[i][j];
                 if(data.cell_temperatures[i][j] < min_temperature) min_temperature = data.cell_temperatures[i][j];
                 if(data.cell_temperatures[i][j] > Config::CELL_OT_FLOAT or data.cell_temperatures[i][j] < Config::CELL_UT_FLOAT) continue;
-                accumulator_temperature += data.cell_temperatures[i][j];
             }
         }
+
         data.cell_max_temperature = max_temperature;
         data.cell_max_voltage = max_voltage;
         data.cell_min_temperature = min_temperature;
         data.cell_min_voltage = min_voltage;
-        data.cell_avg_voltage = accumulator_voltage / (Config::STACK_SIZE * Config::CELL_COUNT_PER_DEVICE);
-        data.cell_avg_temperature = accumulator_temperature / (Config::STACK_SIZE * Config::TEMPERATURES_COUNT_PER_DEVICE);
-        data.cell_voltage_sum = accumulator_voltage;
 
-
+        /* usb connected */
         data.vusb = HAL_ADC_GetValue(&hadc1);
         data.usb_connected = data.vusb > Config::USB_VBUS_THRESH;
 
@@ -223,7 +277,11 @@ VOID main_thread_entry(__unused ULONG thread_input)
 
         /* handle warning */
         if(data.warning) led_wrn.toggle();
-        if(data.error) led_err.toggle();
+        if(data.error) 
+        {
+            led_err.toggle();
+            sig_err.set();
+        }
 
         data.update_times.main_updates_per_sec = updates.update(tx_time_get());
 

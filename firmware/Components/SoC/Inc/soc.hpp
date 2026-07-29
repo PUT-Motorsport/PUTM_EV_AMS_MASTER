@@ -7,12 +7,14 @@
 #include "matrix.hpp"
 #include "polynomial.hpp"
 #include "config.hpp"
+// #include "pchip.hpp"
 
 namespace PUTM
 {
     class SoC
     {
     private:
+        // constexpr PCHIP pchip { { 1, 2, 3, 4 }, {1, 2, 3, 4} };
         // static constexpr float Ts = 0.1f; // Sampling time in seconds
     public:
         SoC() = default;

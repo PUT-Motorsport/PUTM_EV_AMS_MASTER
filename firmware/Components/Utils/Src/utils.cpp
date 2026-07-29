@@ -6,17 +6,20 @@
 
 float Utils::UpdatesCounter::update(uint32_t tick)
 {
-    float ups = 1000.f / (float)(tick - last_update);// * 0.001;
+    uint32_t dt = tick - last_update;
     last_update = tick;
-
-
-    for(size_t i = 1; i < HISTORY_COUNT; i++) last_values[i] = last_values[i - 1];
-    last_values[0] = ups;
-
-    float sum { 0.f };
-    for(size_t i = 0; i < HISTORY_COUNT; i++) sum += last_values[i];
     
-    return sum / (float)HISTORY_COUNT;
+    sum -= last_values[index];
+    last_values[index] = dt;
+    sum += dt;
+
+    index++;
+    if(index >= HISTORY_COUNT) index = 0;
+
+    float mean = (float)sum / (float)HISTORY_COUNT;
+    float ups = 1000.f / mean;
+
+    return ups;
 }
 
 std::string_view Utils::get_error_name(HAL_StatusTypeDef error_code)

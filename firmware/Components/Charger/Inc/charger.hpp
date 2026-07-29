@@ -18,6 +18,7 @@ namespace PUTM
     {
     private:
         // TODO: ADD IT TO CONFIG
+        // TODO: ADD can speed to config?
         constexpr static FDCAN_HandleTypeDef &hfdcan = hfdcan1;
         constexpr static uint32_t CHARGER_TX_ID = 0x1806E5F4;
         std::array<uint8_t, 8> __data;

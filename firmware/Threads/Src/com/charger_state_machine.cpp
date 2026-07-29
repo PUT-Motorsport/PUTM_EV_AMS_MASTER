@@ -23,37 +23,6 @@ extern Gpio led_err;
 extern Gpio led_wrn;
 extern Gpio sig_err;
 
-//TODO: add a air handler or sth, for now this works
-/**
- *  @brief  turn off hv
- */
-void hv_off2()
-{
-    sig_air_p.reset();
-    sig_air_m.reset();
-    sig_air_pre.reset();
-}
-
-/**
- *  @brief  start hv precharge
- */
-void hv_precharge2()
-{
-    sig_air_p.reset();
-    sig_air_m.set();
-    sig_air_pre.set();
-}
-
-/**
- *  @brief  turn on hv
- */
-void hv_on2()
-{
-    sig_air_p.set();
-    sig_air_m.set();
-    sig_air_pre.reset();
-}
-
 uint32_t charger_off_enter_tick;
 
 State charger_off
@@ -61,7 +30,9 @@ State charger_off
     .name = "off",
     .on_enter = []() 
     {  
-        hv_off2();
+        sig_air_p.reset();
+        sig_air_m.reset();
+        sig_air_pre.reset();
         charger_off_enter_tick = tx_time_get();
     },
     .on_update = []() 
@@ -80,7 +51,9 @@ State charger_idle
     .name = "idle",
     .on_enter = []() 
     { 
-        hv_off2();
+        sig_air_p.reset();
+        sig_air_m.reset();
+        sig_air_pre.reset();
     },
     .on_update = []() 
     { 
@@ -106,7 +79,9 @@ State charger_precharge
     .name = "precharge",
     .on_enter = []() 
     { 
-        hv_precharge2();
+        sig_air_p.reset();
+        sig_air_m.set();
+        sig_air_pre.reset();
         charger_precharge_enter_tick = tx_time_get();
     },
     .on_update = []() 
@@ -131,7 +106,9 @@ State charger_on
     .name = "on",
     .on_enter = []() 
     { 
-        hv_on2();
+        sig_air_p.set();
+        sig_air_m.set();
+        sig_air_pre.reset();
     },
     .on_update = []() 
     { 
@@ -155,11 +132,21 @@ State charger_error
     .name = "error",
     .on_enter = []()
     { 
-       hv_off2();
-       sig_err.set();
+        sig_air_p.reset();
+        sig_air_m.reset();
+        sig_air_pre.reset();
+        data.error = true;
     },
     .on_update = []()
     { 
+        charger_rx.update();
+        ChargerCanTxMessage frame
+		{
+			0.f,
+			0.f,
+            false
+		};
+        auto status = frame.send();
         // Flash error state
         // led_err.toggle();
         data.precharge = false;

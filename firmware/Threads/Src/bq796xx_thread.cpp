@@ -22,6 +22,17 @@ static constexpr float CELL_BALANCE_TARGET_FLOAT { Config::CELL_BALANCE_TARGET /
 
 extern Logger<1024 * 2> event_logger;
 
+void reset_balance_array()
+{
+    for(size_t device = 0; device < Config::STACK_SIZE; device++)
+    {
+        for(size_t cell = 0; cell < Config::CELL_COUNT_PER_DEVICE; cell++)
+        {
+            data.cell_balancing[device][cell] = false;
+        }
+    }
+}
+
 VOID bq796xx_thread_entry(__unused ULONG thread_input)
 {
     static Uart uart3(&huart3);
@@ -67,6 +78,7 @@ VOID bq796xx_thread_entry(__unused ULONG thread_input)
             data.cmd_balancing_off = false;
             balancing_on = false;
             bq.stop_balancing();
+            reset_balance_array();
             event_logger.log_event("BAL OFF", tx_time_get());
         }
         if(balancing_on and balancing_target < CELL_MIN_BALANCING_VOLTAGE_FLOAT)
@@ -74,12 +86,14 @@ VOID bq796xx_thread_entry(__unused ULONG thread_input)
             data.warning = true;
             balancing_on = false;
             bq.stop_balancing();
+            reset_balance_array();
             event_logger.log_error("BAL ERR 1", tx_time_get());
         }
         if(balancing_on and (data.cell_max_voltage - data.cell_min_voltage) < CELL_BALANCE_TARGET_FLOAT)
         {
             balancing_on = false;
             bq.stop_balancing();
+            reset_balance_array();
             event_logger.log_event("BAL DONE", tx_time_get());
         }
         // if(balancing_on)
@@ -122,9 +136,9 @@ VOID bq796xx_thread_entry(__unused ULONG thread_input)
 
         // if(balancing_on) bq.pause_balancing(device_address);
 
-        data.bq_read_data_status[device_address - 1] =  bq.read_single_data(data.cell_voltages[device_address - 1],
-                                                            data.gpio_voltages[device_address - 1],
-                                                            device_address);
+        data.bq_read_data_status[device_address - 1] = bq.read_single_data(data.cell_voltages[device_address - 1],
+                                                                       data.gpio_voltages[device_address - 1],
+                                                                                  device_address);
         // if(balancing_on) bq.resume_balancing(device_address);
         device_address++;
         if(device_address > Config::STACK_SIZE) device_address = 1; 

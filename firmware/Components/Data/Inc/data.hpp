@@ -40,6 +40,7 @@ namespace PUTM
         float cell_voltage_sum { 0.f };
 
         float charging_current { 0.0f };
+        float current_integral { 0.0f };
 
         /* generic error flag it should be raised if error condition was found */
         bool error { false };

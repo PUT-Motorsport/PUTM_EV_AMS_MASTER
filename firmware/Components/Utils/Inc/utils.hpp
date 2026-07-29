@@ -156,9 +156,11 @@ namespace Utils
      */
     struct UpdatesCounter
     {
-        static constexpr size_t HISTORY_COUNT { 4 };
+        static constexpr size_t HISTORY_COUNT { 16 };
         uint32_t last_update { 0 };
         uint32_t last_values[HISTORY_COUNT] { 0 };
+        uint32_t sum { 0 };
+        size_t index { 0 };
         
         float update(uint32_t tick);
     };

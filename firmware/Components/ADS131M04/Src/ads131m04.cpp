@@ -24,7 +24,7 @@ void Device::init()
     }
     {
         auto cmd = Cmd::CmdWReg<Regs::Cfg>();
-        cmd.set_data((Regs::Cfg){ .gc_en = true, .gc_dly = GcDly::_4096 });
+        cmd.set_data((Regs::Cfg){ .gc_en = true, .gc_dly = GcDly::_16 });
         com(&cmd);
     }
     // {
@@ -34,7 +34,7 @@ void Device::init()
     // }
     {
         auto cmd = Cmd::CmdWReg<Regs::Clock>();
-        cmd.set_data((Regs::Clock){ .pwr = Pwr::LowPower, .osr = Osr::_4096, .tbm = false, .ch0_en = true, .ch1_en = true, .ch2_en = true, .ch3_en = true });
+        cmd.set_data((Regs::Clock){ .pwr = Pwr::HighRes, .osr = Osr::_1024, .tbm = false, .ch0_en = true, .ch1_en = true, .ch2_en = true, .ch3_en = true });
         com(&cmd);
     }
 }

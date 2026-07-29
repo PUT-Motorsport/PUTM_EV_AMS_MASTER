@@ -24,8 +24,8 @@ A = Y1 - (B + L1**2 * C) * L1
 # C = 4.853903323  # example value
 
 # --- Define resistance range ---
-R_min = 1     # minimum resistance
-R_max = 20 # maximum resistance
+R_min = 1     # minimum resistance in kOhms
+R_max = 20 # maximum resistance in kOhms
 num_points = 500  # number of data points
 
 # Generate R values (log scale for better sampling)
@@ -34,6 +34,8 @@ lnR = np.log(R_values)
 
 # Original equation: 1/T = A + B*lnR + C*(lnR)^3
 T = 1 / (A + B * lnR + C * (lnR ** 3))
+T_original = np.array(T)
+T = [t if t < 321 else ((t - 321) / 3 + 321) for t in T]
 
 # Fit a polynomial in R to approximate inv_T
 poly_degree = 8  # change to 2, 3, 4, etc., for different fits
@@ -47,6 +49,7 @@ T_approx = poly_fit(R_values)
 plt.figure(figsize=(10, 6))
 plt.plot(R_values, T, label='T', color='blue')
 plt.plot(R_values, T_approx, label=f'Polynomial Approx (deg {poly_degree})', linestyle='--', color='red')
+plt.plot(R_values, T_original, label='T original', color='green')
 plt.xscale('log')
 plt.xlabel('Resistance R (Ohms)')
 plt.ylabel('T K')
