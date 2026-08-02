@@ -28,8 +28,8 @@ namespace PUTM
      * Each logged message is formatted as:
      *
      * @code
-     * 000000000 ERR: message
-     * 000000000 EVT: message
+     * timestamp ERR: message
+     * timestamp EVT: message
      * @endcode
      *
      * where the numeric prefix is the supplied tick value padded to 9 digits.

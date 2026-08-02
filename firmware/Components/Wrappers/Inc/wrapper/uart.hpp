@@ -123,7 +123,7 @@ public:
     Uart() : huart(nullptr) { }
     Uart(UART_HandleTypeDef *huart) : huart(huart) 
     {
-        std::snprintf(semaphore_name, 64, "UART semaphore %d", huart);
+        std::snprintf(semaphore_name, 64, "UART semaphore %d", reinterpret_cast<int>(huart));
         if(tx_semaphore_create(&semaphore, semaphore_name, 0) != TX_SUCCESS) Error_Handler();
     }
     Uart(const Uart&) = delete; // Disable copy constructor

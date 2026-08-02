@@ -20,8 +20,6 @@ using namespace Utils;
 static constexpr float CELL_MIN_BALANCING_VOLTAGE_FLOAT { Config::CELL_MIN_BALANCING_VOLTAGE / 1000.f };
 static constexpr float CELL_BALANCE_TARGET_FLOAT { Config::CELL_BALANCE_TARGET / 1000.f };
 
-extern Logger<1024 * 2> event_logger;
-
 void reset_balance_array()
 {
     for(size_t device = 0; device < Config::STACK_SIZE; device++)
@@ -46,6 +44,9 @@ VOID bq796xx_thread_entry(__unused ULONG thread_input)
     size_t last_balancing_times[Config::STACK_SIZE] { 0 };
     float balancing_target { 5.f };
 
+    // TODO: add wait fo the ads to read the reference voltage of current to rise
+    // above the needed threshold
+
     data.bq_init_status = bq.init();
 
     tx_thread_sleep(20);
@@ -56,9 +57,9 @@ VOID bq796xx_thread_entry(__unused ULONG thread_input)
 
     for(size_t i = 0; i < Config::STACK_SIZE; i++)
     {
-        data.bq_read_data_status[device_address - 1] =  bq.read_single_data(data.cell_voltages[i],
-                                                                            data.gpio_voltages[i],
-                                                                            i + 1);
+        data.bq_read_data_status[i] =  bq.read_single_data(data.cell_voltages[i],
+                                                           data.gpio_voltages[i],
+                                                           i + 1);
     }
 
     tx_thread_sleep(10);
@@ -71,7 +72,7 @@ VOID bq796xx_thread_entry(__unused ULONG thread_input)
             data.cmd_balancing_on = false;
             balancing_on = true;
             balancing_target = data.cell_min_voltage;
-            event_logger.log_event("BAL ON", tx_time_get());
+            data.loggers.events.log_event("BAL ON", tx_time_get());
         }
         else if(data.cmd_balancing_off)
         {
@@ -79,7 +80,7 @@ VOID bq796xx_thread_entry(__unused ULONG thread_input)
             balancing_on = false;
             bq.stop_balancing();
             reset_balance_array();
-            event_logger.log_event("BAL OFF", tx_time_get());
+            data.loggers.events.log_event("BAL OFF", tx_time_get());
         }
         if(balancing_on and balancing_target < CELL_MIN_BALANCING_VOLTAGE_FLOAT)
         {
@@ -87,14 +88,14 @@ VOID bq796xx_thread_entry(__unused ULONG thread_input)
             balancing_on = false;
             bq.stop_balancing();
             reset_balance_array();
-            event_logger.log_error("BAL ERR 1", tx_time_get());
+            data.loggers.events.log_error("BAL ERR 1", tx_time_get());
         }
         if(balancing_on and (data.cell_max_voltage - data.cell_min_voltage) < CELL_BALANCE_TARGET_FLOAT)
         {
             balancing_on = false;
             bq.stop_balancing();
             reset_balance_array();
-            event_logger.log_event("BAL DONE", tx_time_get());
+            data.loggers.events.log_event("BAL DONE", tx_time_get());
         }
         // if(balancing_on)
         // {

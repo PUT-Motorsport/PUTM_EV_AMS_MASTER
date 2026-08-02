@@ -39,10 +39,6 @@ using namespace PUTM_CAN;
 
 putm_ev_can::CanDriver can_driver;
 
-Logger<1024 * 2> error_logger_com;
-extern Logger<1024 * 2> error_logger;
-extern Logger<1024 * 2> event_logger;
-
 extern StateMachine air_state_machine;
 extern StateMachine charger_state_machine;
 
@@ -89,7 +85,7 @@ VOID car_can_thread_entry(__unused ULONG thread_input)
     if(!can_driver.Init(&hfdcan2))
     {
         data.warning = true;
-        error_logger_com.log_error("CAN init failed");
+        data.loggers.errors.log_error("CAN init failed");
         while(true) tx_thread_sleep(1000);
     }
 
@@ -122,7 +118,6 @@ VOID car_can_thread_entry(__unused ULONG thread_input)
 
         if(not can_driver.Send(PUTM_CAN_M_BMS_HV_MAIN_FRAME_ID, bms_hv_main))
         {
-            error_logger_com.log_error("CANCAR FAIL");
             data.warning = true;
         }
 
@@ -208,7 +203,7 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
         if(data.usb_connected and first_run)
         {
             first_run = false;
-            event_logger.log_event("USB DET", tx_time_get());
+            data.loggers.events.log_event("USB DET", tx_time_get());
             uart.abort_async_rx_unknown_dma();
             uart.async_rx_unknown_dma(rx_char_buffer, RX_UART_BUFFER_SIZE, &usb_rx_callback);
         }
@@ -302,19 +297,13 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
                 tx_json["main_updates_per_sec"] = data.update_times.main_updates_per_sec;
                 tx_json["checker_errors"] = JsonArray();
                 tx_thread_relinquish();
-                for(auto log : error_logger)
+                for(auto log : data.loggers.errors)
                 {
                     tx_json["checker_errors"].add(log);
                     tx_thread_relinquish();
                 }
-                tx_json["com_errors"] = JsonArray();
-                for(auto log : error_logger_com)
-                {
-                    tx_json["com_errors"].add(log);
-                    tx_thread_relinquish();
-                }
                 tx_json["events"] = JsonArray();
-                for(auto log : event_logger)
+                for(auto log : data.loggers.events)
                 {
                     tx_json["events"].add(log);
                     tx_thread_relinquish();

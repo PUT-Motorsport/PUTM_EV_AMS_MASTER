@@ -22,8 +22,6 @@ Fir current_ref_filter { Config::_2HZ_HAMMING_FIR_COEFFS };
 // MovingAverage<256> current_ref_filter { };
 // MovingAverage<2048> offset_calibration;
 
-extern Logger<1024 * 2> event_logger;
-
 char write_buffer[128] { };
 
 float current_voltage_to_current(float voltage, float reference_voltage)

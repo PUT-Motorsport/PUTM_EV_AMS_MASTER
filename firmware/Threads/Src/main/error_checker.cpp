@@ -30,8 +30,6 @@ extern State error;
 
 ErrorChecker error_checker;
 
-Logger<1024 * 2> error_logger;
-
 static uint32_t encode_error(uint8_t dev, uint8_t unit, uint8_t error)
 {
     return ((uint32_t)(dev) * 10'000) + ((uint32_t)(unit) * 100) + (uint32_t)(error);
@@ -51,12 +49,12 @@ void log_com_error(uint32_t code)
     if (error == 0) return;
     if(dev == 0 and unit == 0)
     {
-        error_logger.log_error("COM\0", tx_time_get());
+        data.loggers.errors.log_error("COM\0", tx_time_get());
     }
     else
     {
         std::format_to_n(error_write_buffer, sizeof(error_write_buffer), "COM: D {}", dev, unit);
-        error_logger.log_error(error_write_buffer, tx_time_get());
+        data.loggers.errors.log_error(error_write_buffer, tx_time_get());
     }
 }
 
@@ -95,7 +93,7 @@ void log_vcell_error(uint32_t code)
     auto [dev, cell, error] = decode_error(code);
     if (error == 0) return;
     std::format_to_n(error_write_buffer, sizeof(error_write_buffer), "CELL V: D {}, C {}", dev, cell);
-    error_logger.log_error(error_write_buffer, tx_time_get());
+    data.loggers.errors.log_error(error_write_buffer, tx_time_get());
 }
 
 Error vcell_error
@@ -137,7 +135,7 @@ void log_tcell_error(uint32_t code)
     auto [dev, temp, error] = decode_error(code);
     if (error == 0) return;
     std::format_to_n(error_write_buffer, sizeof(error_write_buffer), "CELL T: D {}, T {}", dev, temp);
-    error_logger.log_error(error_write_buffer, tx_time_get());
+    data.loggers.errors.log_error(error_write_buffer, tx_time_get());
 }
 
 Error tcell_error
@@ -146,6 +144,7 @@ Error tcell_error
     .timeout = Config::STANDARD_ERROR_TIMEOUT,
     .condition = []() -> uint32_t 
     {
+        if constexpr (Config::TURN_OFF_TEMP_ERRORS) return 0;
         uint32_t code = 0;
         for(size_t i = 0; i < Config::STACK_SIZE; i++)
         {
@@ -185,7 +184,7 @@ void log_current_error(uint32_t code)
     last_code = code;
     auto [dev, unit, error] = decode_error(code);
     if (error == 0) return;
-    error_logger.log_error("I LONG", tx_time_get());
+    data.loggers.errors.log_error("I LONG", tx_time_get());
 }
 
 Error current_error_long
@@ -219,7 +218,7 @@ void log_current_error_short(uint32_t code)
     last_code = code;
     auto [dev, unit, error] = decode_error(code);
     if (error == 0) return;
-    error_logger.log_error("I SHORT", tx_time_get());
+    data.loggers.errors.log_error("I SHORT", tx_time_get());
 }
 
 Error current_error_short
@@ -254,7 +253,7 @@ void log_v_error(uint32_t code)
     auto [dev, unit, error] = decode_error(code);
     if (error == 0) return;
     std::format_to_n(error_write_buffer, sizeof(error_write_buffer), "TS ERR: D {}", error);
-    error_logger.log_error("TS ERR", tx_time_get());
+    data.loggers.errors.log_error("TS ERR", tx_time_get());
 }
 
 Error v_error

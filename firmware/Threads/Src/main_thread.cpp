@@ -21,6 +21,8 @@
 #include "soc.hpp"
 #include "polynomial.hpp"
 #include "logger.hpp"
+//FIXME: delete this later
+#include "pchip.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -62,8 +64,6 @@ extern StateMachine charger_state_machine;
 extern ErrorChecker error_checker;
 
 extern TX_TIMER soc_update_timer;
-
-Logger<1024 * 2> event_logger;
 
 /**
  * @brief Entry point for the main thread of the system.
@@ -130,7 +130,7 @@ VOID main_thread_entry(__unused ULONG thread_input)
     usb_reset.reset();
 
     data.system_init_done = true;
-    event_logger.log_event("SYS INIT DONE", tx_time_get());
+    data.loggers.events.log_event("SYS INIT DONE", tx_time_get());
 
     while(true)
     {
@@ -263,7 +263,7 @@ VOID main_thread_entry(__unused ULONG thread_input)
         air_state_machine.update();
 
         /* Error checker */
-        if constexpr (Config::TURN_OFF_ERRORS)
+        if constexpr (Config::TURN_OFF_ERROR_CHECKER)
         {
             data.error = false;
         }

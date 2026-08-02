@@ -6,6 +6,7 @@
 
 #include "config.hpp"
 #include "soc.hpp"
+#include "logger.hpp"
 
 #include "atomic"
 #include "array"
@@ -95,6 +96,7 @@ namespace PUTM
             float main_updates_per_sec { 0.f };
         } update_times;
 
+        // TODO: figure out the bools what false / true means  
         struct
         {
             float battery_read_voltage { 0 };
@@ -106,6 +108,12 @@ namespace PUTM
             bool communication_state { false };
             uint32_t last_recive_tick { 0 };
         } charger;
+
+        struct
+        {
+            Logger<Config::ERROR_LOGGER_SIZE> errors;
+            Logger<Config::EVENT_LOGGER_SIZE> events;
+        } loggers;
 
 #ifdef TEST_MODE_1
         /* reset state machine */

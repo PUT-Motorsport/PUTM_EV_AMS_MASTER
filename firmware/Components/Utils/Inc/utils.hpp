@@ -91,8 +91,6 @@ namespace Utils
     *           of a object
     *   @tparam `ADDRESSABLE` an 'addressable' object, meaning it implements a
     *           static constexpr member `ADDRESS`
-    *   @param  `a` its used to call a function without specifying the template
-    *           argument
     *   @return Address of the object
     */
     template<IsAddressable ADDRESSABLE>
@@ -127,9 +125,9 @@ namespace Utils
     /**
      *  @brief  This function is used to run a function for each
      *           integer in range [I, N)
-     *  @tparam `I` start index
-     *  @tparam `N` end index
-     *  @tparam `F` function type
+     *  @tparam `BEGIN` start index
+     *  @tparam `END` end index
+     *  @tparam `FUNCTION` function type
      *  @param  `f` function object
      *  @return void
      *  @note   This function is consteval, meaning it can be evaluated at compile time

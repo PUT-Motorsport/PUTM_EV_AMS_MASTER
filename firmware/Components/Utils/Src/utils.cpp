@@ -2,8 +2,6 @@
 #include "tx_api.h"
 #include "cstring"
 
-
-
 float Utils::UpdatesCounter::update(uint32_t tick)
 {
     uint32_t dt = tick - last_update;

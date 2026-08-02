@@ -523,7 +523,8 @@ namespace PUTM
                 BalCtrl2 bal_ctrl_2
                 {
                     .auto_bal = false,
-                    .bal_go = true
+                    .bal_go = true,
+                    .cb_pause = false
                 };
                 write<Stack>(convert_to<uint8_t>(bal_ctrl_2), address_of<BalCtrl2>());
                 write<Stack>(convert_to<uint8_t>(bal_ctrl_2), address_of<BalCtrl2>());
@@ -541,7 +542,8 @@ namespace PUTM
                 BalCtrl2 bal_ctrl_2
                 {
                     .auto_bal = false,
-                    .bal_go = true
+                    .bal_go = true,
+                    .cb_pause = false
                 };
                 write<Single>(convert_to<uint8_t>(bal_ctrl_2), address_of<BalCtrl2>(), device);
                 write<Single>(convert_to<uint8_t>(bal_ctrl_2), address_of<BalCtrl2>(), device);
@@ -692,7 +694,8 @@ namespace PUTM
                     BalCtrl2 bal_ctrl_2
                     {
                         .auto_bal = false,
-                        .bal_go = false
+                        .bal_go = false,
+                        .cb_pause = true
                     };
                     write<Stack>(convert_to<uint8_t>(bal_ctrl_2), address_of<BalCtrl2>());
                     write<Stack>(convert_to<uint8_t>(bal_ctrl_2), address_of<BalCtrl2>());

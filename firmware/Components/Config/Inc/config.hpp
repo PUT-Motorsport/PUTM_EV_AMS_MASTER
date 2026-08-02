@@ -27,7 +27,8 @@ namespace PUTM
     namespace Config
     {
         /* DEV CONFIG */
-        static constexpr bool TURN_OFF_ERRORS { false };
+        static constexpr bool TURN_OFF_ERROR_CHECKER { false };
+        static constexpr bool TURN_OFF_TEMP_ERRORS { true };
 
         /* Bq796xx stack size */
         static constexpr size_t STACK_SIZE { 12 };
@@ -111,8 +112,8 @@ namespace PUTM
         static constexpr uint32_t CURRENT_ERROR_LONG_TIMEOUT { 2000 };
 
         /**
-         *	Precharge min waiting time expresed in [ms], if caps charge too slowly this shit will timeout,
-         *	also used for min precharge wait, so the airs dont change states to fast
+         *  Precharge min waiting time expresed in [ms], if caps charge too slowly this shit will timeout,
+         *  also used for min precharge wait, so the airs dont change states to fast
          */
         static constexpr uint32_t MIN_PRECHARGE_WAIT { 2000 };
         
@@ -158,10 +159,24 @@ namespace PUTM
         static constexpr float CELL_OV_FLOAT { static_cast<float>(CELL_OV) / 1000.f };
         static constexpr float CELL_UV_FLOAT { static_cast<float>(CELL_UV) / 1000.f };
 
+        /* Logger buffers */
+        static constexpr size_t ERROR_LOGGER_SIZE { 2 * 1024U };
+        static constexpr size_t EVENT_LOGGER_SIZE { 2 * 1024U };
+
+
         /* JSON size buffer */
-        static constexpr uint32_t TX_JSON_BUFFER_SIZE { 8 * 1024U };
-        static constexpr uint32_t RX_JSON_BUFFER_SIZE { 1024U };
-        static constexpr uint32_t RX_UART_BUFFER_SIZE { 128U };
+        static constexpr size_t TX_JSON_BUFFER_SIZE { 12 * 1024U };
+        static constexpr size_t RX_JSON_BUFFER_SIZE { 1024U };
+        static constexpr size_t RX_UART_BUFFER_SIZE { 128U };
+
+        /* Thread buffers */
+        static constexpr size_t TEST_THREAD_POOL_SIZE { 2048U };
+        static constexpr size_t ADS131m04_THREAD_POOL_SIZE { 2048U };  
+        static constexpr size_t BQ796xx_THREAD_POOL_SIZE { 2048U }; 
+        static constexpr size_t MAIN_THREAD_POOL_SIZE { 4096U };
+        static constexpr size_t USB_COM_THREAD_POOL_SIZE { 16 * 1024U };
+        static constexpr size_t CAR_CAN_THREAD_POOL_SIZE { 2 * 1024U };
+        static constexpr size_t CHARGER_CAN_THREAD_POOL_SIZE { 1024U };
 
         /* VUSB Treshold */
         static constexpr uint16_t USB_VBUS_THRESH { 500 };
