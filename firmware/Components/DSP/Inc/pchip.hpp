@@ -10,7 +10,7 @@
 
 namespace PUTM
 {
-    using Utils::static_for;
+    // using Utils::static_for;
     using Utils::throw_consteval_failure;
 
     /**
@@ -38,20 +38,20 @@ namespace PUTM
             StrictlyDecreasing
         };
     private:
-        TYPE __x[SIZE] { };
-        TYPE __y[SIZE] { };
+        mutable TYPE __x[SIZE] { };
+        mutable TYPE __y[SIZE] { };
 
         /*
          * Internal PCHIP tangents used for x -> y interpolation.
          */
-        TYPE __tangents_x[SIZE] { };
-        TYPE __tangents_y[SIZE] { };
+        mutable TYPE __tangents_x[SIZE] { };
+        mutable TYPE __tangents_y[SIZE] { };
 
-        bool __initialized { false };
+        mutable bool __initialized { false };
         /* more so sanity check */
-        bool __consteval { false };
+        mutable bool __consteval { false };
 
-        Monotonicity __monotonicity { Monotonicity::None };
+        mutable Monotonicity __monotonicity { Monotonicity::None };
         // bool __is_strictly_monotone_increasing { false };
         // bool __is_strictly_monotone_decreasing { false };
     
@@ -69,7 +69,7 @@ namespace PUTM
          *  @param  x Input x coordinates.
          *  @param  y Input y coordinates.
          */
-        constexpr  PCHIP(const TYPE (&x)[SIZE], const TYPE (&y)[SIZE])
+        constexpr PCHIP(const TYPE (&x)[SIZE], const TYPE (&y)[SIZE])
         {
             if consteval
             {
@@ -87,7 +87,7 @@ namespace PUTM
          *  @note   y -> x is enabled when y is monotonically increasing or
          *          monotonically decreasing and is not constant.
          */
-        bool set_data(const TYPE (&x)[SIZE], const TYPE (&y)[SIZE])
+        constexpr bool set_data(const TYPE (&x)[SIZE], const TYPE (&y)[SIZE])
         {   
             bool is_monotone_increasing = true;
             bool is_monotone_decreasing = true;
@@ -483,7 +483,7 @@ namespace PUTM
             return evaluate_interval_y(find_y_interval(query), query);
         }
     };
-
-    //FIXME: delete this later
-    static constexpr PCHIP temporary { {1, 2, 3, 4}, {1, 2, 3, 4} };
 }
+
+//FIXME: delete this later
+// static constexpr PUTM::PCHIP temporary { {1, 2, 3, 4}, {1, 2, 3, 4} };
