@@ -2270,6 +2270,17 @@
 				)
 			)
 		)
+		(property "Mouser Part Number" "200-SQT12001LD "
+			(at 149.86 100.33 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "18"
 			(uuid "b6658902-b369-4d0e-8402-7e62d0c5a8b2")
 		)
@@ -2473,6 +2484,17 @@
 			)
 		)
 		(property "Description" "Generic connector, double row, 02x04, odd/even pin numbering scheme (row 1 odd numbers, row 2 even numbers), script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 152.4 68.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Mouser Part Number" "200-SQT10801LD"
 			(at 152.4 68.58 0)
 			(hide yes)
 			(show_name no)

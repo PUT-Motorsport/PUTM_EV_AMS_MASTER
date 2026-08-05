@@ -5410,6 +5410,17 @@
 				)
 			)
 		)
+		(property "Mouser Part Number" "--"
+			(at 247.65 130.81 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "3"
 			(uuid "e3958fac-8af1-4f3f-9351-cbcf9520815e")
 		)
@@ -5737,7 +5748,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "--"
+		(property "Mouser Part Number" "81-GCM188R71H104KA7D"
 			(at 255.27 58.42 0)
 			(hide yes)
 			(show_name no)
@@ -5983,7 +5994,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "810-C2012X5R1V226MAC"
+		(property "Mouser Part Number" "81-GRM188R71H224MA4D"
 			(at 209.55 58.42 0)
 			(hide yes)
 			(show_name no)
@@ -6218,7 +6229,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "--"
+		(property "Mouser Part Number" "ERJ-1GJ0R00C "
 			(at 198.12 48.26 0)
 			(hide yes)
 			(show_name no)
@@ -6464,7 +6475,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "810-C2012X5R1V226MAC"
+		(property "Mouser Part Number" "81-GRM188R71H224MA4D"
 			(at 198.12 58.42 0)
 			(hide yes)
 			(show_name no)
@@ -6710,7 +6721,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "--"
+		(property "Mouser Part Number" "81-GCM188R71H104KA7D"
 			(at 220.98 58.42 0)
 			(hide yes)
 			(show_name no)
@@ -7186,7 +7197,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "603-CC603KPX7R9BB222"
+		(property "Mouser Part Number" "81-GRM188R61H225ME1D"
 			(at 72.39 138.43 0)
 			(hide yes)
 			(show_name no)
@@ -7508,7 +7519,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "--"
+		(property "Mouser Part Number" "81-GCM188R71H104KA7D"
 			(at 266.7 58.42 0)
 			(hide yes)
 			(show_name no)
@@ -7941,7 +7952,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "--"
+		(property "Mouser Part Number" "81-GCM188R71H104KA7D"
 			(at 232.41 58.42 0)
 			(hide yes)
 			(show_name no)
@@ -8264,7 +8275,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "603-CC603KPX7R9BB222"
+		(property "Mouser Part Number" "81-GRM188R61H225ME1D"
 			(at 62.23 138.43 0)
 			(hide yes)
 			(show_name no)
@@ -8664,7 +8675,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "--"
+		(property "Mouser Part Number" "81-GCM188R71H104KA7D"
 			(at 243.84 58.42 0)
 			(hide yes)
 			(show_name no)
@@ -8899,7 +8910,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "--"
+		(property "Mouser Part Number" "ERJ-1GJ0R00C "
 			(at 69.85 67.31 0)
 			(hide yes)
 			(show_name no)

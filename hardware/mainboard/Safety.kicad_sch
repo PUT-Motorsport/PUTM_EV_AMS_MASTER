@@ -3010,7 +3010,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "--"
+		(property "Mouser Part Number" "81-GCM188R71H104KA7D"
 			(at 123.19 124.46 0)
 			(hide yes)
 			(show_name no)
@@ -3522,6 +3522,17 @@
 				)
 			)
 		)
+		(property "Mouser Part Number" "--"
+			(at 85.09 132.08 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "ab986fb7-b22e-4eeb-aad3-a00b02a2d70d")
 		)
@@ -3952,7 +3963,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "--"
+		(property "Mouser Part Number" "667-ERJ-3EKF1002V"
 			(at 50.8 144.78 0)
 			(hide yes)
 			(show_name no)
@@ -4232,6 +4243,17 @@
 			)
 		)
 		(property "Sim.Type" ""
+			(at 105.41 140.97 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Mouser Part Number" "--"
 			(at 105.41 140.97 0)
 			(hide yes)
 			(show_name no)
@@ -4594,7 +4616,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "--"
+		(property "Mouser Part Number" "667-ERJ-3EKF1002V"
 			(at 105.41 146.05 0)
 			(hide yes)
 			(show_name no)
@@ -4860,6 +4882,17 @@
 			)
 		)
 		(property "Sim.Type" ""
+			(at 52.07 68.58 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Mouser Part Number" "--"
 			(at 52.07 68.58 90)
 			(hide yes)
 			(show_name no)
@@ -5282,6 +5315,17 @@
 				)
 			)
 		)
+		(property "Mouser Part Number" "--"
+			(at 105.41 151.13 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "38ac6a02-62a3-4832-b9e7-5277bfa657f5")
 		)
@@ -5437,6 +5481,17 @@
 			)
 		)
 		(property "Sim.Type" ""
+			(at 74.93 149.86 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Mouser Part Number" "--"
 			(at 74.93 149.86 90)
 			(hide yes)
 			(show_name no)
@@ -5604,6 +5659,17 @@
 			)
 		)
 		(property "Sim.Type" ""
+			(at 62.23 83.82 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Mouser Part Number" "--"
 			(at 62.23 83.82 0)
 			(hide yes)
 			(show_name no)
@@ -6068,7 +6134,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "--"
+		(property "Mouser Part Number" "81-GCM188R71H104KA7D"
 			(at 74.93 139.7 0)
 			(hide yes)
 			(show_name no)
@@ -6311,7 +6377,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "--"
+		(property "Mouser Part Number" "667-ERJ-3EKF1002V"
 			(at 62.23 68.58 0)
 			(hide yes)
 			(show_name no)
@@ -6545,7 +6611,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "--"
+		(property "Mouser Part Number" "667-ERJ-3EKF1004V"
 			(at 74.93 127 0)
 			(hide yes)
 			(show_name no)
@@ -6778,7 +6844,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "--"
+		(property "Mouser Part Number" "667-ERJ-1GNF1001C"
 			(at 110.49 140.97 0)
 			(hide yes)
 			(show_name no)
@@ -7010,7 +7076,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "--"
+		(property "Mouser Part Number" "667-ERJ-3EKF1000V"
 			(at 43.18 139.7 0)
 			(hide yes)
 			(show_name no)

@@ -2475,7 +2475,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "30V/4A"
+		(property "Value" "1000V/1A"
 			(at 168.91 114.3 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2497,7 +2497,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.vishay.com/docs/86404/bat42w.pdf"
+		(property "Datasheet" ""
 			(at 166.37 113.03 90)
 			(hide yes)
 			(show_name no)
@@ -2508,7 +2508,7 @@
 				)
 			)
 		)
-		(property "Description" "Schottky Diodes & Rectifiers 30Volt 200mA 4A IFSM"
+		(property "Description" "1000V/1A"
 			(at 166.37 113.03 0)
 			(hide yes)
 			(show_name no)
@@ -2519,7 +2519,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "78-BAT42W-E3-18"
+		(property "Mouser Part Number" "863-NRVS1MFL "
 			(at 166.37 113.03 90)
 			(hide yes)
 			(show_name no)
@@ -2714,7 +2714,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "30V/4A"
+		(property "Value" "1000V/1A"
 			(at 135.89 97.5359 90)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2736,7 +2736,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.vishay.com/docs/86404/bat42w.pdf"
+		(property "Datasheet" ""
 			(at 138.43 96.52 90)
 			(hide yes)
 			(show_name no)
@@ -2758,7 +2758,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "78-BAT42W-E3-18"
+		(property "Mouser Part Number" "863-NRVS1MFL "
 			(at 138.43 96.52 90)
 			(hide yes)
 			(show_name no)

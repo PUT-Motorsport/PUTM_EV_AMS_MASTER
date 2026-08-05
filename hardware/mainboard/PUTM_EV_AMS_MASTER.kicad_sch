@@ -8245,7 +8245,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "--"
+		(property "Mouser Part Number" "667-ERJ-1GNF1001C"
 			(at 269.24 38.1 0)
 			(hide yes)
 			(show_name no)
@@ -9331,7 +9331,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "--"
+		(property "Mouser Part Number" "667-ERJ-1GNF1001C"
 			(at 269.24 30.48 0)
 			(hide yes)
 			(show_name no)
@@ -9690,6 +9690,17 @@
 				)
 			)
 		)
+		(property "Mouser Part Number" "200-MTMM10402SD120"
+			(at 121.92 199.39 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "3"
 			(uuid "f171f5f6-f7a1-4637-8ce9-bd742891e10c")
 		)
@@ -9924,7 +9935,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "--"
+		(property "Mouser Part Number" "81-GCM1885C1H101JA6D"
 			(at 106.68 158.75 0)
 			(hide yes)
 			(show_name no)
@@ -10346,6 +10357,17 @@
 			)
 		)
 		(property "Sim.Type" ""
+			(at 337.82 190.5 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Mouser Part Number" "200-MTMM11002GD120 "
 			(at 337.82 190.5 0)
 			(hide yes)
 			(show_name no)
@@ -11124,7 +11146,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "--"
+		(property "Mouser Part Number" "667-ERJ-1GNF1001C"
 			(at 269.24 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -14120,7 +14142,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "--"
+		(property "Mouser Part Number" "667-ERJ-1GNF1001C"
 			(at 269.24 53.34 0)
 			(hide yes)
 			(show_name no)

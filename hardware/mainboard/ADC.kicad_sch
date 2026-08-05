@@ -3004,7 +3004,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "--"
+		(property "Mouser Part Number" "81-GCM188L81H103MA3D"
 			(at 96.52 100.33 0)
 			(hide yes)
 			(show_name no)
@@ -3316,7 +3316,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "708-RNCF1206BKE100R"
+		(property "Mouser Part Number" "667-ERA-3AEB103V"
 			(at 77.47 44.45 0)
 			(hide yes)
 			(show_name no)
@@ -3560,7 +3560,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "--"
+		(property "Mouser Part Number" "667-ERA-3AEB102V"
 			(at 72.39 105.41 0)
 			(hide yes)
 			(show_name no)
@@ -3804,7 +3804,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "--"
+		(property "Mouser Part Number" "667-ERA-3AEB102V"
 			(at 72.39 95.25 0)
 			(hide yes)
 			(show_name no)
@@ -4203,7 +4203,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "--"
+		(property "Mouser Part Number" "81-GCM188R71H104KA7D"
 			(at 186.69 78.74 0)
 			(hide yes)
 			(show_name no)
@@ -4515,7 +4515,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "--"
+		(property "Mouser Part Number" "81-GCD188R71H102MA1D"
 			(at 96.52 72.39 0)
 			(hide yes)
 			(show_name no)
@@ -4749,7 +4749,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "--"
+		(property "Mouser Part Number" "81-GCM188L81H103MA3D"
 			(at 96.52 128.27 0)
 			(hide yes)
 			(show_name no)
@@ -5338,7 +5338,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "--"
+		(property "Mouser Part Number" "81-GCM188L81H103MA3D"
 			(at 143.51 78.74 0)
 			(hide yes)
 			(show_name no)
@@ -5582,7 +5582,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "--"
+		(property "Mouser Part Number" "667-ERJ-3EKF1002V"
 			(at 191.77 106.68 0)
 			(hide yes)
 			(show_name no)
@@ -5936,6 +5936,17 @@
 				)
 			)
 		)
+		(property "Mouser Part Number" "--"
+			(at 228.6 93.98 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "eb885cbf-d554-4498-8eb3-244c3e3b96a0")
 		)
@@ -6145,7 +6156,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "--"
+		(property "Mouser Part Number" "81-GCM188R71H104KA7D"
 			(at 143.51 68.58 0)
 			(hide yes)
 			(show_name no)
@@ -6546,7 +6557,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "--"
+		(property "Mouser Part Number" "81-GCM188R71H104KA7D"
 			(at 251.46 83.82 0)
 			(hide yes)
 			(show_name no)
@@ -7013,7 +7024,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "603-RT0603FRD078K2L"
+		(property "Mouser Part Number" "71-PNM0603E2502BST5"
 			(at 259.08 91.44 0)
 			(hide yes)
 			(show_name no)
@@ -7257,7 +7268,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "--"
+		(property "Mouser Part Number" "667-ERA-3AEB102V"
 			(at 72.39 123.19 0)
 			(hide yes)
 			(show_name no)
@@ -7580,7 +7591,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "--"
+		(property "Mouser Part Number" "667-ERA-3AEB102V"
 			(at 72.39 133.35 0)
 			(hide yes)
 			(show_name no)
@@ -7814,7 +7825,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "--"
+		(property "Mouser Part Number" "81-GCD188R71H102MA1D"
 			(at 96.52 44.45 0)
 			(hide yes)
 			(show_name no)
@@ -8280,7 +8291,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "--"
+		(property "Mouser Part Number" "667-ERJ-3EKF1002V"
 			(at 199.39 45.72 0)
 			(hide yes)
 			(show_name no)
@@ -8514,7 +8525,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "708-RNCF1206BKE100R"
+		(property "Mouser Part Number" "667-ERA-3AEB103V"
 			(at 77.47 72.39 0)
 			(hide yes)
 			(show_name no)
@@ -8992,7 +9003,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "963-H168SC7224KTCA1J"
+		(property "Mouser Part Number" "81-GRM188R71H224MA4D"
 			(at 186.69 83.82 0)
 			(hide yes)
 			(show_name no)
@@ -9269,6 +9280,17 @@
 				)
 			)
 		)
+		(property "Mouser Part Number" "--"
+			(at 228.6 88.9 90)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(pin "1"
 			(uuid "d1f9b67d-f81b-47fb-9730-6f5a56662c55")
 		)
@@ -9479,7 +9501,7 @@
 				)
 			)
 		)
-		(property "Mouser Part Number" "--"
+		(property "Mouser Part Number" "667-ERA-3AEB203V"
 			(at 72.39 67.31 0)
 			(hide yes)
 			(show_name no)
