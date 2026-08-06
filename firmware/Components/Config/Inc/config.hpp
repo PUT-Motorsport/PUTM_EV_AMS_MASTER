@@ -37,6 +37,23 @@ namespace PUTM
         _10k_3950K,         // PANE103395
     };
 
+    namespace NTCPart
+    {
+        inline constexpr NTCType GA2_2K3A1IA        = NTCType::_2_252K_3976K;
+        inline constexpr NTCType B57861S0202F040    = NTCType::_2k_3560K;
+        inline constexpr NTCType TG310J34GBNR       = NTCType::_10k_3434K;
+        inline constexpr NTCType _103AT_11          = NTCType::_10k_3435K;
+        inline constexpr NTCType NTCLE413E2103F520L = NTCType::_10k_3435K;
+        inline constexpr NTCType NTCLE413E2103F106A = NTCType::_10k_3435K;
+        inline constexpr NTCType B57861S0103J040    = NTCType::_10k_3988K;
+        inline constexpr NTCType NTCLE413E2103H400  = NTCType::_10k_3984K;
+        inline constexpr NTCType NTCLE413E2103F520L = NTCType::_10k_3977K;
+        inline constexpr NTCType TTS_10KC3_BZ       = NTCType::_10k_3977K;
+        inline constexpr NTCType NTCLE300E3103SB    = NTCType::_10k_3977K;
+        inline constexpr NTCType PANE103395         = NTCType::_10k_3950K;
+    };
+
+
     namespace Config
     {
         /* DEV CONFIG */
@@ -228,10 +245,6 @@ namespace PUTM
 
         /* NTC Polynomials for differnet R25 and Beta */
 
-        namespace NTCPart
-        {
-            
-        }
 
         namespace POLYNOMIAL_T_R
         {
@@ -262,8 +275,9 @@ namespace PUTM
             template<>
             inline constexpr float COEFFS<NTCType::_10k_3950K>[] { -2.175458e-16f, 8.467486e-14f, -1.465161e-11f, 1.485351e-09f, -9.787582e-08f, 4.395970e-06f, -1.372390e-04f, 2.981229e-03f, -4.438363e-02f, 4.380832e-01f, -2.710520e+00f, 9.756518e+00f, -2.227413e+01f, 3.488382e+02f };
         }
-        
-        static constexpr NTCType PACK_POLYNOMIAL_MAP[] { NTCType::_10k_3434K, NTCType::_10k_3434K, NTCType::_10k_3434K, NTCType::_10k_3434K, NTCType::_10k_3434K, NTCType::_10k_3434K, NTCType::_10k_3434K, NTCType::_10k_3434K, NTCType::_10k_3434K, NTCType::_10k_3434K, NTCType::_10k_3434K, NTCType::_10k_3434K };
+
+        // std::array<NTCType, STACK_SIZE> 
+        static constexpr NTCType PACK_POLYNOMIAL_MAP[] { NTCPart::GA2_2K3A1IA, NTCPart::B57861S0202F040 }; // ex.
 
         /**
          *      R1

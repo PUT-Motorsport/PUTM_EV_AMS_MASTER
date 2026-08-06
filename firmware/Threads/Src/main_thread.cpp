@@ -48,6 +48,9 @@ Gpio usb_reset(USB_RESET_GPIO_Port, USB_RESET_Pin, true);
 // Gpio bq_flt(NFLT_GPIO_Port, NFLT_Pin, true);
 
 constexpr Polynomial t_r_poly { Config::POLYNOMIAL_T_R::COEFFS<NTCType::_10k_3434K> };
+
+constexpr
+
 constexpr auto r_u_lambda = [](float voltage) -> float
 {
     return Config::NOMINAL_R1 / (Config::NOMINAL_TSREF - voltage) * voltage;

@@ -91,6 +91,11 @@ namespace PUTM
         
         struct
         {
+
+        } commands;
+
+        struct
+        {
             float bq_updates_per_sec { 0.f };
             float ads_updates_per_sec { 0.f };
             float main_updates_per_sec { 0.f };
@@ -114,6 +119,11 @@ namespace PUTM
             Logger<Config::ERROR_LOGGER_SIZE> errors;
             Logger<Config::EVENT_LOGGER_SIZE> events;
         } loggers;
+
+        struct
+        {
+            bool disable_temps[Config::STACK_SIZE][Config::TEMPERATURES_COUNT_PER_DEVICE] { };
+        } eeprom_config;
 
 #ifdef TEST_MODE_1
         /* reset state machine */
