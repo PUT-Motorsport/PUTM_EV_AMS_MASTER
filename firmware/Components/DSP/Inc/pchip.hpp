@@ -17,7 +17,6 @@ namespace PUTM
      *  @brief  Fixed-size bidirectional PCHIP interpolation class.
      *  @tparam `SIZE` Number of interpolation points.
      *  @tparam `TYPE` Arithmetic type used for interpolation.
-     *  @tparam `INVERSE_ITERATIONS` Number of bisection iterations used for y -> x.
      *
      *  @note   The x coordinates must be strictly increasing.
      *  @note   The y coordinates must be monotonic for y -> x interpolation.
@@ -133,15 +132,15 @@ namespace PUTM
          *
          *  @note   Queries outside the x range are clamped.
          */
-        constexpr bool evaluate_y(TYPE x, TYPE& output) const
+        constexpr bool evaluate_y(TYPE x, TYPE* output) const
         {
             if (not __initialized)
             {
-                output = { };
+                if(output != nullptr) *output = { };
                 return false;
             }
 
-            output = interpolate_y(x);
+            if(output != nullptr) *output = interpolate_y(x);
             return true;
         }
     public:
@@ -154,16 +153,20 @@ namespace PUTM
          *  @note   Queries outside the y range are clamped.
          *  @note   For a flat y section, the lowest matching x is returned.
          */
-        constexpr bool evaluate_x(TYPE y, TYPE& output) const
+        constexpr bool evaluate_x(TYPE y, TYPE* output) const
         {
             if (not can_get_x())
             {
-                output = { };
+                if(output != nullptr) *output = { };
                 return false;
             }
 
-            output = interpolate_x(y);
-            return true;
+            if(output != nullptr)
+            {
+                *output = interpolate_x(y);
+                return true;
+            }
+            return false;
         }
     public:
         /**

@@ -21,14 +21,34 @@ namespace PUTM
     {
         None, 
         IgnoreSelected,
-        StatisticalImplasubility
+        StatisticalImplasubility,
+        IgnoreSelectedFromEEPROM
+    };
+
+    enum class NTCType : size_t
+    {
+        _2_252K_3976K = 0,  // GA2.2K3A1IA
+        _2k_3560K,          // B57861S0202F040
+        _10k_3434K,         // TG310J34GBNR
+        _10k_3435K,         // 103AT-11, NTCLE413E2103F520L, NTCLE413E2103F106A
+        _10k_3988K,         // B57861S0103J040
+        _10k_3984K,         // NTCLE413E2103H400
+        _10k_3977K,         // NTCLE413E2103F520L, TTS-10KC3-BZ, NTCLE300E3103SB
+        _10k_3950K,         // PANE103395
     };
 
     namespace Config
     {
         /* DEV CONFIG */
+
+        /* Turns off all errors */
         static constexpr bool TURN_OFF_ERROR_CHECKER { false };
         static constexpr bool TURN_OFF_TEMP_ERRORS { true };
+        static constexpr bool TURN_OFF_CELL_VOLTAGE_ERRORS { false };
+        static constexpr bool TURN_OFF_TS_ERRORS { false };
+        static constexpr bool TURN_OFF_CURRENT_ERRORS { false };
+
+        /* CONFIG */
 
         /* Bq796xx stack size */
         static constexpr size_t STACK_SIZE { 12 };
@@ -125,9 +145,7 @@ namespace PUTM
 	 *	state and enter the idle state
          */
         static constexpr uint32_t STATE_MACHINE_OFF_TO_IDLE_WAIT { 200 };
-        /**
-         *	Idle state hiccup wait time - airs cant be turned on faster than once per second
-         */
+        /* Idle state hiccup wait time - airs cant be turned on faster than once per second */
         static constexpr uint32_t STATE_MACHINE_IDLE_TO_PRECHARGE_WAIT { 1000 };
 
         /* Which channel is used for car voltage measurement from 0 to 3*/
@@ -207,16 +225,59 @@ namespace PUTM
         // static constexpr float POLYNOMIAL_T_R[] { 2.828902e+02, 2.818811e-02, -1.131373e-05, 3.281373e-09, -6.383295e-13, 8.324239e-17, -7.271016e-21, 4.187227e-25, -1.522588e-29, 3.163823e-34, -2.860511e-39 };
         //static constexpr float POLYNOMIAL_T_R[] { 2.828902e+02, 2.818811e-02, -1.131373e-05, 3.281373e-09, -6.383295e-13, 0.f, 0.f, 0.f, 0.f, 0.f, 0.f };
         // polynomial for T(R) where T is in K and R is in kOhm
-        // static constexpr float POLYNOMIAL_T_R[] { 8.476916e-07, -7.580322e-05, 2.849150e-03, -5.860359e-02, 7.206923e-01, -5.455243e+00, 2.546881e+01, -7.461018e+01, 4.303188e+02 };
-        static constexpr float POLYNOMIAL_T_R[] { 7.777076e-07f, -7.102473e-05f, 2.707602e-03f, -5.571109e-02f, 6.671460e-01f, -4.667089e+00f, 1.826124e+01f, -4.023727e+01f, 3.659589e+02f };
-        // nominal ntc resistance (at 24degC) in kOhm
-        static constexpr float NOMINAL_NTC_RESISTANCE { 10 };
-        // nominal voltage accross the resistor divider network for bq series its 5V
-        static constexpr float NOMINAL_TSREF { 5 };
 
+        /* NTC Polynomials for differnet R25 and Beta */
+
+        namespace NTCPart
+        {
+            
+        }
+
+        namespace POLYNOMIAL_T_R
+        {
+            template<NTCType NTC_TYPE>
+            inline constexpr float COEFFS;
+            /* GA2.2K3A1IA */
+            template<>
+            inline constexpr float COEFFS<NTCType::_2_252K_3976K>[] { -4.881202e-08f, 4.323928e-06f, -1.702507e-04f, 3.926696e-03f, -5.885218e-02f, 6.010298e-01f, -4.264790e+00f, 2.104563e+01f, -7.112485e+01f, 1.592053e+02f, -2.231069e+02f, 1.818063e+02f, -9.492483e+01f, 3.481740e+02f };
+            /* B57861S0202F040 */
+            template<>
+            inline constexpr float COEFFS<NTCType::_2k_3560K>[] { -2.125821e-06f, 1.419731e-04f, -4.227395e-03f, 7.400932e-02f, -8.458512e-01f, 6.625221e+00f, -3.632116e+01f, 1.398028e+02f, -3.732012e+02f, 6.711336e+02f, -7.724725e+02f, 5.262877e+02f, -2.076472e+02f, 3.632253e+02f };
+            /* TG310J34GBNR */
+            template<>
+            inline constexpr float COEFFS<NTCType::_10k_3434K>[] { -3.056000e-15f, 9.749135e-13f, -1.388445e-10f, 1.164409e-08f, -6.386712e-07f, 2.406124e-05f, -6.362115e-04f, 1.185118e-02f, -1.537671e-01f, 1.351472e+00f, -7.656713e+00f, 2.587359e+01f, -5.005285e+01f, 3.698467e+02f };
+            /* 103AT-11, NTCLE413E2103F520L, NTCLE413E2103F106A */
+            template<>
+            inline constexpr float COEFFS<NTCType::_10k_3435K>[] { -3.043398e-15f, 9.712310e-13f, -1.383666e-10f, 1.160776e-08f, -6.368741e-07f, 2.400045e-05f, -6.347724e-04f, 1.182718e-02f, -1.534867e-01f, 1.349220e+00f, -7.644731e+00f, 2.583415e+01f, -4.998199e+01f, 3.697906e+02f };
+            /* B57861S0103J040 */
+            template<>
+            inline constexpr float COEFFS<NTCType::_10k_3988K>[] { -1.743565e-16f, 6.891902e-14f, -1.210786e-11f, 1.245906e-09f, -8.330127e-08f, 3.794500e-06f, -1.200731e-04f, 2.641760e-03f, -3.979163e-02f, 3.967988e-01f, -2.475833e+00f, 8.981255e+00f, -2.097755e+01f, 3.478779e+02f };
+            /* NTCLE413E2103H400 */
+            template<>
+            inline constexpr float COEFFS<NTCType::_10k_3984K>[] { -1.784885e-16f, 7.043766e-14f, -1.235485e-11f, 1.269324e-09f, -8.473678e-08f, 3.854149e-06f, -1.217867e-04f, 2.675858e-03f, -4.025549e-02f, 4.009893e-01f, -2.499739e+00f, 9.060358e+00f, -2.110972e+01f, 3.479759e+02f };
+            /* NTCLE413E2103F520L, TTS-10KC3-BZ, NTCLE300E3103SB */
+            template<>
+            inline constexpr float COEFFS<NTCType::_10k_3977K>[] { -1.784885e-16f, 7.043766e-14f, -1.235485e-11f, 1.269324e-09f, -8.473678e-08f, 3.854149e-06f, -1.217867e-04f, 2.675858e-03f, -4.025549e-02f, 4.009893e-01f, -2.499739e+00f, 9.060358e+00f, -2.110972e+01f, 3.479759e+02f };
+            /* PANE103395 */
+            template<>
+            inline constexpr float COEFFS<NTCType::_10k_3950K>[] { -2.175458e-16f, 8.467486e-14f, -1.465161e-11f, 1.485351e-09f, -9.787582e-08f, 4.395970e-06f, -1.372390e-04f, 2.981229e-03f, -4.438363e-02f, 4.380832e-01f, -2.710520e+00f, 9.756518e+00f, -2.227413e+01f, 3.488382e+02f };
+        }
+        
+        static constexpr NTCType PACK_POLYNOMIAL_MAP[] { NTCType::_10k_3434K, NTCType::_10k_3434K, NTCType::_10k_3434K, NTCType::_10k_3434K, NTCType::_10k_3434K, NTCType::_10k_3434K, NTCType::_10k_3434K, NTCType::_10k_3434K, NTCType::_10k_3434K, NTCType::_10k_3434K, NTCType::_10k_3434K, NTCType::_10k_3434K };
+
+        /**
+         *      R1
+         *      +---- Vout
+         *      NTC
+         */
+        static constexpr float NOMINAL_R1 { 10.f };
+        /* nominal voltage accross the resistor divider network for bq series is 5V */
+        static constexpr float NOMINAL_TSREF { 5.f };
+        
+        /* FIR filter coeficients */
         static constexpr double _50HZ_RECT_FIR_COEFFS[] { -0.029720319698735946, 0.000000000000000020, 0.036324835187343932, -0.000000000000000020, -0.046703359526585060, 0.000000000000000020, 0.065384703337219074, -0.000000000000000020, -0.108974505562031795, 0.000000000000000020, 0.326923516686095372, 0.513530259153388680, 0.326923516686095372, 0.000000000000000020, -0.108974505562031795, -0.000000000000000020, 0.065384703337219074, 0.000000000000000020, -0.046703359526585060, -0.000000000000000020, 0.036324835187343932, 0.000000000000000020, -0.029720319698735946 };
         static constexpr double _2HZ_HAMMING_FIR_COEFFS[] { 0.000576110880220521, 0.000646822448048742, 0.000746173886528511, 0.000880485495847452, 0.001055865380883305, 0.001278093218249943, 0.001552506461458987, 0.001883890946839809, 0.002276377817745797, 0.002733348606047448, 0.003257350199003677, 0.003850021277918203, 0.004512031644686462, 0.005243035656095933, 0.006041640766708672, 0.006905391942899444, 0.007830772457077449, 0.008813221306509297, 0.009847167229931069, 0.010926079021878313, 0.012042531574028448, 0.013188286809477480, 0.014354388424299893, 0.015531269115327082, 0.016708868757928562, 0.017876761806466711, 0.019024292026397268, 0.020140712533626107, 0.021215329016118584, 0.022237643946748514, 0.023197499566239548, 0.024085217421448386, 0.024891732287200149, 0.025608718378814715, 0.026228705876144665, 0.026745185926567137, 0.027152702471551313, 0.027446929446248967, 0.027624732130639769, 0.027684211680294977, 0.027624732130639772, 0.027446929446248970, 0.027152702471551313, 0.026745185926567140, 0.026228705876144665, 0.025608718378814715, 0.024891732287200156, 0.024085217421448389, 0.023197499566239552, 0.022237643946748514, 0.021215329016118580, 0.020140712533626110, 0.019024292026397261, 0.017876761806466707, 0.016708868757928565, 0.015531269115327082, 0.014354388424299898, 0.013188286809477487, 0.012042531574028448, 0.010926079021878319, 0.009847167229931078, 0.008813221306509298, 0.007830772457077454, 0.006905391942899445, 0.006041640766708676, 0.005243035656095938, 0.004512031644686464, 0.003850021277918208, 0.003257350199003678, 0.002733348606047450, 0.002276377817745797, 0.001883890946839810, 0.001552506461458987, 0.001278093218249943, 0.001055865380883304, 0.000880485495847452, 0.000746173886528511, 0.000646822448048742, 0.000576110880220521 };
-        }
+    }
 }
 
 /* TODO: implement config checker */

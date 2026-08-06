@@ -47,10 +47,10 @@ Gpio usb_reset(USB_RESET_GPIO_Port, USB_RESET_Pin, true);
 // Gpio adc_dry(ADC_NDRY_GPIO_Port, ADC_NDRY_Pin, true);
 // Gpio bq_flt(NFLT_GPIO_Port, NFLT_Pin, true);
 
-constexpr Polynomial t_r_poly { Config::POLYNOMIAL_T_R };
+constexpr Polynomial t_r_poly { Config::POLYNOMIAL_T_R::COEFFS<NTCType::_10k_3434K> };
 constexpr auto r_u_lambda = [](float voltage) -> float
 {
-    return Config::NOMINAL_NTC_RESISTANCE / (Config::NOMINAL_TSREF - voltage) * voltage;
+    return Config::NOMINAL_R1 / (Config::NOMINAL_TSREF - voltage) * voltage;
 };
 
 constexpr Polynomial ocv { Config::POLYNOMIAL_OCV };
