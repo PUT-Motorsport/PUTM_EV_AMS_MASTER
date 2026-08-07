@@ -21,14 +21,14 @@ namespace PUTM
         float acu_voltage { 0.f };
         float car_voltage { 0.f };
         float soc { 0.f };
-        float cell_voltages[Config::STACK_SIZE][Config::CELL_COUNT_PER_DEVICE] { 0.f };
-        float gpio_voltages[Config::STACK_SIZE][Config::TEMPERATURES_COUNT_PER_DEVICE] { 0.f };
-        float cell_temperatures[Config::STACK_SIZE][Config::TEMPERATURES_COUNT_PER_DEVICE] { 0.f };
-        SoC cell_socs[Config::STACK_SIZE][Config::CELL_COUNT_PER_DEVICE] { };
+        float cell_voltages[CONFIG::STACK_SIZE][CONFIG::CELL_COUNT_PER_DEVICE] { 0.f };
+        float gpio_voltages[CONFIG::STACK_SIZE][CONFIG::TEMPERATURES_COUNT_PER_DEVICE] { 0.f };
+        float cell_temperatures[CONFIG::STACK_SIZE][CONFIG::TEMPERATURES_COUNT_PER_DEVICE] { 0.f };
+        SoC cell_socs[CONFIG::STACK_SIZE][CONFIG::CELL_COUNT_PER_DEVICE] { };
 
         // float cell_socs[Config::STACK_SIZE][Config::CELL_COUNT_PER_DEVICE] { };
 
-        bool cell_balancing[Config::STACK_SIZE][Config::CELL_COUNT_PER_DEVICE] { false };
+        bool cell_balancing[CONFIG::STACK_SIZE][CONFIG::CELL_COUNT_PER_DEVICE] { false };
         // bool cell_balancing[Config::STACK_SIZE][Config::CELL_COUNT_PER_DEVICE] { false };
         // bool cell_ovuv[Config::STACK_SIZE][Config::CELL_COUNT_PER_DEVICE] { false };
         // bool cell_otut[Config::STACK_SIZE][Config::TEMPERATURES_COUNT_PER_DEVICE] { false };
@@ -87,11 +87,21 @@ namespace PUTM
         /* bq init status */
         HAL_StatusTypeDef bq_init_status { HAL_OK };
         /* bq read data status */
-        HAL_StatusTypeDef bq_read_data_status[Config::STACK_SIZE] { HAL_OK };
+        HAL_StatusTypeDef bq_read_data_status[CONFIG::STACK_SIZE] { HAL_OK };
         
         struct
         {
+            bool on_charger { false };
+            bool tsms { false };
+            bool usb_connected { false }; 
+        } gpio;
 
+        struct
+        {
+            bool balancing_on { false };
+            bool balancing_off { false };
+            bool charger_on { false };
+            bool charger_off { false };
         } commands;
 
         struct
@@ -116,14 +126,9 @@ namespace PUTM
 
         struct
         {
-            Logger<Config::ERROR_LOGGER_SIZE> errors;
-            Logger<Config::EVENT_LOGGER_SIZE> events;
+            Logger<CONFIG::ERROR_LOGGER_SIZE> errors;
+            Logger<CONFIG::EVENT_LOGGER_SIZE> events;
         } loggers;
-
-        struct
-        {
-            bool disable_temps[Config::STACK_SIZE][Config::TEMPERATURES_COUNT_PER_DEVICE] { };
-        } eeprom_config;
 
 #ifdef TEST_MODE_1
         /* reset state machine */

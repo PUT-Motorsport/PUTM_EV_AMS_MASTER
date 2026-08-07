@@ -24,7 +24,6 @@ extern "C"
 #include "string_view"
 
 using namespace PUTM;
-using namespace PUTM::Config;
 
 // using namespace PUTM_CAN;
 

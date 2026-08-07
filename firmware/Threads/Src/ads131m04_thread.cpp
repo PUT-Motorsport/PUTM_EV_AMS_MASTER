@@ -15,10 +15,10 @@
 using namespace PUTM;
 using namespace Utils;
 
-Fir car_voltage_filter { Config::_50HZ_RECT_FIR_COEFFS };
-Fir acu_voltage_filter { Config::_50HZ_RECT_FIR_COEFFS };
-Fir current_filter { Config::_50HZ_RECT_FIR_COEFFS };
-Fir current_ref_filter { Config::_2HZ_HAMMING_FIR_COEFFS };
+Fir car_voltage_filter { CONFIG::_50HZ_RECT_FIR_COEFFS };
+Fir acu_voltage_filter { CONFIG::_50HZ_RECT_FIR_COEFFS };
+Fir current_filter { CONFIG::_50HZ_RECT_FIR_COEFFS };
+Fir current_ref_filter { CONFIG::_2HZ_HAMMING_FIR_COEFFS };
 // MovingAverage<256> current_ref_filter { };
 // MovingAverage<2048> offset_calibration;
 
@@ -30,7 +30,7 @@ float current_voltage_to_current(float voltage, float reference_voltage)
     /* gain [A/V] */
     // float gain = 0.8f * 600.f / reference_voltage; 
     // 0.8 because of the 10% to 90% output range
-    float gain = 150 * Config::CURRENT_DIRECTION; //1.f / (0.4f * reference_voltage / 300.f) * Config::CURRENT_DIRECTION; 
+    float gain = 150 * CONFIG::CURRENT_DIRECTION; //1.f / (0.4f * reference_voltage / 300.f) * CONFIG::CURRENT_DIRECTION; 
     float offset = 0.5f * reference_voltage;
     float voltage_diff = (voltage - offset);
     float current = voltage_diff * gain;
@@ -49,11 +49,11 @@ VOID ads131m04_thread_entry(__unused ULONG thread_input)
     float current_ref_voltage { 0.f };
     float current_voltage { 0.f };
     float current { 0.f };
-    float current_offset { Config::CURRENT_OFFSET };
+    float current_offset { CONFIG::CURRENT_OFFSET };
 
     adc.init();
     // add self calibrate
-    // offset_calibration.fill_buffer(Config::CURRENT_OFFSET);
+    // offset_calibration.fill_buffer(CONFIG::CURRENT_OFFSET);
 
     tx_thread_sleep(100);
     
@@ -61,15 +61,15 @@ VOID ads131m04_thread_entry(__unused ULONG thread_input)
     for(size_t i = 0; i < 100; i++)
     {
         adc.update();
-        acu_voltage = adc.adc[Config::ACU_VOLTAGE_CHANNEL];
-        car_voltage = adc.adc[Config::CAR_VOLTAGE_CHANNEL];
-        current_ref_voltage = adc.adc[Config::CURRENT_REF_CHANNEL]; // * Config::CURRENT_REF_GAIN;
-        current_voltage = adc.adc[Config::CURRENT_CHANNEL]; // * Config::CURRENT_GAIN - Config::CURRENT_OFFSET;
+        acu_voltage = adc.adc[CONFIG::ACU_VOLTAGE_CHANNEL];
+        car_voltage = adc.adc[CONFIG::CAR_VOLTAGE_CHANNEL];
+        current_ref_voltage = adc.adc[CONFIG::CURRENT_REF_CHANNEL]; // * CONFIG::CURRENT_REF_GAIN;
+        current_voltage = adc.adc[CONFIG::CURRENT_CHANNEL]; // * CONFIG::CURRENT_GAIN - CONFIG::CURRENT_OFFSET;
         
-        acu_voltage = acu_voltage * Config::ACU_VOLTAGE_GAIN;
-        car_voltage = car_voltage * Config::CAR_VOLTAGE_GAIN;
-        current_voltage = current_voltage * Config::CURRENT_GAIN_NETWORK;
-        current_ref_voltage = current_ref_voltage * Config::CURRENT_REF_GAIN_NETWORK;
+        acu_voltage = acu_voltage * CONFIG::ACU_VOLTAGE_GAIN;
+        car_voltage = car_voltage * CONFIG::CAR_VOLTAGE_GAIN;
+        current_voltage = current_voltage * CONFIG::CURRENT_GAIN_NETWORK;
+        current_ref_voltage = current_ref_voltage * CONFIG::CURRENT_REF_GAIN_NETWORK;
 
         acu_voltage = acu_voltage_filter.update(acu_voltage);
         car_voltage = car_voltage_filter.update(car_voltage);
@@ -85,15 +85,15 @@ VOID ads131m04_thread_entry(__unused ULONG thread_input)
     while(true)
     {
         adc.update();
-        acu_voltage = adc.adc[Config::ACU_VOLTAGE_CHANNEL];
-        car_voltage = adc.adc[Config::CAR_VOLTAGE_CHANNEL];
-        current_ref_voltage = adc.adc[Config::CURRENT_REF_CHANNEL]; // * Config::CURRENT_REF_GAIN;
-        current_voltage = adc.adc[Config::CURRENT_CHANNEL]; // * Config::CURRENT_GAIN - Config::CURRENT_OFFSET;
+        acu_voltage = adc.adc[CONFIG::ACU_VOLTAGE_CHANNEL];
+        car_voltage = adc.adc[CONFIG::CAR_VOLTAGE_CHANNEL];
+        current_ref_voltage = adc.adc[CONFIG::CURRENT_REF_CHANNEL]; // * CONFIG::CURRENT_REF_GAIN;
+        current_voltage = adc.adc[CONFIG::CURRENT_CHANNEL]; // * CONFIG::CURRENT_GAIN - CONFIG::CURRENT_OFFSET;
         
-        acu_voltage = acu_voltage * Config::ACU_VOLTAGE_GAIN;
-        car_voltage = car_voltage * Config::CAR_VOLTAGE_GAIN;
-        current_voltage = current_voltage * Config::CURRENT_GAIN_NETWORK;
-        current_ref_voltage = current_ref_voltage * Config::CURRENT_REF_GAIN_NETWORK;
+        acu_voltage = acu_voltage * CONFIG::ACU_VOLTAGE_GAIN;
+        car_voltage = car_voltage * CONFIG::CAR_VOLTAGE_GAIN;
+        current_voltage = current_voltage * CONFIG::CURRENT_GAIN_NETWORK;
+        current_ref_voltage = current_ref_voltage * CONFIG::CURRENT_REF_GAIN_NETWORK;
 
         acu_voltage = acu_voltage_filter.update(acu_voltage);
         car_voltage = car_voltage_filter.update(car_voltage);

@@ -17,14 +17,14 @@
 using namespace PUTM;
 using namespace Utils;
 
-static constexpr float CELL_MIN_BALANCING_VOLTAGE_FLOAT { Config::CELL_MIN_BALANCING_VOLTAGE / 1000.f };
-static constexpr float CELL_BALANCE_TARGET_FLOAT { Config::CELL_BALANCE_TARGET / 1000.f };
+static constexpr float CELL_MIN_BALANCING_VOLTAGE_FLOAT { CONFIG::CELL_MIN_BALANCING_VOLTAGE / 1000.f };
+static constexpr float CELL_BALANCE_TARGET_FLOAT { CONFIG::CELL_BALANCE_TARGET / 1000.f };
 
 void reset_balance_array()
 {
-    for(size_t device = 0; device < Config::STACK_SIZE; device++)
+    for(size_t device = 0; device < CONFIG::STACK_SIZE; device++)
     {
-        for(size_t cell = 0; cell < Config::CELL_COUNT_PER_DEVICE; cell++)
+        for(size_t cell = 0; cell < CONFIG::CELL_COUNT_PER_DEVICE; cell++)
         {
             data.cell_balancing[device][cell] = false;
         }
@@ -39,9 +39,9 @@ VOID bq796xx_thread_entry(__unused ULONG thread_input)
     static uint32_t device_address { 1 }; 
 
     bool balancing_on = false;
-    // bool balancing_cells[Config::STACK_SIZE][Config::CELL_COUNT_PER_DEVICE] { 0 };
+    // bool balancing_cells[CONFIG::STACK_SIZE][CONFIG::CELL_COUNT_PER_DEVICE] { 0 };
     uint32_t last_balancing { 0 };
-    size_t last_balancing_times[Config::STACK_SIZE] { 0 };
+    size_t last_balancing_times[CONFIG::STACK_SIZE] { 0 };
     float balancing_target { 5.f };
 
     // TODO: add wait fo the ads to read the reference voltage of current to rise
@@ -55,7 +55,7 @@ VOID bq796xx_thread_entry(__unused ULONG thread_input)
 
     tx_thread_sleep(20);
 
-    for(size_t i = 0; i < Config::STACK_SIZE; i++)
+    for(size_t i = 0; i < CONFIG::STACK_SIZE; i++)
     {
         data.bq_read_data_status[i] =  bq.read_single_data(data.cell_voltages[i],
                                                            data.gpio_voltages[i],
@@ -99,7 +99,7 @@ VOID bq796xx_thread_entry(__unused ULONG thread_input)
         }
         // if(balancing_on)
         // {
-        //     for(size_t i = 0; i < Config::CELL_COUNT_PER_DEVICE; i++)
+        //     for(size_t i = 0; i < CONFIG::CELL_COUNT_PER_DEVICE; i++)
         //     {
         //         if(balancing_cells[device_address- 1][i]) continue;
         //         if(data.cell_voltages[device_address - 1][i] < CELL_MIN_BALANCING_VOLTAGE_FLOAT)
@@ -117,11 +117,11 @@ VOID bq796xx_thread_entry(__unused ULONG thread_input)
         {
             size_t start_from = 0;
             if(data.cell_balancing[device_address - 1][0] == true) start_from = 1;
-            for(size_t i = 0; i < Config::CELL_COUNT_PER_DEVICE; i++)
+            for(size_t i = 0; i < CONFIG::CELL_COUNT_PER_DEVICE; i++)
             {
                 data.cell_balancing[device_address - 1][i] = false;
             }
-            for(size_t i = start_from; i < Config::CELL_COUNT_PER_DEVICE; i += 2)
+            for(size_t i = start_from; i < CONFIG::CELL_COUNT_PER_DEVICE; i += 2)
             {
                 if(data.cell_voltages[device_address - 1][i] > balancing_target)
                 data.cell_balancing[device_address - 1][i] = true;
@@ -142,9 +142,9 @@ VOID bq796xx_thread_entry(__unused ULONG thread_input)
                                                                                   device_address);
         // if(balancing_on) bq.resume_balancing(device_address);
         device_address++;
-        if(device_address > Config::STACK_SIZE) device_address = 1; 
+        if(device_address > CONFIG::STACK_SIZE) device_address = 1; 
         data.update_times.bq_updates_per_sec = updates.update(tx_time_get());
         
-        tx_thread_sleep(Config::STACK_COM_DATA_POLL_INTERVAL);
+        tx_thread_sleep(CONFIG::STACK_COM_DATA_POLL_INTERVAL);
     }
 }

@@ -115,7 +115,7 @@ State charger_on
         charger_rx.update();
         ChargerCanTxMessage frame
 		{
-			Config::MAX_CHARGING_VOLTAGE,
+			CONFIG::MAX_CHARGING_VOLTAGE,
             data.charging_current,
             data.cmd_charger
 		};
@@ -174,7 +174,7 @@ StateEdge charger_off_to_idle
     .condition = []() -> bool
     {
         uint32_t time = tx_time_get() - charger_off_enter_tick;
-        return (data.on_charger and time > Config::STATE_MACHINE_OFF_TO_IDLE_WAIT);
+        return (data.on_charger and time > CONFIG::STATE_MACHINE_OFF_TO_IDLE_WAIT);
     },
     .prev_state = &charger_off,
     .next_state = &charger_idle,
@@ -197,7 +197,7 @@ StateEdge charger_idle_to_precharge
     .condition = []() -> bool
     {
         uint32_t time = tx_time_get() - charger_idle_enter_tick;
-        return (data.on_charger and data.tsms and time > Config::STATE_MACHINE_IDLE_TO_PRECHARGE_WAIT);
+        return (data.on_charger and data.tsms and time > CONFIG::STATE_MACHINE_IDLE_TO_PRECHARGE_WAIT);
     },
     .prev_state = &charger_idle,
     .next_state = &charger_precharge,
@@ -209,7 +209,7 @@ StateEdge charger_precharge_to_on
     .condition = []() -> bool
     {
         uint32_t time = tx_time_get() - charger_precharge_enter_tick;
-        return (time > Config::MIN_PRECHARGE_WAIT); // and data.car_voltage >= data.acu_voltage * Config::CAR_CHARGE_THRESH);
+        return (time > CONFIG::MIN_PRECHARGE_WAIT); // and data.car_voltage >= data.acu_voltage * CONFIG::CAR_CHARGE_THRESH);
     },
     .prev_state = &charger_precharge,
     .next_state = &charger_on,
@@ -221,7 +221,7 @@ StateEdge charger_precharge_to_idle
     .condition = []() -> bool
     {
         uint32_t time = tx_time_get() - charger_precharge_enter_tick;
-        return (not data.on_charger or not data.tsms or time > Config::MAX_PRECHARGE_WAIT);
+        return (not data.on_charger or not data.tsms or time > CONFIG::MAX_PRECHARGE_WAIT);
     },
     .prev_state = &charger_precharge,
     .next_state = &charger_idle,

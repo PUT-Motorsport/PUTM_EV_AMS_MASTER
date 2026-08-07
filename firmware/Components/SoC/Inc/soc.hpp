@@ -33,21 +33,21 @@ namespace PUTM
         // TODO?: last row looks sus
         // TODO: parametrize this shit
         static inline constexpr Matrix A {{{ 1.00000000f, 0.00000000f,  0.00000000f }, 
-                                           { 0.00000000f, Config::A1, Config::A2 }, 
+                                           { 0.00000000f, CONFIG::A1, CONFIG::A2 }, 
                                            { 0.00000000f, 1.00000000f,  0.00000000f }}};
-        static inline constexpr Matrix B {{{ -Config::DT / Config::CELL_NOMINAL_CAPACITY / 60.0f / 60.0f },
+        static inline constexpr Matrix B {{{ -CONFIG::DT / CONFIG::CELL_NOMINAL_CAPACITY / 60.0f / 60.0f },
                                            { 1.00000000f },
                                            { 0.00000000f }}};
-        static inline constexpr Matrix C {{{ 0.00000000f, Config::C1, Config::C2 }}};
+        static inline constexpr Matrix C {{{ 0.00000000f, CONFIG::C1, CONFIG::C2 }}};
         // static inline constexpr float D { 0.00698732f };
-        static inline constexpr float D { Config::D1 }; 
+        static inline constexpr float D { CONFIG::D1 }; 
         static inline constexpr float R { 2500000.0f };
         static inline constexpr Matrix Q {{{ 0.00020000f, 0.00000000f, 0.00000000f },
                                            { 0.00000000f, 0.02000000f, 0.00000000f },
                                            { 0.00000000f, 0.00000000f, 0.02000000f }}};
         // was + but * ?
         static inline constexpr float R_charging { R * 99.f };
-        static inline constexpr Polynomial ocv { Config::POLYNOMIAL_OCV };
+        static inline constexpr Polynomial ocv { CONFIG::POLYNOMIAL_OCV };
         static inline constexpr Polynomial docv = ocv.derivative();
 
         Matrix<3,3> P {{{ 20.0000000f, 0.00000000f, 0.00000000f }, 

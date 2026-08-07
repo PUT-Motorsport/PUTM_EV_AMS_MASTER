@@ -61,7 +61,7 @@ void log_com_error(uint32_t code)
 Error com_error
 {
     .name = "E: COM",
-    .timeout = Config::STANDARD_ERROR_TIMEOUT,
+    .timeout = CONFIG::STANDARD_ERROR_TIMEOUT,
     .condition = []() -> uint32_t 
     {
         uint32_t code = 0;
@@ -69,7 +69,7 @@ Error com_error
         {
             code = encode_error(0, 0, 1);
         }
-        for(size_t i = 0; i < Config::STACK_SIZE; i++)
+        for(size_t i = 0; i < CONFIG::STACK_SIZE; i++)
         {
             if(data.bq_read_data_status[i] != HAL_OK)
             {
@@ -99,19 +99,19 @@ void log_vcell_error(uint32_t code)
 Error vcell_error
 {
     .name = "E: CELL V",
-    .timeout = Config::STANDARD_ERROR_TIMEOUT,
+    .timeout = CONFIG::STANDARD_ERROR_TIMEOUT,
     .condition = []() -> uint32_t 
     {
         uint32_t code = 0;
-        for(size_t i = 0; i < Config::STACK_SIZE; i++)
+        for(size_t i = 0; i < CONFIG::STACK_SIZE; i++)
         {
-            for(size_t j = 0; j < Config::CELL_COUNT_PER_DEVICE; j++)
+            for(size_t j = 0; j < CONFIG::CELL_COUNT_PER_DEVICE; j++)
             {
-                if(data.cell_voltages[i][j] > Config::CELL_OV_FLOAT)
+                if(data.cell_voltages[i][j] > CONFIG::CELL_OV_FLOAT)
                 {
                     code = encode_error(i + 1, j + 1, 1);
                 }
-                else if(data.cell_voltages[i][j] < Config::CELL_UV_FLOAT)
+                else if(data.cell_voltages[i][j] < CONFIG::CELL_UV_FLOAT)
                 {
                     code = encode_error(i + 1, j + 1, 2);
                 }
@@ -141,28 +141,28 @@ void log_tcell_error(uint32_t code)
 Error tcell_error
 {
     .name = "E: TEMP",
-    .timeout = Config::STANDARD_ERROR_TIMEOUT,
+    .timeout = CONFIG::STANDARD_ERROR_TIMEOUT,
     .condition = []() -> uint32_t 
     {
-        if constexpr (Config::TURN_OFF_TEMP_ERRORS) return 0;
+        if constexpr (CONFIG::TURN_OFF_TEMP_ERRORS) return 0;
         uint32_t code = 0;
-        for(size_t i = 0; i < Config::STACK_SIZE; i++)
+        for(size_t i = 0; i < CONFIG::STACK_SIZE; i++)
         {
             size_t errors_per_stack = 0;
-            for(size_t j = 0; j < Config::TEMPERATURES_COUNT_PER_DEVICE; j++)
+            for(size_t j = 0; j < CONFIG::TEMPERATURES_COUNT_PER_DEVICE; j++)
             {
-                if(data.cell_temperatures[i][j] > Config::CELL_OT_FLOAT)
+                if(data.cell_temperatures[i][j] > CONFIG::CELL_OT_FLOAT)
                 {
                     code = encode_error(i + 1, j + 1, 1);
                     errors_per_stack++;
                 }
-                else if(data.cell_temperatures[i][j] < Config::CELL_UT_FLOAT)
+                else if(data.cell_temperatures[i][j] < CONFIG::CELL_UT_FLOAT)
                 {
                     code = encode_error(i + 1, j + 1, 2);
                     errors_per_stack++;
                 }
             }
-            if(errors_per_stack > Config::MAX_IGNORABLE_TEMPERATURES)
+            if(errors_per_stack > CONFIG::MAX_IGNORABLE_TEMPERATURES)
             {
                 return code;
             }
@@ -190,15 +190,16 @@ void log_current_error(uint32_t code)
 Error current_error_long
 {
     .name = "E: CURRENT LONG",
-    .timeout = Config::CURRENT_ERROR_LONG_TIMEOUT,
+    .timeout = CONFIG::CURRENT_ERROR_LONG_TIMEOUT,
     .condition = []() -> uint32_t 
     {
+        if constexpr (CONFIG::TURN_OFF_TEMP_ERRORS) return 0;
         uint32_t code = 0;
-        if(data.current > Config::MAX_CURRENT_THRESH_LONG)
+        if(data.current > CONFIG::MAX_CURRENT_THRESH_LONG)
         {
             code = encode_error(0, 0, 1);
         }
-        else if(data.current < Config::MIN_CURRENT_THRESH_LONG)
+        else if(data.current < CONFIG::MIN_CURRENT_THRESH_LONG)
         {
             code = encode_error(0, 0, 2);
         }
@@ -224,15 +225,15 @@ void log_current_error_short(uint32_t code)
 Error current_error_short
 {
     .name = "E: CURRENT SHORT",
-    .timeout = Config::STANDARD_ERROR_TIMEOUT,
+    .timeout = CONFIG::STANDARD_ERROR_TIMEOUT,
     .condition = []() -> uint32_t 
     {
         uint32_t code = 0;
-        if(data.current > Config::MAX_CURRENT_THRESH_SHORT)
+        if(data.current > CONFIG::MAX_CURRENT_THRESH_SHORT)
         {
             code = 1;
         }
-        else if(data.current < Config::MIN_CURRENT_THRESH_SHORT)
+        else if(data.current < CONFIG::MIN_CURRENT_THRESH_SHORT)
         {
             code = encode_error(0, 0, 2);
         }
@@ -259,34 +260,34 @@ void log_v_error(uint32_t code)
 Error v_error
 {
     .name = "E: TS VOLTAGE",
-    .timeout = Config::STANDARD_ERROR_TIMEOUT,
+    .timeout = CONFIG::STANDARD_ERROR_TIMEOUT,
     .condition = []() -> uint32_t 
     {
         uint32_t code = 0;
-        if(data.acu_voltage > Config::MAX_BAT_VOLTAGE)
+        if(data.acu_voltage > CONFIG::MAX_BAT_VOLTAGE)
         {
             code = 1;
         }
-        else if(data.acu_voltage < Config::MIN_BAT_VOLTAGE)
+        else if(data.acu_voltage < CONFIG::MIN_BAT_VOLTAGE)
         {
             code = 2;
         }
-        else if(data.cell_voltage_sum > Config::MAX_BAT_VOLTAGE)
+        else if(data.cell_voltage_sum > CONFIG::MAX_BAT_VOLTAGE)
         {
             code = 3;
         }
-        // else if(data.car_voltage > Config::MAX_BAT_VOLTAGE)
+        // else if(data.car_voltage > CONFIG::MAX_BAT_VOLTAGE)
         // {
         //     code = 3;
         // }
         // TODO: this condition is not needed? it may be needed for the future
-        // else if(data.car_voltage < Config::MIN_BAT_VOLTAGE)
+        // else if(data.car_voltage < CONFIG::MIN_BAT_VOLTAGE)
         // {
         //     code = 4;
         // }
         // else if(air_state_machine.get_current_state() == &on)
         // {
-        //     if(data.car_voltage < Config::MIN_BAT_VOLTAGE)
+        //     if(data.car_voltage < CONFIG::MIN_BAT_VOLTAGE)
         //     {
         //         code = 5;
         //     }
@@ -303,7 +304,7 @@ Error v_error
 // Error precharge_timeout
 // {
 //     .name = "E: PRE SLOW",
-//     .timeout = Config::STANDARD_ERROR_TIMEOUT,
+//     .timeout = CONFIG::STANDARD_ERROR_TIMEOUT,
 //     .condition = []() -> uint32_t 
 //     {
 //         return data.precharge_error;

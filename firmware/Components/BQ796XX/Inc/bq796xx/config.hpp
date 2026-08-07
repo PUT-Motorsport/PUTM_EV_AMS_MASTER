@@ -12,7 +12,7 @@
 
 namespace PUTM
 {
-    namespace Config
+    namespace BQ796XX_CONFIG
     {    
         /* Bq796xx configuration namespace */
         

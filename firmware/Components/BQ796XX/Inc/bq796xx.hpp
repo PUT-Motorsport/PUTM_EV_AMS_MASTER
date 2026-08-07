@@ -38,9 +38,9 @@ namespace PUTM
             {
                 /* uart sends lsb first, this sequence includes start bit for a total of '6' bits */
                 uint8_t out[1] { 0b1110'0000 };
-                if(uart->set_baudrate(Config::BAUDRATE_WAKEUP) != HAL_OK) return HAL_ERROR;
+                if(uart->set_baudrate(BQ796XX_CONFIG::BAUDRATE_WAKEUP) != HAL_OK) return HAL_ERROR;
                 if(uart->await_tx_dma(out, 1) != HAL_OK) return HAL_ERROR;
-                if(uart->set_baudrate(Config::DEFAULT_BAUDRATE) != HAL_OK) return HAL_ERROR;
+                if(uart->set_baudrate(BQ796XX_CONFIG::DEFAULT_BAUDRATE) != HAL_OK) return HAL_ERROR;
 
                 return HAL_OK;
             }
@@ -70,7 +70,7 @@ namespace PUTM
                 tx_buffer[i++] = (uint8_t)(crc >> 8);
                 tx_buffer[i++] = (uint8_t)(crc);
 
-                return uart->await_tx_dma(tx_buffer, i, Config::STACK_COM_TIMEOUT);
+                return uart->await_tx_dma(tx_buffer, i, CONFIG::STACK_COM_TIMEOUT);
             }
             template<CommunicationMode COMMUNICATION_TYPE>
             HAL_StatusTypeDef write(uint8_t data, uint16_t reg_address, uint8_t dev_address = 1)
@@ -89,7 +89,7 @@ namespace PUTM
                 tx_buffer[i++] = (uint8_t)(crc >> 8);
                 tx_buffer[i++] = (uint8_t)(crc);
 
-                return uart->await_tx_dma(tx_buffer, i, Config::STACK_COM_TIMEOUT);
+                return uart->await_tx_dma(tx_buffer, i, CONFIG::STACK_COM_TIMEOUT);
             }
         private:
             template
@@ -121,7 +121,7 @@ namespace PUTM
 
                 // if(uart.await_tx_dma(buffer, i) != HAL_OK) return HAL_ERROR;
                 // if(uart.await_rx_dma((uint8_t*)data, DEVICE_COUNT * DATA_COUNT + 2) != HAL_OK) return HAL_ERROR;
-                if(uart->await_tx_rx_dma(tx_buffer, i, rx_buffer, READ_DATA_COUNT, Config::STACK_COM_TIMEOUT) != HAL_OK) return HAL_ERROR;
+                if(uart->await_tx_rx_dma(tx_buffer, i, rx_buffer, READ_DATA_COUNT, CONFIG::STACK_COM_TIMEOUT) != HAL_OK) return HAL_ERROR;
                 
                 for(size_t dev = 0; dev < DEVICE_COUNT; dev++)
                 {
@@ -146,7 +146,7 @@ namespace PUTM
                 using namespace Bq796xx::Regs;
                 using namespace Bq796xx::Types;
 
-                //uart->set_rx_timeout(Config::RX_TIMEOUT_BAUDBLOCKS);
+                //uart->set_rx_timeout(CONFIG::RX_TIMEOUT_BAUDBLOCKS);
                 
                 if(wake_up() != HAL_OK) return HAL_ERROR;  
                 
@@ -176,7 +176,7 @@ namespace PUTM
                 write<Broadcast>(0x01, 0x309);
 
                 /* auto addressing */
-                for(size_t address = 0; address <= Config::STACK_SIZE; address++)
+                for(size_t address = 0; address <= CONFIG::STACK_SIZE; address++)
                 {
                     write<Broadcast>(address, 0x306);
                 }
@@ -185,18 +185,18 @@ namespace PUTM
                 write<Broadcast>(0x02, 0x308);
 
                 /* set which bq is last */
-                write<Single>(0x03, 0x308, Config::STACK_SIZE);
+                write<Single>(0x03, 0x308, CONFIG::STACK_SIZE);
 
                 /* dummy read sync internal dlls */
                 for(size_t step = 0; step < 8; step++)
                 {
-                    [[maybe_unused]] uint8_t buffer[Config::STACK_SIZE][1] { 0 };
+                    [[maybe_unused]] uint8_t buffer[CONFIG::STACK_SIZE][1] { 0 };
                     read<Stack>(buffer, 0x343 + step);
                 }
 
                 /* verify */
                 {
-                    [[maybe_unused]] uint8_t buffer[Config::STACK_SIZE][1] { 0 };
+                    [[maybe_unused]] uint8_t buffer[CONFIG::STACK_SIZE][1] { 0 };
                     read<Stack>(buffer, 0x306);  
                 }
 
@@ -206,7 +206,7 @@ namespace PUTM
 
                 /* init voltage measurement, set active cells in series */
                 {
-                    uint8_t actice_cells = (uint8_t)(Config::CELL_COUNT_PER_DEVICE - 6);
+                    uint8_t actice_cells = (uint8_t)(CONFIG::CELL_COUNT_PER_DEVICE - 6);
                     write<Stack>(actice_cells, 0x0003);
                 }
 
@@ -240,10 +240,10 @@ namespace PUTM
 
                 /* init ovuv */
                 {
-                    uint32_t undervoltage = std::clamp(Config::CELL_UV, 1200ul, 3100ul);
+                    uint32_t undervoltage = std::clamp(CONFIG::CELL_UV, 1200ul, 3100ul);
                     // TODO: fuuuuuck
                     /* this one is complicated... for now leave it like that */
-                    uint32_t overvoltage = std::clamp(Config::CELL_OV, 4175ul, 4475ul);
+                    uint32_t overvoltage = std::clamp(CONFIG::CELL_OV, 4175ul, 4475ul);
                     
                     uint8_t data1[2]
                     {
@@ -258,7 +258,7 @@ namespace PUTM
                     
                     /* disable unused channels */
                     uint8_t data2[2] = { 0 };
-                    for(size_t i = Config::CELL_COUNT_PER_DEVICE; i < 16; i++)
+                    for(size_t i = CONFIG::CELL_COUNT_PER_DEVICE; i < 16; i++)
                     {
                         size_t index = i / 8;
                         uint8_t bit = (uint8_t)(i % 8);
@@ -331,19 +331,19 @@ namespace PUTM
             }
         
         public:
-            HAL_StatusTypeDef read_stack_status(bool (&ovuv_arr)[Config::STACK_SIZE][Config::CELL_COUNT_PER_DEVICE], 
-                                                bool (&otut_arr)[Config::STACK_SIZE][Config::TEMPERATURES_COUNT_PER_DEVICE])
+            HAL_StatusTypeDef read_stack_status(bool (&ovuv_arr)[CONFIG::STACK_SIZE][CONFIG::CELL_COUNT_PER_DEVICE], 
+                                                bool (&otut_arr)[CONFIG::STACK_SIZE][CONFIG::TEMPERATURES_COUNT_PER_DEVICE])
             {
                 using enum CommunicationMode;
 
                 using namespace Utils;
 
                 /* 4 ovuv registers + 2 otut registers */
-                uint8_t buffer[Config::STACK_SIZE][6] { 0 };
+                uint8_t buffer[CONFIG::STACK_SIZE][6] { 0 };
 
                 read<Stack>(buffer, 0x053C);
 
-                for(size_t idev = 0; idev < Config::STACK_SIZE; idev++)
+                for(size_t idev = 0; idev < CONFIG::STACK_SIZE; idev++)
                 {
                     /* over and under voltage */
                     uint16_t ov_tmp = (uint16_t)buffer[idev][0] << 8 | (uint16_t)buffer[idev][1];
@@ -356,14 +356,14 @@ namespace PUTM
                     uint8_t otut_tmp = ot_tmp | ut_tmp;
 
                     /* voltages status */
-                    for(size_t ich = 0; ich < Config::CELL_COUNT_PER_DEVICE; ich++)
+                    for(size_t ich = 0; ich < CONFIG::CELL_COUNT_PER_DEVICE; ich++)
                     {
                         size_t bit_index = 1 << ich;
                         ovuv_arr[idev][ich] = (bool)(ovuv_tmp & bit_index);
                     }
 
                     /* temperatures status */
-                    for(size_t igio = 0; igio < Config::TEMPERATURES_COUNT_PER_DEVICE; igio++)
+                    for(size_t igio = 0; igio < CONFIG::TEMPERATURES_COUNT_PER_DEVICE; igio++)
                     {
                         size_t bit_index = 1 << igio;
                         otut_arr[idev][igio] = (bool)(otut_tmp & bit_index);
@@ -373,74 +373,74 @@ namespace PUTM
                 return HAL_OK;
             }
         public:
-            HAL_StatusTypeDef read_stack_data(float (&voltages_arr)[Config::STACK_SIZE][Config::CELL_COUNT_PER_DEVICE], 
-                                              float (&temperatures_arr)[Config::STACK_SIZE][Config::TEMPERATURES_COUNT_PER_DEVICE])
+            HAL_StatusTypeDef read_stack_data(float (&voltages_arr)[CONFIG::STACK_SIZE][CONFIG::CELL_COUNT_PER_DEVICE], 
+                                              float (&temperatures_arr)[CONFIG::STACK_SIZE][CONFIG::TEMPERATURES_COUNT_PER_DEVICE])
             {
                 using enum CommunicationMode;
 
                 using namespace Utils;
 
-                constexpr size_t CELL_DATA_COUNT = Config::CELL_COUNT_PER_DEVICE * 2;
-                constexpr size_t REG_OFFSET = (16 - Config::CELL_COUNT_PER_DEVICE) * 2;
-                constexpr size_t TEMP_DATA_COUNT = Config::TEMPERATURES_COUNT_PER_DEVICE * 2;
+                constexpr size_t CELL_DATA_COUNT = CONFIG::CELL_COUNT_PER_DEVICE * 2;
+                constexpr size_t REG_OFFSET = (16 - CONFIG::CELL_COUNT_PER_DEVICE) * 2;
+                constexpr size_t TEMP_DATA_COUNT = CONFIG::TEMPERATURES_COUNT_PER_DEVICE * 2;
 
-                uint8_t buffer_v[Config::STACK_SIZE][CELL_DATA_COUNT] { 0 };
+                uint8_t buffer_v[CONFIG::STACK_SIZE][CELL_DATA_COUNT] { 0 };
                 
                 /* read voltages, address of VCELL16_HI */
                 read<Stack>(buffer_v, 0x0568 + REG_OFFSET);
 
                 /* voltages */
-                for(size_t idev = 0; idev < Config::STACK_SIZE; idev++)
+                for(size_t idev = 0; idev < CONFIG::STACK_SIZE; idev++)
                 {
-                    for(size_t ich = 0; ich < Config::CELL_COUNT_PER_DEVICE; ich++)
+                    for(size_t ich = 0; ich < CONFIG::CELL_COUNT_PER_DEVICE; ich++)
                     {
                         int16_t volt = ((uint16_t)(buffer_v[idev][ich * 2]) << 8 | (uint16_t)(buffer_v[idev][ich * 2 + 1]));
                         
-                        voltages_arr[idev][Config::CELL_COUNT_PER_DEVICE - 1 - ich] = -(~volt + 1) * Config::V_LSB_ADC_CELL;
+                        voltages_arr[idev][CONFIG::CELL_COUNT_PER_DEVICE - 1 - ich] = -(~volt + 1) * BQ796XX_CONFIG::V_LSB_ADC_CELL;
                     }
                 }
 
-                uint8_t buffer_t[Config::STACK_SIZE][TEMP_DATA_COUNT] { 0 };
+                uint8_t buffer_t[CONFIG::STACK_SIZE][TEMP_DATA_COUNT] { 0 };
 
                 /* read temperatures, address of GPIO1_HI */
                 read<Stack>(buffer_t, 0x058E);
 
                 /* temperatures */
-                for(size_t idev = 0; idev < Config::STACK_SIZE; idev++)
+                for(size_t idev = 0; idev < CONFIG::STACK_SIZE; idev++)
                 {
-                    for(size_t igio = 0; igio < Config::TEMPERATURES_COUNT_PER_DEVICE; igio++)
+                    for(size_t igio = 0; igio < CONFIG::TEMPERATURES_COUNT_PER_DEVICE; igio++)
                     {
                         int16_t volt = ((uint16_t)(buffer_t[idev][igio * 2]) << 8 | (uint16_t)(buffer_t[idev][igio * 2 + 1]));
                         
-                        temperatures_arr[idev][igio] = -(~volt + 1) * Config::V_LSB_ADC_GPIO;
+                        temperatures_arr[idev][igio] = -(~volt + 1) * BQ796XX_CONFIG::V_LSB_ADC_GPIO;
                     }
                 }
 
                 return HAL_OK;
             }
         public:
-            HAL_StatusTypeDef read_single_data(float (&voltages_arr)[Config::CELL_COUNT_PER_DEVICE], 
-                                               float (&temperatures_arr)[Config::TEMPERATURES_COUNT_PER_DEVICE],
+            HAL_StatusTypeDef read_single_data(float (&voltages_arr)[CONFIG::CELL_COUNT_PER_DEVICE], 
+                                               float (&temperatures_arr)[CONFIG::TEMPERATURES_COUNT_PER_DEVICE],
                                                uint8_t device)
             {
                 using enum CommunicationMode;
 
                 using namespace Utils;
 
-                constexpr size_t CELL_DATA_COUNT = Config::CELL_COUNT_PER_DEVICE * 2;
-                constexpr size_t REG_OFFSET = (16 - Config::CELL_COUNT_PER_DEVICE) * 2;
-                constexpr size_t TEMP_DATA_COUNT = Config::TEMPERATURES_COUNT_PER_DEVICE * 2;
+                constexpr size_t CELL_DATA_COUNT = CONFIG::CELL_COUNT_PER_DEVICE * 2;
+                constexpr size_t REG_OFFSET = (16 - CONFIG::CELL_COUNT_PER_DEVICE) * 2;
+                constexpr size_t TEMP_DATA_COUNT = CONFIG::TEMPERATURES_COUNT_PER_DEVICE * 2;
                 
                 uint8_t buffer_v[1][CELL_DATA_COUNT] { 0 };
                 
                 /* read voltages, address of VCELL16_HI */
                 read<Single>(buffer_v, 0x0568 + REG_OFFSET, device);
 
-                for(size_t ich = 0; ich < Config::CELL_COUNT_PER_DEVICE; ich++)
+                for(size_t ich = 0; ich < CONFIG::CELL_COUNT_PER_DEVICE; ich++)
                 {
                     int16_t volt = ((uint16_t)(buffer_v[0][ich * 2]) << 8 | (uint16_t)(buffer_v[0][ich * 2 + 1]));
                     
-                    voltages_arr[Config::CELL_COUNT_PER_DEVICE - 1 - ich] = -(~volt + 1) * Config::V_LSB_ADC_CELL;
+                    voltages_arr[CONFIG::CELL_COUNT_PER_DEVICE - 1 - ich] = -(~volt + 1) * BQ796XX_CONFIG::V_LSB_ADC_CELL;
                 }
 
                 uint8_t buffer_t[1][TEMP_DATA_COUNT] { 0 };
@@ -450,11 +450,11 @@ namespace PUTM
 
                 /* temperatures */
 
-                for(size_t igio = 0; igio < Config::TEMPERATURES_COUNT_PER_DEVICE; igio++)
+                for(size_t igio = 0; igio < CONFIG::TEMPERATURES_COUNT_PER_DEVICE; igio++)
                 {
                     int16_t volt = ((uint16_t)(buffer_t[0][igio * 2]) << 8 | (uint16_t)(buffer_t[0][igio * 2 + 1]));
                     
-                    temperatures_arr[igio] = -(~volt + 1) * Config::V_LSB_ADC_GPIO;
+                    temperatures_arr[igio] = -(~volt + 1) * BQ796XX_CONFIG::V_LSB_ADC_GPIO;
                 }
 
                 return HAL_OK;
@@ -471,7 +471,7 @@ namespace PUTM
                 using namespace Regs;
                 using namespace Types;
 
-                if(device >= Config::STACK_SIZE) return HAL_ERROR;
+                if(device >= CONFIG::STACK_SIZE) return HAL_ERROR;
                 if(device == 0) return HAL_ERROR;
 
                 BalCtrl2 bal_ctrl_2
@@ -496,7 +496,7 @@ namespace PUTM
                 using namespace Regs;
                 using namespace Types;
 
-                if(device >= Config::STACK_SIZE) return HAL_ERROR;
+                if(device >= CONFIG::STACK_SIZE) return HAL_ERROR;
                 if(device == 0) return HAL_ERROR;
 
                 {
@@ -558,7 +558,7 @@ namespace PUTM
              *  @param  device device address, 0 = comm device, 1 = first device, 2 = second device, etc.
              *  @retval	HAL_OK when done, HAL_BUSY when balancing in progress, HAL_ERROR on fail
              */
-            HAL_StatusTypeDef set_balancing(bool (&balance_arr)[Config::CELL_COUNT_PER_DEVICE], 
+            HAL_StatusTypeDef set_balancing(bool (&balance_arr)[CONFIG::CELL_COUNT_PER_DEVICE], 
                                                      uint8_t device)
             {
                 using enum CommunicationMode;
@@ -567,14 +567,14 @@ namespace PUTM
                 using namespace Regs;
                 using namespace Types;
                 
-                if(device > Config::STACK_SIZE) return HAL_ERROR;
+                if(device > CONFIG::STACK_SIZE) return HAL_ERROR;
                 if(device == 0) return HAL_ERROR;
 
                 if(balance_arr == nullptr) return HAL_ERROR;
 
                 /* return error if more than two consecutive cells are being balance at the same time */
                 size_t consecutive_cells = 0;
-                for(size_t i = 0; i < Config::CELL_COUNT_PER_DEVICE; i++)
+                for(size_t i = 0; i < CONFIG::CELL_COUNT_PER_DEVICE; i++)
                 {
                     if(balance_arr[i])
                     {
@@ -588,7 +588,7 @@ namespace PUTM
                 }
                 /* return error if more than 8 cells are being balance at the same time */
                 size_t balancing_cells = 0;
-                for(size_t i = 0; i < Config::CELL_COUNT_PER_DEVICE; i++)
+                for(size_t i = 0; i < CONFIG::CELL_COUNT_PER_DEVICE; i++)
                 {
                     if(balance_arr[i])
                     {
@@ -598,7 +598,7 @@ namespace PUTM
                 }
                 if(balancing_cells == 0) return HAL_ERROR; // no cells to balance
                 
-                // if(Config::CELL_COUNT_PER_DEVICE > 0)
+                // if(CONFIG::CELL_COUNT_PER_DEVICE > 0)
                 /* set balancing time to 10s */
                 {
                     uint8_t data[8] { };
@@ -610,13 +610,13 @@ namespace PUTM
                     write<Single>(data, 0x0318 + 0x0008, device);
                 }
                 {
-                    uint8_t data[Config::CELL_COUNT_PER_DEVICE - 8] { };
-                    for(size_t i = 0; i < Config::CELL_COUNT_PER_DEVICE - 8; i++)
+                    uint8_t data[CONFIG::CELL_COUNT_PER_DEVICE - 8] { };
+                    for(size_t i = 0; i < CONFIG::CELL_COUNT_PER_DEVICE - 8; i++)
                     {
-                        size_t cell_index = Config::CELL_COUNT_PER_DEVICE - 1 - i;
+                        size_t cell_index = CONFIG::CELL_COUNT_PER_DEVICE - 1 - i;
                         data[i] = uint8_t(balance_arr[cell_index]) * 0x1; 
                     }
-                    write<Single>(data, 0x0318 + Config::CELL_COUNT_PER_DEVICE - 0x0008, device);
+                    write<Single>(data, 0x0318 + CONFIG::CELL_COUNT_PER_DEVICE - 0x0008, device);
                 }
 
                 return HAL_OK;
@@ -631,7 +631,7 @@ namespace PUTM
                 using namespace Regs;
                 using namespace Types;
 
-                if(device >= Config::STACK_SIZE) return HAL_ERROR;
+                if(device >= CONFIG::STACK_SIZE) return HAL_ERROR;
                 if(device == 0) return HAL_ERROR;
 
                 /* read balancing status */
@@ -652,19 +652,19 @@ namespace PUTM
 
                 /* set balancing time to max */
                 {
-                    // if(Config::CELL_COUNT_PER_DEVICE > 0)
+                    // if(CONFIG::CELL_COUNT_PER_DEVICE > 0)
                     {
                         // TODO: for now leave it at 8
                         constexpr size_t data1_size = 8;
                         uint8_t data1[data1_size] { };
-                        std::fill(data1, data1 + data1_size, Config::MAX_BALANCING_TIME);
+                        std::fill(data1, data1 + data1_size, BQ796XX_CONFIG::MAX_BALANCING_TIME);
                         write<Stack>(data1, 0x0318);
                     }
-                    if(Config::CELL_COUNT_PER_DEVICE > 8)
+                    if(CONFIG::CELL_COUNT_PER_DEVICE > 8)
                     {
-                        constexpr size_t data2_size = Config::CELL_COUNT_PER_DEVICE % 8;
+                        constexpr size_t data2_size = CONFIG::CELL_COUNT_PER_DEVICE % 8;
                         uint8_t data2[data2_size] { };
-                        std::fill(data2, data2 + data2_size, Config::MAX_BALANCING_TIME);
+                        std::fill(data2, data2 + data2_size, BQ796XX_CONFIG::MAX_BALANCING_TIME);
                         write<Stack>(data2, 0x0318 + 8);
                     }
                 }

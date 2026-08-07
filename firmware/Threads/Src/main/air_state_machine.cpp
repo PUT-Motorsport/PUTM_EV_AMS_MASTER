@@ -191,7 +191,7 @@ StateEdge off_to_idle
     .condition = []() -> bool
     {
         uint32_t time = tx_time_get() - off_enter_tick;
-        return (not data.on_charger and time > Config::STATE_MACHINE_OFF_TO_IDLE_WAIT);
+        return (not data.on_charger and time > CONFIG::STATE_MACHINE_OFF_TO_IDLE_WAIT);
     },
     .prev_state = &off,
     .next_state = &idle,
@@ -215,8 +215,8 @@ StateEdge idle_to_precharge
     { 
         uint32_t time = tx_time_get() - idle_enter_tick;
         // use the error?
-        return (data.car_voltage <= Config::MIN_HV_THRESH and 
-                data.tsms and data.cmd_hv and time > Config::STATE_MACHINE_IDLE_TO_PRECHARGE_WAIT); 
+        return (data.car_voltage <= CONFIG::MIN_HV_THRESH and 
+                data.tsms and data.cmd_hv and time > CONFIG::STATE_MACHINE_IDLE_TO_PRECHARGE_WAIT); 
     },
     .prev_state = &idle,
     .next_state = &precharge,
@@ -227,7 +227,7 @@ StateEdge idle_to_error
     .name = "idle -> error",
     .condition = []() -> bool
     { 
-        return (data.error); //data.car_voltage > Config::MIN_HV_THRESH or 
+        return (data.error); //data.car_voltage > CONFIG::MIN_HV_THRESH or 
     },
     .prev_state = &idle,
     .next_state = &error,
@@ -238,9 +238,9 @@ StateEdge precharge_to_on
     .name = "precharge -> on",
     .condition = []() -> bool
     {
-        float car_thresh = data.acu_voltage * Config::CAR_CHARGE_THRESH;
+        float car_thresh = data.acu_voltage * CONFIG::CAR_CHARGE_THRESH;
         uint32_t time = tx_time_get() - precharge_enter_tick;
-        return time > Config::MIN_PRECHARGE_WAIT and data.car_voltage >= car_thresh; 
+        return time > CONFIG::MIN_PRECHARGE_WAIT and data.car_voltage >= car_thresh; 
     },
     .prev_state = &precharge,
     .next_state = &on,
@@ -252,7 +252,7 @@ static StateEdge precharge_to_idle
     .condition = []() -> bool
     {
         uint32_t time = tx_time_get() - precharge_enter_tick;
-        return ((data.cmd_hv and time > Config::STATE_MACHINE_IDLE_TO_PRECHARGE_WAIT) or not data.tsms);// or not data.cmd_hv
+        return ((data.cmd_hv and time > CONFIG::STATE_MACHINE_IDLE_TO_PRECHARGE_WAIT) or not data.tsms);// or not data.cmd_hv
     },
     .prev_state = &precharge,
     .next_state = &idle,
@@ -263,11 +263,11 @@ StateEdge precharge_to_error
     .name = "precharge -> error",
     .condition = []() -> bool
     { 
-        // float car_thresh = data.acu_voltage * Config::CAR_CHARGE_THRESH;
+        // float car_thresh = data.acu_voltage * CONFIG::CAR_CHARGE_THRESH;
         uint32_t time = tx_time_get() - precharge_enter_tick;
 
-        bool precharge_timeout_lo = (data.car_voltage <= Config::MIN_HV_THRESH and time > Config::MIN_PRECHARGE_WAIT);
-        bool precharge_timeout_hi = (time > Config::MAX_PRECHARGE_WAIT);
+        bool precharge_timeout_lo = (data.car_voltage <= CONFIG::MIN_HV_THRESH and time > CONFIG::MIN_PRECHARGE_WAIT);
+        bool precharge_timeout_hi = (time > CONFIG::MAX_PRECHARGE_WAIT);
 
         bool error = precharge_timeout_lo or precharge_timeout_hi or data.error; //  and not (data.tsms or data.cmd_hv))
 

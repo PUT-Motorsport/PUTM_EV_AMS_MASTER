@@ -32,7 +32,6 @@ extern "C"
 #include "wrapper/gpio.hpp"
 
 using namespace PUTM;
-using namespace PUTM::Config;
 using namespace Utils;
 
 using namespace PUTM_CAN;
@@ -49,10 +48,10 @@ extern Gpio usb_reset;
 // extern TX_MUTEX tx_buffer_mutex;
 // extern TX_MUTEX rx_buffer_mutex;
 
-static StaticJsonDocument<Config::TX_JSON_BUFFER_SIZE> tx_json;
-static char tx_char_buffer[TX_JSON_BUFFER_SIZE] { }; // TODO: Maybe change to its own buffer size
-static StaticJsonDocument<Config::RX_JSON_BUFFER_SIZE> rx_json;
-static char rx_char_buffer[RX_UART_BUFFER_SIZE] { };
+static StaticJsonDocument<CONFIG::TX_JSON_BUFFER_SIZE> tx_json;
+static char tx_char_buffer[CONFIG::TX_JSON_BUFFER_SIZE] { }; // TODO: Maybe change to its own buffer size
+static StaticJsonDocument<CONFIG::RX_JSON_BUFFER_SIZE> rx_json;
+static char rx_char_buffer[CONFIG::RX_JSON_BUFFER_SIZE] { };
 
 static Uart uart(&huart1);
 
@@ -127,7 +126,7 @@ VOID car_can_thread_entry(__unused ULONG thread_input)
 
 static std::function<void(size_t)> usb_rx_callback = [](size_t size)
 {
-    DeserializationError error = deserializeJson(rx_json, rx_char_buffer, RX_UART_BUFFER_SIZE);
+    DeserializationError error = deserializeJson(rx_json, rx_char_buffer, CONFIG::RX_UART_BUFFER_SIZE);
 
     if(error)
     {
@@ -149,7 +148,7 @@ static std::function<void(size_t)> usb_rx_callback = [](size_t size)
         {
             // if no value is provided ArduinoJson will assume 0.0f
             float charging_current = rx_json["value"];
-            charging_current = std::clamp(charging_current, 0.0f, Config::MAX_CHARGING_CURRENT);
+            charging_current = std::clamp(charging_current, 0.0f, CONFIG::MAX_CHARGING_CURRENT);
             data.charging_current = charging_current;
         }
         else if(command == "balancing_on")
@@ -179,7 +178,7 @@ static std::function<void(size_t)> usb_rx_callback = [](size_t size)
         data.last_command = command;
     }
 
-    uart.async_rx_unknown_dma(rx_char_buffer, RX_UART_BUFFER_SIZE, &usb_rx_callback);
+    uart.async_rx_unknown_dma(rx_char_buffer, CONFIG::RX_UART_BUFFER_SIZE, &usb_rx_callback);
 };
 
 /**
@@ -205,7 +204,7 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
             first_run = false;
             data.loggers.events.log_event("USB DET", tx_time_get());
             uart.abort_async_rx_unknown_dma();
-            uart.async_rx_unknown_dma(rx_char_buffer, RX_UART_BUFFER_SIZE, &usb_rx_callback);
+            uart.async_rx_unknown_dma(rx_char_buffer, CONFIG::RX_UART_BUFFER_SIZE, &usb_rx_callback);
         }
         if(data.usb_connected)
         {
@@ -226,25 +225,25 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
             tx_json["cell_min_temperature"] = data.cell_min_temperature;
             tx_json["charging_current"] = data.charging_current;
             tx_thread_relinquish();
-            for(size_t i = 0; i < Config::TOTAL_CELL_COUNT; i++)
+            for(size_t i = 0; i < CONFIG::TOTAL_CELL_COUNT; i++)
             {
-                size_t idev = i / Config::CELL_COUNT_PER_DEVICE;
-                size_t icell = i % Config::CELL_COUNT_PER_DEVICE;
+                size_t idev = i / CONFIG::CELL_COUNT_PER_DEVICE;
+                size_t icell = i % CONFIG::CELL_COUNT_PER_DEVICE;
                 tx_json["cell_voltages"][idev][icell] = data.cell_voltages[idev][icell];
                 
             tx_thread_relinquish();
             }
-            for(size_t i = 0; i < Config::TOTAL_CELL_COUNT; i++)
+            for(size_t i = 0; i < CONFIG::TOTAL_CELL_COUNT; i++)
             {
-                size_t idev = i / Config::CELL_COUNT_PER_DEVICE;
-                size_t icell = i % Config::CELL_COUNT_PER_DEVICE;
+                size_t idev = i / CONFIG::CELL_COUNT_PER_DEVICE;
+                size_t icell = i % CONFIG::CELL_COUNT_PER_DEVICE;
                 tx_json["cell_balancing"][idev][icell] = data.cell_balancing[idev][icell];
                 tx_thread_relinquish();
             }
-            for(size_t i = 0; i < Config::TOTAL_TEMPERATURES_COUNT; i++)
+            for(size_t i = 0; i < CONFIG::TOTAL_TEMPERATURES_COUNT; i++)
             {
-                size_t idev = i / Config::TEMPERATURES_COUNT_PER_DEVICE;
-                size_t icell = i % Config::TEMPERATURES_COUNT_PER_DEVICE;
+                size_t idev = i / CONFIG::TEMPERATURES_COUNT_PER_DEVICE;
+                size_t icell = i % CONFIG::TEMPERATURES_COUNT_PER_DEVICE;
                 tx_json["cell_temperatures"][idev][icell] = data.cell_temperatures[idev][icell];
                 tx_thread_relinquish();
             }
@@ -271,22 +270,22 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
                 tx_json["precharge"] = data.precharge;
                 tx_json["hv_on"] = data.hv_on;
                 tx_thread_relinquish();
-                for(size_t i = 0; i < Config::TOTAL_CELL_COUNT; i++)
+                for(size_t i = 0; i < CONFIG::TOTAL_CELL_COUNT; i++)
                 {
-                    size_t idev = i / Config::CELL_COUNT_PER_DEVICE;
-                    size_t icell = i % Config::CELL_COUNT_PER_DEVICE;
+                    size_t idev = i / CONFIG::CELL_COUNT_PER_DEVICE;
+                    size_t icell = i % CONFIG::CELL_COUNT_PER_DEVICE;
                     tx_json["cell_socs"][idev][icell] = data.cell_socs[idev][icell].get();
                     tx_thread_relinquish();
                 }
-                for(size_t i = 0; i < Config::STACK_SIZE; i++)
+                for(size_t i = 0; i < CONFIG::STACK_SIZE; i++)
                 {
                     tx_json["bq_com_status"][i] = get_error_name(data.bq_read_data_status[i]);
                     tx_thread_relinquish();
                 }
-                for(size_t i = 0; i < Config::TOTAL_TEMPERATURES_COUNT; i++)
+                for(size_t i = 0; i < CONFIG::TOTAL_TEMPERATURES_COUNT; i++)
                 {
-                    size_t idev = i / Config::TEMPERATURES_COUNT_PER_DEVICE;
-                    size_t icell = i % Config::TEMPERATURES_COUNT_PER_DEVICE;
+                    size_t idev = i / CONFIG::TEMPERATURES_COUNT_PER_DEVICE;
+                    size_t icell = i % CONFIG::TEMPERATURES_COUNT_PER_DEVICE;
                     tx_json["gpio_voltages"][idev][icell] = data.gpio_voltages[idev][icell];
                     tx_thread_relinquish();
                 }
@@ -329,7 +328,7 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
             }
 
             // serializeJson(json, buffer, JSON_BUFFER_SIZE);
-            serializeJson(tx_json, tx_char_buffer, TX_JSON_BUFFER_SIZE - 1);
+            serializeJson(tx_json, tx_char_buffer, CONFIG::TX_JSON_BUFFER_SIZE - 1);
             auto s = strlen(tx_char_buffer);
             //redundant newline at the end
             tx_char_buffer[s] = '\n';
