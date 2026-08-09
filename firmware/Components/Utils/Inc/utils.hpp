@@ -86,7 +86,7 @@ namespace Utils
         { T::ADDRESS };
     };
 
-    /*
+    /**
     *   @brief  This function is wrap for structs which returns an address of
     *           of a object
     *   @tparam `ADDRESSABLE` an 'addressable' object, meaning it implements a
@@ -140,7 +140,7 @@ namespace Utils
      *  });
      */
     template<int BEGIN, int END, class FUNCTION>
-    consteval void static_for(FUNCTION f) 
+    constexpr void static_for(FUNCTION f) 
     {
         if constexpr (BEGIN < END) 
         {

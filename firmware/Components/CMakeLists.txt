@@ -54,3 +54,7 @@ message("Logger included in the project")
 add_subdirectory(ArduinoJson)
 target_link_libraries(${CMAKE_PROJECT_NAME} ArduinoJson)
 message("ArduinoJson included in the project")
+
+add_subdirectory(PUTM_EV_STM32_EEPROM)
+target_link_libraries(${CMAKE_PROJECT_NAME} EEPROM_LIBRARY)
+message("PUTM_EV_STM32_EEPROM included in the project")

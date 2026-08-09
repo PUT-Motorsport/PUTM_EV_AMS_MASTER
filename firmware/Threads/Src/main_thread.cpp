@@ -3,7 +3,6 @@
 #include "cstdio"
 #include "usart.h"
 #include "adc.h"
-#include "array"
 
 #include "threads.hpp"
 #include "wrapper/gpio.hpp"
@@ -26,6 +25,8 @@
 
 #include <algorithm>
 #include <cmath>
+#include <utility>
+#include <array>
 
 using namespace PUTM;
 using namespace Utils;
@@ -49,11 +50,6 @@ Gpio usb_reset(USB_RESET_GPIO_Port, USB_RESET_Pin, true);
 
 constexpr Polynomial t_r_poly { CONFIG::POLYNOMIAL_T_R::COEFFS<NTCPart::DEFAULT> }; //CONFIG::POLYNOMIAL_T_R::COEFFS<NTCType::_10k_3434K>
 
-constexpr auto r_u_lambda = [](float voltage) -> float
-{
-    return CONFIG::NOMINAL_R1 / (CONFIG::NOMINAL_TSREF - voltage) * voltage;
-};
-
 constexpr Polynomial ocv { CONFIG::POLYNOMIAL_OCV };
 constexpr Polynomial docv = ocv.derivative();
 
@@ -65,6 +61,17 @@ extern StateMachine charger_state_machine;
 extern ErrorChecker error_checker;
 
 extern TX_TIMER soc_update_timer;
+
+/**
+ * @brief Calculate resistance of ntc from voltage
+ * 
+ * @param voltage voltage on resistor divider
+ * @return constexpr float 
+ */
+float r_u_lambda(float voltage)
+{
+    return CONFIG::NOMINAL_R1 / (CONFIG::NOMINAL_TSREF - voltage) * voltage;
+};
 
 /**
  * @brief Entry point for the main thread of the system.
@@ -165,23 +172,24 @@ VOID main_thread_entry(__unused ULONG thread_input)
         /* update true temps */
         if constexpr (CONFIG::ENABLE_NTC_MAPPING)
         {
-            constexpr auto compute = []() constexpr
+            static_for<0, CONFIG::STACK_SIZE>([&]<int DEVICE>()
             {
-                for(size_t i = 0; i < CONFIG::STACK_SIZE; i++)
+                constexpr Polynomial t_r_poly { CONFIG::POLYNOMIAL_T_R::COEFFS<CONFIG::PACK_POLYNOMIAL_MAP[DEVICE]> };
+                for(size_t chanel = 0; chanel < CONFIG::TEMPERATURES_COUNT_PER_DEVICE; chanel++)
                 {
-                    constexpr Polynomial {}
+                    float r = r_u_lambda(data.gpio_voltages[DEVICE][chanel]);
+                    data.cell_temperatures[DEVICE][chanel] = t_r_poly.evaluate(r) - 273.15f;
                 }
-            };
-
+            });
         }
         else
         {
-            for(size_t i = 0; i < CONFIG::STACK_SIZE; i++)
+            for(size_t device = 0; device < CONFIG::STACK_SIZE; device++)
             {
-                for(size_t j = 0; j < CONFIG::TEMPERATURES_COUNT_PER_DEVICE; j++)
+                for(size_t chanel = 0; chanel < CONFIG::TEMPERATURES_COUNT_PER_DEVICE; chanel++)
                 {
-                    auto r = r_u_lambda(data.gpio_voltages[i][j]);
-                    data.cell_temperatures[i][j] = t_r_poly.evaluate(r) - 273.f;
+                    auto r = r_u_lambda(data.gpio_voltages[device][chanel]);
+                    data.cell_temperatures[device][chanel] = t_r_poly.evaluate(r) - 273.15f;
                 }
             }
         }
@@ -277,16 +285,9 @@ VOID main_thread_entry(__unused ULONG thread_input)
         air_state_machine.update();
 
         /* Error checker */
-        if constexpr (CONFIG::TURN_OFF_ERROR_CHECKER)
+        if(error_checker.check_errors(tx_time_get()))
         {
-            data.error = false;
-        }
-        else /* constexpr */
-        {
-            if(error_checker.check_errors(tx_time_get()))
-            {
-                data.error = true;
-            }
+            data.error = true;
         }
 
         /* handle warning */
@@ -297,7 +298,7 @@ VOID main_thread_entry(__unused ULONG thread_input)
             sig_err.set();
         }
 
-        data.update_times.main_updates_per_sec = updates.update(tx_time_get());
+        data.update_times.main = updates.update(tx_time_get());
 
         tx_thread_sleep(30);
     }

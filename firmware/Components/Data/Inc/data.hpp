@@ -91,6 +91,11 @@ namespace PUTM
         
         struct
         {
+
+        } slaves;
+
+        struct
+        {
             bool on_charger { false };
             bool tsms { false };
             bool usb_connected { false }; 
@@ -106,9 +111,9 @@ namespace PUTM
 
         struct
         {
-            float bq_updates_per_sec { 0.f };
-            float ads_updates_per_sec { 0.f };
-            float main_updates_per_sec { 0.f };
+            float bq { 0.f };
+            float ads { 0.f };
+            float main { 0.f };
         } update_times;
 
         // TODO: figure out the bools what false / true means  

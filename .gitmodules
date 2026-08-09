@@ -1,6 +1,9 @@
 [submodule "PUTM_EV_CAN_LIBRARY"]
 	path = firmware/Components/PUTM_EV_CAN_LIBRARY
-	url = git@github.com:PUT-Motorsport/PUTM_EV_CAN_LIBRARY.git
+	url = https://github.com/PUT-Motorsport/PUTM_EV_CAN_LIBRARY.git
 [submodule "ArduinoJson"]
 	path = firmware/Components/ArduinoJson
-	url = git@github.com:bblanchon/ArduinoJson.git
+	url = https://github.com/bblanchon/ArduinoJson.git
+[submodule "firmware/Components/PUTM_EV_STM32_EEPROM"]
+	path = firmware/Components/PUTM_EV_STM32_EEPROM
+	url = https://github.com/PUT-Motorsport/PUTM_EV_STM32_EEPROM.git

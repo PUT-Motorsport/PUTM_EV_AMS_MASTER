@@ -143,7 +143,7 @@ VOID bq796xx_thread_entry(__unused ULONG thread_input)
         // if(balancing_on) bq.resume_balancing(device_address);
         device_address++;
         if(device_address > CONFIG::STACK_SIZE) device_address = 1; 
-        data.update_times.bq_updates_per_sec = updates.update(tx_time_get());
+        data.update_times.bq = updates.update(tx_time_get());
         
         tx_thread_sleep(CONFIG::STACK_COM_DATA_POLL_INTERVAL);
     }

@@ -291,9 +291,9 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
                 }
                 tx_json["sm_air_state"] = air_state_machine.get_current_state_name();
                 tx_json["sm_charger_state"] = charger_state_machine.get_current_state_name();
-                tx_json["bq_updates_per_sec"] = data.update_times.bq_updates_per_sec;
-                tx_json["ads_updates_per_sec"] = data.update_times.ads_updates_per_sec;
-                tx_json["main_updates_per_sec"] = data.update_times.main_updates_per_sec;
+                tx_json["bq_updates_per_sec"] = data.update_times.bq;
+                tx_json["ads_updates_per_sec"] = data.update_times.ads;
+                tx_json["main_updates_per_sec"] = data.update_times.main;
                 tx_json["checker_errors"] = JsonArray();
                 tx_thread_relinquish();
                 for(auto log : data.loggers.errors)

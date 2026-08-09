@@ -74,13 +74,14 @@ namespace PUTM
         */
         void log_error(std::string_view message, uint32_t tick = 0)
         {
+            constexpr size_t offset = 15;
             MSG_I_TYPE *__ptr;
             
             /* include null-termination */
-            if(__index + message.size() + 17 + sizeof(MSG_I_TYPE) >= __free_space) return;
+            if(__index + message.size() + offset + sizeof(MSG_I_TYPE) >= __free_space) return;
             if(message.size() == 0) return; // No message to log
-            std::format_to_n(__buffer + __index, __free_space - __index, "{:09d} ERR: {} \n", tick, message);
-            __index += message.size() + 17;
+            std::format_to_n(__buffer + __index, __free_space - __index, "{:08d} ERR: {}\n", tick, message);
+            __index += message.size() + offset;
             __ptr = (MSG_I_TYPE*)(__buffer + __free_space - sizeof(MSG_I_TYPE));
             /* store the message 'end index' at the heap beginning at the end of the buffer */
             *__ptr = __index;
@@ -100,17 +101,18 @@ namespace PUTM
          */
         void log_event(std::string_view message, uint32_t tick = 0)
         {
+            constexpr size_t offset = 15;
             MSG_I_TYPE *__ptr;
-            
+
             /* include null-termination */
-            if(__index + message.size() + 17 + sizeof(MSG_I_TYPE) >= __free_space) return;
+            if(__index + message.size() + offset + sizeof(MSG_I_TYPE) >= __free_space) return;
             if(message.size() == 0) return; // No message to log
-            std::format_to_n(__buffer + __index, __free_space - __index, "{:09d} EVT: {} \n", tick, message);
-            __index += message.size() + 17;
+            std::format_to_n(__buffer + __index, __free_space - __index, "{:08d} EVT: {}\n", tick, message);
+            __index += message.size() + offset;
             __ptr = (MSG_I_TYPE*)(__buffer + __free_space - sizeof(MSG_I_TYPE));
             /* store the message 'end index' at the heap beginning at the end of the buffer */
             *__ptr = __index;
-            __free_space -= sizeof(MSG_I_TYPE);
+            __free_space -= sizeof(MSG_I_TYPE) ;
             __message_count++;
         }
     public:

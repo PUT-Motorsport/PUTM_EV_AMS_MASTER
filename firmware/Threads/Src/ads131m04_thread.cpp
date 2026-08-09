@@ -114,7 +114,7 @@ VOID ads131m04_thread_entry(__unused ULONG thread_input)
         /* times -1.f must be due to hardware error because it reports negative voltage despite the positive voltage on the terminal */
         data.current = current - current_offset;
 
-        data.update_times.ads_updates_per_sec = updates.update(tx_time_get());
+        data.update_times.ads = updates.update(tx_time_get());
 
         if(data.hv_on)
         {
