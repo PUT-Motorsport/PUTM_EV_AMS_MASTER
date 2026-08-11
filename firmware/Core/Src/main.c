@@ -20,7 +20,9 @@
 #include "app_threadx.h"
 #include "main.h"
 #include "adc.h"
+#include "crc.h"
 #include "fdcan.h"
+#include "flash.h"
 #include "gpdma.h"
 #include "icache.h"
 #include "spi.h"
@@ -105,6 +107,8 @@ int main(void)
   MX_UART4_Init();
   MX_ADC1_Init();
   MX_USART3_UART_Init();
+  MX_CRC_Init();
+  MX_FLASH_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
