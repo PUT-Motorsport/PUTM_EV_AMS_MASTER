@@ -111,7 +111,7 @@ MID_SOC_BLEND_STRENGTH = 1.0
 ENFORCE_MONOTONIC_AFTER_SMOOTHING = True
 
 # Number of samples in the generated common SOC grid.
-NUMBER_OF_OUTPUT_POINTS = 101
+NUMBER_OF_OUTPUT_POINTS = 201
 
 # Plot options.
 SHOW_PLOT = True
