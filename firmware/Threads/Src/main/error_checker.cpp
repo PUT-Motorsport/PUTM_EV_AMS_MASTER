@@ -144,7 +144,6 @@ Error tcell_error
     .timeout = CONFIG::STANDARD_ERROR_TIMEOUT,
     .condition = []() -> uint32_t 
     {
-        if (CONFIG::TURN_OFF_TEMP_ERRORS) return 0;
         uint32_t code = 0;
         for(size_t i = 0; i < CONFIG::STACK_SIZE; i++)
         {
@@ -193,7 +192,6 @@ Error current_error_long
     .timeout = CONFIG::CURRENT_ERROR_LONG_TIMEOUT,
     .condition = []() -> uint32_t 
     {
-        if (CONFIG::TURN_OFF_TEMP_ERRORS) return 0;
         uint32_t code = 0;
         if(data.current > CONFIG::MAX_CURRENT_THRESH_LONG)
         {

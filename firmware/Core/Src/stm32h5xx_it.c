@@ -22,6 +22,7 @@
 #include "stm32h5xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "eeprom_emul_conf.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -83,7 +84,16 @@ extern TIM_HandleTypeDef htim1;
 void NMI_Handler(void)
 {
   /* USER CODE BEGIN NonMaskableInt_IRQn 0 */
-
+    if (__HAL_FLASH_GET_FLAG(FLASH_FLAG_ECCD))
+    {
+#ifdef EDATA_ENABLED
+        if (READ_REG(FLASH->ECCDR) == 0xFFFF)
+        {
+            __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_ECCD);
+            return;
+        }
+#endif
+    }
   /* USER CODE END NonMaskableInt_IRQn 0 */
   /* USER CODE BEGIN NonMaskableInt_IRQn 1 */
   while (1)

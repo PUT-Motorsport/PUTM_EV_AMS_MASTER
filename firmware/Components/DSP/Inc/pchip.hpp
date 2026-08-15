@@ -7,6 +7,7 @@
 #include <type_traits>
 #include <cstddef>
 #include <expected>
+#include <limits>
 
 namespace PUTM
 {
@@ -57,6 +58,12 @@ namespace PUTM
     public:
         using type = TYPE;
     public:
+        struct Config
+        {
+            float scale_x = 1.f;
+            float scale_y = 1.f;
+        };
+    public:
         /**
          *  @brief  Default constructor.
          *  @note   set_data() must be called before interpolation.
@@ -68,13 +75,13 @@ namespace PUTM
          *  @param  x Input x coordinates.
          *  @param  y Input y coordinates.
          */
-        constexpr PCHIP(const TYPE (&x)[SIZE], const TYPE (&y)[SIZE])
+        constexpr PCHIP(const TYPE (&x)[SIZE], const TYPE (&y)[SIZE], const Config config = Config())
         {
             if consteval
             {
                 __consteval = true;
             }
-            __initialized = set_data(x, y);
+            __initialized = set_data(x, y, config);
         }
     public:
         /**
@@ -86,7 +93,7 @@ namespace PUTM
          *  @note   y -> x is enabled when y is monotonically increasing or
          *          monotonically decreasing and is not constant.
          */
-        constexpr bool set_data(const TYPE (&x)[SIZE], const TYPE (&y)[SIZE])
+        constexpr bool set_data(const TYPE (&x)[SIZE], const TYPE (&y)[SIZE], const Config config)
         {   
             bool is_monotone_increasing = true;
             bool is_monotone_decreasing = true;
@@ -107,8 +114,8 @@ namespace PUTM
                     if(y[i] > y[i + 1]) is_monotone_increasing = false;
                     if(y[i] < y[i + 1]) is_monotone_decreasing = false;
                 }
-                __x[i] = x[i];
-                __y[i] = y[i];
+                __x[i] = x[i] * config.scale_x;
+                __y[i] = y[i] * config.scale_y;
                 __tangents_x[i] = { };
                 __tangents_y[i] = { };
             }
@@ -140,8 +147,29 @@ namespace PUTM
                 return false;
             }
 
-            if(output != nullptr) *output = interpolate_y(x);
-            return true;
+            if(output != nullptr) 
+            {
+                *output = interpolate_y(x);
+                return true;
+            }
+            return false;
+        }
+    public:
+        /**
+         *  @brief  Interpolate y from x.
+         *  @param  x Requested x coordinate.
+         *  @return FIXME:
+         *
+         *  @note   Queries outside the x range are clamped.
+         */
+        constexpr TYPE evaluate_y(TYPE x) const
+        {
+            if (not __initialized)
+            {
+                return std::numeric_limits<TYPE>::infinity();
+            }
+
+            return interpolate_y(x);
         }
     public:
         /**
@@ -167,6 +195,16 @@ namespace PUTM
                 return true;
             }
             return false;
+        }
+    public:
+        constexpr TYPE evaluate_x(TYPE y) const
+        {
+            if (not can_get_x())
+            {
+                return std::numeric_limits<TYPE>::infinity();
+            }
+
+            return interpolate_x(y);
         }
     public:
         /**

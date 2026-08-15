@@ -136,14 +136,14 @@ SECTIONS
   /* Initialized data sections into "RAM" Ram type memory */
   .data :
   {
-    . = ALIGN(4);
+    . = ALIGN(16);
     _sdata = .;        /* create a global symbol at data start */
     *(.data)           /* .data sections */
     *(.data*)          /* .data* sections */
     *(.RamFunc)        /* .RamFunc sections */
     *(.RamFunc*)       /* .RamFunc* sections */
 
-    . = ALIGN(4);
+    . = ALIGN(16);
     _edata = .;        /* define a global symbol at data end */
 
   } >RAM AT> FLASH

@@ -8,19 +8,19 @@
 using namespace PUTM;
 
 TX_THREAD test_thread;
-uint8_t test_thread_pool[CONFIG::TEST_THREAD_POOL_SIZE];
+[[gnu::aligned(8)]] uint8_t test_thread_pool[CONFIG::TEST_THREAD_POOL_SIZE];
 
 TX_THREAD bq796xx_thread;
-uint8_t bq796xx_thread_pool[CONFIG::BQ796xx_THREAD_POOL_SIZE];
+[[gnu::aligned(8)]] uint8_t bq796xx_thread_pool[CONFIG::BQ796xx_THREAD_POOL_SIZE];
 
 TX_THREAD ads131m04_thread;
-uint8_t ads131m04_thread_pool[CONFIG::ADS131m04_THREAD_POOL_SIZE];
+[[gnu::aligned(8)]] uint8_t ads131m04_thread_pool[CONFIG::ADS131m04_THREAD_POOL_SIZE];
 
 TX_THREAD main_thread;
-uint8_t main_thread_pool[CONFIG::MAIN_THREAD_POOL_SIZE];
+[[gnu::aligned(8)]] uint8_t main_thread_pool[CONFIG::MAIN_THREAD_POOL_SIZE];
 
 TX_THREAD usb_com_thread;
-uint8_t usb_com_thread_pool[CONFIG::USB_COM_THREAD_POOL_SIZE];
+[[gnu::aligned(8)]] uint8_t usb_com_thread_pool[CONFIG::USB_COM_THREAD_POOL_SIZE];
 
 // TX_THREAD usb_tx_thread;
 // static constexpr size_t usb_tx_thread_pool_size { 1024U };
@@ -31,10 +31,10 @@ uint8_t usb_com_thread_pool[CONFIG::USB_COM_THREAD_POOL_SIZE];
 // uint8_t usb_rx_thread_pool[usb_rx_thread_pool_size];
 
 TX_THREAD car_can_thread;
-uint8_t car_can_thread_pool[CONFIG::CAR_CAN_THREAD_POOL_SIZE];
+[[gnu::aligned(8)]] uint8_t car_can_thread_pool[CONFIG::CAR_CAN_THREAD_POOL_SIZE];
 
 TX_THREAD charger_can_thread;
-uint8_t charger_can_thread_pool[CONFIG::CHARGER_CAN_THREAD_POOL_SIZE];
+[[gnu::aligned(8)]] uint8_t charger_can_thread_pool[CONFIG::CHARGER_CAN_THREAD_POOL_SIZE];
 
 TX_SEMAPHORE data_semaphore;
 
@@ -60,7 +60,7 @@ VOID init()
 
     tx_semaphore_create(&data_semaphore, (CHAR*)"Data semaphore", 0U);
 
-    tx_timer_create(&soc_update_timer, (CHAR*)"SOC update timer", soc_update_timer_callback, 0U, 1000U, 1000U, TX_NO_ACTIVATE);
+    tx_timer_create(&soc_update_timer, (CHAR*)"SOC update timer", soc_update_timer_callback, 0U, CONFIG::SOC::UPDATE_TIME, CONFIG::SOC::UPDATE_TIME, TX_NO_ACTIVATE);
     
     //tx_thread_suspend(&charger_can_thread);
 }

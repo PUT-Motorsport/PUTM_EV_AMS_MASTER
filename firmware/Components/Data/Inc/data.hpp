@@ -7,10 +7,11 @@
 #include "config.hpp"
 #include "soc.hpp"
 #include "logger.hpp"
+#include "eeprom.hpp"
 
-#include "atomic"
-#include "array"
-#include "string_view"
+#include <atomic>
+#include <array>
+#include <string_view>
 
 namespace PUTM
 {
@@ -24,8 +25,7 @@ namespace PUTM
         float cell_voltages[CONFIG::STACK_SIZE][CONFIG::CELL_COUNT_PER_DEVICE] { 0.f };
         float gpio_voltages[CONFIG::STACK_SIZE][CONFIG::TEMPERATURES_COUNT_PER_DEVICE] { 0.f };
         float cell_temperatures[CONFIG::STACK_SIZE][CONFIG::TEMPERATURES_COUNT_PER_DEVICE] { 0.f };
-        SoC cell_socs[CONFIG::STACK_SIZE][CONFIG::CELL_COUNT_PER_DEVICE] { };
-
+        // SoC cell_socs[CONFIG::STACK_SIZE][CONFIG::CELL_COUNT_PER_DEVICE] { };
         // float cell_socs[Config::STACK_SIZE][Config::CELL_COUNT_PER_DEVICE] { };
 
         bool cell_balancing[CONFIG::STACK_SIZE][CONFIG::CELL_COUNT_PER_DEVICE] { false };
@@ -74,6 +74,8 @@ namespace PUTM
         bool ads_init_done { false };
         /* system init done */
         bool system_init_done { false };
+        /* */
+        bool flash_init_done { false };
         /* service mode */
         bool service_mode { false };
         /* even moar data */
@@ -88,7 +90,7 @@ namespace PUTM
         HAL_StatusTypeDef bq_init_status { HAL_OK };
         /* bq read data status */
         HAL_StatusTypeDef bq_read_data_status[CONFIG::STACK_SIZE] { HAL_OK };
-        
+
         struct
         {
 
@@ -107,6 +109,7 @@ namespace PUTM
             bool balancing_off { false };
             bool charger_on { false };
             bool charger_off { false };
+            bool save_config { false };
         } commands;
 
         struct
@@ -114,6 +117,7 @@ namespace PUTM
             float bq { 0.f };
             float ads { 0.f };
             float main { 0.f };
+            float soc { 0.f };
         } update_times;
 
         // TODO: figure out the bools what false / true means  
@@ -134,6 +138,22 @@ namespace PUTM
             Logger<CONFIG::ERROR_LOGGER_SIZE> errors;
             Logger<CONFIG::EVENT_LOGGER_SIZE> events;
         } loggers;
+
+        struct
+        {
+            float k_soc { 0.f };
+            float innovation { 0.f };
+            float v1 { 0.f };
+            float v2 { 0.f };
+            float vh { 0.f };
+            float dr { 0.f };
+            float v_model { 0.f };
+        } kalman;
+
+        struct
+        {
+            // std::array<Eeprom<PUTM::EepromAddress>::Variable<uint16_t>, 8> temp_ignore;
+        } eeprom;
 
 #ifdef TEST_MODE_1
         /* reset state machine */

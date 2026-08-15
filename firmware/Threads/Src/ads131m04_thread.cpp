@@ -31,9 +31,9 @@ float current_voltage_to_current(float voltage, float reference_voltage)
     // float gain = 0.8f * 600.f / reference_voltage; 
     // 0.8 because of the 10% to 90% output range
     float gain = 150 * CONFIG::CURRENT_DIRECTION; //1.f / (0.4f * reference_voltage / 300.f) * CONFIG::CURRENT_DIRECTION; 
-    float offset = 0.5f * reference_voltage;
-    float voltage_diff = (voltage - offset);
-    float current = voltage_diff * gain;
+    float voltage_offset = 2.5f; //0.5f * reference_voltage;
+    float voltage_diff = (voltage - voltage_offset);
+    float current = voltage_diff * gain - CONFIG::CURRENT_BIAS;
 
     return current;
 }
@@ -49,11 +49,8 @@ VOID ads131m04_thread_entry(__unused ULONG thread_input)
     float current_ref_voltage { 0.f };
     float current_voltage { 0.f };
     float current { 0.f };
-    float current_offset { CONFIG::CURRENT_OFFSET };
 
     adc.init();
-    // add self calibrate
-    // offset_calibration.fill_buffer(CONFIG::CURRENT_OFFSET);
 
     tx_thread_sleep(100);
     
@@ -63,12 +60,12 @@ VOID ads131m04_thread_entry(__unused ULONG thread_input)
         adc.update();
         acu_voltage = adc.adc[CONFIG::ACU_VOLTAGE_CHANNEL];
         car_voltage = adc.adc[CONFIG::CAR_VOLTAGE_CHANNEL];
-        current_ref_voltage = adc.adc[CONFIG::CURRENT_REF_CHANNEL]; // * CONFIG::CURRENT_REF_GAIN;
-        current_voltage = adc.adc[CONFIG::CURRENT_CHANNEL]; // * CONFIG::CURRENT_GAIN - CONFIG::CURRENT_OFFSET;
+        current_ref_voltage = adc.adc[CONFIG::CURRENT_REF_CHANNEL];
+        current_voltage = adc.adc[CONFIG::CURRENT_CHANNEL];
         
         acu_voltage = acu_voltage * CONFIG::ACU_VOLTAGE_GAIN;
         car_voltage = car_voltage * CONFIG::CAR_VOLTAGE_GAIN;
-        current_voltage = current_voltage * CONFIG::CURRENT_GAIN_NETWORK;
+        current_voltage = current_voltage * CONFIG::CURRENT_GAIN;
         current_ref_voltage = current_ref_voltage * CONFIG::CURRENT_REF_GAIN_NETWORK;
 
         acu_voltage = acu_voltage_filter.update(acu_voltage);
@@ -87,12 +84,12 @@ VOID ads131m04_thread_entry(__unused ULONG thread_input)
         adc.update();
         acu_voltage = adc.adc[CONFIG::ACU_VOLTAGE_CHANNEL];
         car_voltage = adc.adc[CONFIG::CAR_VOLTAGE_CHANNEL];
-        current_ref_voltage = adc.adc[CONFIG::CURRENT_REF_CHANNEL]; // * CONFIG::CURRENT_REF_GAIN;
-        current_voltage = adc.adc[CONFIG::CURRENT_CHANNEL]; // * CONFIG::CURRENT_GAIN - CONFIG::CURRENT_OFFSET;
+        current_ref_voltage = adc.adc[CONFIG::CURRENT_REF_CHANNEL];
+        current_voltage = adc.adc[CONFIG::CURRENT_CHANNEL];
         
         acu_voltage = acu_voltage * CONFIG::ACU_VOLTAGE_GAIN;
         car_voltage = car_voltage * CONFIG::CAR_VOLTAGE_GAIN;
-        current_voltage = current_voltage * CONFIG::CURRENT_GAIN_NETWORK;
+        current_voltage = current_voltage * CONFIG::CURRENT_GAIN;
         current_ref_voltage = current_ref_voltage * CONFIG::CURRENT_REF_GAIN_NETWORK;
 
         acu_voltage = acu_voltage_filter.update(acu_voltage);
@@ -112,7 +109,7 @@ VOID ads131m04_thread_entry(__unused ULONG thread_input)
         data.car_voltage = car_voltage;
         data.current_reference = current_ref_voltage;
         /* times -1.f must be due to hardware error because it reports negative voltage despite the positive voltage on the terminal */
-        data.current = current - current_offset;
+        data.current = current;
 
         data.update_times.ads = updates.update(tx_time_get());
 

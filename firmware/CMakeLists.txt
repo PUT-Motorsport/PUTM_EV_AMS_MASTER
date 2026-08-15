@@ -97,6 +97,10 @@ add_dependencies(${CMAKE_PROJECT_NAME} CUSTOM_COMMANDS)
 # Add user compile flags
 set(GCC_USER_COMPILE_FLAGS
     # g++ throws ((void*)0) conversion errors in threadx libs -> allow it
-    "-fpermissive -u _printf_float"
+    "-fpermissive -u _printf_float -mno-unaligned-access"
 )
+# if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+#     message(STATUS "Debug Configuration: adding unaligned-access flag")
+#     add_compile_options(-mno-unaligned-access)
+# endif()
 set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} ${GCC_USER_COMPILE_FLAGS}")

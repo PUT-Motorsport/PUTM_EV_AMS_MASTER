@@ -1,4 +1,8 @@
+#include "eeprom.hpp"
 #include "main.h"
+#include "stm32h573xx.h"
+#include "stm32h5xx_hal_flash.h"
+#include "stm32h5xx_ll_adc.h"
 #include "tx_api.h"
 #include "cstdio"
 #include "usart.h"
@@ -22,9 +26,11 @@
 #include "logger.hpp"
 //FIXME: delete this later
 #include "pchip.hpp"
+// #include "eeprom.hpp"
 
 #include <algorithm>
 #include <cmath>
+#include <cstddef>
 #include <utility>
 #include <array>
 
@@ -50,8 +56,7 @@ Gpio usb_reset(USB_RESET_GPIO_Port, USB_RESET_Pin, true);
 
 constexpr Polynomial t_r_poly { CONFIG::POLYNOMIAL_T_R::COEFFS<NTCPart::DEFAULT> }; //CONFIG::POLYNOMIAL_T_R::COEFFS<NTCType::_10k_3434K>
 
-constexpr Polynomial ocv { CONFIG::POLYNOMIAL_OCV };
-constexpr Polynomial docv = ocv.derivative();
+SoC soc;
 
 ChargerCanRxController charger_rx;
 
@@ -61,6 +66,8 @@ extern StateMachine charger_state_machine;
 extern ErrorChecker error_checker;
 
 extern TX_TIMER soc_update_timer;
+
+Eeprom<PUTM::EepromAddress> eeprom;
 
 /**
  * @brief Calculate resistance of ntc from voltage
@@ -114,22 +121,64 @@ VOID main_thread_entry(__unused ULONG thread_input)
 
     init_error_checker(&error_checker);
 
+    HAL_FLASH_Unlock();
+    if (eeprom.init() != HAL_OK) 
+    {
+        data.loggers.errors.log_error("EPPROM ERR");
+    }
+    auto temp_ign_0 = eeprom.new_var<uint32_t>(EepromAddress::TEMP_IGNORE_0, 0);
+    auto temp_ign_1 = eeprom.new_var<uint32_t>(EepromAddress::TEMP_IGNORE_1, 0);
+    auto temp_ign_2 = eeprom.new_var<uint32_t>(EepromAddress::TEMP_IGNORE_2, 0);
+    auto temp_ign_3 = eeprom.new_var<uint32_t>(EepromAddress::TEMP_IGNORE_3, 0);
+    auto temp_ign_4 = eeprom.new_var<uint32_t>(EepromAddress::TEMP_IGNORE_4, 0);
+    auto temp_ign_5 = eeprom.new_var<uint32_t>(EepromAddress::TEMP_IGNORE_5, 0);
+    auto temp_ign_6 = eeprom.new_var<uint32_t>(EepromAddress::TEMP_IGNORE_6, 0);
+    auto temp_ign_7 = eeprom.new_var<uint32_t>(EepromAddress::TEMP_IGNORE_7, 0);
+    auto i_calib_gain   = eeprom.new_var<float>(EepromAddress::I_CALIB_GAIN,   CONFIG::CURRENT_GAIN);
+    auto i_calib_bias   = eeprom.new_var<float>(EepromAddress::I_CALIB_BIAS,   CONFIG::CURRENT_BIAS);
+    auto acu_calib_gain = eeprom.new_var<float>(EepromAddress::ACU_CALIB_GAIN, CONFIG::ACU_VOLTAGE_GAIN);
+    auto acu_calib_bias = eeprom.new_var<float>(EepromAddress::ACU_CALIB_BIAS, CONFIG::ACU_VOLTAGE_BIAS);
+    auto car_calib_gain = eeprom.new_var<float>(EepromAddress::CAR_CALIB_GAIN, CONFIG::CAR_VOLTAGE_GAIN);
+    auto car_calib_bias = eeprom.new_var<float>(EepromAddress::CAR_CALIB_BIAS, CONFIG::CAR_VOLTAGE_BIAS);
+
+    std::array<Eeprom<EepromAddress>::Variable<uint32_t>*, 8> temp_ign({
+        &temp_ign_0, &temp_ign_1, &temp_ign_2, &temp_ign_3,
+        &temp_ign_4, &temp_ign_5, &temp_ign_6, &temp_ign_7,
+    });
+    for(size_t device = 0; device < CONFIG::STACK_SIZE; device++)
+    {
+        for(size_t temp = 0; temp < CONFIG::TEMPERATURES_COUNT_PER_DEVICE; temp++)
+        {
+            size_t index = device % 4;
+            size_t offset = (device / 4) * 8 + temp;
+            auto opt = temp_ign[index]->read();
+            if(opt.has_value())
+            {
+                CONFIG::IGNORE_TEMPERATURES_MATRIX[device][temp] = opt.value() & (1 << offset);
+            }
+            else
+            {
+                CONFIG::IGNORE_TEMPERATURES_MATRIX[device][temp] = false;
+            }
+        }
+    }
+    if(auto opt = i_calib_gain.read(); opt.has_value())     CONFIG::CURRENT_GAIN = opt.value();
+    if(auto opt = i_calib_bias.read(); opt.has_value())     CONFIG::CURRENT_BIAS = opt.value();
+    if(auto opt = acu_calib_gain.read(); opt.has_value())   CONFIG::ACU_VOLTAGE_GAIN = opt.value();
+    if(auto opt = acu_calib_bias.read(); opt.has_value())   CONFIG::ACU_VOLTAGE_BIAS = opt.value();
+    if(auto opt = car_calib_gain.read(); opt.has_value())   CONFIG::CAR_VOLTAGE_GAIN = opt.value();
+    if(auto opt = car_calib_bias.read(); opt.has_value())   CONFIG::CAR_VOLTAGE_BIAS = opt.value();
+    HAL_FLASH_Lock();
+
+    data.flash_init_done = true;
+
     while(not (data.ads_init_done and data.bq_init_done))
     {
         tx_thread_sleep(10);
     }
-
-    // init socs
-    for(size_t i = 0; i < CONFIG::STACK_SIZE; i++)  
-    {
-        for(size_t j = 0; j < CONFIG::CELL_COUNT_PER_DEVICE; j++)
-        {
-            data.cell_socs[i][j].set_from_voltage(data.cell_voltages[i][j]);
-        }
-    }
-
+#ifndef  DEBUG
     tx_timer_activate(&soc_update_timer);
-
+#endif
     HAL_ADC_Start(&hadc1);
 
     data.tsms = det_tsms.read();
@@ -148,26 +197,6 @@ VOID main_thread_entry(__unused ULONG thread_input)
         /* Read gpios */
         data.tsms = det_tsms.read();
         data.on_charger = det_charger.read();
-
-        /* Update SoC */
-        // for(size_t i = 0; i < CONFIG::STACK_SIZE; i++)
-        // {
-        //     for(size_t j = 0; j < CONFIG::CELL_COUNT_PER_DEVICE; j++)
-        //     {
-        //         data.cell_socs[i][j].update(data.cell_voltages[i][j], data.current, data.on_charger);
-        //     }
-        // }
-        
-        float soc_min = 1.f;
-        for(size_t i = 0; i < CONFIG::STACK_SIZE; i++)
-        {
-            for(size_t j = 0; j < CONFIG::CELL_COUNT_PER_DEVICE; j++)
-            {
-                if(data.cell_socs[i][j].get() < soc_min) soc_min = data.cell_socs[i][j].get();
-            }
-        }
-
-        data.soc = soc_min;
 
         /* update true temps */
         if constexpr (CONFIG::ENABLE_NTC_MAPPING)
@@ -193,15 +222,20 @@ VOID main_thread_entry(__unused ULONG thread_input)
                 }
             }
         }
-        /* IgnoreSelected - ignore selected temps */
-        if(CONFIG::IGNORE_TEMPERATURES_STRATEGY == InvalidTemperaturesStrategy::IGNORE_SELECTED)
+        
+        if(CONFIG::IGNORE_TEMPERATURES_STRATEGY == PUTM::InvalidTemperaturesStrategy::IGNORE_SELECTED)
         {
-            // for(auto temp_pair : CONFIG::IGNORED_TEMPERATURES_SELECTION)
-            // {
-            //     data.cell_temperatures[temp_pair.first - 1][temp_pair.second - 1] = 0.f;
-            // }
+            for(size_t device = 0; device < CONFIG::STACK_SIZE; device++)
+            {
+                for(size_t chanel = 0; chanel < CONFIG::TEMPERATURES_COUNT_PER_DEVICE; chanel++)
+                {
+                    if(CONFIG::IGNORE_TEMPERATURES_MATRIX[device][chanel])
+                    {
+                        data.cell_temperatures[device][chanel] = 0.f;
+                    }
+                }
+            }
         }
-
         /* update min max */
         float max_voltage = 0.0f;
         float min_voltage = 100.f;
@@ -209,6 +243,7 @@ VOID main_thread_entry(__unused ULONG thread_input)
         float min_temperature = 100.0f;
         float accumulator_voltage = 0.0f;
         float accumulator_temperature = 0.0f;
+        size_t acc_temp_offset = 0;
         for(size_t i = 0; i < CONFIG::STACK_SIZE; i++)
         {
             for(size_t j = 0; j < CONFIG::CELL_COUNT_PER_DEVICE; j++)
@@ -222,7 +257,7 @@ VOID main_thread_entry(__unused ULONG thread_input)
         }
 
         data.cell_avg_voltage = accumulator_voltage / (CONFIG::STACK_SIZE * CONFIG::CELL_COUNT_PER_DEVICE);
-        data.cell_avg_temperature = accumulator_temperature / (CONFIG::STACK_SIZE * CONFIG::TEMPERATURES_COUNT_PER_DEVICE);
+        data.cell_avg_temperature = accumulator_temperature / (CONFIG::STACK_SIZE * CONFIG::TEMPERATURES_COUNT_PER_DEVICE - acc_temp_offset);
         data.cell_voltage_sum = accumulator_voltage;
 
         if(CONFIG::IGNORE_TEMPERATURES_STRATEGY == InvalidTemperaturesStrategy::STATISTICAL_IMPLAUSIBILITY)
@@ -250,7 +285,7 @@ VOID main_thread_entry(__unused ULONG thread_input)
                     if(data.cell_temperatures[i][j] > max_temp or 
                        data.cell_temperatures[i][j] < min_temp)
                     {
-                        data.cell_temperatures[i][j] = -100.f;
+                        data.cell_temperatures[i][j] = 0.f;
                     }
                 }
             }
@@ -298,6 +333,39 @@ VOID main_thread_entry(__unused ULONG thread_input)
             sig_err.set();
         }
 
+        if(data.commands.save_config)
+        {
+            data.commands.save_config = false;
+            HAL_FLASH_Unlock();
+            {
+                bool error { false };
+                std::array<uint32_t, 8> ti { };
+
+                for(size_t device = 0; device < CONFIG::STACK_SIZE; device++)
+                {
+                    for(size_t temp = 0; temp < CONFIG::TEMPERATURES_COUNT_PER_DEVICE; temp++)
+                    {
+                        size_t index = device % 4;
+                        size_t offset = (device / 4) * 8 + temp;
+                        ti[index] |= (static_cast<uint32_t>(CONFIG::IGNORE_TEMPERATURES_MATRIX[device][temp]) << offset);
+                    }
+                }
+                for(size_t i = 0; i < temp_ign.size(); i++)
+                {
+                    if(auto ret = temp_ign[i]->write(ti[i]); ret) error = true;
+                }
+                if(auto ret = i_calib_gain.write(CONFIG::CURRENT_GAIN); ret)        error = true;
+                if(auto ret = i_calib_bias.write(CONFIG::CURRENT_BIAS); ret)        error = true;
+                if(auto ret = acu_calib_gain.write(CONFIG::ACU_VOLTAGE_GAIN); ret)  error = true;
+                if(auto ret = acu_calib_bias.write(CONFIG::ACU_VOLTAGE_BIAS); ret)  error = true;
+                if(auto ret = car_calib_gain.write(CONFIG::CAR_VOLTAGE_GAIN); ret)  error = true;
+                if(auto ret = car_calib_bias.write(CONFIG::CAR_VOLTAGE_BIAS); ret)  error = true;
+
+                if(error) data.loggers.errors.log_error("SAVE CFG");
+            }
+            HAL_FLASH_Lock();
+        }
+
         data.update_times.main = updates.update(tx_time_get());
 
         tx_thread_sleep(30);
@@ -311,12 +379,18 @@ VOID main_thread_entry(__unused ULONG thread_input)
  */
 void soc_update_timer_callback(__unused ULONG arg)
 {
-    /* Update SoC */
-    for(size_t i = 0; i < CONFIG::STACK_SIZE; i++)
-    {
-        for(size_t j = 0; j < CONFIG::CELL_COUNT_PER_DEVICE; j++)
-        {
-            data.cell_socs[i][j].update(data.cell_voltages[i][j], data.current, data.on_charger);
-        }
-    }
+    static UpdatesCounter updates;
+
+    soc.update(data.acu_voltage, data.current, data.cell_avg_temperature);
+    data.soc = soc.get();
+    data.kalman.innovation = soc.get_innovation();
+    data.kalman.k_soc = soc.get_k_soc();
+    data.kalman.v1 = soc.get_v1();
+    data.kalman.v2 = soc.get_v2();
+    data.kalman.vh = soc.get_vh();
+    data.kalman.dr = soc.get_dr();
+    data.kalman.v_model = soc.get_v_model();
+
+
+    data.update_times.soc = updates.update(tx_time_get());
 }

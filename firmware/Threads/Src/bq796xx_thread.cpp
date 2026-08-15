@@ -49,11 +49,11 @@ VOID bq796xx_thread_entry(__unused ULONG thread_input)
 
     data.bq_init_status = bq.init();
 
-    tx_thread_sleep(20);
+    tx_thread_sleep(100);
     
     data.bq_init_status = bq.init();
 
-    tx_thread_sleep(20);
+    tx_thread_sleep(100);
 
     for(size_t i = 0; i < CONFIG::STACK_SIZE; i++)
     {

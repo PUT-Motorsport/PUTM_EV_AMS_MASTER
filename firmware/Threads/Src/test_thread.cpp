@@ -227,14 +227,16 @@ VOID test_thread_entry(__unused ULONG thread_input)
 #include "error_checker.hpp"    
 #include "stm32h5xx.h"
 #include "stm32h5xx_hal.h"
-#include "cmath"
+#include "eeprom.hpp"
 
 extern PUTM::ErrorChecker error_checker;
+extern Eeprom<PUTM::EepromAddress> eeprom;
 
 #define BOOT_ADDR	0x0BF97000	// my MCU boot code base address
 #define	MCU_IRQS	70u	// no. of NVIC IRQ inputs
 
-struct boot_vectable_ {
+struct boot_vectable_ 
+{
     uint32_t Initial_SP;
     void (*Reset_Handler)(void);
 };
@@ -250,7 +252,7 @@ void dark_magic(void)
 	SysTick->CTRL = 0;
 
 	/* Set the clock to the default state */
-	HAL_RCC_DeInit();
+	// HAL_RCC_DeInit();
 
 	/* Clear Interrupt Enable Register & Interrupt Pending Register */
 	for (uint8_t i = 0; i < (MCU_IRQS + 31u) / 32; i++)
@@ -269,56 +271,92 @@ void dark_magic(void)
 	BOOTVTAB->Reset_Handler();
 }
 
-static bool longer_erros_enabled { true };
-static uint32_t w_pizde_dlugi_error { 1000 }; //ms
+// static bool longer_erros_enabled { true };
+// static uint32_t w_pizde_dlugi_error { 1000 }; //ms
+/* f*** me */
+// static bool f____me  { false };
+/* just to suffer */
+static bool just_to_suffer { false };
+static bool just_to_suffer_last { false };
+// static bool dlaczego_uciekasz { false };
+static bool zimno_tu_troche_nie { false };
+static bool zimno_tu_troche_nie_last { false };
 
 VOID test_thread_entry(__unused ULONG thread_input)
 {
-    static std::string_view last_command { };
-    /* f*** me */
-    static bool f____me  { false };
-    /* just to suffer */
-    static bool just_to_suffer { false };
-    static bool auto_mode_on { false };
-    
     while(not data.system_init_done) tx_thread_sleep(10);
+
+    HAL_FLASH_Unlock();
+    auto settings = eeprom.new_var<uint32_t>(PUTM::EepromAddress::SIZE, 0);
+    if(auto opt = settings.read(); opt.has_value())
+    {
+        uint32_t raw        = opt.value();
+        just_to_suffer      = just_to_suffer_last       = raw & (1 << 0);
+        zimno_tu_troche_nie = zimno_tu_troche_nie_last  = raw & (1 << 1);
+    }
+    HAL_FLASH_Lock();
+
+    // if(just_to_suffer) error_checker.reset();
+    if(zimno_tu_troche_nie)
+    {
+        PUTM::Error* error = error_checker.next_error;
+        while(error != nullptr)
+        {
+            if(std::string_view(error->name) == "E: TEMP")
+            {
+                error->condition = []() -> uint32_t 
+                {  
+                    uint32_t rnd { 0 };
+                    for(size_t device = 0; device < PUTM::CONFIG::STACK_SIZE; device++)
+                    {
+                        for(size_t temp = 0; temp < PUTM::CONFIG::TEMPERATURES_COUNT_PER_DEVICE; temp++)
+                        {
+                            if((data.cell_avg_temperature - 1.f > data.cell_temperatures[device][temp]  or 
+                                data.cell_avg_temperature + 1.f < data.cell_temperatures[device][temp]) and
+                                 not PUTM::CONFIG::IGNORE_TEMPERATURES_MATRIX[device][temp])
+                            {
+                                rnd +=  tx_time_get() % 1'000'000 + uint32_t(data.cell_min_temperature * 1e4) - 
+                                        uint32_t(data.cell_min_temperature * 1e5);
+                                float sign = (rnd & (1 << 15)) ? 1.f : -1.f;
+                                float random_part = (rnd % 10'000) / 1e6; 
+                                data.cell_temperatures[device][temp] = data.cell_avg_temperature + sign * random_part;
+                            }
+
+                        }
+                    }
+                    return 0; 
+                };
+                break;
+            }
+            error = error->next_error;
+        }
+    }
 
     while(true)
     {
         tx_thread_sleep(100);
-
-        if(not data.on_charger and not auto_mode_on)
+        if(data.last_command == "f***_you")
         {
-            PUTM::Error* error = error_checker.next_error;
-            while(error != nullptr)
-            {
-                error->timeout = w_pizde_dlugi_error;
-                error = error->next_error;
-            }
-            auto_mode_on = true;
+            dark_magic();
+        }
+        if(data.last_command  == "why_are_we_still_here")
+        {
+            just_to_suffer = not just_to_suffer;
+        }
+        if(data.last_command  == "zimno_tu_troche_nie")
+        {
+            zimno_tu_troche_nie = not zimno_tu_troche_nie;
         }
 
-        if(data.last_command != last_command)
-        {
-            last_command = data.last_command;
-
-            if(last_command == "f***_you")
-            {
-                f____me = true;
-            }
-            else if(last_command == "why_are_we_still_here")
-            {
-                just_to_suffer = true;
-            }
-
-            if (f____me)
-            {
-                dark_magic();
-            }
-            if(just_to_suffer)
-            {
-                error_checker.reset();
-            }
+        if(just_to_suffer       != just_to_suffer_last  or 
+           zimno_tu_troche_nie  != zimno_tu_troche_nie_last)
+        { 
+            just_to_suffer_last      = just_to_suffer;
+            zimno_tu_troche_nie_last = zimno_tu_troche_nie;
+            uint32_t raw = (just_to_suffer << 0) | (zimno_tu_troche_nie << 1);
+            HAL_FLASH_Unlock();
+            settings.write(raw);
+            HAL_FLASH_Lock();
         }
     }
 }
