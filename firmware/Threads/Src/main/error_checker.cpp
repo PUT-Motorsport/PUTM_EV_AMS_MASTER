@@ -147,24 +147,26 @@ Error tcell_error
         uint32_t code = 0;
         for(size_t i = 0; i < CONFIG::STACK_SIZE; i++)
         {
-            size_t errors_per_stack = 0;
+            // size_t errors_per_stack = 0;
             for(size_t j = 0; j < CONFIG::TEMPERATURES_COUNT_PER_DEVICE; j++)
             {
                 if(data.cell_temperatures[i][j] > CONFIG::CELL_OT_FLOAT)
                 {
                     code = encode_error(i + 1, j + 1, 1);
-                    errors_per_stack++;
+                    // errors_per_stack++;
+                    return code;
                 }
                 else if(data.cell_temperatures[i][j] < CONFIG::CELL_UT_FLOAT)
                 {
                     code = encode_error(i + 1, j + 1, 2);
-                    errors_per_stack++;
+                    // errors_per_stack++;
+                    return code;
                 }
             }
-            if(errors_per_stack > CONFIG::MAX_IGNORABLE_TEMPERATURES)
-            {
-                return code;
-            }
+            // if(errors_per_stack > CONFIG::MAX_IGNORABLE_TEMPERATURES)
+            // {
+            //     return code;
+            // }
         }
 
         return 0;

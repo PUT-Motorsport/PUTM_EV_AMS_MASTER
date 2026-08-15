@@ -213,7 +213,7 @@ static std::function<void(size_t)> usb_rx_callback = [](size_t size)
             size_t device = rx_json["device"];
             size_t temp = rx_json["temp"];
             if(0 < device and device <= CONFIG::STACK_SIZE and
-                0 < temp and temp <= CONFIG::TEMPERATURES_COUNT_PER_DEVICE)
+               0 < temp and temp <= CONFIG::TEMPERATURES_COUNT_PER_DEVICE)
             {
                 CONFIG::IGNORE_TEMPERATURES_MATRIX[device - 1][temp - 1] = false;
             }
@@ -236,7 +236,12 @@ static std::function<void(size_t)> usb_rx_callback = [](size_t size)
         else if(command == "car_g")
         {
             float gain = rx_json["gain"];
-            CONFIG::CAR_VOLTAGE_GAIN = gain; 
+            CONFIG::CAR_VOLTAGE_GAIN = gain;
+        }
+        else if(command == "dr")
+        {
+            float value = rx_json["value"];
+            CONFIG::CURRENT_BIAS = value;
         }
         else if(command == "save_cfg")
         {

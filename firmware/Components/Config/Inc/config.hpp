@@ -259,7 +259,7 @@ namespace PUTM
         }();
 
         /* used in StatisticalImplasubility case */
-        persistent size_t MAX_IGNORABLE_TEMPERATURES { 3 };
+        persistent size_t MAX_IGNORABLE_TEMPERATURES { 0 };
         /* used in StatisticalImplasubility case */
         persistent float DEVIATION_THRESHOLD { 2.f };
 
@@ -342,7 +342,7 @@ namespace PUTM
                 persistent float V1 { 1e-4f };
                 persistent float V2 { 1e-4f };
                 persistent float H { 1e-3f };
-                persistent float R { 0.0025f };
+                persistent float R { 0.00f };
             }
             /* Hz */
             persistent size_t UPDATE_RATE { 100 };
@@ -355,7 +355,7 @@ namespace PUTM
             persistent float GAMMA { 1.f };
             persistent float R_MEASUREMENT { 0.04 }; 
             /* contact resistance and so on not included in the model [Ohm]*/
-            persistent float DR { 0.12f };
+            overridable float DR { 0.12f };
 
             persistent float CAPACITY { 4.97f * 3.f };
             

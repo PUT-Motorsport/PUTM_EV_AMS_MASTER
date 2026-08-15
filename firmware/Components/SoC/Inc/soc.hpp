@@ -21,6 +21,8 @@ private:
     float __v_model;
     float __k_soc;
     float __r0_i;
+    float __prev_current;
+    float __prev_voltage;
 
     // x = [SOC, V1, V2, Vh]^T
     State x {{
@@ -37,7 +39,6 @@ private:
         { 0.f, 0.f, 0.001f, 0.f, 0.f },
         { 0.f, 0.f, 0.f, 0.001f, 0.f },
         { 0.f, 0.f, 0.f, 0.f, 0.001f },
-
     }};
 
     static inline constexpr Mat Q {{
@@ -194,7 +195,8 @@ private:
             { 0.f },
             { 0.f },
             { 0.f },
-            { 1.f - ah }
+            { 1.f - ah },
+            { 0.f }
         }};
 
         // State prediction
@@ -332,8 +334,11 @@ private:
         
     }
 
-    void init_from_voltage(float voltage)
+    void init_from_voltage(float voltage, float current)
     {
+        __prev_current = current;
+        __prev_voltage = voltage;
+
         const float soc =
             std::clamp(
                 ocv.evaluate_x(voltage),
@@ -359,17 +364,18 @@ private:
 public:
     void update(float voltage, float current, float temperature)
     {
-        predict(current, temperature);
+        predict(__prev_current, __prev_voltage);
         correct(voltage, current, temperature);
 
+        __prev_current = current;
+        __prev_voltage = voltage;
         x.at(0) = std::clamp(x.at(0), 0.0f, 1.0f);
         x.at(4) = std::clamp(x.at(4), 0.1f, 0.5f);
     }
 
     void set(float soc)
     {
-        x.at(0) =
-            std::clamp(soc, 0.0f, 1.0f);
+        x.at(0) = std::clamp(soc, 0.0f, 1.0f);
     }
 
     float get() const
