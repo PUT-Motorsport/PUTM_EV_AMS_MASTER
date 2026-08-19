@@ -22,7 +22,7 @@
 #include "stm32h5xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "eeprom_emul_conf.h"
+#include "eeprom_config.hpp"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/

@@ -70,8 +70,8 @@ namespace PUTM
         persistent NTCType DEFAULT             = NTCType::_10k_3435K;
         persistent NTCType GA2_2K3A1IA         = NTCType::_2_252K_3976K;
         persistent NTCType B57861S0202F040     = NTCType::_2k_3560K;
-        persistent NTCType TG310J34GBNR        = NTCType::_10k_3434K;
-        persistent NTCType _103AT_11           = NTCType::_10k_3435K;
+        persistent NTCType TG310J34GBNR        = NTCType::_10k_3434K;//
+        persistent NTCType _103AT_11           = NTCType::_10k_3435K;//
         persistent NTCType NTCLE413E2103F520L  = NTCType::_10k_3435K;
         persistent NTCType NTCLE413E2103F106A  = NTCType::_10k_3435K;
         persistent NTCType B57861S0103J040     = NTCType::_10k_3988K;
@@ -238,23 +238,11 @@ namespace PUTM
          *          and measurement 1..TEMPERATURES_COUNT_PER_DEVICE. If the format is not followed or outside of range the data 
          *          will be silently discarded
          */
-        persistent std::array IGNORE_TEMPERATURES { std::to_array<std::pair<size_t, size_t>>({ 
-            { 12, 1 }
-            // { 1, 1 }, { 1, 2 },
-            // { 2, 3 } // ex.
-        })};
-
         overridable std::array IGNORE_TEMPERATURES_MATRIX = []() -> std::array<std::array<bool, TEMPERATURES_COUNT_PER_DEVICE>, STACK_SIZE>
         {
             using array = std::array<std::array<bool, TEMPERATURES_COUNT_PER_DEVICE>, STACK_SIZE>;
             array result { };
             for(auto &device : result) for(auto &temp : device) temp = false;
-
-            for(auto ignored : IGNORE_TEMPERATURES)
-            {
-                if(ignored.first < 1 or ignored.first > STACK_SIZE or ignored.second < 1 or ignored.second > TEMPERATURES_COUNT_PER_DEVICE) continue;
-                result[ignored.first - 1][ignored.second - 1] = true;
-            }
             return result;
         }();
 
@@ -303,17 +291,16 @@ namespace PUTM
 
         /* Enable mapping packs to different polynomials */
         persistent bool ENABLE_NTC_MAPPING { true };
-        //  
-        persistent std::array<NTCType, STACK_SIZE> PACK_POLYNOMIAL_MAP 
-        { 
-            NTCPart::TTS_10KC3_BZ,  
+        //
+        persistent std::array<NTCType, STACK_SIZE> PACK_POLYNOMIAL_MAP{
+            NTCPart::_103AT_11,
             NTCPart::GA2_2K3A1IA,
             NTCPart::NTCLE300E3103SB,
             NTCPart::B57861S0103F045,
             NTCPart::B57861S0202F040,
             NTCPart::NTCLE413E2103F106A,
             NTCPart::NTCLE400E3103H,
-            NTCPart::NTCLE413E2103H400,  
+            NTCPart::NTCLE413E2103H400,
             NTCPart::B57861S0103J040,
             NTCPart::PANE103395,
             NTCPart::GA10K3A1B,

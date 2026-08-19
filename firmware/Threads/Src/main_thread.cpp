@@ -145,6 +145,8 @@ VOID main_thread_entry(__unused ULONG thread_input)
         &temp_ign_0, &temp_ign_1, &temp_ign_2, &temp_ign_3,
         &temp_ign_4, &temp_ign_5, &temp_ign_6, &temp_ign_7,
     });
+
+    
     for(size_t device = 0; device < CONFIG::STACK_SIZE; device++)
     {
         for(size_t temp = 0; temp < CONFIG::TEMPERATURES_COUNT_PER_DEVICE; temp++)
@@ -227,11 +229,11 @@ VOID main_thread_entry(__unused ULONG thread_input)
         {
             for(size_t device = 0; device < CONFIG::STACK_SIZE; device++)
             {
-                for(size_t chanel = 0; chanel < CONFIG::TEMPERATURES_COUNT_PER_DEVICE; chanel++)
+                for(size_t channel = 0; channel < CONFIG::TEMPERATURES_COUNT_PER_DEVICE; channel++)
                 {
-                    if(CONFIG::IGNORE_TEMPERATURES_MATRIX[device][chanel])
+                    if(CONFIG::IGNORE_TEMPERATURES_MATRIX[device][channel])
                     {
-                        data.cell_temperatures[device][chanel] = 0.f;
+                        data.cell_temperatures[device][channel] = 0.f;
                     }
                 }
             }
