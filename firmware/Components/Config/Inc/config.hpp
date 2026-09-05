@@ -70,8 +70,8 @@ namespace PUTM
         persistent NTCType DEFAULT             = NTCType::_10k_3435K;
         persistent NTCType GA2_2K3A1IA         = NTCType::_2_252K_3976K;
         persistent NTCType B57861S0202F040     = NTCType::_2k_3560K;
-        persistent NTCType TG310J34GBNR        = NTCType::_10k_3434K;//
-        persistent NTCType _103AT_11           = NTCType::_10k_3435K;//
+        persistent NTCType TG310J34GBNR        = NTCType::_10k_3434K;
+        persistent NTCType _103AT_11           = NTCType::_10k_3435K;
         persistent NTCType NTCLE413E2103F520L  = NTCType::_10k_3435K;
         persistent NTCType NTCLE413E2103F106A  = NTCType::_10k_3435K;
         persistent NTCType B57861S0103J040     = NTCType::_10k_3988K;
@@ -325,11 +325,20 @@ namespace PUTM
         {
             namespace Q
             {
-                persistent float SOC { 1e-3f };
+                persistent float SOC { 1e-8f };
                 persistent float V1 { 1e-4f };
-                persistent float V2 { 1e-4f };
+                persistent float V2 { 1e-2f };
+                persistent float H { 1e-8f };
+                persistent float IB { 0.f };
+            }
+            namespace P
+            {
+                persistent float SOC { 2.f };
+                persistent float V1 { 5.f };
+                persistent float V2 { 5.f };
                 persistent float H { 1e-3f };
-                persistent float R { 0.00f };
+                persistent float IB { 0.f };
+
             }
             /* Hz */
             persistent size_t UPDATE_RATE { 100 };

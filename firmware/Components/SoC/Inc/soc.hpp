@@ -12,7 +12,7 @@ namespace PUTM
 {
 class SoC
 {
-private:
+public:
     using State = Matrix<5, 1>;
     using Mat  = Matrix<5, 5>;
     using HMat  = Matrix<1, 5>;
@@ -22,9 +22,9 @@ private:
     float __k_soc;
     float __r0_i;
     float __prev_current;
-    float __prev_voltage;
+    float __prev_temperature;
 
-    // x = [SOC, V1, V2, Vh]^T
+    // x = [SOC, V1, V2, Vh, IB]^T
     State x {{
         { 0.5f },
         { 0.0f },
@@ -34,11 +34,11 @@ private:
     }};
 
     Mat P {{
-        { 0.01f, 0.f, 0.f, 0.f, 0.f },
-        { 0.f, 0.001f, 0.f, 0.f, 0.f },
-        { 0.f, 0.f, 0.001f, 0.f, 0.f },
-        { 0.f, 0.f, 0.f, 0.001f, 0.f },
-        { 0.f, 0.f, 0.f, 0.f, 0.001f },
+        { CONFIG::SOC::P::SOC, 0.f, 0.f, 0.f, 0.f },
+        { 0.f, CONFIG::SOC::P::V1, 0.f, 0.f, 0.f },
+        { 0.f, 0.f, CONFIG::SOC::P::V2, 0.f, 0.f },
+        { 0.f, 0.f, 0.f, CONFIG::SOC::P::H, 0.f },
+        { 0.f, 0.f, 0.f, 0.f, CONFIG::SOC::P::IB },
     }};
 
     static inline constexpr Mat Q {{
@@ -46,7 +46,7 @@ private:
         { 0.f, CONFIG::SOC::Q::V1, 0.f, 0.f, 0.f },
         { 0.f, 0.f, CONFIG::SOC::Q::V2, 0.f, 0.f },
         { 0.f, 0.f, 0.f, CONFIG::SOC::Q::H, 0.f },
-        { 0.f, 0.f, 0.f, 0.f, CONFIG::SOC::Q::R }
+        { 0.f, 0.f, 0.f, 0.f, CONFIG::SOC::Q::IB }
     }};
 
     static inline constexpr float R =
@@ -130,6 +130,9 @@ private:
         const float soc = x.at(0);
         const float v1  = x.at(1);
         const float v2  = x.at(2);
+        const float vh  = x.at(3);
+        const float ibias = x.at(4);
+        const float i = current - ibias;
 
         // Parameters from lookup tables
         const float r1 = interp_temp(
@@ -167,13 +170,13 @@ private:
 
         const float ah = std::exp(
             -CONFIG::SOC::GAMMA
-            * std::abs(current)
+            * std::abs(i)
             * dt
             / (3600.0f * capacity)
         );
 
         const float hist =
-            -sign(current) * ocv_hist.evaluate_y(soc);
+            -sign(i) * ocv_hist.evaluate_y(soc);
 
         Mat A {{
             { 1.f, 0.f, 0.f, 0.f, 0.f },
@@ -200,7 +203,7 @@ private:
         }};
 
         // State prediction
-        x = A * x + B * current + G * hist;
+        x = A * x + B * i + G * hist;
 
         // EKF Jacobian
         Mat F = A;
@@ -250,13 +253,25 @@ private:
             dr2 * (1.f - a2)
             - r2 * da2;
 
-        F.at(1, 0) = da1 * v1 + db1 * current;
-        F.at(2, 0) = da2 * v2 + db2 * current;
+        const float kh =
+            CONFIG::SOC::GAMMA
+            * dt
+            / (3600.f * capacity);
+
+        F.at(0, 4) = alpha;
+        
+        F.at(1, 0) = da1 * v1 + db1 * i;
+        F.at(1, 4) = -r1 * (1 - a1);
+
+        F.at(2, 0) = da2 * v2 + db2 * i;
+        F.at(2, 4) = -r2 * (1 - a2);
 
         F.at(3, 0) =
-            (1.f - ah)
-            * sign(current)
+            -(1.f - ah)
+            * sign(i)
             * derivative(ocv_hist, soc);
+        F.at(3, 4) = 
+            kh * sign(i) * ah * (vh - hist);
 
         // Covariance prediction
         P = F * P * F.T() + Q;
@@ -271,22 +286,23 @@ private:
         const float v1  = x.at(1);
         const float v2  = x.at(2);
         const float vh  = x.at(3);
-        const float dr  = x.at(4);
+        const float ibias = x.at(4);
+        const float i = current - ibias;
 
-        const float r0 = interp_temp(
+        const float r0 = CONFIG::SOC::DR + interp_temp(
             R0<_25degC>.evaluate_y(soc),
             R0<_40degC>.evaluate_y(soc),
             temperature
         );
 
-        __r0_i = r0 * current;
+        __r0_i = r0 * i;
 
         // Predicted terminal voltage
         const float v_model =
             ocv.evaluate_y(soc)
             - v1
             - v2
-            - (r0 + dr) * current
+            - r0 * i
             + vh;
         
         __v_model = v_model;
@@ -303,7 +319,7 @@ private:
                 -1.f,
                 -1.f,
                 1.f,
-                -current
+                r0
             }
         }};
 
@@ -334,10 +350,10 @@ private:
         
     }
 
-    void init_from_voltage(float voltage, float current)
+    void init_from_voltage(float voltage, float current, float temperature)
     {
         __prev_current = current;
-        __prev_voltage = voltage;
+        __prev_temperature = temperature;
 
         const float soc =
             std::clamp(
@@ -347,30 +363,25 @@ private:
             );
 
         x = {{
-            {soc},
-            {0.0f},
-            {0.0f},
-            {0.0f}
-        }};
-
-        P = {{
-            {0.05f * 0.05f, 0.f, 0.f, 0.f},
-            {0.f, 0.01f * 0.01f, 0.f, 0.f},
-            {0.f, 0.f, 0.01f * 0.01f, 0.f},
-            {0.f, 0.f, 0.f, 0.02f * 0.02f}
+            { soc },
+            { 0.0f },
+            { 0.0f },
+            { 0.0f },
+            { current }
         }};
     }
 
 public:
     void update(float voltage, float current, float temperature)
     {
-        predict(__prev_current, __prev_voltage);
+        predict(__prev_current, __prev_temperature);
         correct(voltage, current, temperature);
 
         __prev_current = current;
-        __prev_voltage = voltage;
+        __prev_temperature = temperature;
         x.at(0) = std::clamp(x.at(0), 0.0f, 1.0f);
-        x.at(4) = std::clamp(x.at(4), 0.1f, 0.5f);
+        // x.at(4) = std::clamp(x.at(0), -0.5f, 0.5f);
+        x.at(4) = 0.f;
     }
 
     void set(float soc)
