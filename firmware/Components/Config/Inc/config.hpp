@@ -133,7 +133,7 @@ namespace PUTM
         /* Max current treshold for long timeout */
         persistent float MAX_CURRENT_THRESH_LONG { 150.f };
         /* Min current treshold for long timeout */
-        persistent float MIN_CURRENT_THRESH_LONG { -150.f };
+        persistent float MIN_CURRENT_THRESH_LONG { -50.f };
         /* Max current treshold for short timeout */
         persistent float MAX_CURRENT_THRESH_SHORT { 200.f };
         /* Min current treshold for short timeout */
