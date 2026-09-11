@@ -67,7 +67,10 @@ static std::string_view command;
 
 static char error_write_buffer[128];
 
-
+struct __attribute__((packed)) Msg_header {
+    uint8_t stx = 0xAA;
+    uint16_t len = 0;
+};
 
 /* seperate thread for timing tweeks */
 VOID car_can_thread_entry(__unused ULONG thread_input)
@@ -135,125 +138,125 @@ VOID car_can_thread_entry(__unused ULONG thread_input)
     }
 }
 
-static std::function<void(size_t)> usb_rx_callback = [](size_t size)
-{
-    DeserializationError error = deserializeJson(rx_json, rx_char_buffer, CONFIG::RX_UART_BUFFER_SIZE);
-
-    if(error)
-    {
+static std::function<void(size_t)> usb_rx_callback =
+    [](size_t size) {
+      Msg_header *header = reinterpret_cast<Msg_header *>(rx_char_buffer);
+      if (size >= CONFIG::RX_JSON_BUFFER_SIZE || size < sizeof(*header) ||
+          header->stx != 0xAA || header->len > (size - sizeof(*header))) {
+        data.warning = true;
+        uart.async_rx_unknown_dma(rx_char_buffer, CONFIG::RX_UART_BUFFER_SIZE,
+                                  &usb_rx_callback);
+        return;
+      }
+      DeserializationError error = deserializeMsgPack(rx_json, &rx_char_buffer[sizeof(*header)], static_cast<uint16_t>(header->len));
+      
+      if (error) {
         // data.loggers.events.log_event("RX ERR", tx_time_get());
         data.warning = true;
-    }
-    else
-    {
+      } else {
         command = rx_json["command"];
         if(command == "charger_on")
         {
-            data.cmd_charger = true;
+          data.cmd_charger = true;
         }
         else if(command == "charger_off")
         {
-            data.cmd_charger = false;
+          data.cmd_charger = false;
         }
         else if(command == "set_current")
         {
-            // if no value is provided ArduinoJson will assume 0.0f
-            float charging_current = rx_json["value"];
-            charging_current = std::clamp(charging_current, 0.0f, CONFIG::MAX_CHARGING_CURRENT);
-            data.charging_current = charging_current;
+          // if no value is provided ArduinoJson will assume 0.0f
+          float charging_current = rx_json["value"];
+          charging_current =
+              std::clamp(charging_current, 0.0f, CONFIG::MAX_CHARGING_CURRENT);
+          data.charging_current = charging_current;
         }
         else if(command == "balancing_on")
         {
-            data.cmd_balancing_on = true;
+          data.cmd_balancing_on = true;
         }
         else if(command == "balancing_off")
         {
-            data.cmd_balancing_off = true;
+          data.cmd_balancing_off = true;
         }
         else if(command == "service_mode_on")
         {
-            data.service_mode = true;
+          data.service_mode = true;
         }
         else if(command == "service_mode_off")
         {
-            data.service_mode = false;
+          data.service_mode = false;
         }
         else if(command == "even_moar_data_on")
         {
-            data.even_moar_data = true;
+          data.even_moar_data = true;
         }
         else if(command == "even_moar_data_off")
         {
-            data.even_moar_data = false;
+          data.even_moar_data = false;
         }
         else if(command == "com_mode")
         {
-            std::string_view mode = rx_json["value"];
-            if(mode == "kalman")
-            {
-                com_mode = ComMode::Kalman;
-            }
-            else if(mode == "normal")
-            {
-                com_mode = ComMode::Normal;
-            }
+          std::string_view mode = rx_json["value"];
+          if (mode == "kalman") {
+            com_mode = ComMode::Kalman;
+          } else if (mode == "normal") {
+            com_mode = ComMode::Normal;
+          }
         }
         else if(command == "t_off")
         {
-            size_t device = rx_json["device"];
-            size_t temp = rx_json["temp"];
-            if(0 < device and device <= CONFIG::STACK_SIZE and
-                0 < temp and temp <= CONFIG::TEMPERATURES_COUNT_PER_DEVICE)
-            {
-                CONFIG::IGNORE_TEMPERATURES_MATRIX[device - 1][temp - 1] = true;
-            }
+          size_t device = rx_json["device"];
+          size_t temp = rx_json["temp"];
+          if (0 < device and device <= CONFIG::STACK_SIZE and 0 < temp and
+              temp <= CONFIG::TEMPERATURES_COUNT_PER_DEVICE) {
+            CONFIG::IGNORE_TEMPERATURES_MATRIX[device - 1][temp - 1] = true;
+          }
         }
         else if(command == "t_on")
         {
-            size_t device = rx_json["device"];
-            size_t temp = rx_json["temp"];
-            if(0 < device and device <= CONFIG::STACK_SIZE and
-               0 < temp and temp <= CONFIG::TEMPERATURES_COUNT_PER_DEVICE)
-            {
-                CONFIG::IGNORE_TEMPERATURES_MATRIX[device - 1][temp - 1] = false;
-            }
+          size_t device = rx_json["device"];
+          size_t temp = rx_json["temp"];
+          if (0 < device and device <= CONFIG::STACK_SIZE and 0 < temp and
+              temp <= CONFIG::TEMPERATURES_COUNT_PER_DEVICE) {
+            CONFIG::IGNORE_TEMPERATURES_MATRIX[device - 1][temp - 1] = false;
+          }
         }
         else if(command == "i_g")
         {
-            float gain = rx_json["gain"];
-            CONFIG::CURRENT_GAIN = gain;
+          float gain = rx_json["gain"];
+          CONFIG::CURRENT_GAIN = gain;
         }
         else if(command == "i_b")
         {
-            float bias = rx_json["bias"];
-            CONFIG::CURRENT_BIAS = bias;
+          float bias = rx_json["bias"];
+          CONFIG::CURRENT_BIAS = bias;
         }
         else if(command == "acu_g")
         {
-            float gain = rx_json["gain"];
-            CONFIG::ACU_VOLTAGE_GAIN = gain; 
+          float gain = rx_json["gain"];
+          CONFIG::ACU_VOLTAGE_GAIN = gain; 
         }
         else if(command == "car_g")
         {
-            float gain = rx_json["gain"];
-            CONFIG::CAR_VOLTAGE_GAIN = gain;
+          float gain = rx_json["gain"];
+          CONFIG::CAR_VOLTAGE_GAIN = gain;
         }
         else if(command == "dr")
         {
-            float value = rx_json["value"];
-            CONFIG::CURRENT_BIAS = value;
+          float value = rx_json["value"];
+          CONFIG::CURRENT_BIAS = value;
         }
         else if(command == "save_cfg")
         {
-            data.commands.save_config = true;
+          data.commands.save_config = true;
         }
         data.last_command = command;
-    }
+      }
 
-    uart.async_rx_unknown_dma(rx_char_buffer, CONFIG::RX_UART_BUFFER_SIZE, &usb_rx_callback);
-};
-
-
+      uart.async_rx_unknown_dma(rx_char_buffer, CONFIG::RX_UART_BUFFER_SIZE,
+                                &usb_rx_callback);
+    };
 
 /**
  *  @brief  USB communication thread entry point
@@ -419,14 +422,20 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
             }
 
             // serializeJson(json, buffer, JSON_BUFFER_SIZE);
-            serializeJson(tx_json, tx_char_buffer, CONFIG::TX_JSON_BUFFER_SIZE - 2);
-            auto s = strlen(tx_char_buffer);
-            //redundant newline at the end
-            tx_char_buffer[s] = '\n';
-            s += 1;
-            if(uart.await_tx_dma((uint8_t *)tx_char_buffer, s, 2000) != HAL_OK)
-            {
+            size_t len = serializeMsgPack(tx_json, tx_char_buffer, CONFIG::TX_JSON_BUFFER_SIZE);
+            if (len == 0 || len > CONFIG::TX_JSON_BUFFER_SIZE) {
                 data.warning = true;
+            } 
+            else 
+            {
+                Msg_header header{0xAA, static_cast<uint16_t>(len)};
+                if(uart.await_tx_dma(reinterpret_cast<uint8_t*>(&header), sizeof(header), 2000) != HAL_OK) {
+                    data.warning = true;
+                }
+                else if(uart.await_tx_dma((uint8_t *)tx_char_buffer, len, 2000) != HAL_OK)
+                {
+                    data.warning = true;
+                }
             }
         }
         tx_thread_sleep(10);
