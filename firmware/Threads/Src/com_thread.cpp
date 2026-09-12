@@ -53,9 +53,6 @@ extern ErrorChecker error_checker;
 
 extern Gpio usb_reset;
 
-// extern TX_MUTEX tx_buffer_mutex;
-// extern TX_MUTEX rx_buffer_mutex;
-
 static StaticJsonDocument<CONFIG::TX_JSON_BUFFER_SIZE> tx_json;
 static char tx_char_buffer[CONFIG::TX_JSON_BUFFER_SIZE] { }; // TODO: Maybe change to its own buffer size
 static StaticJsonDocument<CONFIG::RX_JSON_BUFFER_SIZE> rx_json;
@@ -65,10 +62,12 @@ static Uart uart(&huart1);
 
 static std::string_view command;
 
-static char error_write_buffer[128];
-
+/* In MessagePack serialization \0 and \n bytes can be used within message,
+ * so header with data length is needed to detect end of message
+ */
+constexpr uint8_t START_OF_TEXT_BYTE = 0xAA; 
 struct __attribute__((packed)) Msg_header {
-    uint8_t stx = 0xAA;
+    uint8_t stx = START_OF_TEXT_BYTE;
     uint16_t len = 0;
 };
 
@@ -140,15 +139,16 @@ VOID car_can_thread_entry(__unused ULONG thread_input)
 
 static std::function<void(size_t)> usb_rx_callback =
     [](size_t size) {
+
       Msg_header *header = reinterpret_cast<Msg_header *>(rx_char_buffer);
-      if (size >= CONFIG::RX_JSON_BUFFER_SIZE || size < sizeof(*header) ||
-          header->stx != 0xAA || header->len > (size - sizeof(*header))) {
+      if (size >= CONFIG::RX_JSON_BUFFER_SIZE || size < sizeof(Msg_header) ||
+          header->stx != START_OF_TEXT_BYTE || header->len > (size - sizeof(Msg_header))) {
         data.warning = true;
-        uart.async_rx_unknown_dma(rx_char_buffer, CONFIG::RX_UART_BUFFER_SIZE,
+        uart.async_rx_unknown_dma(reinterpret_cast<uint8_t*>(rx_char_buffer), CONFIG::RX_UART_BUFFER_SIZE,
                                   &usb_rx_callback);
         return;
       }
-      DeserializationError error = deserializeMsgPack(rx_json, &rx_char_buffer[sizeof(*header)], static_cast<uint16_t>(header->len));
+      DeserializationError error = deserializeMsgPack(rx_json, &rx_char_buffer[sizeof(Msg_header)], static_cast<uint16_t>(header->len));
       
       if (error) {
         // data.loggers.events.log_event("RX ERR", tx_time_get());
@@ -178,22 +178,6 @@ static std::function<void(size_t)> usb_rx_callback =
         else if(command == "balancing_off")
         {
           data.cmd_balancing_off = true;
-        }
-        else if(command == "service_mode_on")
-        {
-          data.service_mode = true;
-        }
-        else if(command == "service_mode_off")
-        {
-          data.service_mode = false;
-        }
-        else if(command == "even_moar_data_on")
-        {
-          data.even_moar_data = true;
-        }
-        else if(command == "even_moar_data_off")
-        {
-          data.even_moar_data = false;
         }
         else if(command == "com_mode")
         {
@@ -254,8 +238,8 @@ static std::function<void(size_t)> usb_rx_callback =
         data.last_command = command;
       }
 
-      uart.async_rx_unknown_dma(rx_char_buffer, CONFIG::RX_UART_BUFFER_SIZE,
-                                &usb_rx_callback);
+      uart.async_rx_unknown_dma(reinterpret_cast<uint8_t *>(rx_char_buffer),
+                                CONFIG::RX_UART_BUFFER_SIZE, &usb_rx_callback);
     };
 
 /**
@@ -266,9 +250,7 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
 {
     static bool first_run { true };
 
-    // uart.init();
     uart.set_baudrate(460800);
-    // uart.set_rx_timeout(10);
 
     while(true)
     {
@@ -281,7 +263,8 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
             first_run = false;
             data.loggers.events.log_event("USB DET", tx_time_get());
             uart.abort_async_rx_unknown_dma();
-            uart.async_rx_unknown_dma(rx_char_buffer, CONFIG::RX_UART_BUFFER_SIZE, &usb_rx_callback);
+            uart.async_rx_unknown_dma(reinterpret_cast<uint8_t *>(rx_char_buffer),
+                                CONFIG::RX_UART_BUFFER_SIZE, &usb_rx_callback);
         }
         if(data.usb_connected)
         {
@@ -339,9 +322,6 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
                     tx_json["errors"].add(error.name);
                     tx_thread_relinquish();
                 }
-                tx_thread_relinquish();
-                tx_json["service_mode"] = data.service_mode;
-                //if(data.service_mode)
                 {
                     tx_json["usb_connected"] = data.usb_connected;
                     tx_json["cmd_hv"] = data.cmd_hv;
@@ -387,13 +367,12 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
                         tx_json["events"].add(log);
                         tx_thread_relinquish();
                     }
-                    //if(data.even_moar_data)
                     {
                         tx_json["vusb"] = data.vusb;
                         tx_json["usb_connected"] = data.usb_connected;
                         tx_json["last_command"] = data.last_command;
+                        tx_thread_relinquish();
                     }
-                    tx_thread_relinquish();
                     {
                         tx_json["charger_battery_read_voltage"] = data.charger.battery_read_voltage;
                         tx_json["charger_battery_read_current"] = data.charger.battery_read_current;
@@ -403,8 +382,8 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
                         tx_json["charger_starting_state"] = data.charger.starting_state;
                         tx_json["charger_communication_state"] = data.charger.communication_state;
                         tx_json["charger_last_recive_tick"] = data.charger.last_recive_tick;
+                        tx_thread_relinquish();
                     }
-                    tx_thread_relinquish();
                 }
             }
             if(com_mode == ComMode::Kalman)
@@ -421,18 +400,15 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
                 tx_json["v"]    = data.acu_voltage;
             }
 
-            // serializeJson(json, buffer, JSON_BUFFER_SIZE);
-            size_t len = serializeMsgPack(tx_json, tx_char_buffer, CONFIG::TX_JSON_BUFFER_SIZE);
-            if (len == 0 || len > CONFIG::TX_JSON_BUFFER_SIZE) {
+            size_t len = serializeMsgPack(tx_json, &tx_char_buffer[sizeof(Msg_header)], CONFIG::TX_JSON_BUFFER_SIZE - sizeof(Msg_header));
+            if (len == 0 || len > (CONFIG::TX_JSON_BUFFER_SIZE - sizeof(Msg_header))) {
                 data.warning = true;
             } 
             else 
             {
-                Msg_header header{0xAA, static_cast<uint16_t>(len)};
-                if(uart.await_tx_dma(reinterpret_cast<uint8_t*>(&header), sizeof(header), 2000) != HAL_OK) {
-                    data.warning = true;
-                }
-                else if(uart.await_tx_dma((uint8_t *)tx_char_buffer, len, 2000) != HAL_OK)
+                Msg_header header{START_OF_TEXT_BYTE, static_cast<uint16_t>(len)};
+                memcpy(tx_char_buffer, reinterpret_cast<uint8_t*>(&header), sizeof(Msg_header));
+                if(uart.await_tx_dma((uint8_t *)tx_char_buffer, len + sizeof(Msg_header), 2000) != HAL_OK)
                 {
                     data.warning = true;
                 }
