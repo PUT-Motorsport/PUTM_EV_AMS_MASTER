@@ -58,7 +58,12 @@ static char tx_char_buffer[CONFIG::TX_JSON_BUFFER_SIZE] { }; // TODO: Maybe chan
 static StaticJsonDocument<CONFIG::RX_JSON_BUFFER_SIZE> rx_json;
 static char rx_char_buffer[CONFIG::RX_JSON_BUFFER_SIZE] { };
 
-static Uart uart(&huart1);
+constexpr size_t LOGGER_TEST_BUFFER_SIZE {256};
+static StaticJsonDocument<LOGGER_TEST_BUFFER_SIZE> logger_test_json;
+static char logger_test_buffer[LOGGER_TEST_BUFFER_SIZE] { };
+
+static Uart usb_uart(&huart1);
+static Uart logger_uart(&huart6);
 
 static std::string_view command;
 
@@ -144,7 +149,7 @@ static std::function<void(size_t)> usb_rx_callback =
       if (size >= CONFIG::RX_JSON_BUFFER_SIZE || size < sizeof(Msg_header) ||
           header->stx != START_OF_TEXT_BYTE || header->len > (size - sizeof(Msg_header))) {
         data.warning = true;
-        uart.async_rx_unknown_dma(reinterpret_cast<uint8_t*>(rx_char_buffer), CONFIG::RX_UART_BUFFER_SIZE,
+        usb_uart.async_rx_unknown_dma(reinterpret_cast<uint8_t*>(rx_char_buffer), CONFIG::RX_UART_BUFFER_SIZE,
                                   &usb_rx_callback);
         return;
       }
@@ -238,7 +243,7 @@ static std::function<void(size_t)> usb_rx_callback =
         data.last_command = command;
       }
 
-      uart.async_rx_unknown_dma(reinterpret_cast<uint8_t *>(rx_char_buffer),
+      usb_uart.async_rx_unknown_dma(reinterpret_cast<uint8_t *>(rx_char_buffer),
                                 CONFIG::RX_UART_BUFFER_SIZE, &usb_rx_callback);
     };
 
@@ -250,7 +255,7 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
 {
     static bool first_run { true };
 
-    uart.set_baudrate(460800);
+    usb_uart.set_baudrate(460800);
 
     while(true)
     {
@@ -262,8 +267,8 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
         {
             first_run = false;
             data.loggers.events.log_event("USB DET", tx_time_get());
-            uart.abort_async_rx_unknown_dma();
-            uart.async_rx_unknown_dma(reinterpret_cast<uint8_t *>(rx_char_buffer),
+            usb_uart.abort_async_rx_unknown_dma();
+            usb_uart.async_rx_unknown_dma(reinterpret_cast<uint8_t *>(rx_char_buffer),
                                 CONFIG::RX_UART_BUFFER_SIZE, &usb_rx_callback);
         }
         if(data.usb_connected)
@@ -408,11 +413,23 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
             {
                 Msg_header header{START_OF_TEXT_BYTE, static_cast<uint16_t>(len)};
                 memcpy(tx_char_buffer, reinterpret_cast<uint8_t*>(&header), sizeof(Msg_header));
-                if(uart.await_tx_dma((uint8_t *)tx_char_buffer, len + sizeof(Msg_header), 2000) != HAL_OK)
+                if(usb_uart.await_tx_dma((uint8_t *)tx_char_buffer, len + sizeof(Msg_header), 2000) != HAL_OK)
                 {
                     data.warning = true;
                 }
             }
+        }
+
+        logger_test_json.clear();
+        logger_test_json["timestamp"] = tx_time_get();
+        logger_test_json["current"] = data.current;
+        size_t len = serializeMsgPack(logger_test_json, &logger_test_buffer[sizeof(Msg_header)], LOGGER_TEST_BUFFER_SIZE - sizeof(Msg_header));
+        if (len == 0 || len > (LOGGER_TEST_BUFFER_SIZE - sizeof(Msg_header))) {}
+        else 
+        {
+            Msg_header header{START_OF_TEXT_BYTE, static_cast<uint16_t>(len)};
+            memcpy(logger_test_buffer, reinterpret_cast<uint8_t*>(&header), sizeof(Msg_header));
+            logger_uart.await_tx_dma((uint8_t*)logger_test_buffer, len + sizeof(Msg_header), 2000);
         }
         tx_thread_sleep(10);
     }
