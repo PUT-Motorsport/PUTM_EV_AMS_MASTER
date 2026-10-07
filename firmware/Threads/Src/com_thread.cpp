@@ -111,7 +111,7 @@ VOID car_can_thread_entry(__unused ULONG thread_input)
             .current = (int16_t)(data.current * 10.f),
             .temp_max = (uint8_t)(data.cell_max_temperature), //(uint8_t)(data.cell_max_temperature * 10.f),
             .temp_avg = (uint8_t)(data.cell_avg_temperature), //(uint8_t)(data.cell_avg_temperature * 10.f),
-            .soc = (uint16_t)(data.current_integral * 10.f),
+            .soc = (uint16_t)(data.soc * 100.0f),
             .ok = not data.error, 
             .precharge = data.precharge,
             .ts_on = data.hv_on
