@@ -292,40 +292,50 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
                 tx_json["cell_min_temperature"] = data.cell_min_temperature;
                 tx_json["charging_current"] = data.charging_current;
                 tx_thread_relinquish();
-                for(size_t i = 0; i < CONFIG::TOTAL_CELL_COUNT; i++)
+                JsonArray cell_voltages = tx_json["cell_voltages"].to<JsonArray>();
+                for(size_t idev = 0; idev < CONFIG::STACK_SIZE; idev++)
                 {
-                    size_t idev = i / CONFIG::CELL_COUNT_PER_DEVICE;
-                    size_t icell = i % CONFIG::CELL_COUNT_PER_DEVICE;
-                    tx_json["cell_voltages"][idev][icell] = data.cell_voltages[idev][icell];
-                    
-                    tx_thread_relinquish();
+                    JsonArray dev_voltages = cell_voltages.add<JsonArray>();
+                    for(size_t icell = 0; icell < CONFIG::CELL_COUNT_PER_DEVICE; icell++)
+                    {
+                        dev_voltages.add(data.cell_voltages[idev][icell]);
+                    }
                 }
-                for(size_t i = 0; i < CONFIG::TOTAL_TEMPERATURES_COUNT; i++)
+                tx_thread_relinquish();
+                JsonArray cell_temperatures = tx_json["cell_temperatures"].to<JsonArray>();
+                for(size_t idev = 0; idev < CONFIG::STACK_SIZE; idev++)
                 {
-                    size_t idev = i / CONFIG::TEMPERATURES_COUNT_PER_DEVICE;
-                    size_t icell = i % CONFIG::TEMPERATURES_COUNT_PER_DEVICE;
-                    tx_json["cell_temperatures"][idev][icell] = data.cell_temperatures[idev][icell];
-                    tx_thread_relinquish();
+                    JsonArray dev_temperatures = cell_temperatures.add<JsonArray>();
+                    for(size_t icell = 0; icell < CONFIG::TEMPERATURES_COUNT_PER_DEVICE; icell++)
+                    {
+                        dev_temperatures.add(data.cell_temperatures[idev][icell]);
+                    }
                 }
-                for(size_t i = 0; i < CONFIG::TOTAL_CELL_COUNT; i++)
+                tx_thread_relinquish();
+                JsonArray cell_balancing = tx_json["cell_balancing"].to<JsonArray>();
+                for(size_t idev = 0; idev < CONFIG::STACK_SIZE; idev++)
                 {
-                    size_t idev = i / CONFIG::CELL_COUNT_PER_DEVICE;
-                    size_t icell = i % CONFIG::CELL_COUNT_PER_DEVICE;
-                    tx_json["cell_balancing"][idev][icell] = data.cell_balancing[idev][icell];
-                    tx_thread_relinquish();
+                    JsonArray dev_balancing = cell_balancing.add<JsonArray>();
+                    for(size_t icell = 0; icell < CONFIG::CELL_COUNT_PER_DEVICE; icell++)
+                    {
+                        dev_balancing.add(data.cell_balancing[idev][icell]);
+                    }
                 }
-                for(size_t i = 0; i < CONFIG::TOTAL_TEMPERATURES_COUNT; i++)
+                tx_thread_relinquish();
+                JsonArray kek = tx_json["kek"].to<JsonArray>();
+                for(size_t idev = 0; idev < CONFIG::STACK_SIZE; idev++)
                 {
-                    size_t idev = i / CONFIG::TEMPERATURES_COUNT_PER_DEVICE;
-                    size_t icell = i % CONFIG::TEMPERATURES_COUNT_PER_DEVICE;
-                    tx_json["kek"][idev][icell] = CONFIG::IGNORE_TEMPERATURES_MATRIX[idev][icell];
-                    tx_thread_relinquish();
+                    JsonArray dev_kek = kek.add<JsonArray>();
+                    for(size_t icell = 0; icell < CONFIG::TEMPERATURES_COUNT_PER_DEVICE; icell++)
+                    {
+                        dev_kek.add(CONFIG::IGNORE_TEMPERATURES_MATRIX[idev][icell]);
+                    }
                 }
-                tx_json["errors"] = JsonArray();
+                tx_thread_relinquish();
+                JsonArray errors = tx_json["errors"].to<JsonArray>();
                 for(auto error : error_checker)
                 {
-                    tx_json["errors"].add(error.name);
-                    tx_thread_relinquish();
+                    errors.add(error.name);
                 }
                 {
                     tx_json["usb_connected"] = data.usb_connected;
@@ -340,43 +350,42 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
                     tx_json["tsms"] = data.tsms;
                     tx_json["precharge"] = data.precharge;
                     tx_json["hv_on"] = data.hv_on;
-                    tx_thread_relinquish();
+                    JsonArray bq_com_status = tx_json["bq_com_status"].to<JsonArray>();
                     for(size_t i = 0; i < CONFIG::STACK_SIZE; i++)
                     {
-                        tx_json["bq_com_status"][i] = get_error_name(data.bq_read_data_status[i]);
-                        tx_thread_relinquish();
+                        bq_com_status.add(get_error_name(data.bq_read_data_status[i]));
                     }
-                    for(size_t i = 0; i < CONFIG::TOTAL_TEMPERATURES_COUNT; i++)
+                    tx_thread_relinquish();
+                    JsonArray gpio_voltages = tx_json["gpio_voltages"].to<JsonArray>();
+                    for(size_t idev = 0; idev < CONFIG::STACK_SIZE; idev++)
                     {
-                        size_t idev = i / CONFIG::TEMPERATURES_COUNT_PER_DEVICE;
-                        size_t icell = i % CONFIG::TEMPERATURES_COUNT_PER_DEVICE;
-                        tx_json["gpio_voltages"][idev][icell] = data.gpio_voltages[idev][icell];
-                        tx_thread_relinquish();
+                        JsonArray dev_gpio = gpio_voltages.add<JsonArray>();
+                        for(size_t icell = 0; icell < CONFIG::TEMPERATURES_COUNT_PER_DEVICE; icell++)
+                        {
+                            dev_gpio.add(data.gpio_voltages[idev][icell]);
+                        }
                     }
+                    tx_thread_relinquish();
                     tx_json["sm_air_state"] = air_state_machine.get_current_state_name();
                     tx_json["sm_charger_state"] = charger_state_machine.get_current_state_name();
                     tx_json["bq_ups"] = data.update_times.bq;
                     tx_json["ads_ups"] = data.update_times.ads;
                     tx_json["main_ups"] = data.update_times.main;
                     tx_json["soc_ups"] = data.update_times.soc;
-                    tx_json["checker_errors"] = JsonArray();
-                    tx_thread_relinquish();
+                    JsonArray checker_errors = tx_json["checker_errors"].to<JsonArray>();
                     for(auto log : data.loggers.errors)
                     {
-                        tx_json["checker_errors"].add(log);
-                        tx_thread_relinquish();
+                        checker_errors.add(log);
                     }
-                    tx_json["events"] = JsonArray();
+                    JsonArray events = tx_json["events"].to<JsonArray>();
                     for(auto log : data.loggers.events)
                     {
-                        tx_json["events"].add(log);
-                        tx_thread_relinquish();
+                        events.add(log);
                     }
                     {
                         tx_json["vusb"] = data.vusb;
                         tx_json["usb_connected"] = data.usb_connected;
                         tx_json["last_command"] = data.last_command;
-                        tx_thread_relinquish();
                     }
                     {
                         tx_json["charger_battery_read_voltage"] = data.charger.battery_read_voltage;
@@ -387,8 +396,8 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
                         tx_json["charger_starting_state"] = data.charger.starting_state;
                         tx_json["charger_communication_state"] = data.charger.communication_state;
                         tx_json["charger_last_recive_tick"] = data.charger.last_recive_tick;
-                        tx_thread_relinquish();
                     }
+                    tx_thread_relinquish();
                 }
             }
             if(com_mode == ComMode::Kalman)
