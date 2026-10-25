@@ -187,6 +187,13 @@ static std::function<void(size_t)> usb_rx_callback = [](size_t size) {
       } else if (mode == "normal") {
         com_mode = ComMode::Normal;
       }
+    } else if (command == "serialization_mode") {
+      std::string_view mode = rx_json["value"];
+      if (mode == "json") {
+        serialization_mode = SerializationMode::Json;
+      } else if (mode == "msgpack") {
+        serialization_mode = SerializationMode::Msgpack;
+      }
     } else if (command == "t_off") {
       size_t device = rx_json["device"];
       size_t temp = rx_json["temp"];
@@ -393,37 +400,45 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
                 tx_json["v"]    = data.acu_voltage;
             }
 
-          size_t len = 0;
-          if (serialization_mode == SerializationMode::Msgpack) 
-          {
-              len = serializeMsgPack(tx_json, &tx_char_buffer[sizeof(Msg_header)], CONFIG::TX_JSON_BUFFER_SIZE - sizeof(Msg_header)) + sizeof(Msg_header);
-              Msg_header header{START_OF_TEXT_BYTE, static_cast<uint16_t>(len)};
-              memcpy(tx_char_buffer, reinterpret_cast<uint8_t*>(&header), sizeof(Msg_header));
-          } else 
-          {
-            len = serializeJson(tx_json, tx_char_buffer, CONFIG::TX_JSON_BUFFER_SIZE - 2);
-            //redundant newline at the end
-            tx_char_buffer[len] = '\n';
-            len += 1;
-          }
-          if (len == 0 || len > (CONFIG::TX_JSON_BUFFER_SIZE)) 
-          {
-              data.warning = true;
-          } 
-          else if(usb_uart.await_tx_dma((uint8_t *)tx_char_buffer, len, 2000) != HAL_OK)
-          {
-              data.warning = true;
-          }
+            size_t len = 0;
+            if(serialization_mode == SerializationMode::Msgpack)
+            {
+                size_t payload_len = serializeMsgPack(tx_json, &tx_char_buffer[sizeof(Msg_header)], CONFIG::TX_JSON_BUFFER_SIZE - sizeof(Msg_header));
+                if(payload_len != 0)
+                {
+                    len = payload_len + sizeof(Msg_header);
+                    Msg_header header{START_OF_TEXT_BYTE, static_cast<uint16_t>(payload_len)};
+                    memcpy(tx_char_buffer, reinterpret_cast<uint8_t*>(&header), sizeof(Msg_header));
+                }
+            }
+            else
+            {
+                len = serializeJson(tx_json, tx_char_buffer, CONFIG::TX_JSON_BUFFER_SIZE - 2);
+                if(len != 0)
+                {
+                    // newline marks the end of message
+                    tx_char_buffer[len] = '\n';
+                    len += 1;
+                }
+            }
+            if(len == 0 || len > CONFIG::TX_JSON_BUFFER_SIZE)
+            {
+                data.warning = true;
+            }
+            else if(usb_uart.await_tx_dma((uint8_t *)tx_char_buffer, len, 2000) != HAL_OK)
+            {
+                data.warning = true;
+            }
         }
 
         logger_test_json.clear();
         logger_test_json["timestamp"] = tx_time_get();
         logger_test_json["current"] = data.current;
-        size_t len = serializeMsgPack(logger_test_json, &logger_test_buffer[sizeof(Msg_header)], LOGGER_TEST_BUFFER_SIZE - sizeof(Msg_header)) + sizeof(Msg_header);
-        if (len == 0 || len > (LOGGER_TEST_BUFFER_SIZE)) {}
-        else 
+        size_t logger_payload_len = serializeMsgPack(logger_test_json, &logger_test_buffer[sizeof(Msg_header)], LOGGER_TEST_BUFFER_SIZE - sizeof(Msg_header));
+        if(logger_payload_len != 0)
         {
-            Msg_header header{START_OF_TEXT_BYTE, static_cast<uint16_t>(len)};
+            size_t len = logger_payload_len + sizeof(Msg_header);
+            Msg_header header{START_OF_TEXT_BYTE, static_cast<uint16_t>(logger_payload_len)};
             memcpy(logger_test_buffer, reinterpret_cast<uint8_t*>(&header), sizeof(Msg_header));
             logger_uart.await_tx_dma((uint8_t*)logger_test_buffer, len, 2000);
         }
