@@ -42,7 +42,14 @@ enum struct ComMode
     Kalman
 };
 
+enum struct SerializationMode
+{
+  Json,
+  Msgpack
+};
+
 ComMode com_mode { ComMode::Normal };
+SerializationMode serialization_mode { SerializationMode::Msgpack };
 
 putm_ev_can::CanDriver can_driver;
 
@@ -386,31 +393,39 @@ VOID usb_com_thread_entry(__unused ULONG thread_input)
                 tx_json["v"]    = data.acu_voltage;
             }
 
-            size_t len = serializeMsgPack(tx_json, &tx_char_buffer[sizeof(Msg_header)], CONFIG::TX_JSON_BUFFER_SIZE - sizeof(Msg_header));
-            if (len == 0 || len > (CONFIG::TX_JSON_BUFFER_SIZE - sizeof(Msg_header))) {
-                data.warning = true;
-            } 
-            else 
-            {
-                Msg_header header{START_OF_TEXT_BYTE, static_cast<uint16_t>(len)};
-                memcpy(tx_char_buffer, reinterpret_cast<uint8_t*>(&header), sizeof(Msg_header));
-                if(usb_uart.await_tx_dma((uint8_t *)tx_char_buffer, len + sizeof(Msg_header), 2000) != HAL_OK)
-                {
-                    data.warning = true;
-                }
-            }
+          size_t len = 0;
+          if (serialization_mode == SerializationMode::Msgpack) 
+          {
+              len = serializeMsgPack(tx_json, &tx_char_buffer[sizeof(Msg_header)], CONFIG::TX_JSON_BUFFER_SIZE - sizeof(Msg_header)) + sizeof(Msg_header);
+              Msg_header header{START_OF_TEXT_BYTE, static_cast<uint16_t>(len)};
+              memcpy(tx_char_buffer, reinterpret_cast<uint8_t*>(&header), sizeof(Msg_header));
+          } else 
+          {
+            len = serializeJson(tx_json, tx_char_buffer, CONFIG::TX_JSON_BUFFER_SIZE - 2);
+            //redundant newline at the end
+            tx_char_buffer[len] = '\n';
+            len += 1;
+          }
+          if (len == 0 || len > (CONFIG::TX_JSON_BUFFER_SIZE)) 
+          {
+              data.warning = true;
+          } 
+          else if(usb_uart.await_tx_dma((uint8_t *)tx_char_buffer, len, 2000) != HAL_OK)
+          {
+              data.warning = true;
+          }
         }
 
         logger_test_json.clear();
         logger_test_json["timestamp"] = tx_time_get();
         logger_test_json["current"] = data.current;
-        size_t len = serializeMsgPack(logger_test_json, &logger_test_buffer[sizeof(Msg_header)], LOGGER_TEST_BUFFER_SIZE - sizeof(Msg_header));
-        if (len == 0 || len > (LOGGER_TEST_BUFFER_SIZE - sizeof(Msg_header))) {}
+        size_t len = serializeMsgPack(logger_test_json, &logger_test_buffer[sizeof(Msg_header)], LOGGER_TEST_BUFFER_SIZE - sizeof(Msg_header)) + sizeof(Msg_header);
+        if (len == 0 || len > (LOGGER_TEST_BUFFER_SIZE)) {}
         else 
         {
             Msg_header header{START_OF_TEXT_BYTE, static_cast<uint16_t>(len)};
             memcpy(logger_test_buffer, reinterpret_cast<uint8_t*>(&header), sizeof(Msg_header));
-            logger_uart.await_tx_dma((uint8_t*)logger_test_buffer, len + sizeof(Msg_header), 2000);
+            logger_uart.await_tx_dma((uint8_t*)logger_test_buffer, len, 2000);
         }
         tx_thread_sleep(10);
     }
