@@ -215,7 +215,7 @@ static std::function<void(size_t)> usb_rx_callback = [](size_t size) {
     data.last_command = command;
   }
 
-  uart.async_rx_unknown_dma(rx_char_buffer, CONFIG::RX_UART_BUFFER_SIZE,
+  usb_uart.async_rx_unknown_dma(rx_char_buffer, CONFIG::RX_UART_BUFFER_SIZE,
                             &usb_rx_callback);
 };
 
