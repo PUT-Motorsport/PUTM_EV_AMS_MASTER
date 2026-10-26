@@ -248,8 +248,10 @@ VOID main_thread_entry(__unused ULONG thread_input)
         size_t acc_temp_offset = 0;
         for(size_t i = 0; i < CONFIG::STACK_SIZE; i++)
         {
+            data.stack_voltages[i] = 0.f;
             for(size_t j = 0; j < CONFIG::CELL_COUNT_PER_DEVICE; j++)
             {
+                data.stack_voltages[i] += data.cell_voltages[i][j];
                 accumulator_voltage += data.cell_voltages[i][j];
             }
             for(size_t j = 0; j < CONFIG::TEMPERATURES_COUNT_PER_DEVICE; j++)

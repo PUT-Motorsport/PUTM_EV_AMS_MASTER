@@ -280,7 +280,6 @@ VOID usb_com_thread_entry(__unused ULONG thread_input) {
                         dev_voltages.add(data.cell_voltages[idev][icell]);
                     }
                 }
-                tx_thread_relinquish();
                 JsonArray cell_temperatures = tx_json["cell_temperatures"].to<JsonArray>();
                 for(size_t idev = 0; idev < CONFIG::STACK_SIZE; idev++)
                 {
@@ -290,7 +289,6 @@ VOID usb_com_thread_entry(__unused ULONG thread_input) {
                         dev_temperatures.add(data.cell_temperatures[idev][icell]);
                     }
                 }
-                tx_thread_relinquish();
                 JsonArray cell_balancing = tx_json["cell_balancing"].to<JsonArray>();
                 for(size_t idev = 0; idev < CONFIG::STACK_SIZE; idev++)
                 {
@@ -300,7 +298,6 @@ VOID usb_com_thread_entry(__unused ULONG thread_input) {
                         dev_balancing.add(data.cell_balancing[idev][icell]);
                     }
                 }
-                tx_thread_relinquish();
                 JsonArray kek = tx_json["kek"].to<JsonArray>();
                 for(size_t idev = 0; idev < CONFIG::STACK_SIZE; idev++)
                 {
@@ -310,12 +307,17 @@ VOID usb_com_thread_entry(__unused ULONG thread_input) {
                         dev_kek.add(CONFIG::IGNORE_TEMPERATURES_MATRIX[idev][icell]);
                     }
                 }
-                tx_thread_relinquish();
+                JsonArray stack_voltages = tx_json["stack_voltages"].to<JsonArray>();
+                for(size_t idev = 0; idev < CONFIG::STACK_SIZE; idev++)
+                {
+                    stack_voltages.add(data.stack_voltages[idev]);
+                }
                 JsonArray errors = tx_json["errors"].to<JsonArray>();
                 for(auto error : error_checker)
                 {
                     errors.add(error.name);
                 }
+                tx_thread_relinquish();
                 {
                     tx_json["usb_connected"] = data.usb_connected;
                     tx_json["cmd_hv"] = data.cmd_hv;
@@ -334,7 +336,6 @@ VOID usb_com_thread_entry(__unused ULONG thread_input) {
                     {
                         bq_com_status.add(get_error_name(data.bq_read_data_status[i]));
                     }
-                    tx_thread_relinquish();
                     JsonArray gpio_voltages = tx_json["gpio_voltages"].to<JsonArray>();
                     for(size_t idev = 0; idev < CONFIG::STACK_SIZE; idev++)
                     {
@@ -344,7 +345,6 @@ VOID usb_com_thread_entry(__unused ULONG thread_input) {
                             dev_gpio.add(data.gpio_voltages[idev][icell]);
                         }
                     }
-                    tx_thread_relinquish();
                     tx_json["sm_air_state"] = air_state_machine.get_current_state_name();
                     tx_json["sm_charger_state"] = charger_state_machine.get_current_state_name();
                     tx_json["bq_ups"] = data.update_times.bq;
@@ -376,7 +376,6 @@ VOID usb_com_thread_entry(__unused ULONG thread_input) {
                         tx_json["charger_communication_state"] = data.charger.communication_state;
                         tx_json["charger_last_recive_tick"] = data.charger.last_recive_tick;
                     }
-                    tx_thread_relinquish();
                 }
             }
             if(com_mode == ComMode::Kalman)
@@ -435,7 +434,7 @@ VOID usb_com_thread_entry(__unused ULONG thread_input) {
             memcpy(logger_test_buffer, reinterpret_cast<uint8_t*>(&header), sizeof(Msg_header));
             logger_uart.await_tx_dma((uint8_t*)logger_test_buffer, len, 2000);
         }
-        tx_thread_sleep(10);
+        tx_thread_sleep(20);
     }
 
 }
