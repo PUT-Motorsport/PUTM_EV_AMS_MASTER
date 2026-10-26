@@ -37,7 +37,14 @@ using namespace PUTM_CAN;
 
 enum struct ComMode { Normal, Kalman };
 
-ComMode com_mode{ComMode::Normal};
+enum struct SerializationMode
+{
+  Json,
+  Msgpack
+};
+
+ComMode com_mode { ComMode::Normal };
+SerializationMode serialization_mode { SerializationMode::Msgpack };
 
 putm_ev_can::CanDriver can_driver;
 
@@ -48,9 +55,6 @@ extern ErrorChecker error_checker;
 
 extern Gpio usb_reset;
 
-// extern TX_MUTEX tx_buffer_mutex;
-// extern TX_MUTEX rx_buffer_mutex;
-
 static StaticJsonDocument<CONFIG::TX_JSON_BUFFER_SIZE> tx_json;
 static char
     tx_char_buffer[CONFIG::TX_JSON_BUFFER_SIZE]{}; // TODO: Maybe change to its
@@ -58,11 +62,23 @@ static char
 static StaticJsonDocument<CONFIG::RX_JSON_BUFFER_SIZE> rx_json;
 static char rx_char_buffer[CONFIG::RX_JSON_BUFFER_SIZE]{};
 
-static Uart uart(&huart1);
+constexpr size_t LOGGER_TEST_BUFFER_SIZE {256};
+static StaticJsonDocument<LOGGER_TEST_BUFFER_SIZE> logger_test_json;
+static char logger_test_buffer[LOGGER_TEST_BUFFER_SIZE] { };
+
+static Uart usb_uart(&huart1);
+static Uart logger_uart(&huart6);
 
 static std::string_view command;
 
-static char error_write_buffer[128];
+/* In MessagePack serialization \0 and \n bytes can be used within message,
+ * so header with data length is needed to detect end of message
+ */
+constexpr uint8_t START_OF_TEXT_BYTE = 0xAA; 
+struct __attribute__((packed)) Msg_header {
+    uint8_t stx = START_OF_TEXT_BYTE;
+    uint16_t len = 0;
+};
 
 /* seperate thread for timing tweeks */
 VOID car_can_thread_entry(__unused ULONG thread_input) {
@@ -165,6 +181,13 @@ static std::function<void(size_t)> usb_rx_callback = [](size_t size) {
       } else if (mode == "normal") {
         com_mode = ComMode::Normal;
       }
+    } else if (command == "serialization_mode") {
+      std::string_view mode = rx_json["value"];
+      if (mode == "json") {
+        serialization_mode = SerializationMode::Json;
+      } else if (mode == "msgpack") {
+        serialization_mode = SerializationMode::Msgpack;
+      }
     } else if (command == "t_off") {
       size_t device = rx_json["device"];
       size_t temp = rx_json["temp"];
@@ -200,7 +223,7 @@ static std::function<void(size_t)> usb_rx_callback = [](size_t size) {
     data.last_command = command;
   }
 
-  uart.async_rx_unknown_dma(rx_char_buffer, CONFIG::RX_UART_BUFFER_SIZE,
+  usb_uart.async_rx_unknown_dma(rx_char_buffer, CONFIG::RX_UART_BUFFER_SIZE,
                             &usb_rx_callback);
 };
 
@@ -211,168 +234,208 @@ static std::function<void(size_t)> usb_rx_callback = [](size_t size) {
 VOID usb_com_thread_entry(__unused ULONG thread_input) {
   static bool first_run{true};
 
-  // uart.init();
-  uart.set_baudrate(460800);
-  // uart.set_rx_timeout(10);
+    usb_uart.set_baudrate(460800);
 
-  while (true) {
-    if (not data.usb_connected) {
-      first_run = true;
-    }
-    if (data.usb_connected and first_run) {
-      first_run = false;
-      data.loggers.events.log_event("USB DET", tx_time_get());
-      uart.abort_async_rx_unknown_dma();
-      uart.async_rx_unknown_dma(rx_char_buffer, CONFIG::RX_UART_BUFFER_SIZE,
-                                &usb_rx_callback);
-    }
-    if (data.usb_connected) {
-      tx_json.clear();
-      tx_json["timestamp"] = tx_time_get();
-      if (com_mode == ComMode::Normal) {
-        tx_json["current"] = data.current;
-        tx_json["current_reference"] = data.current_reference;
-        tx_json["acc_voltage"] = data.acu_voltage;
-        tx_json["car_voltage"] = data.car_voltage;
-        tx_json["soc"] = data.soc;
-        tx_json["current_integral"] = data.current_integral;
-        tx_json["cell_max_voltage"] = data.cell_max_voltage;
-        tx_json["cell_avg_voltage"] = data.cell_avg_voltage;
-        tx_json["cell_min_voltage"] = data.cell_min_voltage;
-        tx_json["cell_balance"] =
-            (data.cell_max_voltage - data.cell_min_voltage);
-        tx_json["cell_max_temperature"] = data.cell_max_temperature;
-        tx_json["cell_avg_temperature"] = data.cell_avg_temperature;
-        tx_json["cell_min_temperature"] = data.cell_min_temperature;
-        tx_json["charging_current"] = data.charging_current;
-        tx_thread_relinquish();
-        for (size_t i = 0; i < CONFIG::TOTAL_CELL_COUNT; i++) {
-          size_t idev = i / CONFIG::CELL_COUNT_PER_DEVICE;
-          size_t icell = i % CONFIG::CELL_COUNT_PER_DEVICE;
-          tx_json["cell_voltages"][idev][icell] =
-              data.cell_voltages[idev][icell];
-
-          tx_thread_relinquish();
-        }
-        for (size_t i = 0; i < CONFIG::TOTAL_TEMPERATURES_COUNT; i++) {
-          size_t idev = i / CONFIG::TEMPERATURES_COUNT_PER_DEVICE;
-          size_t icell = i % CONFIG::TEMPERATURES_COUNT_PER_DEVICE;
-          tx_json["cell_temperatures"][idev][icell] =
-              data.cell_temperatures[idev][icell];
-          tx_thread_relinquish();
-        }
-        for (size_t i = 0; i < CONFIG::TOTAL_CELL_COUNT; i++) {
-          size_t idev = i / CONFIG::CELL_COUNT_PER_DEVICE;
-          size_t icell = i % CONFIG::CELL_COUNT_PER_DEVICE;
-          tx_json["cell_balancing"][idev][icell] =
-              data.cell_balancing[idev][icell];
-          tx_thread_relinquish();
-        }
-        for (size_t i = 0; i < CONFIG::TOTAL_TEMPERATURES_COUNT; i++) {
-          size_t idev = i / CONFIG::TEMPERATURES_COUNT_PER_DEVICE;
-          size_t icell = i % CONFIG::TEMPERATURES_COUNT_PER_DEVICE;
-          tx_json["kek"][idev][icell] =
-              CONFIG::IGNORE_TEMPERATURES_MATRIX[idev][icell];
-          tx_thread_relinquish();
-        }
-        tx_json["errors"] = JsonArray();
-        for (auto error : error_checker) {
-          tx_json["errors"].add(error.name);
-          tx_thread_relinquish();
-        }
-        tx_thread_relinquish();
-        tx_json["service_mode"] = data.service_mode;
-        // if(data.service_mode)
+    while(true)
+    {
+        if(not data.usb_connected)
         {
-          tx_json["usb_connected"] = data.usb_connected;
-          tx_json["cmd_hv"] = data.cmd_hv;
-          tx_json["cmd_charger"] = data.cmd_charger;
-          tx_json["cmd_balancing_on"] = data.cmd_balancing_on;
-          tx_json["cmd_balancing_off"] = data.cmd_balancing_off;
-          tx_json["bq_init_status"] = get_error_name(data.bq_init_status);
-          tx_json["error"] = data.error;
-          tx_json["warning"] = data.warning;
-          tx_json["on_charger"] = data.on_charger;
-          tx_json["tsms"] = data.tsms;
-          tx_json["precharge"] = data.precharge;
-          tx_json["hv_on"] = data.hv_on;
-          tx_thread_relinquish();
-          for (size_t i = 0; i < CONFIG::STACK_SIZE; i++) {
-            tx_json["bq_com_status"][i] =
-                get_error_name(data.bq_read_data_status[i]);
-            tx_thread_relinquish();
-          }
-          for (size_t i = 0; i < CONFIG::TOTAL_TEMPERATURES_COUNT; i++) {
-            size_t idev = i / CONFIG::TEMPERATURES_COUNT_PER_DEVICE;
-            size_t icell = i % CONFIG::TEMPERATURES_COUNT_PER_DEVICE;
-            tx_json["gpio_voltages"][idev][icell] =
-                data.gpio_voltages[idev][icell];
-            tx_thread_relinquish();
-          }
-          tx_json["sm_air_state"] = air_state_machine.get_current_state_name();
-          tx_json["sm_charger_state"] =
-              charger_state_machine.get_current_state_name();
-          tx_json["bq_ups"] = data.update_times.bq;
-          tx_json["ads_ups"] = data.update_times.ads;
-          tx_json["main_ups"] = data.update_times.main;
-          tx_json["soc_ups"] = data.update_times.soc;
-          tx_json["checker_errors"] = JsonArray();
-          tx_thread_relinquish();
-          for (auto log : data.loggers.errors) {
-            tx_json["checker_errors"].add(log);
-            tx_thread_relinquish();
-          }
-          tx_json["events"] = JsonArray();
-          for (auto log : data.loggers.events) {
-            tx_json["events"].add(log);
-            tx_thread_relinquish();
-          }
-          // if(data.even_moar_data)
-          {
-            tx_json["vusb"] = data.vusb;
-            tx_json["usb_connected"] = data.usb_connected;
-            tx_json["last_command"] = data.last_command;
-          }
-          tx_thread_relinquish();
-          {
-            tx_json["charger_battery_read_voltage"] =
-                data.charger.battery_read_voltage;
-            tx_json["charger_battery_read_current"] =
-                data.charger.battery_read_current;
-            tx_json["charger_hardware_fail"] = data.charger.hardware_fail;
-            tx_json["charger_over_temperature"] = data.charger.over_temperature;
-            tx_json["charger_in_voltage_fail"] = data.charger.in_voltage_fail;
-            tx_json["charger_starting_state"] = data.charger.starting_state;
-            tx_json["charger_communication_state"] =
-                data.charger.communication_state;
-            tx_json["charger_last_recive_tick"] = data.charger.last_recive_tick;
-          }
-          tx_thread_relinquish();
+            first_run = true;
         }
-      }
-      if (com_mode == ComMode::Kalman) {
-        tx_json["k0"] = data.kalman.k_soc;
-        tx_json["inn"] = data.kalman.innovation;
-        tx_json["v1"] = data.kalman.v1;
-        tx_json["v2"] = data.kalman.v2;
-        tx_json["vh"] = data.kalman.vh;
-        tx_json["dr"] = data.kalman.dr;
-        tx_json["vm"] = data.kalman.v_model;
-        tx_json["i"] = data.current;
-        tx_json["soc"] = data.soc;
-        tx_json["v"] = data.acu_voltage;
-      }
+        if(data.usb_connected and first_run)
+        {
+            first_run = false;
+            data.loggers.events.log_event("USB DET", tx_time_get());
+            usb_uart.abort_async_rx_unknown_dma();
+            usb_uart.async_rx_unknown_dma(reinterpret_cast<uint8_t *>(rx_char_buffer),
+                                CONFIG::RX_UART_BUFFER_SIZE, &usb_rx_callback);
+        }
+        if(data.usb_connected)
+        {
+            tx_json.clear();
+            tx_json["timestamp"] = tx_time_get();
+            if(com_mode == ComMode::Normal)
+            {
+                tx_json["current"] = data.current;
+                tx_json["current_reference"] = data.current_reference;
+                tx_json["acc_voltage"] = data.acu_voltage;
+                tx_json["car_voltage"] = data.car_voltage;
+                tx_json["soc"] = data.soc;
+                tx_json["current_integral"] = data.current_integral;
+                tx_json["cell_max_voltage"] = data.cell_max_voltage;
+                tx_json["cell_avg_voltage"] = data.cell_avg_voltage;
+                tx_json["cell_min_voltage"] = data.cell_min_voltage;
+                tx_json["cell_balance"] = (data.cell_max_voltage - data.cell_min_voltage);
+                tx_json["cell_max_temperature"] = data.cell_max_temperature;
+                tx_json["cell_avg_temperature"] = data.cell_avg_temperature;
+                tx_json["cell_min_temperature"] = data.cell_min_temperature;
+                tx_json["charging_current"] = data.charging_current;
+                tx_thread_relinquish();
+                JsonArray cell_voltages = tx_json["cell_voltages"].to<JsonArray>();
+                for(size_t idev = 0; idev < CONFIG::STACK_SIZE; idev++)
+                {
+                    JsonArray dev_voltages = cell_voltages.add<JsonArray>();
+                    for(size_t icell = 0; icell < CONFIG::CELL_COUNT_PER_DEVICE; icell++)
+                    {
+                        dev_voltages.add(data.cell_voltages[idev][icell]);
+                    }
+                }
+                tx_thread_relinquish();
+                JsonArray cell_temperatures = tx_json["cell_temperatures"].to<JsonArray>();
+                for(size_t idev = 0; idev < CONFIG::STACK_SIZE; idev++)
+                {
+                    JsonArray dev_temperatures = cell_temperatures.add<JsonArray>();
+                    for(size_t icell = 0; icell < CONFIG::TEMPERATURES_COUNT_PER_DEVICE; icell++)
+                    {
+                        dev_temperatures.add(data.cell_temperatures[idev][icell]);
+                    }
+                }
+                tx_thread_relinquish();
+                JsonArray cell_balancing = tx_json["cell_balancing"].to<JsonArray>();
+                for(size_t idev = 0; idev < CONFIG::STACK_SIZE; idev++)
+                {
+                    JsonArray dev_balancing = cell_balancing.add<JsonArray>();
+                    for(size_t icell = 0; icell < CONFIG::CELL_COUNT_PER_DEVICE; icell++)
+                    {
+                        dev_balancing.add(data.cell_balancing[idev][icell]);
+                    }
+                }
+                tx_thread_relinquish();
+                JsonArray kek = tx_json["kek"].to<JsonArray>();
+                for(size_t idev = 0; idev < CONFIG::STACK_SIZE; idev++)
+                {
+                    JsonArray dev_kek = kek.add<JsonArray>();
+                    for(size_t icell = 0; icell < CONFIG::TEMPERATURES_COUNT_PER_DEVICE; icell++)
+                    {
+                        dev_kek.add(CONFIG::IGNORE_TEMPERATURES_MATRIX[idev][icell]);
+                    }
+                }
+                tx_thread_relinquish();
+                JsonArray errors = tx_json["errors"].to<JsonArray>();
+                for(auto error : error_checker)
+                {
+                    errors.add(error.name);
+                }
+                {
+                    tx_json["usb_connected"] = data.usb_connected;
+                    tx_json["cmd_hv"] = data.cmd_hv;
+                    tx_json["cmd_charger"] = data.cmd_charger;
+                    tx_json["cmd_balancing_on"] = data.cmd_balancing_on;
+                    tx_json["cmd_balancing_off"] = data.cmd_balancing_off;
+                    tx_json["bq_init_status"] = get_error_name(data.bq_init_status);
+                    tx_json["error"] = data.error;
+                    tx_json["warning"] = data.warning;
+                    tx_json["on_charger"] = data.on_charger;
+                    tx_json["tsms"] = data.tsms;
+                    tx_json["precharge"] = data.precharge;
+                    tx_json["hv_on"] = data.hv_on;
+                    JsonArray bq_com_status = tx_json["bq_com_status"].to<JsonArray>();
+                    for(size_t i = 0; i < CONFIG::STACK_SIZE; i++)
+                    {
+                        bq_com_status.add(get_error_name(data.bq_read_data_status[i]));
+                    }
+                    tx_thread_relinquish();
+                    JsonArray gpio_voltages = tx_json["gpio_voltages"].to<JsonArray>();
+                    for(size_t idev = 0; idev < CONFIG::STACK_SIZE; idev++)
+                    {
+                        JsonArray dev_gpio = gpio_voltages.add<JsonArray>();
+                        for(size_t icell = 0; icell < CONFIG::TEMPERATURES_COUNT_PER_DEVICE; icell++)
+                        {
+                            dev_gpio.add(data.gpio_voltages[idev][icell]);
+                        }
+                    }
+                    tx_thread_relinquish();
+                    tx_json["sm_air_state"] = air_state_machine.get_current_state_name();
+                    tx_json["sm_charger_state"] = charger_state_machine.get_current_state_name();
+                    tx_json["bq_ups"] = data.update_times.bq;
+                    tx_json["ads_ups"] = data.update_times.ads;
+                    tx_json["main_ups"] = data.update_times.main;
+                    tx_json["soc_ups"] = data.update_times.soc;
+                    JsonArray checker_errors = tx_json["checker_errors"].to<JsonArray>();
+                    for(auto log : data.loggers.errors)
+                    {
+                        checker_errors.add(log);
+                    }
+                    JsonArray events = tx_json["events"].to<JsonArray>();
+                    for(auto log : data.loggers.events)
+                    {
+                        events.add(log);
+                    }
+                    {
+                        tx_json["vusb"] = data.vusb;
+                        tx_json["usb_connected"] = data.usb_connected;
+                        tx_json["last_command"] = data.last_command;
+                    }
+                    {
+                        tx_json["charger_battery_read_voltage"] = data.charger.battery_read_voltage;
+                        tx_json["charger_battery_read_current"] = data.charger.battery_read_current;
+                        tx_json["charger_hardware_fail"] = data.charger.hardware_fail;
+                        tx_json["charger_over_temperature"] = data.charger.over_temperature;
+                        tx_json["charger_in_voltage_fail"] = data.charger.in_voltage_fail;
+                        tx_json["charger_starting_state"] = data.charger.starting_state;
+                        tx_json["charger_communication_state"] = data.charger.communication_state;
+                        tx_json["charger_last_recive_tick"] = data.charger.last_recive_tick;
+                    }
+                    tx_thread_relinquish();
+                }
+            }
+            if(com_mode == ComMode::Kalman)
+            {
+                tx_json["k0"]   = data.kalman.k_soc;
+                tx_json["inn"]  = data.kalman.innovation;
+                tx_json["v1"]   = data.kalman.v1;
+                tx_json["v2"]   = data.kalman.v2;
+                tx_json["vh"]   = data.kalman.vh;
+                tx_json["dr"]   = data.kalman.dr;
+                tx_json["vm"]   = data.kalman.v_model;
+                tx_json["i"]    = data.current;
+                tx_json["soc"]  = data.soc;
+                tx_json["v"]    = data.acu_voltage;
+            }
 
-      // serializeJson(json, buffer, JSON_BUFFER_SIZE);
-      serializeJson(tx_json, tx_char_buffer, CONFIG::TX_JSON_BUFFER_SIZE - 2);
-      auto s = strlen(tx_char_buffer);
-      // redundant newline at the end
-      tx_char_buffer[s] = '\n';
-      s += 1;
-      if (uart.await_tx_dma((uint8_t *)tx_char_buffer, s, 2000) != HAL_OK) {
-        data.warning = true;
-      }
+            size_t len = 0;
+            if(serialization_mode == SerializationMode::Msgpack)
+            {
+                size_t payload_len = serializeMsgPack(tx_json, &tx_char_buffer[sizeof(Msg_header)], CONFIG::TX_JSON_BUFFER_SIZE - sizeof(Msg_header));
+                if(payload_len != 0)
+                {
+                    len = payload_len + sizeof(Msg_header);
+                    Msg_header header{START_OF_TEXT_BYTE, static_cast<uint16_t>(payload_len)};
+                    memcpy(tx_char_buffer, reinterpret_cast<uint8_t*>(&header), sizeof(Msg_header));
+                }
+            }
+            else
+            {
+                len = serializeJson(tx_json, tx_char_buffer, CONFIG::TX_JSON_BUFFER_SIZE - 2);
+                if(len != 0)
+                {
+                    // newline marks the end of message
+                    tx_char_buffer[len] = '\n';
+                    len += 1;
+                }
+            }
+            if(len == 0 || len > CONFIG::TX_JSON_BUFFER_SIZE)
+            {
+                data.warning = true;
+            }
+            else if(usb_uart.await_tx_dma((uint8_t *)tx_char_buffer, len, 2000) != HAL_OK)
+            {
+                data.warning = true;
+            }
+        }
+
+        logger_test_json.clear();
+        logger_test_json["timestamp"] = tx_time_get();
+        logger_test_json["current"] = data.current;
+        size_t logger_payload_len = serializeMsgPack(logger_test_json, &logger_test_buffer[sizeof(Msg_header)], LOGGER_TEST_BUFFER_SIZE - sizeof(Msg_header));
+        if(logger_payload_len != 0)
+        {
+            size_t len = logger_payload_len + sizeof(Msg_header);
+            Msg_header header{START_OF_TEXT_BYTE, static_cast<uint16_t>(logger_payload_len)};
+            memcpy(logger_test_buffer, reinterpret_cast<uint8_t*>(&header), sizeof(Msg_header));
+            logger_uart.await_tx_dma((uint8_t*)logger_test_buffer, len, 2000);
+        }
+        tx_thread_sleep(10);
     }
-    tx_thread_sleep(10);
-  }
+
 }
