@@ -322,6 +322,7 @@ VOID main_thread_entry(__unused ULONG thread_input)
 
         /* AIR state machine */
         air_state_machine.update();
+        data.airs_open = not sig_air_p.read() and not sig_air_m.read() and not sig_air_pre.read();
 
         /* Error checker */
         if(error_checker.check_errors(tx_time_get()))

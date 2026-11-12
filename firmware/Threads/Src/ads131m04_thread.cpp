@@ -20,7 +20,8 @@ Fir acu_voltage_filter { CONFIG::_50HZ_RECT_FIR_COEFFS };
 Fir current_filter { CONFIG::_50HZ_RECT_FIR_COEFFS };
 Fir current_ref_filter { CONFIG::_2HZ_HAMMING_FIR_COEFFS };
 // MovingAverage<256> current_ref_filter { };
-// MovingAverage<2048> offset_calibration;
+/* 200 samples * 5 ms = 1 s window for auto bias calibration */
+MovingAverage<200> bias_calibration { };
 
 char write_buffer[128] { };
 
@@ -33,7 +34,7 @@ float current_voltage_to_current(float voltage, float reference_voltage)
     float gain = 150 * CONFIG::CURRENT_DIRECTION; //1.f / (0.4f * reference_voltage / 300.f) * CONFIG::CURRENT_DIRECTION; 
     float voltage_offset = 2.5f; //0.5f * reference_voltage;
     float voltage_diff = (voltage - voltage_offset);
-    float current = voltage_diff * gain - CONFIG::CURRENT_BIAS;
+    float current = voltage_diff * gain;
 
     return current;
 }
@@ -49,6 +50,10 @@ VOID ads131m04_thread_entry(__unused ULONG thread_input)
     float current_ref_voltage { 0.f };
     float current_voltage { 0.f };
     float current { 0.f };
+
+    constexpr size_t bias_window { 200 };
+    size_t bias_samples { 0 };
+    ULONG airs_open_tick { tx_time_get() };
 
     adc.init();
 
@@ -97,13 +102,32 @@ VOID ads131m04_thread_entry(__unused ULONG thread_input)
         current_voltage = current_filter.update(current_voltage);
         current_ref_voltage = current_ref_filter.update(current_ref_voltage);
         
-        current = current_voltage_to_current(current_voltage, current_ref_voltage);
+        float raw_current = current_voltage_to_current(current_voltage, current_ref_voltage);
 
-        // slap on solution
-        // if(current < 0.5f and current > -0.5f)
-        // {
-        //     current_offset = offset_calibration.update(current);
-        // }
+        /* auto bias calibration - with all AIRs open no current can flow through the sensor */
+        if(CONFIG::CURRENT_AUTO_BIAS_ENABLE and data.airs_open)
+        {
+            if(tx_time_get() - airs_open_tick >= CONFIG::CURRENT_AUTO_BIAS_SETTLE_TIME)
+            {
+                float bias = bias_calibration.update(raw_current);
+                /* apply only after the averaging window is full */
+                if(bias_samples < bias_window)
+                {
+                    bias_samples++;
+                }
+                else if(bias < CONFIG::CURRENT_AUTO_BIAS_MAX and bias > -CONFIG::CURRENT_AUTO_BIAS_MAX)
+                {
+                    CONFIG::CURRENT_BIAS = bias;
+                }
+            }
+        }
+        else
+        {
+            airs_open_tick = tx_time_get();
+            bias_samples = 0;
+        }
+
+        current = raw_current - CONFIG::CURRENT_BIAS;
 
         data.acu_voltage = acu_voltage;
         data.car_voltage = car_voltage;

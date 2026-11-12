@@ -65,6 +65,8 @@ namespace PUTM
         bool precharge { false };
         /* internal state tracking hv on */
         bool hv_on { false };
+        /* all AIRs (AIR+, AIR-, precharge) commanded open - no current can flow */
+        bool airs_open { false };
         /* if balancing command received */
         bool cmd_balancing_on { false };
         bool cmd_balancing_off { false };

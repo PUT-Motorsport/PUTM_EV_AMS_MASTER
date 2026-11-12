@@ -195,6 +195,12 @@ namespace PUTM
         overridable float ACU_VOLTAGE_BIAS { 0.f };
         overridable float ACU_VOLTAGE_GAIN { -1000.f / 2 };
         overridable float CURRENT_BIAS { 1.15f };
+        /* Automatic current bias calibration while all AIRs are open (current is known to be 0) */
+        overridable bool CURRENT_AUTO_BIAS_ENABLE { true };
+        /* Time after all AIRs opened before calibration samples are taken (relays + filters settling) [ms] */
+        persistent uint32_t CURRENT_AUTO_BIAS_SETTLE_TIME { 1000 };
+        /* Max absolute bias accepted from auto calibration, larger values are treated as a fault [A] */
+        persistent float CURRENT_AUTO_BIAS_MAX { 10.f };
         /* Current measurement gain * 3 is for the resistor divider on the input */
         overridable float CURRENT_GAIN { -3.04744f }; // the inputs + & - are reversed on the hardware
         
