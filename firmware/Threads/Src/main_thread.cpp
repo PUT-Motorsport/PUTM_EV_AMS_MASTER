@@ -134,12 +134,12 @@ VOID main_thread_entry(__unused ULONG thread_input)
     auto temp_ign_5 = eeprom.new_var<uint32_t>(EepromAddress::TEMP_IGNORE_5, 0);
     auto temp_ign_6 = eeprom.new_var<uint32_t>(EepromAddress::TEMP_IGNORE_6, 0);
     auto temp_ign_7 = eeprom.new_var<uint32_t>(EepromAddress::TEMP_IGNORE_7, 0);
-    auto i_calib_gain   = eeprom.new_var<float>(EepromAddress::I_CALIB_GAIN,   CONFIG::CURRENT_GAIN);
-    auto i_calib_bias   = eeprom.new_var<float>(EepromAddress::I_CALIB_BIAS,   CONFIG::CURRENT_BIAS);
-    auto acu_calib_gain = eeprom.new_var<float>(EepromAddress::ACU_CALIB_GAIN, CONFIG::ACU_VOLTAGE_GAIN);
-    auto acu_calib_bias = eeprom.new_var<float>(EepromAddress::ACU_CALIB_BIAS, CONFIG::ACU_VOLTAGE_BIAS);
-    auto car_calib_gain = eeprom.new_var<float>(EepromAddress::CAR_CALIB_GAIN, CONFIG::CAR_VOLTAGE_GAIN);
-    auto car_calib_bias = eeprom.new_var<float>(EepromAddress::CAR_CALIB_BIAS, CONFIG::CAR_VOLTAGE_BIAS);
+    auto i_calib_gain = eeprom.new_var<float>(EepromAddress::I_CALIB_GAIN, CONFIG::CALIB::CURRENT_GAIN);
+    auto i_calib_bias = eeprom.new_var<float>(EepromAddress::I_CALIB_BIAS, CONFIG::CALIB::CURRENT_BIAS);
+    auto acu_calib_gain = eeprom.new_var<float>(EepromAddress::ACU_CALIB_GAIN, CONFIG::CALIB::ACU_VOLTAGE_GAIN);
+    auto acu_calib_bias = eeprom.new_var<float>(EepromAddress::ACU_CALIB_BIAS, CONFIG::CALIB::ACU_VOLTAGE_BIAS);
+    auto car_calib_gain = eeprom.new_var<float>(EepromAddress::CAR_CALIB_GAIN, CONFIG::CALIB::CAR_VOLTAGE_GAIN);
+    auto car_calib_bias = eeprom.new_var<float>(EepromAddress::CAR_CALIB_BIAS, CONFIG::CALIB::CAR_VOLTAGE_BIAS);
 
     std::array<Eeprom<EepromAddress>::Variable<uint32_t>*, 8> temp_ign({
         &temp_ign_0, &temp_ign_1, &temp_ign_2, &temp_ign_3,
@@ -164,12 +164,12 @@ VOID main_thread_entry(__unused ULONG thread_input)
             }
         }
     }
-    if(auto opt = i_calib_gain.read(); opt.has_value())     CONFIG::CURRENT_GAIN = opt.value();
-    if(auto opt = i_calib_bias.read(); opt.has_value())     CONFIG::CURRENT_BIAS = opt.value();
-    if(auto opt = acu_calib_gain.read(); opt.has_value())   CONFIG::ACU_VOLTAGE_GAIN = opt.value();
-    if(auto opt = acu_calib_bias.read(); opt.has_value())   CONFIG::ACU_VOLTAGE_BIAS = opt.value();
-    if(auto opt = car_calib_gain.read(); opt.has_value())   CONFIG::CAR_VOLTAGE_GAIN = opt.value();
-    if(auto opt = car_calib_bias.read(); opt.has_value())   CONFIG::CAR_VOLTAGE_BIAS = opt.value();
+    if(auto opt = i_calib_gain.read(); opt.has_value()) CONFIG::CALIB::CURRENT_GAIN = opt.value();
+    if(auto opt = i_calib_bias.read(); opt.has_value()) CONFIG::CALIB::CURRENT_BIAS = opt.value();
+    if(auto opt = acu_calib_gain.read(); opt.has_value()) CONFIG::CALIB::ACU_VOLTAGE_GAIN = opt.value();
+    if(auto opt = acu_calib_bias.read(); opt.has_value()) CONFIG::CALIB::ACU_VOLTAGE_BIAS = opt.value();
+    if(auto opt = car_calib_gain.read(); opt.has_value()) CONFIG::CALIB::CAR_VOLTAGE_GAIN = opt.value();
+    if(auto opt = car_calib_bias.read(); opt.has_value()) CONFIG::CALIB::CAR_VOLTAGE_BIAS = opt.value();
     HAL_FLASH_Lock();
 
     data.flash_init_done = true;
@@ -359,12 +359,12 @@ VOID main_thread_entry(__unused ULONG thread_input)
                 {
                     if(auto ret = temp_ign[i]->write(ti[i]); ret) error = true;
                 }
-                if(auto ret = i_calib_gain.write(CONFIG::CURRENT_GAIN); ret)        error = true;
-                if(auto ret = i_calib_bias.write(CONFIG::CURRENT_BIAS); ret)        error = true;
-                if(auto ret = acu_calib_gain.write(CONFIG::ACU_VOLTAGE_GAIN); ret)  error = true;
-                if(auto ret = acu_calib_bias.write(CONFIG::ACU_VOLTAGE_BIAS); ret)  error = true;
-                if(auto ret = car_calib_gain.write(CONFIG::CAR_VOLTAGE_GAIN); ret)  error = true;
-                if(auto ret = car_calib_bias.write(CONFIG::CAR_VOLTAGE_BIAS); ret)  error = true;
+                if(auto ret = i_calib_gain.write(CONFIG::CALIB::CURRENT_GAIN); ret) error = true;
+                if(auto ret = i_calib_bias.write(CONFIG::CALIB::CURRENT_BIAS); ret) error = true;
+                if(auto ret = acu_calib_gain.write(CONFIG::CALIB::ACU_VOLTAGE_GAIN); ret) error = true;
+                if(auto ret = acu_calib_bias.write(CONFIG::CALIB::ACU_VOLTAGE_BIAS); ret) error = true;
+                if(auto ret = car_calib_gain.write(CONFIG::CALIB::CAR_VOLTAGE_GAIN); ret) error = true;
+                if(auto ret = car_calib_bias.write(CONFIG::CALIB::CAR_VOLTAGE_BIAS); ret) error = true;
 
                 if(error) data.loggers.errors.log_error("SAVE CFG");
             }

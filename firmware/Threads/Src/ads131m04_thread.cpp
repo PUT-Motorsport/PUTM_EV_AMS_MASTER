@@ -31,7 +31,7 @@ float current_voltage_to_current(float voltage, float reference_voltage)
     /* gain [A/V] */
     // float gain = 0.8f * 600.f / reference_voltage; 
     // 0.8 because of the 10% to 90% output range
-    float gain = 150 * CONFIG::CURRENT_DIRECTION; //1.f / (0.4f * reference_voltage / 300.f) * CONFIG::CURRENT_DIRECTION; 
+    float gain = 150 * CONFIG::CALIB::CURRENT_DIRECTION; //1.f / (0.4f * reference_voltage / 300.f) * CONFIG::CALIB::CURRENT_DIRECTION; 
     float voltage_offset = 2.5f; //0.5f * reference_voltage;
     float voltage_diff = (voltage - voltage_offset);
     float current = voltage_diff * gain;
@@ -68,10 +68,10 @@ VOID ads131m04_thread_entry(__unused ULONG thread_input)
         current_ref_voltage = adc.adc[CONFIG::CURRENT_REF_CHANNEL];
         current_voltage = adc.adc[CONFIG::CURRENT_CHANNEL];
         
-        acu_voltage = acu_voltage * CONFIG::ACU_VOLTAGE_GAIN;
-        car_voltage = car_voltage * CONFIG::CAR_VOLTAGE_GAIN;
-        current_voltage = current_voltage * CONFIG::CURRENT_GAIN;
-        current_ref_voltage = current_ref_voltage * CONFIG::CURRENT_REF_GAIN_NETWORK;
+        acu_voltage = acu_voltage * CONFIG::CALIB::ACU_VOLTAGE_GAIN;
+        car_voltage = car_voltage * CONFIG::CALIB::CAR_VOLTAGE_GAIN;
+        current_voltage = current_voltage * CONFIG::CALIB::CURRENT_GAIN;
+        current_ref_voltage = current_ref_voltage * CONFIG::CALIB::CURRENT_REF_GAIN_NETWORK;
 
         acu_voltage = acu_voltage_filter.update(acu_voltage);
         car_voltage = car_voltage_filter.update(car_voltage);
@@ -92,10 +92,10 @@ VOID ads131m04_thread_entry(__unused ULONG thread_input)
         current_ref_voltage = adc.adc[CONFIG::CURRENT_REF_CHANNEL];
         current_voltage = adc.adc[CONFIG::CURRENT_CHANNEL];
         
-        acu_voltage = acu_voltage * CONFIG::ACU_VOLTAGE_GAIN;
-        car_voltage = car_voltage * CONFIG::CAR_VOLTAGE_GAIN;
-        current_voltage = current_voltage * CONFIG::CURRENT_GAIN;
-        current_ref_voltage = current_ref_voltage * CONFIG::CURRENT_REF_GAIN_NETWORK;
+        acu_voltage = acu_voltage * CONFIG::CALIB::ACU_VOLTAGE_GAIN;
+        car_voltage = car_voltage * CONFIG::CALIB::CAR_VOLTAGE_GAIN;
+        current_voltage = current_voltage * CONFIG::CALIB::CURRENT_GAIN;
+        current_ref_voltage = current_ref_voltage * CONFIG::CALIB::CURRENT_REF_GAIN_NETWORK;
 
         acu_voltage = acu_voltage_filter.update(acu_voltage);
         car_voltage = car_voltage_filter.update(car_voltage);
@@ -105,9 +105,9 @@ VOID ads131m04_thread_entry(__unused ULONG thread_input)
         float raw_current = current_voltage_to_current(current_voltage, current_ref_voltage);
 
         /* auto bias calibration - with all AIRs open no current can flow through the sensor */
-        if(CONFIG::CURRENT_AUTO_BIAS_ENABLE and data.airs_open)
+        if(CONFIG::CALIB::CURRENT_AUTO_BIAS_ENABLE and data.airs_open)
         {
-            if(tx_time_get() - airs_open_tick >= CONFIG::CURRENT_AUTO_BIAS_SETTLE_TIME)
+            if(tx_time_get() - airs_open_tick >= CONFIG::CALIB::CURRENT_AUTO_BIAS_SETTLE_TIME)
             {
                 float bias = bias_calibration.update(raw_current);
                 /* apply only after the averaging window is full */
@@ -115,9 +115,9 @@ VOID ads131m04_thread_entry(__unused ULONG thread_input)
                 {
                     bias_samples++;
                 }
-                else if(bias < CONFIG::CURRENT_AUTO_BIAS_MAX and bias > -CONFIG::CURRENT_AUTO_BIAS_MAX)
+                else if(bias < CONFIG::CALIB::CURRENT_AUTO_BIAS_MAX and bias > -CONFIG::CALIB::CURRENT_AUTO_BIAS_MAX)
                 {
-                    CONFIG::CURRENT_BIAS = bias;
+                    CONFIG::CALIB::CURRENT_BIAS = bias;
                 }
             }
         }
@@ -127,7 +127,7 @@ VOID ads131m04_thread_entry(__unused ULONG thread_input)
             bias_samples = 0;
         }
 
-        current = raw_current - CONFIG::CURRENT_BIAS;
+        current = raw_current - CONFIG::CALIB::CURRENT_BIAS;
 
         data.acu_voltage = acu_voltage;
         data.car_voltage = car_voltage;

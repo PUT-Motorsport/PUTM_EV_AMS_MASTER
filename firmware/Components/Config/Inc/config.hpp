@@ -189,28 +189,32 @@ namespace PUTM
         /* Which channel is used to measure current reference */
         persistent uint32_t CURRENT_REF_CHANNEL { 0 };
 
-        // TODO: topic for much later but maybe do a self offset/gain calibration
-        overridable float CAR_VOLTAGE_BIAS { 0.f };
-        overridable float CAR_VOLTAGE_GAIN { -1000.f / 2 }; //idk needs more calibration
-        overridable float ACU_VOLTAGE_BIAS { 0.f };
-        overridable float ACU_VOLTAGE_GAIN { -1000.f / 2 };
-        overridable float CURRENT_BIAS { 1.15f };
-        /* Automatic current bias calibration while all AIRs are open (current is known to be 0) */
-        overridable bool CURRENT_AUTO_BIAS_ENABLE { true };
-        /* Time after all AIRs opened before calibration samples are taken (relays + filters settling) [ms] */
-        persistent uint32_t CURRENT_AUTO_BIAS_SETTLE_TIME { 1000 };
-        /* Max absolute bias accepted from auto calibration, larger values are treated as a fault [A] */
-        persistent float CURRENT_AUTO_BIAS_MAX { 10.f };
-        /* Current measurement gain * 3 is for the resistor divider on the input */
-        overridable float CURRENT_GAIN { -3.04744f }; // the inputs + & - are reversed on the hardware
-        
-        persistent float CURRENT_DIRECTION { static_cast<float>(CurrentDirection::REVERSED) };
-        // static constexpr float CURRENT_GAIN { 1.f / (2.f / 300.f) };
-        [[gnu::unused]] persistent float CURRENT_REF_OFFSET { 0.f };
-        // static constexpr float CURRENT_REF_R1 { 9.98e+3f };
-        // static constexpr float CURRENT_REF_R2 { 49.8e+3f };
-        /* Calibrated for real value */
-        persistent float CURRENT_REF_GAIN_NETWORK { 6.10565f };
+        namespace CALIB
+        {
+            // TODO: topic for much later but maybe do a self offset/gain calibration
+            overridable float CAR_VOLTAGE_BIAS { 0.f };
+            overridable float CAR_VOLTAGE_GAIN { -1000.f / 2 }; //idk needs more calibration
+            overridable float ACU_VOLTAGE_BIAS { 0.f };
+            overridable float ACU_VOLTAGE_GAIN { -1000.f / 2 };
+            overridable float CURRENT_BIAS { 1.15f };
+            /* sign of the current measurement, +1 or -1 depending on sensor orientation */
+            persistent float CURRENT_DIRECTION { static_cast<float>(CurrentDirection::REVERSED) };
+            /* Automatic current bias calibration while all AIRs are open (current is known to be 0) */
+            overridable bool CURRENT_AUTO_BIAS_ENABLE { true };
+            /* Time after all AIRs opened before calibration samples are taken (relays + filters settling) [ms] */
+            persistent uint32_t CURRENT_AUTO_BIAS_SETTLE_TIME { 1000 };
+            /* Max absolute bias accepted from auto calibration, larger values are treated as a fault [A] */
+            persistent float CURRENT_AUTO_BIAS_MAX { 10.f };
+            /* Current measurement gain * 3 is for the resistor divider on the input */
+            overridable float CURRENT_GAIN { -3.04744f }; // the inputs + & - are reversed on the hardware
+
+            // static constexpr float CURRENT_GAIN { 1.f / (2.f / 300.f) };
+            [[gnu::unused]] persistent float CURRENT_REF_OFFSET { 0.f };
+            // static constexpr float CURRENT_REF_R1 { 9.98e+3f };
+            // static constexpr float CURRENT_REF_R2 { 49.8e+3f };
+            /* Calibrated for real value */
+            persistent float CURRENT_REF_GAIN_NETWORK { 6.10565f };
+        }
 
         /* Quality of life */
         persistent float CELL_OV_FLOAT { static_cast<float>(CELL_OV) / 1000.f };

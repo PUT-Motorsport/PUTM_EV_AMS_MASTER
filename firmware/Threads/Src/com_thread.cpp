@@ -204,19 +204,19 @@ static std::function<void(size_t)> usb_rx_callback = [](size_t size) {
       }
     } else if (command == "i_g") {
       float gain = rx_json["gain"];
-      CONFIG::CURRENT_GAIN = gain;
+      CONFIG::CALIB::CURRENT_GAIN = gain;
     } else if (command == "i_b") {
       float bias = rx_json["bias"];
-      CONFIG::CURRENT_BIAS = bias;
+      CONFIG::CALIB::CURRENT_BIAS = bias;
     } else if (command == "acu_g") {
       float gain = rx_json["gain"];
-      CONFIG::ACU_VOLTAGE_GAIN = gain;
+      CONFIG::CALIB::ACU_VOLTAGE_GAIN = gain;
     } else if (command == "car_g") {
       float gain = rx_json["gain"];
-      CONFIG::CAR_VOLTAGE_GAIN = gain;
+      CONFIG::CALIB::CAR_VOLTAGE_GAIN = gain;
     } else if (command == "dr") {
       float value = rx_json["value"];
-      CONFIG::CURRENT_BIAS = value;
+      CONFIG::SOC::DR = value;
     } else if (command == "save_cfg") {
       data.commands.save_config = true;
     }
