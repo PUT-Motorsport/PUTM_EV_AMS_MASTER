@@ -312,6 +312,11 @@ VOID usb_com_thread_entry(__unused ULONG thread_input) {
                 {
                     stack_voltages.add(data.stack_voltages[idev]);
                 }
+                JsonArray stack_balance = tx_json["stack_balance"].to<JsonArray>();
+                for(size_t idev = 0; idev < CONFIG::STACK_SIZE; idev++)
+                {
+                    stack_balance.add(data.stack_balance[idev]);
+                }
                 JsonArray errors = tx_json["errors"].to<JsonArray>();
                 for(auto error : error_checker)
                 {

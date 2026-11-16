@@ -40,7 +40,9 @@ namespace PUTM
         float cell_min_temperature { 0.f };
         float cell_voltage_sum { 0.f };
 
+        // bms tego nie używa więc do wyjebania jak jędrzej zrobi dasha do ladowarki
         float stack_voltages[CONFIG::STACK_SIZE] { 0.f };
+        float stack_balance[CONFIG::STACK_SIZE] { 0.f };
 
         float charging_current { 0.0f };
         float current_integral { 0.0f };

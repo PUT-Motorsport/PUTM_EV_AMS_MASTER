@@ -239,10 +239,10 @@ VOID main_thread_entry(__unused ULONG thread_input)
             }
         }
         /* update min max */
-        float max_voltage = 0.0f;
-        float min_voltage = 100.f;
-        float max_temperature = 0.0f;
-        float min_temperature = 100.0f;
+        float max_voltage = std::numeric_limits<float>::lowest();
+        float min_voltage = std::numeric_limits<float>::max();
+        float max_temperature = std::numeric_limits<float>::lowest();
+        float min_temperature = std::numeric_limits<float>::max();
         float accumulator_voltage = 0.0f;
         float accumulator_temperature = 0.0f;
         size_t acc_temp_offset = 0;
@@ -297,12 +297,20 @@ VOID main_thread_entry(__unused ULONG thread_input)
         
         for(size_t i = 0; i < CONFIG::STACK_SIZE; i++)
         {
+            float stack_max_voltage = std::numeric_limits<float>::lowest();
+            float stack_min_voltage = std::numeric_limits<float>::max();
+
             for(size_t j = 0; j < CONFIG::CELL_COUNT_PER_DEVICE; j++)
             {
-                if(data.cell_voltages[i][j] > max_voltage) max_voltage = data.cell_voltages[i][j];
-                if(data.cell_voltages[i][j] < min_voltage) min_voltage = data.cell_voltages[i][j];
+                if(data.cell_voltages[i][j] > stack_max_voltage) stack_max_voltage = data.cell_voltages[i][j];
+                if(data.cell_voltages[i][j] < stack_min_voltage) stack_min_voltage = data.cell_voltages[i][j];
                 if(data.cell_voltages[i][j] > CONFIG::CELL_OV_FLOAT or data.cell_voltages[i][j] < CONFIG::CELL_UV_FLOAT) continue;
             }
+
+            if(stack_max_voltage > max_voltage) max_voltage = stack_max_voltage;
+            if(stack_min_voltage < min_voltage) min_voltage = stack_min_voltage;
+            data.stack_balance[i] = stack_max_voltage - stack_min_voltage;
+
             for(size_t j = 0; j < CONFIG::TEMPERATURES_COUNT_PER_DEVICE; j++)
             {
                 if(data.cell_temperatures[i][j] > max_temperature) max_temperature = data.cell_temperatures[i][j];
